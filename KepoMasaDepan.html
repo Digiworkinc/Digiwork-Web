@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kepo Masa Depan - Spill Takdirmu!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f87171, #fb923c, #facc15, #4ade80, #38bdf8, #a78bfa);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .option-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .result-card-bg {
+             background: linear-gradient(160deg, #6366f1, #a855f7, #ec4899);
+        }
+        .share-button {
+            transition: transform 0.2s ease;
+        }
+        .share-button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Main Container -->
+    <div id="app-container" class="w-full max-w-md mx-auto">
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center text-white p-8 rounded-2xl card bg-white/20 shadow-2xl">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-2">✨ Kepo Masa Depan ✨</h1>
+            <p class="text-lg md:text-xl font-semibold mb-6">Spill Kepribadian, Jodoh, dan Takdirmu dalam 5 Menit!</p>
+            <p class="mb-8">Udah siap di-spill takdirmu? Yuk, jawab beberapa pertanyaan iseng buat lihat masa depanmu!</p>
+            <button onclick="startQuiz()" class="bg-white text-purple-600 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-purple-100 transition-all duration-300">
+                Mulai Kuis!
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="p-6 md:p-8 rounded-2xl card bg-white/25 shadow-2xl">
+                <div id="progress-bar" class="w-full bg-white/30 rounded-full h-2.5 mb-6">
+                    <div id="progress" class="bg-white h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <h2 id="question-text" class="text-2xl font-bold text-white text-center mb-6"></h2>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="hidden text-center text-white p-8">
+             <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-white mx-auto mb-4"></div>
+             <h2 class="text-3xl font-bold mb-2">Menganalisis Jawabanmu...</h2>
+             <p class="text-lg">Sabar ya, cenayang digital kami lagi nerawang takdirmu... Bentar lagi di-spill!</p>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div id="result-card" class="result-card-bg text-white p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
+                <div class="absolute -bottom-16 -left-10 w-48 h-48 bg-white/10 rounded-full"></div>
+                
+                <div class="text-center mb-6 z-10 relative">
+                    <h1 class="text-2xl font-bold">✨ Hasil Kepo-mu ✨</h1>
+                    <p class="font-semibold text-white/80" id="user-name-result">Untuk Kamu!</p>
+                </div>
+
+                <div class="space-y-4 z-10 relative">
+                    <!-- Personality Result -->
+                    <div class="bg-white/20 p-4 rounded-xl flex items-center gap-4">
+                        <img id="personality-img" src="" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <p class="text-sm font-semibold text-white/80">Kepribadianmu Saat Ini:</p>
+                            <h3 id="personality-title" class="text-xl font-bold"></h3>
+                        </div>
+                    </div>
+                    <!-- Partner Result -->
+                    <div class="bg-white/20 p-4 rounded-xl flex items-center gap-4">
+                        <img id="partner-img" src="" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <p class="text-sm font-semibold text-white/80">Tipe Idamanmu:</p>
+                            <h3 id="partner-title" class="text-xl font-bold"></h3>
+                        </div>
+                    </div>
+                    <!-- Future Result -->
+                    <div class="bg-white/20 p-4 rounded-xl flex items-center gap-4">
+                        <img id="future-img" src="" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <p class="text-sm font-semibold text-white/80">Kamu di Masa Depan:</p>
+                            <h3 id="future-title" class="text-xl font-bold"></h3>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-xs mt-4 text-white/60 z-10 relative">Dibuat di KepoMasaDepan.com</p>
+            </div>
+            
+            <div class="mt-6 text-center space-y-4">
+                <button onclick="showAdvice()" class="bg-white text-purple-600 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-purple-100 transition-all duration-300">
+                    Lihat Saran Upgrade Diri 🚀
+                </button>
+                 <button onclick="downloadResult()" class="bg-green-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-green-600 transition-all duration-300 share-button">
+                    ⬇️ Unduh & Share Hasilmu!
+                </button>
+                <button onclick="showFeedbackModal()" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-blue-600 transition-all duration-300">
+                    Kirim Saran & Kritik 💬
+                </button>
+                <button onclick="restartQuiz()" class="text-white font-semibold py-2 px-4">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+        
+        <!-- Advice Modal -->
+        <div id="advice-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full text-gray-800 relative">
+                <button onclick="closeAdvice()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-3xl leading-none">&times;</button>
+                <h2 class="text-2xl font-bold mb-4 text-purple-600">🚀 Misi Upgrade Diri 🚀</h2>
+                <h3 id="advice-for" class="text-lg font-semibold mb-4"></h3>
+                <div id="advice-content" class="space-y-3 text-gray-600">
+                    <!-- Advice content will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full text-gray-800 relative">
+                <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-3xl leading-none">&times;</button>
+                <h2 class="text-2xl font-bold mb-4 text-blue-600">Bantu Kami Jadi Lebih Baik!</h2>
+                <p class="mb-4 text-gray-600">Punya ide, saran, atau nemu bug? Beri tahu kami agar aplikasi ini makin keren!</p>
+                <textarea id="feedback-text" class="w-full h-28 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Tulis masukanmu di sini..."></textarea>
+                <button onclick="sendFeedback()" class="mt-4 w-full bg-green-500 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-green-600 transition-all duration-300">
+                    Kirim via WhatsApp
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="text-center py-6 px-4 mt-4">
+        <p class="font-semibold text-xs text-black/70">Develop by Digiwork</p>
+        <p class="text-[10px] text-black/60 mt-0.5">Jika kamu punya ide untuk buat aplikasi kamu, hubungi kami yaa..</p>
+        <a href="https://wa.me/6287878224307?text=Halo%20Digiwork,%20saya%20punya%20ide%20aplikasi%20keren!" target="_blank" class="mt-2 inline-block bg-white/30 text-black/70 px-3 py-1 rounded-full font-bold text-xs hover:bg-white/50 transition-all">
+            Chat Me
+        </a>
+    </footer>
+
+
+    <script>
+        // --- DATA KUIS ---
+        const questions = [
+            {
+                question: "Weekend ini enaknya ngapain, ya?",
+                options: [
+                    { text: "Rebahan maraton series", image: "https://placehold.co/150x150/fecaca/991b1b?text=SOFA", points: { personality: 'A', partner: 'X', future: 'F' } },
+                    { text: "Healing ke alam terbuka", image: "https://placehold.co/150x150/a7f3d0/065f46?text=GUNUNG", points: { personality: 'B', partner: 'Y', future: 'G' } },
+                    { text: "Ikut webinar/kursus online", image: "https://placehold.co/150x150/bfdbfe/1e40af?text=LAPTOP", points: { personality: 'C', partner: 'Z', future: 'H' } },
+                    { text: "Nongkrong atau party!", image: "https://placehold.co/150x150/f5d0fe/86198f?text=KONSER", points: { personality: 'D', partner: 'W', future: 'I' } },
+                ]
+            },
+            {
+                question: "Kalau tiba-tiba dapat uang 5 juta, kamu bakal...",
+                options: [
+                    { text: "Langsung masukin investasi", image: "https://placehold.co/150x150/a7f3d0/065f46?text=GRAFIK", points: { personality: 'C', partner: 'Z', future: 'H' } },
+                    { text: "CO keranjang di e-commerce", image: "https://placehold.co/150x150/fecaca/991b1b?text=BELANJA", points: { personality: 'A', partner: 'W', future: 'I' } },
+                    { text: "Beli tiket liburan dadakan", image: "https://placehold.co/150x150/bfdbfe/1e40af?text=TIKET", points: { personality: 'B', partner: 'Y', future: 'G' } },
+                    { text: "Traktir se-geng!", image: "https://placehold.co/150x150/f5d0fe/86198f?text=MAKAN", points: { personality: 'D', partner: 'X', future: 'F' } },
+                ]
+            },
+            {
+                question: "Pilih playlist andalanmu:",
+                options: [
+                    { text: "Lo-fi & Chill", image: "https://placehold.co/150x150/fecaca/991b1b?text=LO-FI", points: { personality: 'A', partner: 'X', future: 'F' } },
+                    { text: "Top Hits Indonesia", image: "https://placehold.co/150x150/f5d0fe/86198f?text=POP", points: { personality: 'D', partner: 'W', future: 'I' } },
+                    { text: "Instrumental Pengantar Tidur", image: "https://placehold.co/150x150/a7f3d0/065f46?text=KLASIK", points: { personality: 'B', partner: 'Y', future: 'G' } },
+                    { text: "Podcast Pengembangan Diri", image: "https://placehold.co/150x150/bfdbfe/1e40af?text=PODCAST", points: { personality: 'C', partner: 'Z', future: 'H' } },
+                ]
+            },
+            {
+                question: "Kalau lagi ada masalah, kamu biasanya...",
+                options: [
+                    { text: "Mencari solusi di Google", image: "https://placehold.co/150x150/bfdbfe/1e40af?text=SEARCH", points: { personality: 'C', partner: 'Z', future: 'H' } },
+                    { text: "Curhat ke sahabat terdekat", image: "https://placehold.co/150x150/f5d0fe/86198f?text=CURHAT", points: { personality: 'D', partner: 'W', future: 'I' } },
+                    { text: "Menulis di jurnal pribadi", image: "https://placehold.co/150x150/fecaca/991b1b?text=JURNAL", points: { personality: 'A', partner: 'X', future: 'F' } },
+                    { text: "Pergi jalan-jalan sendiri", image: "https://placehold.co/150x150/a7f3d0/065f46?text=JALAN", points: { personality: 'B', partner: 'Y', future: 'G' } },
+                ]
+            },
+            {
+                question: "Pilih 'senjata' andalanmu buat kerja:",
+                 options: [
+                    { text: "Laptop spek dewa", image: "https://placehold.co/150x150/bfdbfe/1e40af?text=LAPTOP", points: { personality: 'C', partner: 'Z', future: 'H' } },
+                    { text: "Buku sketsa & pensil", image: "https://placehold.co/150x150/fecaca/991b1b?text=SKETSA", points: { personality: 'A', partner: 'Y', future: 'F' } },
+                    { text: "Kamera & lensa terbaik", image: "https://placehold.co/150x150/a7f3d0/065f46?text=KAMERA", points: { personality: 'B', partner: 'X', future: 'G' } },
+                    { text: "Kemampuan public speaking", image: "https://placehold.co/150x150/f5d0fe/86198f?text=MIC", points: { personality: 'D', partner: 'W', future: 'I' } },
+                ]
+            }
+        ];
+
+        const resultsData = {
+            personality: {
+                A: { title: "Jiwa Kreatif Anti Mati Gaya", image: "https://placehold.co/200x200/fecaca/991b1b?text=ART", advice: ["<b>Tantangan 15 Menit:</b> Setiap hari, luangkan 15 menit untuk corat-coret atau nulis tanpa mikirin hasilnya harus bagus. Tujuannya buat manasin mesin kreativitasmu!", "<b>Jelajahi 'Museum' Baru:</b> Kunjungi coffee shop unik, taman kota, atau toko buku bekas. Cari inspirasi di tempat tak terduga.", "<b>Kolab Sama Teman:</b> Ajak temanmu yang beda minat buat bikin proyek iseng bareng. Siapa tahu jadi karya masterpiece!"] },
+                B: { title: "Sang Petualang Haus Healing", image: "https://placehold.co/200x200/a7f3d0/065f46?text=HIKE", advice: ["<b>Micro-Adventure:</b> Nggak perlu nunggu libur panjang. Coba jelajahi taman kota atau jalur sepeda baru di akhir pekan. Gerak badan, pikiran segar!", "<b>Belajar Skill Outdoor:</b> Coba pelajari cara membaca kompas, mendirikan tenda, atau fotografi alam. Menambah keseruan petualanganmu berikutnya.", "<b>Dokumentasikan Perjalananmu:</b> Buat blog travel mini atau akun Instagram khusus petualanganmu. Berbagi cerita bisa menginspirasi orang lain!"] },
+                C: { title: "Si Ambisius Sat-Set", image: "https://placehold.co/200x200/bfdbfe/1e40af?text=GOAL", advice: ["<b>Aturan 2 Menit:</b> Jika sebuah tugas bisa selesai dalam 2 menit, lakukan sekarang juga! Ini ampuh buat melawan prokrastinasi.", "<b>Jadwalkan Waktu Istirahat:</b> Ambisi itu bagus, tapi jangan lupa burnout itu nyata. Jadwalkan waktu 'tidak melakukan apa-apa' di kalendermu.", "<b>Belajar Satu Hal Baru Tiap Minggu:</b> Nggak harus yang berat. Bisa coba resep baru, dengerin genre musik baru, atau baca artikel di luar bidangmu."] },
+                D: { title: "Kupu-Kupu Sosial Sejati", image: "https://placehold.co/200x200/f5d0fe/86198f?text=SOCIAL", advice: ["<b>Deep Talk Challenge:</b> Saat nongkrong, coba sesekali ganti topik dari gosip ke hal yang lebih dalam, seperti impian atau ketakutan. Kualitas hubunganmu bakal meningkat!", "<b>Jadi Pendengar yang Baik:</b> Kamu jago ngobrol, sekarang latih skill mendengarkan. Coba untuk tidak memotong pembicaraan orang lain.", "<b>Jadwalkan 'Me Time':</b> Energi sosialmu besar, tapi butuh di-recharge. Alokasikan satu malam dalam seminggu khusus untuk dirimu sendiri."] },
+            },
+            partner: {
+                X: { title: "Partner Rebahan & Netflix", image: "https://placehold.co/200x200/fecaca/991b1b?text=COUPLE+TV" },
+                Y: { title: "Soulmate Pencinta Alam", image: "https://placehold.co/200x200/a7f3d0/065f46?text=COUPLE+HIKE" },
+                Z: { title: "Pasangan Debat Intelektual", image: "https://placehold.co/200x200/bfdbfe/1e40af?text=COUPLE+BOOK" },
+                W: { title: "Teman Party Sampai Pagi", image: "https://placehold.co/200x200/f5d0fe/86198f?text=COUPLE+PARTY" },
+            },
+            future: {
+                F: { title: "Seniman Nyentrik di Ubud", image: "https://placehold.co/200x200/fecaca/991b1b?text=ARTIST" },
+                G: { title: "Digital Nomad Keliling Dunia", image: "https://placehold.co/200x200/a7f3d0/065f46?text=NOMAD" },
+                H: { title: "CEO Startup Unicorn", image: "https://placehold.co/200x200/bfdbfe/1e40af?text=CEO" },
+                I: { title: "Event Planner Paling Hits", image: "https://placehold.co/200x200/f5d0fe/86198f?text=PLANNER" },
+            }
+        };
+
+        // --- LOGIKA APLIKASI ---
+        let currentQuestionIndex = 0;
+        let scores = { personality: {}, partner: {}, future: {} };
+        let finalResultKey = '';
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-text').innerText = question.question;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-card bg-white/50 text-white p-4 rounded-lg text-left flex items-center gap-4';
+                button.innerHTML = `
+                    <img src="${option.image}" alt="${option.text}" class="w-12 h-12 rounded-md object-cover flex-shrink-0">
+                    <span class="font-semibold">${option.text}</span>
+                `;
+                button.onclick = () => selectOption(option.points);
+                optionsContainer.appendChild(button);
+            });
+
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        function selectOption(points) {
+            // Add points to score
+            for (const category in points) {
+                const key = points[category];
+                if (!scores[category][key]) {
+                    scores[category][key] = 0;
+                }
+                scores[category][key]++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                // End of quiz
+                document.getElementById('progress').style.width = `100%`;
+                showLoading();
+            }
+        }
+        
+        function showLoading() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+            setTimeout(calculateResults, 2000); // Simulate analysis time
+        }
+
+        function calculateResults() {
+            const finalResults = {};
+            for (const category in scores) {
+                const categoryScores = scores[category];
+                if (Object.keys(categoryScores).length > 0) {
+                    const resultKey = Object.keys(categoryScores).reduce((a, b) => categoryScores[a] > categoryScores[b] ? a : b);
+                    finalResults[category] = resultKey;
+                } else {
+                    // Fallback if no points were scored in a category
+                    finalResults[category] = Object.keys(resultsData[category])[0];
+                }
+            }
+            
+            finalResultKey = finalResults.personality; // Save for advice modal
+
+            // Populate result card
+            document.getElementById('personality-title').innerText = resultsData.personality[finalResults.personality].title;
+            document.getElementById('personality-img').src = resultsData.personality[finalResults.personality].image;
+            
+            document.getElementById('partner-title').innerText = resultsData.partner[finalResults.partner].title;
+            document.getElementById('partner-img').src = resultsData.partner[finalResults.partner].image;
+
+            document.getElementById('future-title').innerText = resultsData.future[finalResults.future].title;
+            document.getElementById('future-img').src = resultsData.future[finalResults.future].image;
+
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        }
+
+        function showAdvice() {
+            const adviceData = resultsData.personality[finalResultKey];
+            document.getElementById('advice-for').innerText = `Untuk Kamu, ${adviceData.title}:`;
+            const adviceContent = document.getElementById('advice-content');
+            adviceContent.innerHTML = '';
+            adviceData.advice.forEach((item, index) => {
+                const p = document.createElement('p');
+                p.innerHTML = `<b>${index + 1}.</b> ${item}`;
+                adviceContent.appendChild(p);
+            });
+            document.getElementById('advice-modal').classList.remove('hidden');
+        }
+
+        function closeAdvice() {
+            document.getElementById('advice-modal').classList.add('hidden');
+        }
+
+        function showFeedbackModal() {
+            document.getElementById('feedback-modal').classList.remove('hidden');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+        }
+
+        function sendFeedback() {
+            const phoneNumber = "6287878224307";
+            const feedbackText = document.getElementById('feedback-text').value;
+            if (feedbackText.trim() === "") {
+                alert("Mohon tulis saran atau kritik terlebih dahulu.");
+                return;
+            }
+            const message = encodeURIComponent(`Halo! Saya punya masukan untuk aplikasi Kepo Masa Depan:\n\n${feedbackText}`);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappURL, '_blank');
+            closeFeedbackModal();
+        }
+
+        function downloadResult() {
+            const card = document.getElementById('result-card');
+            const button = event.target;
+            button.innerText = 'Menyiapkan unduhan...';
+            button.disabled = true;
+
+            html2canvas(card, { 
+                useCORS: true,
+                backgroundColor: null, // transparent background
+                scale: 2 // higher resolution
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'hasil-kepo-masa-depan.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                button.innerText = '⬇️ Unduh & Share Hasilmu!';
+                button.disabled = false;
+            });
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            scores = { personality: {}, partner: {}, future: {} };
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>

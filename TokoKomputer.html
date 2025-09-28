@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Komputer Terlengkap - Solusi Teknologi Anda | TechMart</title>
+    <meta name="description" content="TechMart menyediakan solusi komputer terlengkap: laptop, PC rakitan, aksesoris, dan layanan service profesional. Jaminan garansi resmi dan harga kompetitif.">
+    <meta name="keywords" content="toko komputer, jual laptop, PC rakitan, aksesoris komputer, service komputer, harga kompetitif, garansi resmi">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            /* Disable user selection */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+            padding-bottom: 5rem; /* Menambahkan ruang di bawah agar tidak tertutup menu sticky */
+        }
+
+        /* Animasi */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            animation-fill-mode: forwards;
+        }
+
+        .fade-in-up {
+            animation-name: fadeInUp;
+            animation-duration: 0.6s;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+        }
+
+        .backdrop-blur-custom {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800" oncontextmenu="return false;">
+
+    <!-- Header & Navigasi -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between">
+            <!-- Logo & Branding -->
+            <div class="flex flex-col items-center mb-3 sm:mb-0">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-1-3m-1-11H7a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-3m-3 0a1 1 0 00-1 1v2a1 1 0 001 1h2a1 1 0 001-1V6a1 1 0 00-1-1h-2z" />
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">TechMart</span>
+                </div>
+                <span class="text-xs text-gray-500 mt-0.5">Solusi Komputer & Teknologi Terlengkap</span>
+            </div>
+
+            <!-- Menu Navigasi & CTA -->
+            <div class="flex items-center space-x-3 text-sm flex-wrap justify-center sm:justify-end">
+                <a href="#produk" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Produk</a>
+                <a href="#promo" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Promo</a>
+                <a href="#layanan" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Layanan</a>
+                <a href="#kontak" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Kontak</a>
+                <!-- CTA -->
+                <a href="#produk" class="bg-blue-600 text-white font-medium py-1.5 px-3 rounded-full hover:bg-blue-700 transition-colors duration-200 shadow-lg text-xs">Beli Sekarang</a>
+                <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 text-white font-medium py-1.5 px-3 rounded-full hover:bg-green-600 transition-colors duration-200 shadow-lg text-xs">WhatsApp</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-gray-100 py-10">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4 leading-tight">Solusi Komputer & Teknologi Terlengkap</h1>
+                <p class="text-sm text-gray-600 mb-6 max-w-2xl mx-auto">Kami menyediakan berbagai kebutuhan komputer, dari laptop gaming hingga PC rakitan custom, dengan jaminan garansi resmi dan layanan purna jual terbaik.</p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
+                    <a href="#produk" class="bg-blue-600 text-white font-medium py-2 px-6 rounded-full hover:bg-blue-700 transition-colors duration-200 shadow-lg text-sm">Temukan Produk Kami</a>
+                    <a href="#kontak" class="bg-white text-blue-600 font-medium py-2 px-6 rounded-full border-2 border-blue-600 hover:bg-blue-50 transition-colors duration-200 shadow-lg text-sm">Hubungi Kami</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlight Produk Utama -->
+        <section id="produk" class="py-12 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-xl font-bold text-center mb-8">Produk Unggulan Kami</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Contoh Produk 1: Laptop -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll">
+                        <img src="https://placehold.co/400x300/4a5568/ffffff?text=Laptop+Gaming" alt="Laptop Gaming" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Laptop Gaming XYZ</h3>
+                            <p class="text-xs text-gray-500">Intel Core i7, 16GB RAM, RTX 3060</p>
+                            <div class="flex items-center justify-between my-2">
+                                <span class="text-lg font-bold text-blue-600">Rp 18.500.000</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white font-medium text-sm py-1.5 px-3 rounded-full w-full hover:bg-blue-700 transition-colors flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M3 1a1 1 0 000 2h.183l.775 7.75A2 2 0 006.94 13H15a2 2 0 001.995-1.748L18.67 4.5A1 1 0 0017.67 3H4a1 1 0 00-1 1v1a1 1 0 000 2h1a1 1 0 000-2h-.183l-.775-7.75A2 2 0 001.06 1H3zm14.67 1.5H5.06l-.5 5H17.67l-2.5-5zm-5 13a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4zm7 0a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contoh Produk 2: PC Rakitan -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <img src="https://placehold.co/400x300/4a5568/ffffff?text=Desktop+Gaming+PC" alt="PC Rakitan" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">PC Rakitan Custom</h3>
+                            <p class="text-xs text-gray-500">AMD Ryzen 5, 8GB RAM, SSD 512GB</p>
+                            <div class="flex items-center justify-between my-2">
+                                <span class="text-lg font-bold text-blue-600">Rp 8.900.000</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white font-medium text-sm py-1.5 px-3 rounded-full w-full hover:bg-blue-700 transition-colors flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M3 1a1 1 0 000 2h.183l.775 7.75A2 2 0 006.94 13H15a2 2 0 001.995-1.748L18.67 4.5A1 1 0 0017.67 3H4a1 1 0 00-1 1v1a1 1 0 000 2h1a1 1 0 000-2h-.183l-.775-7.75A2 2 0 001.06 1H3zm14.67 1.5H5.06l-.5 5H17.67l-2.5-5zm-5 13a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4zm7 0a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contoh Produk 3: Aksesoris -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <img src="https://placehold.co/400x300/4a5568/ffffff?text=Keyboard+RGB" alt="Keyboard Gaming" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Keyboard RGB Pro</h3>
+                            <p class="text-xs text-gray-500">Switch mekanik, lampu RGB</p>
+                            <div class="flex items-center justify-between my-2">
+                                <span class="text-lg font-bold text-blue-600">Rp 750.000</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white font-medium text-sm py-1.5 px-3 rounded-full w-full hover:bg-blue-700 transition-colors flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M3 1a1 1 0 000 2h.183l.775 7.75A2 2 0 006.94 13H15a2 2 0 001.995-1.748L18.67 4.5A1 1 0 0017.67 3H4a1 1 0 00-1 1v1a1 1 0 000 2h1a1 1 0 000-2h-.183l-.775-7.75A2 2 0 001.06 1H3zm14.67 1.5H5.06l-.5 5H17.67l-2.5-5zm-5 13a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4zm7 0a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contoh Produk 4: Printer -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.3s;">
+                        <img src="https://placehold.co/400x300/4a5568/ffffff?text=Printer" alt="Printer Epson" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">Printer Epson L3210</h3>
+                            <p class="text-xs text-gray-500">All-in-One, Inktank, Hemat Biaya</p>
+                            <div class="flex items-center justify-between my-2">
+                                <span class="text-lg font-bold text-blue-600">Rp 2.100.000</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white font-medium text-sm py-1.5 px-3 rounded-full w-full hover:bg-blue-700 transition-colors flex justify-center items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M3 1a1 1 0 000 2h.183l.775 7.75A2 2 0 006.94 13H15a2 2 0 001.995-1.748L18.67 4.5A1 1 0 0017.67 3H4a1 1 0 00-1 1v1a1 1 0 000 2h1a1 1 0 000-2h-.183l-.775-7.75A2 2 0 001.06 1H3zm14.67 1.5H5.06l-.5 5H17.67l-2.5-5zm-5 13a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4zm7 0a2 2 0 11-4 0 2 2 0 014 0zm-2 2a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Promo & Diskon Menarik -->
+        <section id="promo" class="bg-blue-700 text-white py-12">
+            <div class="container mx-auto px-4 text-center animate-on-scroll">
+                <h2 class="text-xl font-bold mb-3">Diskon Spesial Akhir Bulan!</h2>
+                <p class="text-lg mb-5">Dapatkan diskon 10% untuk semua laptop gaming. Penawaran terbatas!</p>
+                <div id="countdown" class="flex justify-center space-x-3 mb-6 text-lg font-bold">
+                    <div class="bg-blue-800 p-3 rounded-lg">
+                        <span id="days">00</span> Hari
+                    </div>
+                    <div class="bg-blue-800 p-3 rounded-lg">
+                        <span id="hours">00</span> Jam
+                    </div>
+                    <div class="bg-blue-800 p-3 rounded-lg">
+                        <span id="minutes">00</span> Menit
+                    </div>
+                    <div class="bg-blue-800 p-3 rounded-lg">
+                        <span id="seconds">00</span> Detik
+                    </div>
+                </div>
+                <a href="#produk" class="bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-full hover:bg-yellow-500 transition-colors duration-200 shadow-lg text-sm">Lihat Promo Sekarang</a>
+            </div>
+        </section>
+
+        <!-- Layanan & Keunggulan Toko -->
+        <section id="layanan" class="py-12 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-xl font-bold text-center mb-8">Layanan & Keunggulan Kami</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Layanan Service -->
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow duration-300 animate-on-scroll">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.25M11 19.25c0 .35-.07.69-.2.99s-.3.57-.5.78l-2 2a1.5 1.5 0 01-2.12-2.12l2-2c.2-.2.4-.33.6-.45s-.4.15-.6.15h1m1-15.368c0-.35.07-.69.2-.99s.3-.57.5-.78l2-2a1.5 1.5 0 012.12 2.12l-2 2c-.2.2-.4.33-.6.45s-.4.15-.6.15h-1m-10 0h-2a2 2 0 00-2 2v7a2 2 0 002 2h2v4a2 2 0 002 2h10a2 2 0 002-2v-4h2a2 2 0 002-2V9.882a2 2 0 00-2-2h-2V5.882a2 2 0 00-2-2H9.882a2 2 0 00-2 2V8.882h-2z" />
+                        </svg>
+                        <h3 class="text-lg font-semibold mb-2">Service Cepat & Profesional</h3>
+                        <p class="text-sm text-gray-600">Tim teknisi kami siap membantu perbaikan dan instalasi software dengan cepat dan akurat.</p>
+                    </div>
+
+                    <!-- USP Garansi -->
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5 10a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="text-lg font-semibold mb-2">Produk Bergaransi Resmi</h3>
+                        <p class="text-sm text-gray-600">Semua produk yang kami jual memiliki garansi resmi dari produsen, menjamin kualitas dan ketahanan.</p>
+                    </div>
+
+                    <!-- USP Harga Kompetitif -->
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2-.895 2 2 2zM12 18h.01M12 12h.01M12 6h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="text-lg font-semibold mb-2">Harga Kompetitif</h3>
+                        <p class="text-sm text-gray-600">Kami menawarkan harga yang bersaing, tanpa mengorbankan kualitas produk dan layanan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimoni & Review -->
+        <section class="py-12 bg-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-xl font-bold text-center mb-8">Kata Mereka Tentang Kami</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Testimoni 1 -->
+                    <div class="bg-white p-5 rounded-lg shadow-md animate-on-scroll">
+                        <div class="flex items-center mb-3">
+                            <img src="https://placehold.co/50x50/fca5a5/ffffff?text=JN" alt="Foto Pelanggan Jane" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-sm">Joko Nugroho</h4>
+                                <div class="flex text-yellow-400">
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 italic">"Pelayanan sangat cepat dan produknya berkualitas. Saya sangat puas belanja di sini. Pilihan laptopnya lengkap!"</p>
+                    </div>
+                    <!-- Testimoni 2 -->
+                    <div class="bg-white p-5 rounded-lg shadow-md animate-on-scroll" style="animation-delay: 0.1s;">
+                        <div class="flex items-center mb-3">
+                            <img src="https://placehold.co/50x50/fca5a5/ffffff?text=AY" alt="Foto Pelanggan Aldi" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-sm">Alya Putri</h4>
+                                <div class="flex text-yellow-400">
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 italic">"Harga komponennya sangat kompetitif. Upgrade PC saya jadi lebih hemat. Prosesnya juga cepat dan aman."</p>
+                    </div>
+                    <!-- Testimoni 3 -->
+                    <div class="bg-white p-5 rounded-lg shadow-md animate-on-scroll" style="animation-delay: 0.2s;">
+                        <div class="flex items-center mb-3">
+                            <img src="https://placehold.co/50x50/fca5a5/ffffff?text=RS" alt="Foto Pelanggan Rizki" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-sm">Rizki Syahputra</h4>
+                                <div class="flex text-yellow-400">
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.691-.921 1.992 0l1.248 3.827a1 1 0 00.95.691h4.025c.969 0 1.371 1.24.588 1.81l-3.25 2.355a1 1 0 00-.364 1.118l1.248 3.827c.3.921-.755 1.688-1.54 1.118l-3.25-2.355a1 1 0 00-1.176 0l-3.25 2.355c-.785.57-1.84-.197-1.54-1.118l1.248-3.827a1 1 0 00-.364-1.118L2.094 9.255c-.783-.57-.381-1.81.588-1.81h4.025a1 1 0 00.95-.691L9.049 2.927z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 italic">"Pilihan produknya lengkap sekali, dari aksesoris sampai komponen. Sangat membantu untuk kebutuhan bisnis saya."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Artikel / Blog (Opsional) -->
+        <section class="py-12 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-xl font-bold text-center mb-8">Baca Artikel & Tips Terbaru Kami</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Artikel 1 -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll">
+                        <img src="https://placehold.co/600x400/805ad5/ffffff?text=Laptop+Perawatan" alt="Cara Merawat Laptop" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2">Cara Mudah Merawat Laptop Agar Awet</h3>
+                            <p class="text-xs text-gray-600 mb-3">Pelajari tips dan trik sederhana untuk menjaga performa laptop Anda tetap prima.</p>
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                    <!-- Artikel 2 -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <img src="https://placehold.co/600x400/805ad5/ffffff?text=PC+Gaming+Tips" alt="Panduan Memilih PC" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2">Panduan Memilih PC Gaming Sesuai Budget</h3>
+                            <p class="text-xs text-gray-600 mb-3">Bingung memilih PC? Artikel ini akan membantu Anda menemukan PC gaming terbaik dengan budget terbatas.</p>
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                    <!-- Artikel 3 -->
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <img src="https://placehold.co/600x400/805ad5/ffffff?text=Upgrade+PC+Hardware" alt="Upgrade Hardware" class="w-full h-36 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2">Kapan Waktu yang Tepat untuk Upgrade Hardware?</h3>
+                            <p class="text-xs text-gray-600 mb-3">Cari tahu tanda-tanda kapan Anda harus mempertimbangkan untuk meningkatkan komponen PC Anda.</p>
+                            <a href="#" class="text-blue-600 font-medium text-sm hover:underline">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integrasi Lokasi & Kontak -->
+        <section id="kontak" class="py-12 bg-gray-100 animate-on-scroll">
+            <div class="container mx-auto px-4">
+                <h2 class="text-xl font-bold text-center mb-8">Kunjungi Toko Offline Kami</h2>
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Google Maps -->
+                    <div class="w-full lg:w-2/3 rounded-lg shadow-md overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.078440003055!2d110.3541170757279!3d-7.784266192219749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a57a1a2b0e271%3A0x6b194f09d17d5c5a!2sTechMart%20Computer!5e0!3m2!1sen!2sid!4v1699943449176!5m2!1sen!2sid" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <!-- Info Kontak -->
+                    <div class="w-full lg:w-1/3 bg-white p-5 rounded-lg shadow-md">
+                        <h3 class="text-lg font-bold mb-3">Informasi Kontak</h3>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Alamat:</strong> Jl. Contoh No. 123, Kota Contoh, 55123</p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/6281234567890" target="_blank" class="text-blue-600 hover:underline">+62 812-3456-7890</a></p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Email:</strong> <a href="mailto:info@techmart.com" class="text-blue-600 hover:underline">info@techmart.com</a></p>
+                        <p class="text-sm text-gray-600 mb-3"><strong>Jam Buka:</strong> Senin - Sabtu: 09.00 - 20.00 | Minggu: Tutup</p>
+                        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 text-white font-medium text-sm py-1.5 px-4 rounded-full inline-flex items-center hover:bg-green-600 transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            Chat via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <p class="text-sm">&copy; 2023 TechMart. Semua Hak Cipta Dilindungi.</p>
+                <p class="text-xs mt-1">Jl. Contoh No. 123, Kota Contoh, Kode Pos 55123</p>
+            </div>
+            
+            <!-- Sosial Media & Newsletter -->
+            <div class="flex flex-col items-center md:items-end">
+                <div class="flex space-x-3 mb-3">
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.632 1.499 4.78 4.78.058 1.267.07 1.647.07 4.85s-.012 3.584-.07 4.85c-.148 3.252-1.499 4.632-4.78 4.78-.058.058-.07.07-.07.07-1.267.058-1.647.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.632-1.499-4.78-4.78-.058-1.267-.07-1.647-.07-4.85s.012-3.584.07-4.85c.148-3.252 1.499-4.632 4.78-4.78h.07zm0 1.5c-3.18 0-3.57.01-4.76.06c-3.25.148-4.63 1.499-4.78 4.78-.05 1.19-.06 1.58-.06 4.76s.01 3.57.06 4.76c.15 3.25 1.5 4.63 4.78 4.78 1.19.05 1.58.06 4.76.06s3.57-.01 4.76-.06c3.25-.15 4.63-1.5 4.78-4.78.05-1.19.06-1.58.06-4.76s-.01-3.57-.06-4.76c-.15-3.25-1.5-4.63-4.78-4.78-1.19-.05-1.58-.06-4.76-.06zM12 7.5c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5 4.5-2.015 4.5-4.5-2.015-4.5-4.5-4.5zm0 1.5c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zM18.75 5.5a1.25 1.25 0 100-2.5 1.25 1.25 0 000 2.5z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.25 5.922a.94.94 0 00-.325-.333 11.531 11.531 0 00-2.857-1.144c-1.077-.333-2.14-.5-3.2-.5a.5.5 0 00-.5.5v1.2c0 .2.1.4.3.5.7.3 1.4.6 2.1 1.1.7.5 1.3 1.2 1.9 2.1.6.8 1.1 1.7 1.4 2.8.3 1 .4 2.1.4 3.2a1 1 0 01-1 1H17v-3c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v3h-2a1 1 0 01-1-1v-4c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v4a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2c0-1.1-.9-2-2-2h-2a1 1 0 01-1-1V5a1 1 0 011-1h2a1 1 0 011 1v2c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2V5a1 1 0 011-1h2c1.1 0 2 .9 2 2v3c0 1.1.9 2 2 2h2a1 1 0 011-1V5z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c.204 0 .385.048.56.126.353.15.545.45.545.811V23.75h-.001c-.13 0-.256-.02-.379-.047-.123-.028-.242-.062-.357-.105-.115-.043-.225-.094-.33-.153-.105-.059-.205-.124-.298-.198-.186-.15-.347-.32-.486-.51a1.996 1.996 0 01-.265-.434c-.066-.13-.122-.27-.168-.423a1.533 1.533 0 01-.06-.312c-.015-.078-.022-.157-.022-.238V12h-.001c-3.116-.27-5.592-2.822-5.592-5.967a5.572 5.572 0 015.657-5.57c3.117 0 5.666 2.502 5.666 5.57 0 3.144-2.476 5.696-5.592 5.967v10.362h.001c.21 0 .42-.016.63-.048l.006-.002c.005-.001.011-.002.016-.003.011-.003.022-.007.033-.01.018-.006.036-.013.054-.02z"/></svg>
+                    </a>
+                </div>
+                <!-- Newsletter -->
+                <form class="flex w-full max-w-sm" action="#" method="POST">
+                    <input type="email" placeholder="Masukkan email Anda" class="flex-grow p-1.5 text-sm rounded-l-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900">
+                    <button type="submit" class="bg-blue-600 text-white font-medium text-sm py-1.5 px-3 rounded-r-full hover:bg-blue-700 transition-colors">Daftar</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky Contact Bar at the bottom -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-gray-900/60 backdrop-blur-custom py-4 px-4 shadow-xl">
+        <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between text-white space-y-2 sm:space-y-0">
+            <marquee class="w-full sm:w-auto"><p class="text-sm font-medium text-center sm:text-left">Mau Landing page seperti ini untuk tokomu lebih menarik dan menaikan omset? Hubungi kami!</p></marquee>
+            <a href="https://wa.me/6287878224307" target="_blank" class="bg-green-500 text-white font-semibold p-2 rounded-full hover:bg-green-600 transition-colors duration-200 shadow-lg text-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
+                    <path d="M12.04 2.22c-5.45 0-9.87 4.42-9.87 9.87 0 1.8.5 3.5.8 5.2l-1.3 4.6 4.7-1.2c1.6.8 3.4 1.2 5.2 1.2 5.4 0 9.8-4.4 9.8-9.8S17.49 2.22 12.04 2.22zm4.5 14.6c-.3.8-.9 1.5-1.5 1.7-.6.2-1.3.3-2.1.3-1.4 0-2.8-.5-3.9-1.4-.7-.5-1.2-1.1-1.6-1.8s-.6-1.5-.7-2.3c-.1-.8.2-1.6.6-2.1l.6-.6c.2-.2.5-.3.8-.3s.5.1.7.3c.2.2.4.5.5.8l.6 1.4c.1.2.1.5-.1.7l-.3.3c-.2.2-.2.5-.1.7l.1.3c.3.5.7.9 1.1 1.4.4.4.8.8 1.2 1.1.4.3.7.5 1.1.6l.6-.2c.2-.1.5-.2.7-.2l.6.1c.3.1.6.3.8.5.2.2.3.5.4.8l.3 1.3c.1.4.1.7-.1.9-.2.2-.4.3-.7.5z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Logika untuk Countdown Timer
+        const countdown = document.getElementById('countdown');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        // Atur tanggal berakhir promo (contoh: 30 hari dari sekarang)
+        const promoEndDate = new Date();
+        promoEndDate.setDate(promoEndDate.getDate() + 30);
+
+        function updateCountdown() {
+            const now = new Date();
+            const timeDifference = promoEndDate - now;
+
+            if (timeDifference <= 0) {
+                countdown.innerHTML = '<span class="text-red-500 font-bold">Promo telah berakhir!</span>';
+                clearInterval(interval);
+                return;
+            }
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            daysEl.textContent = days < 10 ? '0' + days : days;
+            hoursEl.textContent = hours < 10 ? '0' + hours : hours;
+            minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
+            secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Logika untuk Animasi Saat Gulir Halaman
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 }); // Animasi akan dimulai saat elemen terlihat 20% di viewport
+
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Anti-tiruan dan anti-inspeksi
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', event => {
+            // Disable F12, Ctrl+Shift+I, and Ctrl+U
+            if (event.key === 'F12' || 
+                (event.ctrlKey && event.shiftKey && event.key === 'I') || 
+                (event.ctrlKey && event.key === 'u')) {
+                event.preventDefault();
+            }
+        });
+
+        // Disable text selection on the body
+        document.body.style.userSelect = 'none';
+        
+    </script>
+</body>
+</html>

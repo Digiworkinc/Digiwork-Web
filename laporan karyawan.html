@@ -1,0 +1,465 @@
+import React, { useState, useEffect } from 'react';
+import { BarChart, Bar, PieChart, Pie, Cell, Tooltip, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+
+// Data awal untuk dasbor
+const initialEmployees = [
+  { id: 1, employee: 'Asep (1)', status: 'Hadir', time: '08:05', score: 92 },
+  { id: 2, employee: 'Bambang (2)', status: 'Izin', time: '-', score: 85 },
+  { id: 3, employee: 'Citra (3)', status: 'Sakit', time: '-', score: 78 },
+  { id: 4, employee: 'Dimas (4)', status: 'Hadir', time: '08:00', score: 95 },
+  { id: 5, employee: 'Eka (5)', status: 'Hadir', time: '08:12', score: 88 },
+];
+
+// Fungsi untuk mengelompokkan data kinerja ke dalam kategori untuk grafik
+const getPerformanceChartData = (employees) => {
+  const scores = employees.map(e => e.score);
+  const categories = {
+    '60-70': 0,
+    '71-80': 0,
+    '81-90': 0,
+    '91-100': 0,
+  };
+
+  scores.forEach(score => {
+    if (score >= 60 && score <= 70) categories['60-70']++;
+    else if (score >= 71 && score <= 80) categories['71-80']++;
+    else if (score >= 81 && score <= 90) categories['81-90']++;
+    else if (score >= 91 && score <= 100) categories['91-100']++;
+  });
+
+  return Object.keys(categories).map(key => ({
+    name: key,
+    jumlah: categories[key],
+  }));
+};
+
+const App = () => {
+  // State untuk mengelola data dashboard
+  const [employees, setEmployees] = useState(initialEmployees);
+  const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
+
+  // Fungsi untuk menambah, mengedit, dan menghapus data karyawan
+  const handleAddOrUpdateEmployee = (newEmployee) => {
+    if (editingEmployee) {
+      setEmployees(employees.map(emp => emp.id === editingEmployee.id ? { ...newEmployee, id: emp.id } : emp));
+      setEditingEmployee(null);
+    } else {
+      const newId = employees.length > 0 ? Math.max(...employees.map(e => e.id)) + 1 : 1;
+      setEmployees([...employees, { ...newEmployee, id: newId }]);
+    }
+  };
+
+  const handleDeleteEmployee = (id) => {
+    setEmployees(employees.filter(emp => emp.id !== id));
+  };
+
+  // Ringkasan data dari state karyawan
+  const summary = {
+    totalEmployees: employees.length,
+    presentToday: employees.filter(e => e.status === 'Hadir').length,
+    onLeave: employees.filter(e => e.status === 'Izin').length,
+    absent: employees.filter(e => e.status === 'Sakit').length,
+  };
+
+  // Data kinerja untuk grafik
+  const performanceChartData = getPerformanceChartData(employees);
+
+  // Data izin untuk grafik
+  const leave = [
+    { type: 'Sakit', count: summary.absent },
+    { type: 'Izin', count: summary.onLeave },
+    { type: 'Cuti', count: 0 } 
+  ];
+  const calculateLeavePercentage = (leaveData) => {
+    const total = leaveData.reduce((sum, item) => sum + item.count, 0);
+    return leaveData.map(item => ({
+      ...item,
+      percentage: total > 0 ? (item.count / total) * 100 : 0
+    }));
+  };
+  const leavePercentages = calculateLeavePercentage(leave);
+
+  const renderDashboardContent = () => {
+    switch (activeMenu) {
+      case 'dashboard':
+        return <DashboardMain data={{ ...summary, performance: employees.sort((a, b) => b.score - a.score).slice(0, 5) }} leavePercentages={leavePercentages} performanceChartData={performanceChartData} />;
+      case 'absensi':
+        return <AbsensiReport attendanceData={employees} handleAddOrUpdateEmployee={handleAddOrUpdateEmployee} handleDeleteEmployee={handleDeleteEmployee} editingEmployee={editingEmployee} setEditingEmployee={setEditingEmployee} />;
+      case 'kinerja':
+        return <KinerjaReport performanceData={employees} handleAddOrUpdateEmployee={handleAddOrUpdateEmployee} handleDeleteEmployee={handleDeleteEmployee} editingEmployee={editingEmployee} setEditingEmployee={setEditingEmployee} performanceChartData={performanceChartData} />;
+      case 'izin':
+        return <IzinReport leavePercentages={leavePercentages} />;
+      default:
+        return <DashboardMain data={{ ...summary, performance: employees.sort((a, b) => b.score - a.score).slice(0, 5) }} leavePercentages={leavePercentages} performanceChartData={performanceChartData} />;
+    }
+  };
+
+  return (
+    <div className="flex bg-gray-100 min-h-screen font-sans">
+      <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+      
+      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0 md:ml-20'}`}>
+        <Header setIsSidebarOpen={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} />
+
+        <main className="p-6 md:p-8">
+          {renderDashboardContent()}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+const Sidebar = ({ isSidebarOpen, setIsSidebarOpen, activeMenu, setActiveMenu }) => {
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg> },
+    { id: 'absensi', label: 'Absensi', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg> },
+    { id: 'kinerja', label: 'Kinerja', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> },
+    { id: 'izin', label: 'Izin', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg> },
+  ];
+
+  const sidebarClass = `fixed top-0 left-0 h-full bg-white text-gray-800 shadow-xl z-50 transition-all duration-300 ease-in-out transform ${isSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0 md:w-20'}`;
+  const itemClass = (id) => `flex items-center p-4 rounded-xl cursor-pointer transition-colors duration-200 hover:bg-gray-200 ${activeMenu === id ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'text-gray-600'}`;
+
+  return (
+    <>
+      {isSidebarOpen && <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setIsSidebarOpen(false)}></div>}
+      <aside className={sidebarClass}>
+        <div className="flex items-center p-4">
+          <img src="https://placehold.co/40x40/4F46E5/FFFFFF?text=TND" alt="Logo Telemarketing Nusa Dua" className="rounded-full" />
+          <h1 className={`font-bold text-xl ml-3 ${!isSidebarOpen && 'md:hidden'}`}>Dasbor Telemarketing Nusa Dua</h1>
+        </div>
+        <nav className="mt-8">
+          <ul>
+            {menuItems.map((item) => (
+              <li key={item.id} onClick={() => { setActiveMenu(item.id); setIsSidebarOpen(false); }}>
+                <a className={`block mx-2 mb-2 ${itemClass(item.id)}`}>
+                  <span className="text-xl">{item.icon}</span>
+                  <span className={`ml-4 font-medium ${!isSidebarOpen && 'md:hidden'}`}>{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </>
+  );
+};
+
+const Header = ({ setIsSidebarOpen, isSidebarOpen }) => {
+  return (
+    <header className="flex items-center justify-between p-4 bg-white shadow-md md:hidden">
+      <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-gray-600 focus:outline-none">
+        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <h1 className="text-xl font-bold text-gray-800">Dasbor Telemarketing Nusa Dua</h1>
+      <div className="w-6"></div>
+    </header>
+  );
+};
+
+const DashboardMain = ({ data, leavePercentages, performanceChartData }) => (
+  <>
+    <h2 className="text-3xl font-bold text-gray-800 mb-6">Selamat Datang, Admin!</h2>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <Card title="Total Karyawan" value={data.totalEmployees} icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>} color="bg-indigo-500" />
+      <Card title="Hadir Hari Ini" value={data.presentToday} icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>} color="bg-green-500" />
+      <Card title="Cuti/Izin" value={data.onLeave} icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>} color="bg-yellow-500" />
+      <Card title="Tidak Hadir" value={data.absent} icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>} color="bg-red-500" />
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-white p-6 rounded-3xl shadow-lg">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">Distribusi Skor Kinerja</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={performanceChartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="jumlah" fill="#4F46E5" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="bg-white p-6 rounded-3xl shadow-lg">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">Persentase Izin</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={leavePercentages}
+              dataKey="percentage"
+              nameKey="type"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              label={({ name, percentage }) => `${name} (${percentage.toFixed(1)}%)`}
+            >
+              {leavePercentages.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={['#EF4444', '#F59E0B', '#3B82F6'][index]} />
+              ))}
+            </Pie>
+            <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  </>
+);
+
+const AbsensiReport = ({ attendanceData, handleAddOrUpdateEmployee, handleDeleteEmployee, editingEmployee, setEditingEmployee }) => {
+  const [newEmployee, setNewEmployee] = useState({ employee: '', status: 'Hadir', time: '' });
+
+  useEffect(() => {
+    if (editingEmployee) {
+      setNewEmployee(editingEmployee);
+    } else {
+      setNewEmployee({ employee: '', status: 'Hadir', time: '' });
+    }
+  }, [editingEmployee]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleAddOrUpdateEmployee(newEmployee);
+    setNewEmployee({ employee: '', status: 'Hadir', time: '' });
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-3xl shadow-lg">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Laporan Absensi Karyawan</h3>
+      
+      {/* Form Input */}
+      <form onSubmit={handleSubmit} className="mb-6 bg-gray-50 p-4 rounded-xl shadow-inner">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Nama Karyawan</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={newEmployee.employee}
+              onChange={(e) => setNewEmployee({ ...newEmployee, employee: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Status</label>
+            <select
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={newEmployee.status}
+              onChange={(e) => setNewEmployee({ ...newEmployee, status: e.target.value })}
+              required
+            >
+              <option value="Hadir">Hadir</option>
+              <option value="Izin">Izin</option>
+              <option value="Sakit">Sakit</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Waktu (HH:mm)</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={newEmployee.time}
+              onChange={(e) => setNewEmployee({ ...newEmployee, time: e.target.value })}
+              disabled={newEmployee.status !== 'Hadir'}
+              placeholder={newEmployee.status === 'Hadir' ? 'cth: 08:00' : '-'}
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          {editingEmployee ? 'Simpan Perubahan' : 'Tambah Karyawan'}
+        </button>
+      </form>
+
+      {/* Tabel Data */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-left table-auto">
+          <thead>
+            <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">Nama Karyawan</th>
+              <th className="py-3 px-6 text-left">Status</th>
+              <th className="py-3 px-6 text-center">Waktu</th>
+              <th className="py-3 px-6 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 text-sm font-light">
+            {attendanceData.map((item) => (
+              <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-6">{item.employee}</td>
+                <td className="py-3 px-6">
+                  <span className={`py-1 px-3 rounded-full text-xs font-semibold ${
+                    item.status === 'Hadir' ? 'bg-green-200 text-green-800' :
+                    item.status === 'Sakit' ? 'bg-red-200 text-red-800' :
+                    'bg-yellow-200 text-yellow-800'
+                  }`}>
+                    {item.status}
+                  </span>
+                </td>
+                <td className="py-3 px-6 text-center">{item.time}</td>
+                <td className="py-3 px-6 text-center flex justify-center space-x-2">
+                  <button onClick={() => setEditingEmployee(item)} className="bg-blue-500 text-white text-sm py-1 px-2 rounded-lg hover:bg-blue-600 transition-colors">Edit</button>
+                  <button onClick={() => handleDeleteEmployee(item.id)} className="bg-red-500 text-white text-sm py-1 px-2 rounded-lg hover:bg-red-600 transition-colors">Hapus</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+const KinerjaReport = ({ performanceData, handleAddOrUpdateEmployee, handleDeleteEmployee, editingEmployee, setEditingEmployee, performanceChartData }) => {
+  const [newPerformance, setNewPerformance] = useState({ employee: '', score: '' });
+
+  useEffect(() => {
+    if (editingEmployee) {
+      setNewPerformance({ employee: editingEmployee.employee, score: editingEmployee.score });
+    } else {
+      setNewPerformance({ employee: '', score: '' });
+    }
+  }, [editingEmployee]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleAddOrUpdateEmployee({ ...editingEmployee, employee: newPerformance.employee, score: parseInt(newPerformance.score) });
+    setNewPerformance({ employee: '', score: '' });
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-3xl shadow-lg">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Laporan Kinerja Karyawan</h3>
+      
+      {/* Form Input */}
+      <form onSubmit={handleSubmit} className="mb-6 bg-gray-50 p-4 rounded-xl shadow-inner">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Nama Karyawan</label>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={newPerformance.employee}
+              onChange={(e) => setNewPerformance({ ...newPerformance, employee: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Skor Kinerja (60-100)</label>
+            <input
+              type="number"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={newPerformance.score}
+              onChange={(e) => setNewPerformance({ ...newPerformance, score: e.target.value })}
+              min="60" max="100"
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          {editingEmployee ? 'Simpan Perubahan' : 'Tambah Karyawan'}
+        </button>
+      </form>
+
+      {/* Tabel Data */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-left table-auto">
+          <thead>
+            <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">Nama Karyawan</th>
+              <th className="py-3 px-6 text-center">Skor Kinerja</th>
+              <th className="py-3 px-6 text-center">Status</th>
+              <th className="py-3 px-6 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 text-sm font-light">
+            {performanceData.map((item) => (
+              <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-3 px-6">{item.employee}</td>
+                <td className="py-3 px-6 text-center">{item.score}</td>
+                <td className="py-3 px-6 text-center">
+                  <span className={`py-1 px-3 rounded-full text-xs font-semibold ${
+                    item.score > 90 ? 'bg-green-200 text-green-800' :
+                    item.score > 80 ? 'bg-blue-200 text-blue-800' :
+                    'bg-yellow-200 text-yellow-800'
+                  }`}>
+                    {item.score > 90 ? 'Sangat Baik' : item.score > 80 ? 'Baik' : 'Cukup'}
+                  </span>
+                </td>
+                <td className="py-3 px-6 text-center flex justify-center space-x-2">
+                  <button onClick={() => setEditingEmployee(item)} className="bg-blue-500 text-white text-sm py-1 px-2 rounded-lg hover:bg-blue-600 transition-colors">Edit</button>
+                  <button onClick={() => handleDeleteEmployee(item.id)} className="bg-red-500 text-white text-sm py-1 px-2 rounded-lg hover:bg-red-600 transition-colors">Hapus</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="mt-8 bg-white p-6 rounded-3xl shadow-lg">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">Distribusi Skor Kinerja</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={performanceChartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="jumlah" fill="#4F46E5" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
+
+const IzinReport = ({ leavePercentages }) => (
+  <div className="bg-white p-6 rounded-3xl shadow-lg">
+    <h3 className="text-xl font-semibold text-gray-800 mb-4">Laporan Persentase Izin</h3>
+    <ResponsiveContainer width="100%" height={300}>
+      <PieChart>
+        <Pie
+          data={leavePercentages}
+          dataKey="percentage"
+          nameKey="type"
+          cx="50%"
+          cy="50%"
+          outerRadius={80}
+          label={({ name, percentage }) => `${name} (${percentage.toFixed(1)}%)`}
+        >
+          {leavePercentages.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={['#EF4444', '#F59E0B', '#3B82F6'][index]} />
+          ))}
+        </Pie>
+        <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
+);
+
+const Card = ({ title, value, icon, color }) => (
+  <div className="bg-white p-6 rounded-3xl shadow-lg flex items-center justify-between">
+    <div className="flex items-center space-x-4">
+      <div className={`p-3 rounded-full ${color} text-white text-3xl`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-sm font-medium text-gray-500">{title}</p>
+        <p className="text-2xl font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
+  </div>
+);
+
+export default App;

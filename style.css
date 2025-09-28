@@ -1,0 +1,572 @@
+
+
+/* Reset CSS */
+
+/* Style untuk navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0); /* Latar belakang transparan */
+    z-index: 1000;
+    transition: background-color 0.3s;
+    
+}
+
+/* Style untuk tautan di dalam navbar */
+.navbar a {
+    color: rgb(0, 0, 0); /* Warna teks tautan */
+    padding: 20px 20px; /* Padding untuk tautan */
+    text-decoration: none; /* Hapus garis bawah pada tautan */
+    font-weight:medium; /* Tambahkan ketebalan pada teks tautan */
+    transition: background-color 0.3s; /* Efek transisi saat tautan dihover */
+
+}
+
+/* Style untuk tautan dihover */
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, 0); /* Ubah warna latar belakang saat dihover */
+    color:#00bcd4; /* Ubah warna teks saat dihover */
+    
+    
+}
+
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10em;
+    color: #00bcd4;
+    
+    
+    
+}
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+}
+
+
+
+.intro h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    
+    
+   
+}
+
+.subtext {
+    font-size: 1.1rem;
+    color: #2f2f2f;
+    
+}
+.medium-text {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #2f2f2f;
+    
+}
+.small-text {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 10px;
+}
+
+.contact {
+    position: relative;
+    margin-top: 80px;
+    padding-left: 100px; /* Padding kiri 80px */
+    
+}
+
+.speech-bubble {
+    background-color: #00bcd4;
+    border-radius: 10px;
+    padding: 9px 40px;
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Menghapus transform: translateX(-50%); */
+    color: #fff;
+    transition: background-color 0.3s; /* Transisi perubahan warna latar belakang saat hover */
+
+}
+
+.contact-text {
+    font-size: 0.9rem;
+}
+
+.contact:hover .speech-bubble {
+    background-color: #ff0000; /* Warna latar belakang berubah saat hover */
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    header {
+        padding: 10px;
+    }
+
+    .intro h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* CSS untuk membuat gambar selalu responsif di tengah halaman */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    min-height: 100vh;
+    margin: 0;
+    background-color: white;
+}
+
+/* Tambahkan gaya untuk kolom foto pribadi */
+.profile-photo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+.svg-background {
+    position: absolute;
+    bottom: -20;
+    z-index: -10;
+    top: 0;
+    right: 20px; /* Tambahkan margin kanan 20px */
+    width: 100%;
+    height: 100%;
+    background-image: url('images/blob.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+    
+    margin-top: 6em; 
+}
+/* CSS untuk tata letak dua kolom di layar besar (large screen) */
+@media (min-width: 768px) {
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        
+    }
+
+    .intro {
+        flex: 1;
+        text-align: left;
+    }
+
+    .contact {
+        flex: 1;
+        text-align: right;
+        padding-left: 10;
+    }
+
+    .profile-photo {
+        margin-top: 10px;
+    }
+}
+
+/* CSS untuk mengubah ukuran teks h1 menjadi 2xl di layar besar (large screen) */
+@media (min-width: 768px) {
+    .intro p {
+        font-size: 0.9rem;
+    }
+
+    .intro h1 {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* Gaya untuk bagian About Me dan Hubungi Saya saat tampilan layar besar */
+.about-me, .contact-me {
+    font-size: 16px; /* Ukuran font untuk teks */
+    color: black; /* Warna teks */
+    padding: 10px; /* Ruang di sekitar konten */
+    padding-left: 40px;
+}
+
+/* Media query untuk layar besar (misalnya, layar dengan lebar minimal 768px) */
+@media (min-width: 768px) {
+    .about-me-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Membagi menjadi dua kolom yang sama lebar */
+        grid-gap: 30px; /* Jarak antara dua kolom */
+        padding-left: auto;
+        align-items: center; /* Menyusun elemen ke bagian atas kolom */
+    }
+
+    .about-me, .contact-me {
+        max-width: none; /* Hapus batasan maksimum lebar */
+        margin: 0; /* Hapus margin */
+    }
+}
+
+/* Media query untuk layar besar (misalnya, layar dengan lebar minimal 1080px) */
+@media (min-width: 1080px) {
+    .about-me-container {
+        display: flex; /* Kembalikan ke tampilan flexbox */
+        flex-direction: row; /* Atur tata letak menjadi horizontal (baris) */
+        justify-content: space-between; /* Ratakan elemen di sekitar konten */
+        align-items: center; /* Menyusun elemen secara vertikal (ke tengah) */
+        padding-left: 0; /* Hapus padding kiri */
+    }
+
+    .about-me, .contact-me {
+        max-width: 35%; /* Batasi lebar maksimum menjadi setengah dari layar */
+        margin-left: 20px; /* Geser ke kiri sebesar 100px */
+        margin-right: 20px; /* Geser ke kanan sebesar 100px */
+    }
+}
+
+
+/* Gaya untuk judul "About Me" dan "Hubungi Saya" */
+.about-me h2, .contact-me h2 {
+    color: #29acc0; /* Warna judul */
+}
+/* CSS untuk memberikan margin bawah pada teks "Tentang Saya" */
+.about-me {
+    margin-bottom: 1rem;
+    color: black;
+    font-size: 0.9rem;
+}
+
+.text-container {
+    max-width: 720px;
+    margin:  auto;
+    text-align: center;
+    margin-bottom: 10px;
+    
+}
+/* sosial media*/
+.social-icons {
+    padding: 5px;
+}
+
+.social-icons a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 40px;
+    color: teal;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+    border-radius: 60%;
+}
+
+.social-icons a:last-child {
+    margin-right: 2;
+}
+
+.social-icons a img {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #00000000;
+    background: transparent;
+}
+
+.social-icons a:hover {
+    background-color: #d4d8d8;
+}
+
+header {
+    margin-top: 2em; /* Tambahkan margin 10em ke bagian atas header */
+}
+
+/* Style untuk elemen dengan class "intro" */
+.intro {
+    margin-top: 2em; /* Tambahkan margin 10em ke bagian atas elemen dengan class "intro" */
+}
+/* Style untuk elemen dengan class "intro" */
+.intro {
+    margin-left: 15px; /* Tambahkan margin kiri sejauh 10px */
+    /* ... (style lainnya) */
+}
+.contact {
+    margin-left: 15px; /* Tambahkan margin kiri sejauh 10px */
+    /* ... (style lainnya) */
+}
+
+/* Style untuk navbar dengan efek blur saat scrolling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: white;
+}
+
+.logo-text {
+    font-size: 17px;
+    font-weight: medium;
+    color: rgb(18, 184, 217);
+}
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    width: 19px;
+    height: 2px;
+    background-color: rgb(8, 8, 8);
+    margin: 2px 5px;
+    transition: 0.4s;
+}
+
+.menu {
+    display: flex;
+}
+
+.menu a {
+    text-decoration: none;
+    color: rgb(125, 119, 119);
+    margin: 0 10px;
+    transition: 0.2s;
+}
+
+/* Tampilan hamburger menu saat layar kecil */
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative;
+        width: 50px;
+        height: 20px;
+        right: 30px; /* Geser hamburger menu ke kiri */
+    }
+
+    .menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        background-color: rgba(255, 255, 255, 0.973);
+        width: 150px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.429);
+    }
+
+    .menu.active {
+        display: flex;
+    }
+
+    .menu a {
+        margin: 0.2px 2px;
+        font-size: 15px; /* Ukuran font yang lebih kecil */
+    }
+}
+/* Mengubah hamburger menjadi X saat dihover */
+.hamburger-menu:hover .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger-menu:hover .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu:hover .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-2px, -4px);
+}
+
+
+/* Style untuk logo-text saat menjadi sticky */
+.logo-text.sticky {
+    margin-left: 10px;
+    font-weight: bold;
+    color: white; /* Ubah warna teks saat menjadi sticky */
+}
+
+/* Menyembunyikan burger menu saat layar besar */
+@media screen and (min-width: 768px) {
+    .hamburger-menu {
+        display: none;
+    }
+}
+/* Style untuk navbar dengan efek blur saat scrolling */
+.navbar.blurred {
+    background-color: rgba(255, 255, 255, 0.7); /* Warna latar belakang dengan efek blur */
+    backdrop-filter: blur(80); /* Efek blur saat scrolling */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.429);
+}
+
+
+/* Mengubah warna tautan email */
+.contact-me a[href^="mailto:"] {
+    color:rgb(69, 170, 170); /* Ganti dengan warna yang Anda inginkan */
+}
+
+/* Mengubah warna tautan telepon */
+.contact-me a[href^="tel:"] {
+    color: rgb(69, 170, 170); /* Ganti dengan warna yang Anda inginkan */
+}
+ /* Mengubah warna tautan email saat hover */
+ .contact-me a[href^="mailto:"]:hover {
+    color: rgb(11, 134, 122); /* Ganti dengan warna yang Anda inginkan saat dihover */
+}
+
+/* Mengubah warna tautan telepon saat hover */
+.contact-me a[href^="tel:"]:hover {
+    color: rgb(11, 134, 122); /* Ganti dengan warna yang Anda inginkan saat dihover */
+}
+/* Menghapus garis bawah dari tautan */
+.contact-me a {
+    text-decoration: none;
+}
+/* CSS untuk layout */
+.judul-portofolio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Sesuaikan dengan tinggi yang diinginkan */
+}
+
+.medium-text {
+    font-size: 24px; /* Atur sesuai kebutuhan */
+    color: #00bcd4;
+}
+    
+
+/* Menggunakan flexbox untuk mengatur tata letak dan perataan elemen-elemen dalam .portfolio-container */
+.portfolio-container {
+    
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    justify-content: center; /* Meratakan elemen secara horizontal (ke tengah) */
+    align-items: center; /* Meratakan elemen secara vertikal (ke tengah) */
+    
+   
+}
+
+
+
+.project {
+    width: 400px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 20px;
+    border: 2px solid #1099d836;
+    padding: 20px; /* Tambahkan padding 20px di sekitar konten */
+    box-shadow: -4px -4px 8px rgba(39, 104, 194, 0.2); /* Bayangan di atas dan kiri elemen */
+}
+
+
+
+/* Gaya untuk gambar dalam proyek */
+.project img {
+    max-width: 100%; /* Gambar akan menyesuaikan lebar maksimum parentnya */
+    height: auto; /* Gambar akan menyesuaikan tinggi sesuai lebar yang diatur */
+    border-radius: 20px;
+    
+}
+    
+
+
+
+/* CSS untuk portofolio layout */
+.judul-portofolio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Sesuaikan dengan tinggi yang diinginkan */
+    background-color:white; /* Warna latar belakang untuk judul */
+    
+    
+}
+
+.warna-judul {
+    font-size: 24px; /* Atur sesuai kebutuhan */
+    color: #00bcd4; /* Warna teks toska */
+}
+.medium-text {
+    font-size: 20px; /* Atur sesuai kebutuhan */
+    color: white; /* Warna teks putih */
+}
+
+
+
+.portfolio-container {
+    background-color: #ffffff; /* Warna latar belakang untuk kontainer portfolio */
+    padding: 20px; /* Ruang di sekitar kontainer */
+    padding-left: 20;
+    padding-right: 20;
+    
+    
+
+    
+}
+
+
+/* kolom klien yang pernah memakai jasa*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    font-size: small;
+    
+}
+
+.klien-kolom {
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: rgb(141, 142, 141);
+    
+    
+}
+h3 {
+    color: #2f2f2f;
+}
+.logo-container {
+    margin-top: 50px;
+  margin-left:20;
+  margin-right: 20;
+}
+
+.logo-container img {
+    width: 100px; /* Sesuaikan ukuran logo sesuai kebutuhan */
+    margin: 20px;
+    
+}
+
+
+
+
+
+/* footer*/
+.footer {
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 40px;
+    
+}
+.tagline {
+    color:#777
+    
+}
+ 
+

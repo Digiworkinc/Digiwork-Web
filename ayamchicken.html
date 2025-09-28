@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayam Chicken - Juaranya Fried Chicken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            html {
+                font-family: 'Poppins', sans-serif;
+                scroll-behavior: smooth;
+            }
+            h1, h2, h3 {
+                font-family: 'Roboto Slab', serif;
+            }
+            .container {
+                @apply mx-auto px-4;
+            }
+        }
+    </style>
+    <!-- Favicon placeholder -->
+    <link rel="icon" href="Ayam.png" type="image/png">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-lg py-4">
+        <nav class="container mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="Ayam.png" alt="Ayam Chicken Logo" class="h-8 md:h-10 rounded-full">
+                <span class="text-xl font-bold text-red-700 font-sans tracking-wide">Ayam Chicken</span>
+            </a>
+            <div class="hidden lg:flex space-x-4 font-semibold text-gray-700 text-sm">
+                <a href="#promo-section" class="hover:text-red-700 transition-colors">Promo</a>
+                <a href="#menu-section" class="hover:text-red-700 transition-colors">Menu</a>
+                <a href="#about-section" class="hover:text-red-700 transition-colors">Tentang Kami</a>
+                <a href="#lokasi-section" class="hover:text-red-700 transition-colors">Lokasi</a>
+                <a href="#mitra-section" class="hover:text-red-700 transition-colors">Kemitraan</a>
+            </div>
+            <!-- Hamburger Menu for Mobile -->
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-xl transition-all duration-300 ease-in-out lg:hidden">
+            <nav class="flex flex-col p-4 space-y-2 font-semibold text-gray-700 text-sm">
+                <a href="#promo-section" class="hover:bg-gray-100 p-2 rounded-md transition-colors">Promo</a>
+                <a href="#menu-section" class="hover:bg-gray-100 p-2 rounded-md transition-colors">Menu</a>
+                <a href="#about-section" class="hover:bg-gray-100 p-2 rounded-md transition-colors">Tentang Kami</a>
+                <a href="#lokasi-section" class="hover:bg-gray-100 p-2 rounded-md transition-colors">Lokasi</a>
+                <a href="#mitra-section" class="hover:bg-gray-100 p-2 rounded-md transition-colors">Kemitraan</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative bg-red-700 text-white py-8 md:py-12 overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-10">
+                <div class="h-full w-full bg-cover bg-center" style="background-image: url('Ayam.png');"></div>
+            </div>
+            <div class="container mx-auto flex flex-col lg:flex-row items-center justify-between text-center lg:text-left relative z-10">
+                <div class="lg:w-1/2 mb-5 lg:mb-0 animate-fade-in-down">
+                    <h1 class="text-2xl md:text-3xl font-extrabold leading-tight tracking-tighter">
+                        Juaranya Ayam Goreng <br class="hidden md:inline">Kriuk & Pedas!
+                    </h1>
+                    <p class="mt-2 text-sm md:text-base font-light">
+                        Nikmati sensasi kriuk yang renyah dan bumbu yang meresap. Dijamin bikin nagih!
+                    </p>
+                    <a href="#promo-section" class="mt-4 inline-block px-6 py-2 bg-white text-red-700 font-bold rounded-full shadow-lg hover:bg-red-50 transition-colors transform hover:scale-105 text-sm">
+                        Lihat Promo Spesial
+                    </a>
+                </div>
+                <div class="lg:w-1/2 animate-fade-in-right">
+                    <img src="AyamCrispee.png" alt="Crispy Fried Chicken" class="rounded-xl shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300">
+                </div>
+            </div>
+        </section>
+
+        <!-- Promo Section -->
+        <section id="promo-section" class="py-8 md:py-12 bg-white">
+            <div class="container mx-auto text-center">
+                <h2 class="text-xl md:text-2xl font-bold mb-5">Promo Spesial</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Promo Card 1 -->
+                    <div class="promo-card bg-gray-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" data-promo-id="1">
+                        <img src="HotNasvile.png" alt="Paket Hot Nashville" class="w-full h-auto">
+                        <div class="p-3">
+                            <h3 class="text-lg font-bold text-red-700">Paket Hot Nashville</h3>
+                            <p class="text-gray-600 mt-1 text-sm">Sensasi pedas dari ayam goreng super renyah berbalut saus Hot Nashville yang beneran pedasnya!</p>
+                        </div>
+                    </div>
+                    <!-- Promo Card 2 -->
+                    <div class="promo-card bg-gray-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" data-promo-id="2">
+                        <img src="AyamMerchendise.png" alt="Merchandise Eksklusif Gratis" class="w-full h-auto">
+                        <div class="p-3">
+                            <h3 class="text-lg font-bold text-red-700">Merchandise Eksklusif</h3>
+                            <p class="text-gray-600 mt-1 text-sm">Kumpulkan nota belanja Anda dan dapatkan merchandise keren dari Ayam Chicken!</p>
+                        </div>
+                    </div>
+                    <!-- Promo Card 3 -->
+                    <div class="promo-card bg-gray-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer" data-promo-id="3">
+                        <img src="AyamReview.png" alt="Review Google Maps" class="w-full h-auto">
+                        <div class="p-3">
+                            <h3 class="text-lg font-bold text-red-700">Review di Google</h3>
+                            <p class="text-gray-600 mt-1 text-sm">Berikan ulasan Anda di Google Maps dan dapatkan Es Susu Coklat Gratis!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <a href="#" class="inline-block px-6 py-2 bg-red-700 text-white font-bold rounded-full shadow-lg hover:bg-red-800 transition-colors transform hover:scale-105 text-sm">
+                        TEMUKAN PROMO LAINNYA
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kemitraan Section -->
+        <section id="mitra-section" class="py-8 md:py-12 bg-gray-100">
+            <div class="container mx-auto flex flex-col md:flex-row items-center gap-4">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-xl md:text-2xl font-bold text-red-700 mb-2">Ingin Bergabung Sebagai Mitra?</h2>
+                    <p class="text-gray-600 text-sm">
+                        Jadilah bagian dari keluarga besar Ayam Chicken dan raih kesuksesan bersama kami. Dapatkan dukungan penuh mulai dari operasional hingga marketing.
+                    </p>
+                    <a href="#" class="mt-3 inline-block px-6 py-2 bg-red-700 text-white font-bold rounded-full shadow-lg hover:bg-red-800 transition-colors transform hover:scale-105 text-sm">
+                        Info Selengkapnya
+                    </a>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="AyamMITRA.png" alt="Info Kemitraan" class="rounded-lg shadow-lg">
+                </div>
+            </div>
+        </section>
+
+        <!-- About & Location Section -->
+        <section id="about-section" class="py-8 md:py-12">
+            <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- About Us Card -->
+                <div class="bg-red-700 text-white rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-2">Tentang Kami</h3>
+                    <p class="text-sm">
+                        Ayam Chicken berawal dari semangat untuk menyajikan ayam goreng dengan cita rasa otentik yang berkualitas tinggi. Kami berkomitmen untuk selalu memberikan yang terbaik bagi pelanggan setia kami.
+                    </p>
+                    <a href="#" class="mt-3 inline-block text-white border-b-2 border-white hover:text-red-300 hover:border-red-300 transition-all duration-300 text-sm">
+                        Selengkapnya &rarr;
+                    </a>
+                </div>
+
+                <!-- Lokasi Card -->
+                <div id="lokasi-section" class="bg-gray-100 rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold text-red-700 mb-2">Lokasi</h3>
+                    <p class="text-sm text-gray-700">
+                        Jl. Palagan Tentara Pelajar No.98, Kelurahan Sariharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581
+                    </p>
+                    <div class="mt-3">
+                        <a href="#" class="inline-block px-6 py-2 bg-red-700 text-white font-bold rounded-full shadow-lg hover:bg-red-800 transition-colors text-sm">
+                            Lihat di Peta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-5 md:py-8">
+        <div class="container mx-auto text-center">
+            <a href="#" class="inline-block mb-2">
+                <img src="https://placehold.co/80x80/E31837/ffffff?text=AC" alt="Ayam Chicken Logo" class="h-10 md:h-12 rounded-full">
+            </a>
+            <div class="flex flex-wrap justify-center space-x-2 md:space-x-4 text-xs md:text-sm font-semibold">
+                <a href="#promo-section" class="hover:text-white transition-colors">Promo</a>
+                <a href="#mitra-section" class="hover:text-white transition-colors">Kemitraan</a>
+                <a href="#about-section" class="hover:text-white transition-colors">Tentang Kami</a>
+                <a href="#lokasi-section" class="hover:text-white transition-colors">Lokasi</a>
+                <a href="#" class="hover:text-white transition-colors">Career</a>
+                <a href="#" class="hover:text-white transition-colors">Follow Us</a>
+            </div>
+            <p class="mt-3 text-xs">© 2025 Ayam Chicken. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Pop-up Modal -->
+    <div id="promo-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-[9999] opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modal-container" class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-sm w-full transform scale-90 transition-transform duration-300">
+            <div class="p-4 relative">
+                <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-500 hover:text-red-700 transition-colors text-2xl font-bold leading-none">
+                    &times;
+                </button>
+                <div id="modal-content" class="text-center">
+                    <!-- Content will be injected here by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const promoData = {
+                1: {
+                    title: 'Paket Hot Nashville',
+                    description: 'Siap-siap ketagihan! Dengan sensasi rasa dari ayam goreng super renyah berbalut saus Hot Nashville yang beneran pedasnya!',
+                    image: 'HotNasvile.png'
+                },
+                2: {
+                    title: 'Merchandise Eksklusif Gratis',
+                    description: 'Ayo kumpulkan nota belanjamu dan dapatkan Merchandise Eksklusif dari Ayam Chicken! Berlaku di seluruh outlet Ayam Chicken sampai akhir bulan.',
+                    image: 'AyamMerchendise.png'
+                },
+                3: {
+                    title: 'Review di Google Gratis Es Susu Coklat!',
+                    description: 'Ayo berikan ulasanmu di Google Maps dan dapatkan Es Susu Coklat Gratis! Tunjukkan ulasan Anda kepada kasir.',
+                    image: 'AyamReview.png'
+                }
+            };
+            
+            const promoCards = document.querySelectorAll('.promo-card');
+            const modal = document.getElementById('promo-modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalContainer = document.getElementById('modal-container');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            const showModal = (id) => {
+                const data = promoData[id];
+                if (!data) return;
+                modalContent.innerHTML = `
+                    <img src="${data.image}" alt="${data.title}" class="rounded-lg mb-2 w-full">
+                    <h3 class="text-lg font-bold text-red-700">${data.title}</h3>
+                    <p class="text-gray-700 mt-1 text-sm">${data.description}</p>
+                `;
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                modalContainer.classList.remove('scale-90');
+                modalContainer.classList.add('scale-100');
+            };
+
+            const hideModal = () => {
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                modalContainer.classList.add('scale-90');
+                modalContainer.classList.remove('scale-100');
+            };
+
+            promoCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.promoId;
+                    showModal(id);
+                });
+            });
+
+            closeModalBtn.addEventListener('click', hideModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'promo-modal') {
+                    hideModal();
+                }
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

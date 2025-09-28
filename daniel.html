@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio - Daniel Christian Tarigan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f3e9;
+        }
+        .text-orange-500 {
+            color: #ff914d;
+        }
+        .bg-orange-500 {
+            background-color: #ff914d;
+        }
+        .border-orange-500 {
+            border-color: #ff914d;
+        }
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        .scroll-mt-24 {
+            scroll-margin-top: 6rem;
+        }
+        
+        /* CSS untuk animasi */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        /* Tema gelap */
+        .dark body {
+            background-color: #121212;
+        }
+        .dark .bg-white {
+            background-color: #1f1f1f;
+        }
+        .dark .text-gray-600, .dark .text-gray-500, .dark .text-gray-900, .dark .text-gray-800 {
+            color: #e0e0e0;
+        }
+        .dark .border-gray-300, .dark .border-gray-100 {
+            border-color: #424242;
+        }
+        .dark .bg-gray-50 {
+            background-color: #2c2c2c;
+        }
+        .dark .shadow-lg {
+            box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen p-4 md:p-8">
+
+    <div class="relative w-full max-w-7xl mx-auto bg-white rounded-[40px] shadow-2xl overflow-hidden">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center p-6 md:p-8 sticky top-0 bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg z-40">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-orange-500"></div>
+                <span class="font-bold text-xl" data-lang-key="brand_name">Daniel Christian T.</span>
+            </div>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6 text-gray-600 text-sm">
+                <a href="#home" class="font-medium text-orange-500" data-lang-key="nav_home">Home</a>
+                <a href="#about" class="hover:text-orange-500 transition-colors" data-lang-key="nav_about">Tentang</a>
+                <a href="#services" class="hover:text-orange-500 transition-colors" data-lang-key="nav_services">Layanan</a>
+                <a href="#portfolio" class="hover:text-orange-500 transition-colors" data-lang-key="nav_portfolio">Portofolio</a>
+                <a href="#contact" class="hover:text-orange-500 transition-colors" data-lang-key="nav_contact">Kontak</a>
+            </nav>
+            <div class="flex items-center space-x-2">
+                <!-- Tombol Mode Gelap -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1m-16 0H3m15.364 6.364l-.707.707M6.343 6.343l-.707-.707m12.728 0l-.707-.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <!-- Tombol Bahasa -->
+                <button id="lang-toggle" class="py-1 px-4 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors font-medium text-xs">ID | EN</button>
+            </div>
+            
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-64 h-full bg-white z-50 p-6 shadow-xl md:hidden">
+            <div class="flex justify-end">
+                <button id="close-menu-button" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-4 mt-8 text-gray-600 text-sm">
+                <a href="#home" class="font-medium text-orange-500 hover:text-orange-500 transition-colors" data-lang-key="nav_home">Home</a>
+                <a href="#about" class="hover:text-orange-500 transition-colors" data-lang-key="nav_about">Tentang</a>
+                <a href="#services" class="hover:text-orange-500 transition-colors" data-lang-key="nav_services">Layanan</a>
+                <a href="#portfolio" class="hover:text-orange-500 transition-colors" data-lang-key="nav_portfolio">Portofolio</a>
+                <a href="#contact" class="hover:text-orange-500 transition-colors" data-lang-key="nav_contact">Kontak</a>
+                <a href="#contact" class="mt-4 py-2 px-6 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors font-medium text-center" data-lang-key="nav_contact_btn">Hubungi Saya</a>
+            </nav>
+        </div>
+
+        <!-- Main Content (Hero Section) -->
+        <main class="flex flex-col-reverse lg:flex-row items-center justify-between p-6 md:p-12 lg:space-x-12 min-h-[calc(100vh-16rem)]" id="home">
+            
+            <!-- Left Section -->
+            <div class="lg:w-1/2 text-center lg:text-left mt-8 lg:mt-0 animate-fadeIn" style="animation-delay: 0.2s;">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                    <span data-lang-key="hero_greeting">Hello, saya</span> <br>
+                    <span class="text-orange-500" data-lang-key="hero_name">Daniel Christian</span> <span data-lang-key="hero_title_1">seorang Pemimpin</span> <br>
+                    <span data-lang-key="hero_title_2">Strategis</span>
+                </h1>
+                <p class="mt-4 md:mt-6 text-gray-500 max-w-md mx-auto lg:mx-0" data-lang-key="hero_bio">
+                    "Seorang pemimpin strategis yang visioner, pendiri startup, influencer, dan praktisi akademik yang membangun tim yang lincah dan berdaya serta memberikan hasil dengan ketulusan."
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#portfolio" class="py-3 px-8 bg-black text-white font-medium rounded-full shadow-lg hover:bg-gray-800 transition-colors" data-lang-key="btn_view_work">
+                        Lihat Karya
+                    </a>
+                    <a href="#about" id="scroll-down-btn" class="flex items-center space-x-2 text-gray-500 cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                            </svg>
+                        </div>
+                        <span class="font-medium" data-lang-key="btn_scroll_down">Gulir ke Bawah</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Section (Image) -->
+            <div class="relative lg:w-1/2 flex justify-center items-center animate-fadeIn" style="animation-delay: 0.4s;">
+                <div class="relative w-full max-w-sm rounded-full overflow-hidden shadow-2xl">
+                    <!-- Placeholder Image -->
+                    <img src="Foto Daniel.png" alt="Daniel Christian Tarigan" class="w-full h-auto z-10 relative">
+                </div>
+            </div>
+        </main>
+        
+        <!-- Stats Section -->
+        <section class="p-6 md:p-12 animate-fadeIn" style="animation-delay: 0.6s;">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 text-center flex flex-col items-center hover:scale-105 transition-transform duration-300">
+                    <span class="text-4xl font-extrabold text-orange-500">146K</span>
+                    <p class="font-bold text-lg mt-2" data-lang-key="stat_1_title">Engaged Followers</p>
+                    <p class="text-gray-500" data-lang-key="stat_1_desc">on IG/TikTok</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 text-center flex flex-col items-center hover:scale-105 transition-transform duration-300">
+                    <span class="text-4xl font-extrabold text-orange-500">1.5M</span>
+                    <p class="font-bold text-lg mt-2" data-lang-key="stat_2_title">Monthly Views</p>
+                    <p class="text-gray-500" data-lang-key="stat_2_desc">on Social Media</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 text-center flex flex-col items-center hover:scale-105 transition-transform duration-300">
+                    <span class="text-4xl font-extrabold text-orange-500">80+</span>
+                    <p class="font-bold text-lg mt-2" data-lang-key="stat_3_title">Outlets</p>
+                    <p class="text-gray-500" data-lang-key="stat_3_desc">Scaled Business To</p>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <div class="flex justify-center space-x-1 text-yellow-400">
+                    <!-- SVG for stars -->
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                </div>
+                <p class="text-gray-500 text-sm mt-1" data-lang-key="stat_review">5 Star Ratings (2k+ Review)</p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="mt-12 p-6 md:p-12 scroll-mt-24 animate-fadeIn" style="animation-delay: 0.8s;">
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-900 mb-6" data-lang-key="about_title">Tentang Saya</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Professional Experience -->
+                <div class="bg-gray-50 rounded-xl p-6 shadow-md hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15.75c-2.458 0-4.832-.693-6.939-1.995M12 21V6.75A4.5 4.5 0 007.5 2.25h1.5A2.25 2.25 0 0111.25 4.5v2.25M6.75 6.75h1.5M12 2.25h.007M12 12.75h.007" />
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-800" data-lang-key="exp_title">Pengalaman Profesional</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="text-base font-bold text-gray-900" data-lang-key="exp_1_role">Managing Director</h4>
+                            <p class="text-sm text-orange-500" data-lang-key="exp_1_company">THE SAGES INTERNATIONAL CULINARY BUSINESS SCHOOL</p>
+                            <p class="text-gray-500 text-xs" data-lang-key="exp_1_duration">JUL 2024 - JUL 2025</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-1">
+                                <li data-lang-key="exp_1_desc_1">Meningkatkan pendapatan penerimaan hingga 95%.</li>
+                                <li data-lang-key="exp_1_desc_2">Memperluas pendaftaran siswa hingga 50%.</li>
+                                <li data-lang-key="exp_1_desc_3">Mencapai 2.7M tampilan bulanan dan 40K pengikut baru.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="text-base font-bold text-gray-900" data-lang-key="exp_2_role">Founder and CEO</h4>
+                            <p class="text-sm text-orange-500" data-lang-key="exp_2_company">PT CEPAT DAN BERSIH INDONESIA (QNC LAUNDRY)</p>
+                            <p class="text-gray-500 text-xs" data-lang-key="exp_2_duration">JAN 2010 - JUL 2024</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-1">
+                                <li data-lang-key="exp_2_desc_1">Mengembangkan bisnis dari 1 menjadi 80+ outlet.</li>
+                                <li data-lang-key="exp_2_desc_2">Dianugerahi "Most Innovative Franchise Brand 2021".</li>
+                                <li data-lang-key="exp_2_desc_3">Membangun sistem waralaba "autopilot".</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="text-base font-bold text-gray-900" data-lang-key="exp_3_role">Adjunct Faculty Member</h4>
+                            <p class="text-sm text-orange-500" data-lang-key="exp_3_company">UNIVERSITAS PRASETIYA MULYA</p>
+                            <p class="text-gray-500 text-xs" data-lang-key="exp_3_duration">AUG 2014 - JAN 2025</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-1">
+                                <li data-lang-key="exp_3_desc_1">Mengajar berbagai mata kuliah termasuk Business Creation.</li>
+                                <li data-lang-key="exp_3_desc_2">Mempertahankan skor pengajaran kuartil teratas (85–95% kepuasan siswa).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Other Info -->
+                <div class="bg-gray-50 rounded-xl p-6 shadow-md hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-1.82 4.472a12.054 12.054 0 001.82 1.556" />
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-800" data-lang-key="edu_title">Pendidikan</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="text-base font-bold text-gray-900" data-lang-key="edu_1_degree">Master of Management</h4>
+                            <p class="text-sm text-orange-500" data-lang-key="edu_1_university">PRASETIYA MULYA BUSINESS SCHOOL</p>
+                            <p class="text-gray-500 text-xs" data-lang-key="edu_1_duration">2011-2013</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-1">
+                                <li data-lang-key="edu_1_desc_1">IPK: 3.73 dari 4.00.</li>
+                                <li data-lang-key="edu_1_desc_2">4x Dean’s List.</li>
+                                <li data-lang-key="edu_1_desc_3">"Top 5 Most Outstanding Students".</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="text-base font-bold text-gray-900" data-lang-key="edu_2_degree">Bachelor of Law</h4>
+                            <p class="text-sm text-orange-500" data-lang-key="edu_2_university">FACULTY OF LAW UNIVERSITAS AIRLANGGA</p>
+                            <p class="text-gray-500 text-xs" data-lang-key="edu_2_duration">2006-2010</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm space-y-1">
+                                <li data-lang-key="edu_2_desc_1">IPK: 3.35 dari 4.00.</li>
+                                <li data-lang-key="edu_2_desc_2">Djarum Bakti Pendidikan Scholar.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="mt-12 p-6 md:p-12 scroll-mt-24 animate-fadeIn" style="animation-delay: 1.0s;">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-8" data-lang-key="services_title">Layanan & Keahlian</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                     <svg class="h-16 w-16 text-orange-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M12 2L2 7l10 5 10-5-10-5z" />  <path d="M2 17l10 5 10-5" />  <path d="M2 12l10 5 10-5" /></svg>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2" data-lang-key="service_1_title">Kepemimpinan & Pertumbuhan</h3>
+                    <p class="text-gray-500" data-lang-key="service_1_desc">Memimpin organisasi menengah melalui pertumbuhan dan operasi multi-situs, serta mendesain ulang organisasi untuk kinerja yang optimal.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <svg class="h-16 w-16 text-orange-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />  <rect x="8" y="2" width="8" height="2" rx="1" ry="1" />  <line x1="12" y1="17" x2="12" y2="10" />  <line x1="12" y1="22" x2="12" y2="17" /></svg>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2" data-lang-key="service_2_title">Pembicara & Mentor</h3>
+                    <p class="text-gray-500" data-lang-key="service_2_desc">Berbicara tentang HR, kewirausahaan, penjualan, pemasaran, dan kepemimpinan. Mendampingi pendiri dalam peluncuran bisnis dari konsep hingga pendapatan pertama.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <svg class="h-16 w-16 text-orange-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M12 2L2 7l10 5 10-5-10-5z" />  <path d="M2 17l10 5 10-5" />  <path d="M2 12l10 5 10-5" /></svg>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2" data-lang-key="service_3_title">Manajemen Waralaba</h3>
+                    <p class="text-gray-500" data-lang-key="service_3_desc">Keahlian dalam manajemen waralaba dan kemitraan Ed-Tech.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="mt-12 p-6 md:p-12 scroll-mt-24 animate-fadeIn" style="animation-delay: 1.2s;">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-8" data-lang-key="portfolio_title">Portofolio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <img src="https://placehold.co/800x600/ff914d/ffffff?text=Proyek+Pemasaran" alt="Proyek Pemasaran" class="w-full h-auto object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800" data-lang-key="project_1_title">Kampanye Pemasaran Digital</h3>
+                        <p class="text-gray-500 mt-2" data-lang-key="project_1_desc">Memimpin tim untuk meluncurkan kampanye pemasaran digital yang sukses, menghasilkan pertumbuhan 30% dalam metrik keterlibatan.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <img src="https://placehold.co/800x600/e9c46a/ffffff?text=Strategi+Bisnis" alt="Strategi Bisnis" class="w-full h-auto object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800" data-lang-key="project_2_title">Pengembangan Strategi Bisnis</h3>
+                        <p class="text-gray-500 mt-2" data-lang-key="project_2_desc">Mendesain dan mengimplementasikan strategi bisnis baru untuk perusahaan startup, mengamankan putaran pendanaan pertama.</p>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <img src="https://placehold.co/800x600/a8dadc/ffffff?text=Sistem+HR" alt="Sistem HR" class="w-full h-auto object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800" data-lang-key="project_3_title">Sistem Manajemen SDM</h3>
+                        <p class="text-gray-500 mt-2" data-lang-key="project_3_desc">Mengembangkan dan menerapkan sistem manajemen SDM internal untuk meningkatkan efisiensi operasional.</p>
+                    </div>
+                </div>
+                 <!-- Project 4 -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:scale-[1.02] transition-transform duration-300">
+                    <img src="https://placehold.co/800x600/f4a261/ffffff?text=Mentoring+Startup" alt="Mentoring Startup" class="w-full h-auto object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800" data-lang-key="project_4_title">Program Mentoring Startup</h3>
+                        <p class="text-gray-500 mt-2" data-lang-key="project_4_desc">Membimbing 5 startup tahap awal dari konsep hingga peluncuran, dengan 3 di antaranya berhasil mendapatkan pendanaan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="mt-12 p-6 md:p-12 scroll-mt-24 animate-fadeIn" style="animation-delay: 1.4s;">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-8" data-lang-key="contact_title">Hubungi Saya</h2>
+            <div class="bg-gray-50 rounded-xl p-6 shadow-md md:p-10 flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 md:pr-8 text-center md:text-left">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2" data-lang-key="contact_greeting">Mari Berkolaborasi!</h3>
+                    <p class="text-gray-500 mb-6" data-lang-key="contact_desc">
+                        Saya selalu terbuka untuk ide-ide baru, proyek-proyek menarik, dan kemitraan. Kirimkan pesan atau hubungi saya melalui media sosial.
+                    </p>
+                    <div class="flex justify-center md:justify-start space-x-6">
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/d_ctarigan/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@danielchristiantarigan" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tiktok"><path d="M12 2a10 10 0 1 0 10 10c0-5.52-4.48-10-10-10zm-1 16v-4h2v4h-2zm-2-6V8h2v4h-2zm-2-4V6h2v2h-2zm4-4V2h2v2h-2zm4 0v2h2V2h-2zM9 14h2v2H9v-2zm-2 0h2v2H7v-2zM5 12h2v2H5v-2zm0-4h2v2H5V8zm2-2h2v2H7V6zm2-2h2v2H9V4zm2-2h2v2h-2zM12 6h2v2h-2V6zm2 0h2v2h-2V6zm2 2h2v2h-2V8zm0 2h2v2h-2v-2z"></path></svg>
+                        </a>
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/danielchristiantarigan/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2a2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/62811469910" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-whatsapp"><path d="M12.0007 2C6.48624 2 2.00003 6.48621 2.00003 12.0007C2.00003 13.9113 2.58416 15.6983 3.5855 17.1812L2.01633 22L7.00003 20.4208C8.48297 21.4159 10.2709 22 12.0007 22C17.5152 22 22 17.5152 22 12.0007C22 6.48624 17.5152 2 12.0007 2ZM17.1654 15.0441L16.2995 16.0366C15.932 16.4429 15.2897 16.5165 14.7745 16.2992C14.2593 16.082 13.8967 15.6318 13.5689 15.2255C13.2411 14.8192 12.9238 14.4367 12.6074 14.0549C12.2909 13.6731 11.9649 13.3005 11.6429 12.9366C11.321 12.5727 10.9856 12.2158 10.6696 11.8329C10.3536 11.45 10.027 11.0772 9.71392 10.7138C9.4008 10.3504 9.07923 9.99127 8.76182 9.61009L8.44199 9.22915C8.01955 8.7061 7.29177 8.52841 6.78443 8.75628C6.27712 8.98415 5.86178 9.38944 5.56453 9.93285C5.26727 10.4763 5.09341 11.0823 5.09341 11.7051L5.09341 12.0193C5.09341 12.642 5.26727 13.2505 5.56453 13.7939C5.86178 14.3373 6.27712 14.7426 6.78443 14.9704C7.29177 15.1983 7.70327 15.2443 8.13689 15.0441L15.4215 17.9103C15.7533 18.0463 16.0852 18.0829 16.417 18.0101C16.7489 17.9373 17.0807 17.7635 17.3986 17.4925C17.7165 17.2215 18.0264 16.8587 18.2914 16.4024C18.5564 15.9462 18.7845 15.3946 18.9669 14.7447C19.1493 14.0949 19.3444 13.4393 19.5539 12.793C19.7634 12.1466 19.9882 11.4984 20.2285 10.8256L20.5593 10.1557C20.9169 9.42106 21.054 8.64775 20.9662 7.87321L19.5566 8.4411C19.4688 8.81069 19.3377 9.17066 19.1639 9.51016C18.9902 9.84966 18.8252 10.1783 18.667 10.4957C18.5088 10.8131 18.3582 11.1219 18.2152 11.4239C18.0722 11.7259 17.9372 12.022 17.8101 12.3134C17.683 12.6047 17.5649 12.8906 17.4554 13.172C17.3459 13.4533 17.2452 13.7299 17.1534 14.0028C17.0617 14.2756 16.979 14.5441 16.9056 14.8087C16.8322 15.0734 16.7686 15.3338 16.7147 15.5898L16.2736 16.0336L17.1654 15.0441Z" fill="#25D366" /></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0">
+                    <form class="space-y-4" action="mailto:daniel.ch.tarigan@gmail.com" method="post" enctype="text/plain">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700" data-lang-key="form_name">Nama</label>
+                            <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700" data-lang-key="form_email">Email</label>
+                            <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700" data-lang-key="form_message">Pesan</label>
+                            <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 px-8 bg-black text-white font-medium rounded-full shadow-lg hover:bg-gray-800 transition-colors" data-lang-key="form_submit_btn">
+                            Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="p-6 md:p-8 text-center text-gray-500 text-sm">
+            <p data-lang-key="footer_copyright">Hak Cipta 2025 Digiwork Inc. Semua hak dilindungi undang-undang.</p>
+        </footer>
+
+    </div>
+
+    <!-- Floating Contact Button -->
+    <a href="#contact" class="fixed bottom-4 right-4 z-50 bg-orange-500 text-white py-3 px-6 rounded-full shadow-lg hover:bg-orange-600 transition-colors font-bold text-sm flex items-center space-x-2" data-lang-key="nav_contact_btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7z" clip-rule="evenodd" />
+        </svg>
+        <span>Hubungi Saya</span>
+    </a>
+
+    <script>
+        const translations = {
+            'id': {
+                'brand_name': 'Daniel Christian T.',
+                'nav_home': 'Beranda',
+                'nav_about': 'Tentang',
+                'nav_services': 'Layanan',
+                'nav_portfolio': 'Portofolio',
+                'nav_contact': 'Kontak',
+                'nav_contact_btn': 'Hubungi Saya',
+                'hero_greeting': 'Halo, saya',
+                'hero_name': 'Daniel Christian',
+                'hero_title_1': 'seorang Pemimpin',
+                'hero_title_2': 'Strategis',
+                'hero_bio': '"Seorang pemimpin strategis yang visioner, pendiri startup, influencer, dan praktisi akademik yang membangun tim yang lincah dan berdaya serta memberikan hasil dengan ketulusan."',
+                'btn_view_work': 'Lihat Karya',
+                'btn_scroll_down': 'Gulir ke Bawah',
+                'stat_1_title': 'Pengikut Terlibat',
+                'stat_1_desc': 'di IG/TikTok',
+                'stat_2_title': 'Tampilan Bulanan',
+                'stat_2_desc': 'di Media Sosial',
+                'stat_3_title': 'Outlet',
+                'stat_3_desc': 'Bisnis Terukur Hingga',
+                'stat_review': 'Peringkat 5 Bintang (2k+ Ulasan)',
+                'about_title': 'Tentang Saya',
+                'exp_title': 'Pengalaman Profesional',
+                'exp_1_role': 'Managing Director',
+                'exp_1_company': 'THE SAGES INTERNATIONAL CULINARY BUSINESS SCHOOL',
+                'exp_1_duration': 'JUL 2024 - JUL 2025',
+                'exp_1_desc_1': 'Meningkatkan pendapatan penerimaan hingga 95%.',
+                'exp_1_desc_2': 'Memperluas pendaftaran siswa hingga 50%.',
+                'exp_1_desc_3': 'Mencapai 2.7M tampilan bulanan dan 40K pengikut baru.',
+                'exp_2_role': 'Founder and CEO',
+                'exp_2_company': 'PT CEPAT DAN BERSIH INDONESIA (QNC LAUNDRY)',
+                'exp_2_duration': 'JAN 2010 - JUL 2024',
+                'exp_2_desc_1': 'Mengembangkan bisnis dari 1 menjadi 80+ outlet.',
+                'exp_2_desc_2': 'Dianugerahi "Most Innovative Franchise Brand 2021".',
+                'exp_2_desc_3': 'Membangun sistem waralaba "autopilot".',
+                'exp_3_role': 'Adjunct Faculty Member',
+                'exp_3_company': 'UNIVERSITAS PRASETIYA MULYA',
+                'exp_3_duration': 'AUG 2014 - JAN 2025',
+                'exp_3_desc_1': 'Mengajar berbagai mata kuliah termasuk Business Creation.',
+                'exp_3_desc_2': 'Mempertahankan skor pengajaran kuartil teratas (85–95% kepuasan siswa).',
+                'edu_title': 'Pendidikan',
+                'edu_1_degree': 'Master of Management',
+                'edu_1_university': 'PRASETIYA MULYA BUSINESS SCHOOL',
+                'edu_1_duration': '2011-2013',
+                'edu_1_desc_1': 'IPK: 3.73 dari 4.00.',
+                'edu_1_desc_2': '4x Dean’s List.',
+                'edu_1_desc_3': '"Top 5 Most Outstanding Students".',
+                'edu_2_degree': 'Bachelor of Law',
+                'edu_2_university': 'FACULTY OF LAW UNIVERSITAS AIRLANGGA',
+                'edu_2_duration': '2006-2010',
+                'edu_2_desc_1': 'IPK: 3.35 dari 4.00.',
+                'edu_2_desc_2': 'Djarum Bakti Pendidikan Scholar.',
+                'services_title': 'Layanan & Keahlian',
+                'service_1_title': 'Kepemimpinan & Pertumbuhan',
+                'service_1_desc': 'Memimpin organisasi menengah melalui pertumbuhan dan operasi multi-situs, serta mendesain ulang organisasi untuk kinerja yang optimal.',
+                'service_2_title': 'Pembicara & Mentor',
+                'service_2_desc': 'Berbicara tentang HR, kewirausahaan, penjualan, pemasaran, dan kepemimpinan. Mendampingi pendiri dalam peluncuran bisnis dari konsep hingga pendapatan pertama.',
+                'service_3_title': 'Manajemen Waralaba',
+                'service_3_desc': 'Keahlian dalam manajemen waralaba dan kemitraan Ed-Tech.',
+                'portfolio_title': 'Portofolio',
+                'project_1_title': 'Kampanye Pemasaran Digital',
+                'project_1_desc': 'Memimpin tim untuk meluncurkan kampanye pemasaran digital yang sukses, menghasilkan pertumbuhan 30% dalam metrik keterlibatan.',
+                'project_2_title': 'Pengembangan Strategi Bisnis',
+                'project_2_desc': 'Mendesain dan mengimplementasikan strategi bisnis baru untuk perusahaan startup, mengamankan putaran pendanaan pertama.',
+                'project_3_title': 'Sistem Manajemen SDM',
+                'project_3_desc': 'Mengembangkan dan menerapkan sistem manajemen SDM internal untuk meningkatkan efisiensi operasional.',
+                'project_4_title': 'Program Mentoring Startup',
+                'project_4_desc': 'Membimbing 5 startup tahap awal dari konsep hingga peluncuran, dengan 3 di antaranya berhasil mendapatkan pendanaan.',
+                'contact_title': 'Hubungi Saya',
+                'contact_greeting': 'Mari Berkolaborasi!',
+                'contact_desc': 'Saya selalu terbuka untuk ide-ide baru, proyek-proyek menarik, dan kemitraan. Kirimkan pesan atau hubungi saya melalui media sosial.',
+                'form_name': 'Nama',
+                'form_email': 'Email',
+                'form_message': 'Pesan',
+                'form_submit_btn': 'Kirim Pesan',
+                'footer_copyright': 'Hak Cipta 2025 Digiwork Inc. Semua hak dilindungi undang-undang.'
+            },
+            'en': {
+                'brand_name': 'Daniel Christian T.',
+                'nav_home': 'Home',
+                'nav_about': 'About',
+                'nav_services': 'Services',
+                'nav_portfolio': 'Portfolio',
+                'nav_contact': 'Contact',
+                'nav_contact_btn': 'Contact Me',
+                'hero_greeting': 'Hello, I\'m',
+                'hero_name': 'Daniel Christian',
+                'hero_title_1': 'a Strategic',
+                'hero_title_2': 'Leader',
+                'hero_bio': '"A visionary strategic leader, startup founder, influencer, and academic practitioner who builds agile, empowered teams and delivers results with sincerity."',
+                'btn_view_work': 'View Work',
+                'btn_scroll_down': 'Scroll Down',
+                'stat_1_title': 'Engaged Followers',
+                'stat_1_desc': 'on IG/TikTok',
+                'stat_2_title': 'Monthly Views',
+                'stat_2_desc': 'on Social Media',
+                'stat_3_title': 'Outlets',
+                'stat_3_desc': 'Scaled Business To',
+                'stat_review': '5 Star Ratings (2k+ Reviews)',
+                'about_title': 'About Me',
+                'exp_title': 'Professional Experience',
+                'exp_1_role': 'Managing Director',
+                'exp_1_company': 'THE SAGES INTERNATIONAL CULINARY BUSINESS SCHOOL',
+                'exp_1_duration': 'JUL 2024 - JUL 2025',
+                'exp_1_desc_1': 'Increased admission revenue up to 95%.',
+                'exp_1_desc_2': 'Expanded student enrollment up to 50%.',
+                'exp_1_desc_3': 'Achieved 2.7M monthly views and 40K new followers.',
+                'exp_2_role': 'Founder and CEO',
+                'exp_2_company': 'PT CEPAT DAN BERSIH INDONESIA (QNC LAUNDRY)',
+                'exp_2_duration': 'JAN 2010 - JUL 2024',
+                'exp_2_desc_1': 'Scaled business from 1 to 80+ outlets.',
+                'exp_2_desc_2': 'Awarded "Most Innovative Franchise Brand 2021".',
+                'exp_2_desc_3': 'Built an "autopilot" franchise system.',
+                'exp_3_role': 'Adjunct Faculty Member',
+                'exp_3_company': 'UNIVERSITAS PRASETIYA MULYA',
+                'exp_3_duration': 'AUG 2014 - JAN 2025',
+                'exp_3_desc_1': 'Taught various courses including Business Creation.',
+                'exp_3_desc_2': 'Maintained a top-quartile teaching score (85–95% student satisfaction).',
+                'edu_title': 'Education',
+                'edu_1_degree': 'Master of Management',
+                'edu_1_university': 'PRASETIYA MULYA BUSINESS SCHOOL',
+                'edu_1_duration': '2011-2013',
+                'edu_1_desc_1': 'GPA: 3.73 out of 4.00.',
+                'edu_1_desc_2': '4x Dean’s List.',
+                'edu_1_desc_3': '"Top 5 Most Outstanding Students".',
+                'edu_2_degree': 'Bachelor of Law',
+                'edu_2_university': 'FACULTY OF LAW UNIVERSITAS AIRLANGGA',
+                'edu_2_duration': '2006-2010',
+                'edu_2_desc_1': 'GPA: 3.35 out of 4.00.',
+                'edu_2_desc_2': 'Djarum Bakti Pendidikan Scholar.',
+                'services_title': 'Services & Expertise',
+                'service_1_title': 'Leadership & Growth',
+                'service_1_desc': 'Leading mid-size organizations through growth and multi-site operations, as well as re-designing organizations for optimal performance.',
+                'service_2_title': 'Speaker & Mentor',
+                'service_2_desc': 'Speaking on HR, entrepreneurship, sales, marketing, and leadership. Mentoring founders in business launching from concept to first revenue.',
+                'service_3_title': 'Franchise Management',
+                'service_3_desc': 'Expertise in franchise management and Ed-Tech partnerships.',
+                'portfolio_title': 'Portfolio',
+                'project_1_title': 'Digital Marketing Campaign',
+                'project_1_desc': 'Led a team to launch a successful digital marketing campaign, resulting in a 30% growth in engagement metrics.',
+                'project_2_title': 'Business Strategy Development',
+                'project_2_desc': 'Designed and implemented a new business strategy for a startup, securing its first funding round.',
+                'project_3_title': 'HR Management System',
+                'project_3_desc': 'Developed and deployed an internal HR management system to improve operational efficiency.',
+                'project_4_title': 'Startup Mentoring Program',
+                'project_4_desc': 'Mentored 5 early-stage startups from concept to launch, with 3 successfully securing funding.',
+                'contact_title': 'Contact Me',
+                'contact_greeting': 'Let\'s Collaborate!',
+                'contact_desc': 'I am always open to new ideas, exciting projects, and partnerships. Feel free to send me a message or connect with me on social media.',
+                'form_name': 'Name',
+                'form_email': 'Email',
+                'form_message': 'Message',
+                'form_submit_btn': 'Send Message',
+                'footer_copyright': 'Copyright 2025 Digiwork Inc. All rights reserved.'
+            }
+        };
+
+        const langToggleButton = document.getElementById('lang-toggle');
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const htmlElement = document.documentElement;
+
+        // Fungsi untuk mengaktifkan terjemahan
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            htmlElement.lang = lang;
+            localStorage.setItem('lang', lang);
+        }
+
+        // Fungsi untuk mengaktifkan mode gelap/terang
+        function toggleTheme() {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Event listener untuk tombol bahasa
+        langToggleButton.addEventListener('click', () => {
+            const currentLang = htmlElement.lang;
+            const newLang = currentLang === 'id' ? 'en' : 'id';
+            setLanguage(newLang);
+        });
+
+        // Event listener untuk tombol tema
+        themeToggleButton.addEventListener('click', () => {
+            toggleTheme();
+        });
+
+        // Cek preferensi dari local storage saat halaman dimuat
+        const savedLang = localStorage.getItem('lang') || 'id';
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setLanguage(savedLang);
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark');
+            moonIcon.classList.add('hidden');
+            sunIcon.classList.remove('hidden');
+        }
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle menu mobile
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Tutup menu saat tautan diklik
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Intersection Observer untuk efek fade-in
+        const faders = document.querySelectorAll('.animate-fadeIn');
+        const appearOptions = {
+            threshold: 0.5
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            fader.style.opacity = 0;
+            fader.style.transform = 'translateY(20px)';
+            appearOnScroll.observe(fader);
+        });
+    </script>
+</body>
+</html>

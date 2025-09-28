@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelacak Kesehatan Pribadi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            background-color: #10B981; /* Default success color */
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box.error {
+            background-color: #EF4444; /* Red for errors */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-sky-50 to-indigo-100 text-gray-800 p-4 sm:p-8">
+
+    <div class="container my-8 p-6 sm:p-10">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-700 mb-2 drop-shadow-md">
+                Aplikasi Pelacak Kesehatan
+            </h1>
+            <p class="text-lg text-gray-600">Catat dan pantau laporan kesehatan pribadi Anda dengan mudah.</p>
+        </header>
+
+        <!-- Container untuk Formulir dan Laporan -->
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10">
+            <!-- Form Input Data Kesehatan -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-indigo-600 mb-6">Input Data Harian</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
+                            <input type="text" id="nama" placeholder="Nama Lengkap" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                        </div>
+                        <div>
+                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                            <input type="text" id="alamat" placeholder="Alamat Lengkap" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                        </div>
+                        <div>
+                            <label for="golonganDarah" class="block text-sm font-medium text-gray-700">Golongan Darah</label>
+                            <select id="golonganDarah" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                                <option value="">Pilih</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal</label>
+                            <input type="date" id="tanggal" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="beratBadan" class="block text-sm font-medium text-gray-700">Berat Badan (kg)</label>
+                            <input type="number" id="beratBadan" placeholder="Contoh: 70.5" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="tekananSistolik" class="block text-sm font-medium text-gray-700">TD Sistolik</label>
+                                <input type="number" id="tekananSistolik" placeholder="Contoh: 120" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                            </div>
+                            <div>
+                                <label for="tekananDiastolik" class="block text-sm font-medium text-gray-700">TD Diastolik</label>
+                                <input type="number" id="tekananDiastolik" placeholder="Contoh: 80" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="gulaDarah" class="block text-sm font-medium text-gray-700">Gula Darah (mg/dL)</label>
+                            <input type="number" id="gulaDarah" placeholder="Contoh: 95" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 transition duration-150 ease-in-out">
+                        </div>
+                        <div>
+                            <label for="catatan" class="block text-sm font-medium text-gray-700">Catatan Tambahan</label>
+                            <textarea id="catatan" rows="3" placeholder="Tambahkan catatan tentang kondisi kesehatan, makanan, atau olahraga hari ini..." class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 resize-none transition duration-150 ease-in-out"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button id="simpanBtn" class="bg-indigo-600 text-white font-semibold py-3 px-10 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-105">
+                        <span class="inline-block align-middle">Simpan Data</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tampilan Laporan Data -->
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold text-indigo-600 mb-6">Laporan Kesehatan</h2>
+                <div id="laporanContainer" class="overflow-x-auto rounded-2xl shadow-inner border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-indigo-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Nama</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Alamat</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Gol. Darah</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Berat (kg)</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">TD</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Gula (mg/dL)</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTabelBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Data laporan akan disisipkan di sini oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-12 text-gray-500">
+        <p>Dibuat oleh Digiwork inc.</p>
+    </footer>
+
+    <!-- Message Box untuk notifikasi -->
+    <div id="messageBox" class="message-box">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span id="messageText">Data berhasil disimpan!</span>
+    </div>
+
+    <script>
+        // Array untuk menyimpan data kesehatan
+        let dataKesehatan = [];
+
+        // Dapatkan elemen-elemen DOM
+        const namaInput = document.getElementById('nama');
+        const alamatInput = document.getElementById('alamat');
+        const golonganDarahInput = document.getElementById('golonganDarah');
+        const tanggalInput = document.getElementById('tanggal');
+        const beratBadanInput = document.getElementById('beratBadan');
+        const tekananSistolikInput = document.getElementById('tekananSistolik');
+        const tekananDiastolikInput = document.getElementById('tekananDiastolik');
+        const gulaDarahInput = document.getElementById('gulaDarah');
+        const catatanInput = document.getElementById('catatan');
+        const simpanBtn = document.getElementById('simpanBtn');
+        const dataTabelBody = document.getElementById('dataTabelBody');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+
+        // Tambahkan event listener ke tombol simpan
+        simpanBtn.addEventListener('click', () => {
+            // Ambil nilai dari input
+            const nama = namaInput.value;
+            const alamat = alamatInput.value;
+            const golonganDarah = golonganDarahInput.value;
+            const tanggal = tanggalInput.value;
+            const beratBadan = beratBadanInput.value;
+            const tekananSistolik = tekananSistolikInput.value;
+            const tekananDiastolik = tekananDiastolikInput.value;
+            const gulaDarah = gulaDarahInput.value;
+            const catatan = catatanInput.value;
+
+            // Validasi sederhana
+            if (!tanggal || !beratBadan) {
+                showMessage('Tanggal dan Berat Badan harus diisi!', 'error');
+                return;
+            }
+
+            // Buat objek data baru
+            const dataBaru = {
+                tanggal: tanggal,
+                nama: nama,
+                alamat: alamat,
+                golonganDarah: golonganDarah,
+                beratBadan: beratBadan,
+                tekananDarah: `${tekananSistolik}/${tekananDiastolik}`,
+                gulaDarah: gulaDarah,
+                catatan: catatan
+            };
+
+            // Tambahkan data baru ke array
+            dataKesehatan.push(dataBaru);
+
+            // Perbarui tampilan laporan
+            renderLaporan();
+
+            // Tampilkan pesan sukses
+            showMessage('Data berhasil disimpan!', 'success');
+
+            // Reset form
+            resetForm();
+        });
+
+        // Fungsi untuk merender laporan ke tabel
+        function renderLaporan() {
+            // Bersihkan isi tabel sebelumnya
+            dataTabelBody.innerHTML = '';
+
+            // Iterasi melalui dataKesehatan dan buat baris tabel
+            dataKesehatan.forEach((data, index) => {
+                const row = document.createElement('tr');
+                row.className = `transition duration-150 ease-in-out hover:bg-gray-100 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`;
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${data.tanggal}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.nama || '-'}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.alamat || '-'}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.golonganDarah || '-'}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.beratBadan || '-'}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.tekananDarah || '-'}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-700">${data.gulaDarah || '-'}</td>
+                    <td class="px-4 py-4 text-sm text-gray-700">${data.catatan || '-'}</td>
+                `;
+                dataTabelBody.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk menampilkan pesan notifikasi
+        function showMessage(message, type = 'success') {
+            messageText.textContent = message;
+            messageBox.classList.remove('success', 'error');
+            if (type === 'error') {
+                messageBox.classList.add('error');
+            } else {
+                messageBox.classList.add('success');
+            }
+            messageBox.classList.add('show');
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000); // Pesan akan hilang setelah 3 detik
+        }
+
+        // Fungsi untuk mereset form
+        function resetForm() {
+            namaInput.value = '';
+            alamatInput.value = '';
+            golonganDarahInput.value = '';
+            tanggalInput.value = '';
+            beratBadanInput.value = '';
+            tekananSistolikInput.value = '';
+            tekananDiastolikInput.value = '';
+            gulaDarahInput.value = '';
+            catatanInput.value = '';
+        }
+
+        // Tetapkan tanggal default ke tanggal hari ini
+        const hariIni = new Date();
+        const yyyy = hariIni.getFullYear();
+        const mm = String(hariIni.getMonth() + 1).padStart(2, '0');
+        const dd = String(hariIni.getDate()).padStart(2, '0');
+        tanggalInput.value = `${yyyy}-${mm}-${dd}`;
+        
+    </script>
+</body>
+</html>

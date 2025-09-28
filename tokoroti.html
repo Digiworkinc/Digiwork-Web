@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sajian Roti Terbaik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f3e9;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), url('https://blog.modernistpantry.com/wp-content/uploads/2020/03/shutterstock_1392319349-1.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <!-- Header & Hero Section -->
+    <header class="hero-bg text-white py-16 px-4 md:px-8 lg:py-32 flex flex-col items-center justify-center min-h-[60vh] rounded-b-3xl shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tighter mb-4">Rasakan Kehangatan di Setiap Gigitan</h1>
+            <p class="text-lg md:text-xl font-medium mb-8 max-w-2xl mx-auto">Dari oven kami langsung ke tangan Anda. Roti dan kue segar setiap hari, dibuat dengan cinta dan bahan-bahan pilihan.</p>
+            <a href="#produk" class="inline-block bg-white text-gray-800 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105">Lihat Produk Kami</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="tentang-kami" class="py-16 px-4 md:px-8 lg:py-24 bg-white rounded-3xl shadow-xl -mt-12 mx-4 md:mx-8 relative z-10">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <img src="https://st.depositphotos.com/1585301/1244/i/450/depositphotos_12446862-stock-photo-fresh-bread-on-white-background.jpg" alt="Dapur roti" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Tentang Kami</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Kami percaya bahwa roti lebih dari sekadar makanan; ia adalah seni, tradisi, dan kehangatan. Setiap resep kami diwariskan dari generasi ke generasi, memastikan cita rasa otentik yang tak lekang oleh waktu.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        Kami hanya menggunakan bahan-bahan lokal terbaik, tanpa pengawet, untuk menyajikan roti yang tidak hanya lezat, tetapi juga sehat dan penuh nutrisi. Mari rasakan bedanya!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="produk" class="py-16 px-4 md:px-8 lg:py-24">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12">Produk Unggulan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Product Card 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://st4.depositphotos.com/16846226/22153/i/600/depositphotos_221536266-stock-photo-heap-of-bread.jpg" alt="Roti Gandum" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Roti Gandum Utuh</h3>
+                    <p class="text-gray-500 mb-4">Roti sehat dan berserat tinggi, cocok untuk gaya hidup aktif.</p>
+                    <span class="text-lg font-bold text-teal-600">Rp 25.000</span>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://st3.depositphotos.com/1001719/15151/i/600/depositphotos_151515792-stock-photo-freshly-baked-croissants.jpg" alt="Croissant Mentega" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Croissant Mentega</h3>
+                    <p class="text-gray-500 mb-4">Lapisan renyah di luar, lembut di dalam, dengan aroma mentega Prancis.</p>
+                    <span class="text-lg font-bold text-teal-600">Rp 18.000</span>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://st3.depositphotos.com/4320995/15704/i/600/depositphotos_157046382-stock-photo-background-of-different-types-and.jpg" alt="Donat Cokelat" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Donat Cokelat Meleleh</h3>
+                    <p class="text-gray-500 mb-4">Donat super lembut dengan isian cokelat yang melimpah.</p>
+                    <span class="text-lg font-bold text-teal-600">Rp 15.000</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimoni" class="py-16 px-4 md:px-8 lg:py-24 bg-teal-100/50 rounded-3xl mx-4 md:mx-8">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12">Kata Mereka</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <p class="text-lg italic text-gray-700 mb-4">"Roti di sini selalu segar dan rasanya luar biasa! Roti gandumnya jadi menu sarapan favorit saya."</p>
+                    <p class="font-semibold text-gray-800">- Budi S.</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <p class="text-lg italic text-gray-700 mb-4">"Croissant-nya sungguh autentik. Saya merasa seperti sedang di Paris! Sangat direkomendasikan."</p>
+                    <p class="font-semibold text-gray-800">- Siti N.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 md:px-8 lg:py-24 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Pesan Sekarang!</h2>
+        <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Nikmati kelezatan roti buatan tangan kami. Hubungi kami untuk pemesanan atau kunjungi toko kami.</p>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+            <a href="#" class="bg-teal-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-teal-700 transition-colors duration-300 transform hover:scale-105">Pesan via WhatsApp</a>
+            <a href="#lokasi" class="bg-white text-teal-600 font-bold py-3 px-8 rounded-full shadow-lg border border-teal-600 hover:bg-teal-50 transition-colors duration-300 transform hover:scale-105">Lihat Lokasi Kami</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="lokasi" class="bg-gray-800 text-white py-12 px-4 md:px-8 rounded-t-3xl shadow-inner">
+        <div class="container mx-auto text-center">
+            <h3 class="text-2xl font-bold mb-2">Sajian Roti Terbaik</h3>
+            <p class="text-gray-400 mb-4">Jalan Roti No. 123, Kota Nikmat, Indonesia</p>
+            <div class="flex justify-center gap-4 mb-4">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.772 1.667 4.92 4.92.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.252-1.668 4.772-4.92 4.92-1.267.058-1.647.069-4.85.069-3.204 0-3.584-.012-4.849-.069-3.252-.149-4.772-1.668-4.92-4.92-.058-1.265-.069-1.645-.069-4.849 0-3.204.012-3.584.069-4.849.149-3.252 1.668-4.772 4.92-4.92 1.265-.058 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.979 6.979-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.979 6.979 1.28.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.78-2.618 6.979-6.979.058-1.28.073-1.689.073-4.948 0-3.259-.014-3.668-.072-4.948-.199-4.358-2.618-6.78-6.979-6.979-1.281-.059-1.69-.073-4.949-.073z"></path>
+                        <path d="M12 6.865a5.135 5.135 0 1 1 0 10.27 5.135 5.135 0 0 1 0-10.27zm0 8.291a3.156 3.156 0 1 0 0-6.312 3.156 3.156 0 0 0 0 6.312z"></path>
+                        <path d="M16.945 5.864a1.216 1.216 0 1 1-2.433 0 1.216 1.216 0 0 1 2.433 0z"></path>
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22.675 0h-21.35c-.733 0-1.325.592-1.325 1.325v21.35c0 .733.592 1.325 1.325 1.325h21.35c.733 0 1.325-.592 1.325-1.325v-21.35c0-.733-.592-1.325-1.325-1.325zm-16.712 18.25h-2.91v-9.25h2.91v9.25zm-1.455-10.42c-1.04 0-1.88-.84-1.88-1.88s.84-1.88 1.88-1.88 1.88.84 1.88 1.88-.84 1.88-1.88 1.88zm10.74 10.42h-2.91v-4.63c0-.36-.01-.82-.02-1.38-0-.55-.05-1.1-.05-1.74 0-2.31 1.54-4.14 4.31-4.14h.06v2.85h-.06c-1.63 0-2.02 1.01-2.02 1.99v4.91h2.91v-9.25h-2.91z"></path>
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.89-.958-2.173-1.558-3.592-1.558-2.716 0-4.921 2.205-4.921 4.921 0 .385.043.76.128 1.117-4.091-.205-7.734-2.167-10.166-5.148-.42.723-.667 1.565-.667 2.472 0 1.706.87 3.213 2.19 4.088-.809-.026-1.57-.245-2.245-.616v.061c0 2.385 1.693 4.376 3.946 4.829-.413.111-.849.17-1.296.17-.318 0-.626-.031-.926-.088.631 1.956 2.464 3.383 4.646 3.423-1.686 1.32-3.804 2.103-6.104 2.103-.398 0-.79-.023-1.176-.069 2.174 1.392 4.76 2.209 7.559 2.209 9.043 0 13.974-7.49 13.974-13.974 0-.211-.005-.42-.014-.629.96-.694 1.794-1.56 2.459-2.541z"></path>
+                    </svg>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">&copy; 2024 Sajian Roti Terbaik. Semua Hak Dilindungi.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winilis Autoworks | Drive Your Dream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('car background.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        .text-gradient {
+            background-image: linear-gradient(45deg, #EF4444, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-bg {
+            background-color: #1A1A1A;
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, #EF4444, #F59E0B);
+            transition: transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #25D366;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Simple Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(20px);
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="py-4 px-8 md:px-16 flex justify-between items-center fixed w-full top-0 z-50 bg-black bg-opacity-70 backdrop-blur-md">
+        <div class="flex items-center space-x-2">
+            <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zM11 7h2v5h-2V7zm0 6h2v2h-2v-2z"/>
+            </svg>
+            <span class="text-2xl font-bold text-white">Winilis Autoworks</span>
+        </div>
+        <nav class="hidden md:flex space-x-6 text-sm">
+            <a href="#featured" class="hover:text-red-500 transition-colors duration-300">Mobil Unggulan</a>
+            <a href="#about" class="hover:text-red-500 transition-colors duration-300">Tentang Kami</a>
+            <a href="#contact" class="hover:text-red-500 transition-colors duration-300">Hubungi Kami</a>
+        </nav>
+        <button class="bg-red-500 px-4 py-2 rounded-md text-sm font-semibold hover:bg-red-600 transition-colors duration-300 md:hidden">Menu</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center py-48 px-4">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-white mb-4 animate-on-scroll" style="animation: fadeIn 1s ease-out;">
+            Temukan <span class="text-gradient">Mobil Sport Impian</span> Anda
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-on-scroll" style="animation: fadeIn 1.2s ease-out;">
+            Koleksi terbaik mobil sport bekas yang sudah teruji kualitasnya. Rasakan adrenalin di setiap tikungan.
+        </p>
+        <a href="#featured" class="btn-primary px-8 py-3 rounded-full text-white font-bold inline-block text-lg shadow-lg">
+            Jelajahi Mobil
+        </a>
+    </section>
+
+    <!-- Featured Cars Section -->
+    <section id="featured" class="py-20 px-4 md:px-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 animate-on-scroll">
+            <span class="text-gradient">Mobil Unggulan</span> Kami
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="card-bg rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 animate-on-scroll">
+                <img src="86-PURE-RED.webp" alt="Mobil Sport Merah" class="w-full h-56 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-white">Mobil Sport A</h3>
+                    <p class="text-gray-400 text-sm mb-4">Kondisi sangat baik, jarak tempuh rendah, performa luar biasa.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-red-500">Rp 500 Juta</span>
+                        <a href="#" class="btn-primary px-4 py-2 rounded-lg text-white font-medium text-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card-bg rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 animate-on-scroll">
+                <img src="Mustang.png" alt="Mobil Sport Biru" class="w-full h-56 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-white">Mobil Sport B</h3>
+                    <p class="text-gray-400 text-sm mb-4">Performa tinggi, mesin terawat, siap untuk balapan.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-red-500">Rp 750 Juta</span>
+                        <a href="#" class="btn-primary px-4 py-2 rounded-lg text-white font-medium text-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card-bg rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 animate-on-scroll">
+                <img src="Shelby.png" alt="Mobil Sport Klasik" class="w-full h-56 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-white">Mobil Sport C</h3>
+                    <p class="text-gray-400 text-sm mb-4">Desain elegan, interior mewah, kenyamanan berkendara optimal.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-red-500">Rp 620 Juta</span>
+                        <a href="#" class="btn-primary px-4 py-2 rounded-lg text-white font-medium text-sm">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-12 animate-on-scroll">
+            <a href="#" class="btn-primary px-8 py-3 rounded-full text-white font-bold inline-block text-lg shadow-lg">
+                Lihat Semua Mobil
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 px-4 md:px-16 bg-gray-900">
+        <div class="flex flex-col lg:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-12">
+            <div class="lg:w-1/2 animate-on-scroll">
+                <img src="profesional team.png" alt="Tim Profesional Bekerja pada Mobil" class="rounded-xl shadow-xl w-full">
+            </div>
+            <div class="lg:w-1/2 text-center lg:text-left animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gradient">Tentang Kami</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    Kami adalah tim profesional yang berdedikasi untuk menyediakan mobil sport bekas berkualitas tinggi. Setiap mobil telah melalui pemeriksaan ketat untuk memastikan performa dan keamanannya. Misi kami adalah membuat pengalaman memiliki mobil sport menjadi lebih mudah dan terpercaya bagi Anda.
+                </p>
+                <ul class="text-left text-gray-400 space-y-2">
+                    <li class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 16.17l-4.17-4.17L3.6 13.25l5.4 5.4 12-12-1.42-1.42L9 16.17z"/>
+                        </svg>
+                        <span>Inspeksi Profesional</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 16.17l-4.17-4.17L3.6 13.25l5.4 5.4 12-12-1.42-1.42L9 16.17z"/>
+                        </svg>
+                        <span>Jaminan Kualitas</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 16.17l-4.17-4.17L3.6 13.25l5.4 5.4 12-12-1.42-1.42L9 16.17z"/>
+                        </svg>
+                        <span>Layanan Pelanggan Terbaik</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 md:px-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gradient animate-on-scroll">Hubungi Kami</h2>
+        <div class="max-w-xl mx-auto card-bg p-8 rounded-xl shadow-lg animate-on-scroll">
+            <p class="text-center text-gray-400 mb-6">
+                Tertarik? Silakan isi formulir di bawah ini dan kami akan segera menghubungi Anda.
+            </p>
+            <form action="#" method="POST" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-300">Pesan</label>
+                    <textarea id="message" name="message" rows="4" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn-primary px-8 py-3 rounded-full text-white font-bold inline-block text-lg shadow-lg">
+                        Kirim Pesan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 md:px-16 bg-black text-center text-gray-500">
+        <p>&copy; 2024 Winilis Autoworks. All rights reserved.</p>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/62818842797?text=Halo%2C%20saya%20tertarik%20dengan%20mobil%20bekas%20yang%20diiklankan." class="whatsapp-float">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8L22 22l-6.5-1.5a8.38 8.38 0 0 1-3.8-.9A8.5 8.5 0 0 1 12 4.5 8.38 8.38 0 0 1 15.8 5.4a8.5 8.5 0 0 1 5.2 6.1z"></path>
+            <path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16z" fill="#FFF"></path>
+        </svg>
+    </a>
+
+    <!-- JavaScript for IntersectionObserver -->
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+    
+</body>
+</html>

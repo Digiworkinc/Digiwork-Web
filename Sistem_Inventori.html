@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Inventaris Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Light Mode: #F0F4F8, #334155. Dark Mode: #1A202C, #F7FAFC) -->
+    <!-- Application Structure Plan: Aplikasi ini menggunakan pendekatan dashboard. Halaman utama menampilkan metrik kunci (total barang, digunakan, tersedia, rusak) untuk gambaran cepat. Di bawahnya, terdapat area kontrol interaktif (pencarian, filter status, filter kategori) yang secara dinamis memanipulasi satu tabel data utama. Pendekatan ini menggantikan tiga tabel statis dari laporan sumber, mengkonsolidasikan informasi ke dalam satu tampilan yang kuat dan mudah digunakan. Sebuah bagan donat yang juga dinamis memberikan visualisasi data yang ringkas. Struktur ini dipilih untuk meningkatkan efisiensi pengguna dalam menemukan dan menganalisis data inventaris. -->
+    <!-- Visualization & Content Choices: Laporan Info: Jumlah total barang berdasarkan status -> Goal: Inform -> Viz/Presentation: Kartu Statistik -> Interaction: Diperbarui secara dinamis saat filter diterapkan -> Justification: Memberikan gambaran umum tingkat tinggi secara instan. | Laporan Info: Distribusi barang berdasarkan status -> Goal: Compare -> Viz/Presentation: Bagan Donat (Chart.js) -> Interaction: Diperbarui secara dinamis dengan filter, tooltip menunjukkan jumlah pasti -> Justification: Visualisasi lebih cepat dipahami daripada angka mentah. | Laporan Info: Daftar semua barang, detail penggunaan, dan detail kerusakan -> Goal: Organize/Explore -> Viz/Presentation: Satu tabel HTML yang dapat difilter dan dicari -> Interaction: Filter berdasarkan status, kategori, dan pencarian teks -> Justification: Mengkonsolidasikan tiga tabel menjadi satu tampilan interaktif, meningkatkan efisiensi dan mengurangi redundansi. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8;
+            color: #334155;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark body {
+            background-color: #1A202C;
+            color: #F7FAFC;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .stat-card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+            border-left: 5px solid;
+        }
+        .dark .stat-card {
+            background-color: #2D3748;
+            box-shadow: 10px 15px -3px rgba(0, 0, 0, 0.3), 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .dark .stat-card:hover {
+             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.12);
+        }
+        .stat-card-total { border-color: #64748B; }
+        .stat-card-available { border-color: #22C55E; }
+        .stat-card-in-use { border-color: #3B82F6; }
+        .stat-card-damaged { border-color: #EF4444; }
+
+        .btn-filter.active {
+            background-color: #3B82F6;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+        }
+        .dark .btn-filter.active {
+            background-color: #63B3ED;
+            box-shadow: 0 4px 6px -1px rgba(99, 179, 237, 0.5);
+        }
+        .btn-filter {
+            transition: all 0.3s ease-in-out;
+        }
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        th {
+            font-weight: 600;
+        }
+        tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+        .dark tbody tr:hover {
+            background-color: #2D3748;
+        }
+        #theme-toggle {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        /* Penyesuaian Ukuran Font */
+        .text-xs-adjusted { font-size: 0.75rem; } /* Default Tailwind xs */
+        .text-sm-adjusted { font-size: 0.875rem; } /* Default Tailwind sm */
+        .text-base-adjusted { font-size: 1rem; } /* Default Tailwind base */
+        .text-lg-adjusted { font-size: 1.125rem; } /* Default Tailwind lg */
+        .text-xl-adjusted { font-size: 1.25rem; } /* Default Tailwind xl */
+        .text-2xl-adjusted { font-size: 1.5rem; } /* Default Tailwind 2xl */
+        .text-3xl-adjusted { font-size: 1.875rem; } /* Default Tailwind 3xl */
+        .text-4xl-adjusted { font-size: 2.25rem; } /* Default Tailwind 4xl */
+        .text-5xl-adjusted { font-size: 3rem; } /* Default Tailwind 5xl */
+
+        @media (min-width: 640px) {
+            .sm\:text-2xl-adjusted { font-size: 1.5rem; }
+        }
+        @media (min-width: 768px) {
+            .md\:text-4xl-adjusted { font-size: 2.25rem; }
+            .md\:text-base-adjusted { font-size: 1rem; }
+        }
+        @media (min-width: 1024px) {
+            .lg\:text-4xl-adjusted { font-size: 2.25rem; }
+            .lg\:text-5xl-adjusted { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <button id="theme-toggle" class="text-lg-adjusted text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+            ☀️
+        </button>
+
+        <header class="text-center mb-8">
+            <h1 class="text-2xl-adjusted md:text-4xl-adjusted font-extrabold text-[#3B82F6]">Sistem Inventaris Kantor Bupati Hilir</h1>
+            <p class="mt-2 text-sm-adjusted md:text-base-adjusted text-gray-500 dark:text-gray-400">Dashboard yang elegan untuk memantau dan mengelola aset Anda.</p>
+        </header>
+
+        <main>
+            <section id="dashboard-stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="stat-card stat-card-total">
+                    <h3 class="text-xs-adjusted sm:text-sm-adjusted text-gray-500 dark:text-gray-400 font-medium">Total Barang</h3>
+                    <p id="total-items" class="text-3xl-adjusted font-bold mt-2">0</p>
+                </div>
+                <div class="stat-card stat-card-available">
+                    <h3 class="text-xs-adjusted sm:text-sm-adjusted text-gray-500 dark:text-gray-400 font-medium">Tersedia</h3>
+                    <p id="available-items" class="text-3xl-adjusted font-bold mt-2 text-green-600">0</p>
+                </div>
+                <div class="stat-card stat-card-in-use">
+                    <h3 class="text-xs-adjusted sm:text-sm-adjusted text-gray-500 dark:text-gray-400 font-medium">Digunakan</h3>
+                    <p id="in-use-items" class="text-3xl-adjusted font-bold mt-2 text-blue-600">0</p>
+                </div>
+                <div class="stat-card stat-card-damaged">
+                    <h3 class="text-xs-adjusted sm:text-sm-adjusted text-gray-500 dark:text-gray-400 font-medium">Rusak</h3>
+                    <p id="damaged-items" class="text-3xl-adjusted font-bold mt-2 text-red-600">0</p>
+                </div>
+            </section>
+
+            <section class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg mb-8">
+                 <div class="mb-4">
+                    <h2 class="text-xl-adjusted font-bold text-[#3B82F6]">Visualisasi Inventaris</h2>
+                    <p class="text-sm-adjusted text-gray-600 dark:text-gray-400 mb-4">Bagan ini menunjukkan distribusi barang berdasarkan status saat ini. Bagan akan diperbarui secara otomatis saat Anda menggunakan filter di bawah.</p>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 class="text-xl-adjusted font-bold text-[#3B82F6] mb-4">Daftar Inventaris</h2>
+                <p class="text-sm-adjusted text-gray-600 dark:text-gray-400 mb-4">Gunakan kontrol di bawah untuk mencari atau memfilter data inventaris.</p>
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <input type="text" id="searchInput" placeholder="Cari berdasarkan nama atau nomor..." class="w-full md:w-1/2 p-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-[#60A5FA] focus:border-transparent transition-colors text-sm-adjusted">
+                    <select id="categoryFilter" class="w-full md:w-1/4 p-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-[#60A5FA] focus:border-transparent transition-colors text-sm-adjusted">
+                        <option value="Semua">Semua Kategori</option>
+                    </select>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button class="btn-filter active px-3 py-1 rounded-xl text-sm-adjusted dark:bg-gray-600" data-status="Semua">Semua</button>
+                    <button class="btn-filter px-3 py-1 rounded-xl text-sm-adjusted dark:bg-gray-600" data-status="Tersedia">Tersedia</button>
+                    <button class="btn-filter px-3 py-1 rounded-xl text-sm-adjusted dark:bg-gray-600" data-status="Digunakan">Digunakan</button>
+                    <button class="btn-filter px-3 py-1 rounded-xl text-sm-adjusted dark:bg-gray-600" data-status="Rusak">Rusak</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-xl overflow-hidden">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs-adjusted text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-600" data-sort="nomorInventaris">Nomor Inventaris</th>
+                                <th class="px-4 py-2 text-left text-xs-adjusted text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-600" data-sort="namaBarang">Nama Barang</th>
+                                <th class="px-4 py-2 text-left text-xs-adjusted text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-600" data-sort="kategori">Kategori</th>
+                                <th class="px-4 py-2 text-left text-xs-adjusted text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-gray-600" data-sort="status">Status</th>
+                                <th class="px-4 py-2 text-left text-xs-adjusted text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pengguna / Kerusakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        </tbody>
+                    </table>
+                </div>
+                 <p id="no-results" class="text-center text-gray-500 dark:text-gray-400 py-6 hidden">Tidak ada data yang cocok dengan kriteria pencarian.</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inventoryData = [
+                { nomorInventaris: 'ELK-2024-001', namaBarang: 'Laptop Dell Inspiron 14', kategori: 'Elektronik', tanggalAkuisisi: '2024-08-12', hargaBeli: 12000000, keterangan: 'Untuk divisi marketing', status: 'Digunakan', pengguna: 'Budi Santoso', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-002', namaBarang: 'Meja Kerja Kayu', kategori: 'Perabotan', tanggalAkuisisi: '2024-08-15', hargaBeli: 1500000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2024-001', namaBarang: 'Printer Epson L3110', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-08-20', hargaBeli: 3200000, keterangan: '-', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Kertas sering macet' },
+                { nomorInventaris: 'ELK-2024-002', namaBarang: 'Proyektor BenQ', kategori: 'Elektronik', tanggalAkuisisi: '2024-08-25', hargaBeli: 7000000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-001', namaBarang: 'Kursi Kantor Ergonomis', kategori: 'Perabotan', tanggalAkuisisi: '2024-08-15', hargaBeli: 2500000, keterangan: '-', status: 'Digunakan', pengguna: 'Siti Aminah', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2023-001', namaBarang: 'Mesin Kopi Otomatis', kategori: 'Mesin', tanggalAkuisisi: '2023-11-10', hargaBeli: 8500000, keterangan: 'Untuk pantry', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'LL-2024-001', namaBarang: 'Papan Tulis Kaca', kategori: 'Lain-lain', tanggalAkuisisi: '2024-01-20', hargaBeli: 2200000, keterangan: 'Ruang meeting lt. 2', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Retak di sudut kanan bawah' },
+                { nomorInventaris: 'ELK-2024-003', namaBarang: 'Monitor Samsung 24 inch', kategori: 'Elektronik', tanggalAkuisisi: '2024-09-01', hargaBeli: 3000000, keterangan: 'Untuk divisi HRD', status: 'Digunakan', pengguna: 'Dewi Lestari', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2024-002', namaBarang: 'Mesin Fotocopy Fuji Xerox', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-09-05', hargaBeli: 15000000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-003', namaBarang: 'Lemari Arsip Baja', kategori: 'Perabotan', tanggalAkuisisi: '2024-09-10', hargaBeli: 2800000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-004', namaBarang: 'Router Wi-Fi TP-Link', kategori: 'Elektronik', tanggalAkuisisi: '2024-09-12', hargaBeli: 750000, keterangan: 'Dipasang di ruang server', status: 'Digunakan', pengguna: 'IT Support', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-004', namaBarang: 'Sofa Tunggal', kategori: 'Perabotan', tanggalAkuisisi: '2024-09-18', hargaBeli: 3500000, keterangan: 'Ruang tunggu tamu', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2024-003', namaBarang: 'Pena Set Mont Blanc', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-09-22', hargaBeli: 5000000, keterangan: 'Hadiah untuk CEO', status: 'Digunakan', pengguna: 'Joko Prabowo', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-005', namaBarang: 'Monitor LG 27 inch', kategori: 'Elektronik', tanggalAkuisisi: '2024-10-01', hargaBeli: 4500000, keterangan: 'Untuk desain grafis', status: 'Digunakan', pengguna: 'Rina Wijaya', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2024-002', namaBarang: 'Mesin Penghancur Kertas', kategori: 'Mesin', tanggalAkuisisi: '2024-10-05', hargaBeli: 1200000, keterangan: 'Rusak, tidak bisa memotong', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Mesin tidak berfungsi' },
+                { nomorInventaris: 'ATK-2024-004', namaBarang: 'Stapler Heavy Duty', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-10-10', hargaBeli: 150000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-005', namaBarang: 'Rak Buku', kategori: 'Perabotan', tanggalAkuisisi: '2024-10-15', hargaBeli: 900000, keterangan: 'Baru dipasang di perpustakaan kantor', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-006', namaBarang: 'Webcam Logitech C920', kategori: 'Elektronik', tanggalAkuisisi: '2024-10-20', hargaBeli: 800000, keterangan: 'Dipinjam untuk webinar', status: 'Digunakan', pengguna: 'Fitriani', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-007', namaBarang: 'Server Rack HP ProLiant', kategori: 'Elektronik', tanggalAkuisisi: '2024-11-01', hargaBeli: 25000000, keterangan: 'Ruang server', status: 'Digunakan', pengguna: 'Tim IT', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-006', namaBarang: 'Kursi Rapat', kategori: 'Perabotan', tanggalAkuisisi: '2024-11-05', hargaBeli: 750000, keterangan: 'Sebanyak 10 pcs', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2024-003', namaBarang: 'Mesin Absensi Sidik Jari', kategori: 'Mesin', tanggalAkuisisi: '2024-11-10', hargaBeli: 3500000, keterangan: '-', status: 'Digunakan', pengguna: 'HRD Admin', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2024-005', namaBarang: 'Paper Clip Box', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-11-15', hargaBeli: 25000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-008', namaBarang: 'Monitor Samsung 32 inch', kategori: 'Elektronik', tanggalAkuisisi: '2024-11-20', hargaBeli: 6500000, keterangan: 'Screen bergaris', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Layar bergaris' },
+                { nomorInventaris: 'LL-2024-002', namaBarang: 'Whiteboard', kategori: 'Lain-lain', tanggalAkuisisi: '2024-11-25', hargaBeli: 500000, keterangan: 'Ruang meeting', status: 'Digunakan', pengguna: 'Tim Proyek', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2024-007', namaBarang: 'Meja Rapat Oval', kategori: 'Perabotan', tanggalAkuisisi: '2024-11-28', hargaBeli: 8000000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-009', namaBarang: 'Headset Jabra Evolve', kategori: 'Elektronik', tanggalAkuisisi: '2024-12-01', hargaBeli: 1800000, keterangan: 'Untuk customer service', status: 'Digunakan', pengguna: 'Dina Permata', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2024-006', namaBarang: 'Spidol Whiteboard', kategori: 'Alat Kantor', tanggalAkuisisi: '2024-12-05', hargaBeli: 15000, keterangan: 'Stok tersedia', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2024-010', namaBarang: 'Laptop Acer Swift 3', kategori: 'Elektronik', tanggalAkuisisi: '2024-12-10', hargaBeli: 9500000, keterangan: 'Untuk divisi keuangan', status: 'Digunakan', pengguna: 'Rudi Hartono', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2024-004', namaBarang: 'Mesin Laminating', kategori: 'Mesin', tanggalAkuisisi: '2024-12-15', hargaBeli: 850000, keterangan: 'Rusak, tidak panas', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Pemanas tidak berfungsi' },
+                { nomorInventaris: 'PRB-2025-001', namaBarang: 'Meja Resepsionis', kategori: 'Perabotan', tanggalAkuisisi: '2025-01-05', hargaBeli: 6000000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-001', namaBarang: 'Printer Laser HP', kategori: 'Elektronik', tanggalAkuisisi: '2025-01-10', hargaBeli: 4500000, keterangan: 'Dipinjam oleh Pak Hendra', status: 'Digunakan', pengguna: 'Hendra', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-001', namaBarang: 'Buku Agenda Kulit', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-01-15', hargaBeli: 250000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-002', namaBarang: 'PC Desktop Lenovo', kategori: 'Elektronik', tanggalAkuisisi: '2025-01-20', hargaBeli: 11000000, keterangan: 'Unit CPU mati', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Mati total' },
+                { nomorInventaris: 'PRB-2025-002', namaBarang: 'Partisi Ruangan', kategori: 'Perabotan', tanggalAkuisisi: '2025-01-25', hargaBeli: 3500000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2025-001', namaBarang: 'AC Split Daikin', kategori: 'Mesin', tanggalAkuisisi: '2025-02-01', hargaBeli: 5000000, keterangan: 'Dipasang di ruang server', status: 'Digunakan', pengguna: 'Tim IT', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-002', namaBarang: 'Map Dokumen', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-02-05', hargaBeli: 10000, keterangan: 'Stok kantor', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'LL-2025-001', namaBarang: 'Gelas Kopi', kategori: 'Lain-lain', tanggalAkuisisi: '2025-02-10', hargaBeli: 30000, keterangan: 'Kaca retak', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Kaca retak' },
+                { nomorInventaris: 'ELK-2025-003', namaBarang: 'Laptop HP Pavilion', kategori: 'Elektronik', tanggalAkuisisi: '2025-02-15', hargaBeli: 10000000, keterangan: 'Untuk divisi keuangan', status: 'Digunakan', pengguna: 'Andi Nugraha', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-003', namaBarang: 'Rak Display', kategori: 'Perabotan', tanggalAkuisisi: '2025-02-20', hargaBeli: 1800000, keterangan: 'Dipinjam untuk pameran', status: 'Digunakan', pengguna: 'Tim Marketing', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-003', namaBarang: 'Kalkulator Casio', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-02-25', hargaBeli: 150000, keterangan: 'Baterai mati', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Baterai bocor' },
+                { nomorInventaris: 'ELK-2025-004', namaBarang: 'Speaker Bluetooth JBL', kategori: 'Elektronik', tanggalAkuisisi: '2025-03-01', hargaBeli: 1200000, keterangan: 'Ruang meeting', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2025-002', namaBarang: 'Printer 3D', kategori: 'Mesin', tanggalAkuisisi: '2025-03-05', hargaBeli: 20000000, keterangan: 'Untuk R&D', status: 'Digunakan', pengguna: 'Tim R&D', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-004', namaBarang: 'Papan Tulis Flipchart', kategori: 'Perabotan', tanggalAkuisisi: '2025-03-10', hargaBeli: 400000, keterangan: '-', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-005', namaBarang: 'Keyboard Wireless Logitech', kategori: 'Elektronik', tanggalAkuisisi: '2025-03-15', hargaBeli: 500000, keterangan: 'Tidak bisa koneksi', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Koneksi bluetooth putus-putus' },
+                { nomorInventaris: 'ATK-2025-004', namaBarang: 'Stempel Otomatis', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-03-20', hargaBeli: 75000, keterangan: 'Stok inventaris', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-006', namaBarang: 'Mouse Wireless', kategori: 'Elektronik', tanggalAkuisisi: '2025-03-25', hargaBeli: 250000, keterangan: 'Untuk Pak Budi', status: 'Digunakan', pengguna: 'Budi Santoso', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-005', namaBarang: 'Kursi Stool', kategori: 'Perabotan', tanggalAkuisisi: '2025-03-30', hargaBeli: 300000, keterangan: 'Di pantry', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-007', namaBarang: 'Komputer All-in-One HP', kategori: 'Elektronik', tanggalAkuisisi: '2025-04-05', hargaBeli: 15000000, keterangan: 'Untuk resepsionis', status: 'Digunakan', pengguna: 'Admin Office', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-005', namaBarang: 'Cutter Pen', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-04-10', hargaBeli: 10000, keterangan: 'Pisau tumpul', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Pisau tumpul' },
+                { nomorInventaris: 'PRB-2025-006', namaBarang: 'Meja Meeting Kecil', kategori: 'Perabotan', tanggalAkuisisi: '2025-04-15', hargaBeli: 2000000, keterangan: 'Di ruang 3A', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-008', namaBarang: 'Kamera Digital Canon', kategori: 'Elektronik', tanggalAkuisisi: '2025-04-20', hargaBeli: 7500000, keterangan: 'Untuk dokumentasi acara', status: 'Digunakan', pengguna: 'Tim Event', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-006', namaBarang: 'Ink Cartridge HP 680', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-04-25', hargaBeli: 150000, keterangan: 'Stok habis', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Kosong' },
+                { nomorInventaris: 'PRB-2025-007', namaBarang: 'Kursi Tamu', kategori: 'Perabotan', tanggalAkuisisi: '2025-05-01', hargaBeli: 1200000, keterangan: 'Digunakan di ruang tunggu', status: 'Digunakan', pengguna: 'Admin Office', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-009', namaBarang: 'Drone DJI Mavic Mini', kategori: 'Elektronik', tanggalAkuisisi: '2025-05-05', hargaBeli: 8000000, keterangan: 'Untuk survey lapangan', status: 'Digunakan', pengguna: 'Tim Survey', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2025-003', namaBarang: 'Mesin Giling Kopi', kategori: 'Mesin', tanggalAkuisisi: '2025-05-10', hargaBeli: 2500000, keterangan: 'Tidak berputar', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Motor macet' },
+                { nomorInventaris: 'PRB-2025-008', namaBarang: 'Meja Komputer', kategori: 'Perabotan', tanggalAkuisisi: '2025-05-15', hargaBeli: 1000000, keterangan: 'Di ruang 4B', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-010', namaBarang: 'Hard Drive Eksternal', kategori: 'Elektronik', tanggalAkuisisi: '2025-05-20', hargaBeli: 1500000, keterangan: 'Tidak terdeteksi', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Hard drive tidak terbaca' },
+                { nomorInventaris: 'ELK-2025-011', namaBarang: 'Tablet Samsung Galaxy Tab S8', kategori: 'Elektronik', tanggalAkuisisi: '2025-05-22', hargaBeli: 11000000, keterangan: 'Untuk presentasi penjualan', status: 'Digunakan', pengguna: 'Rika Handayani', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-009', namaBarang: 'Loker Besi 12 Pintu', kategori: 'Perabotan', tanggalAkuisisi: '2025-05-25', hargaBeli: 4000000, keterangan: 'Di area karyawan', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-007', namaBarang: 'Kertas HVS A4 (1 rim)', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-05-28', hargaBeli: 50000, keterangan: 'Stok habis', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Habis' },
+                { nomorInventaris: 'MES-2025-004', namaBarang: 'Dispenser Air Panas & Dingin', kategori: 'Mesin', tanggalAkuisisi: '2025-06-01', hargaBeli: 1800000, keterangan: 'Di pantry', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-012', namaBarang: 'Smart TV 55 inch', kategori: 'Elektronik', tanggalAkuisisi: '2025-06-05', hargaBeli: 15000000, keterangan: 'Di ruang serbaguna', status: 'Digunakan', pengguna: 'Tim Operasional', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-010', namaBarang: 'Kursi Stacking', kategori: 'Perabotan', tanggalAkuisisi: '2025-06-08', hargaBeli: 200000, keterangan: 'Untuk acara', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-013', namaBarang: 'Kamera CCTV Hikvision', kategori: 'Elektronik', tanggalAkuisisi: '2025-06-10', hargaBeli: 3500000, keterangan: 'Rusak, tidak bisa rekam', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Lensa buram' },
+                { nomorInventaris: 'ATK-2025-008', namaBarang: 'Lakban Bening', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-06-12', hargaBeli: 12000, keterangan: 'Stok tersedia', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-011', namaBarang: 'Meja Lipat Plastik', kategori: 'Perabotan', tanggalAkuisisi: '2025-06-15', hargaBeli: 300000, keterangan: 'Tidak stabil', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Kaki meja goyang' },
+                { nomorInventaris: 'ELK-2025-014', namaBarang: 'Printer Inkjet Canon', kategori: 'Elektronik', tanggalAkuisisi: '2025-06-18', hargaBeli: 1200000, keterangan: 'Digunakan di divisi HRD', status: 'Digunakan', pengguna: 'Divisi HRD', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2025-005', namaBarang: 'Scanner Dokumen', kategori: 'Mesin', tanggalAkuisisi: '2025-06-20', hargaBeli: 4000000, keterangan: 'Dipinjam untuk proyek arsip', status: 'Digunakan', pengguna: 'Tim Arsip', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-009', namaBarang: 'Pensil Mekanik', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-06-22', hargaBeli: 25000, keterangan: 'Ujung patah', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Mekanisme patah' },
+                { nomorInventaris: 'PRB-2025-012', namaBarang: 'Meja Kopi', kategori: 'Perabotan', tanggalAkuisisi: '2025-06-25', hargaBeli: 800000, keterangan: 'Di ruang tamu', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-015', namaBarang: 'Air Conditioner Portable', kategori: 'Elektronik', tanggalAkuisisi: '2025-06-28', hargaBeli: 3800000, keterangan: 'Di ruang server', status: 'Digunakan', pengguna: 'Tim IT', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-010', namaBarang: 'Binder Clip', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-07-01', hargaBeli: 18000, keterangan: 'Stok gudang', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-016', namaBarang: 'Power Bank 20000mAh', kategori: 'Elektronik', tanggalAkuisisi: '2025-07-05', hargaBeli: 400000, keterangan: 'Baterai bocor', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Baterai tidak mengisi' },
+                { nomorInventaris: 'PRB-2025-013', namaBarang: 'Kursi Santai', kategori: 'Perabotan', tanggalAkuisisi: '2025-07-08', hargaBeli: 1500000, keterangan: 'Di teras kantor', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-017', namaBarang: 'Mesin Proyektor Mini', kategori: 'Elektronik', tanggalAkuisisi: '2025-07-10', hargaBeli: 2500000, keterangan: 'Dipinjam untuk acara BBD', status: 'Digunakan', pengguna: 'Tim Event', deskripsiKerusakan: '' },
+                { nomorInventaris: 'MES-2025-006', namaBarang: 'Peralatan Kebersihan', kategori: 'Mesin', tanggalAkuisisi: '2025-07-12', hargaBeli: 500000, keterangan: 'Rusak, gagang patah', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Gagang sapu patah' },
+                { nomorInventaris: 'ATK-2025-011', namaBarang: 'Stabilo Warna Warni', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-07-15', hargaBeli: 30000, keterangan: 'Isi kering', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Tinta kering' },
+                { nomorInventaris: 'ELK-2025-018', namaBarang: 'Earphone Bluetooth', kategori: 'Elektronik', tanggalAkuisisi: '2025-07-18', hargaBeli: 750000, keterangan: 'Untuk karyawan', status: 'Digunakan', pengguna: 'Banyak karyawan', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-014', namaBarang: 'Troli Barang', kategori: 'Perabotan', tanggalAkuisisi: '2025-07-20', hargaBeli: 600000, keterangan: 'Ban bocor', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Roda tidak berputar' },
+                { nomorInventaris: 'LL-2025-002', namaBarang: 'Papan Tulis Flipchart', kategori: 'Lain-lain', tanggalAkuisisi: '2025-07-22', hargaBeli: 450000, keterangan: 'Di ruang 2B', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ATK-2025-012', namaBarang: 'Gunting', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-07-25', hargaBeli: 15000, keterangan: 'Tidak tajam', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Tumpul' },
+                { nomorInventaris: 'ELK-2025-019', namaBarang: 'Mikrofon USB', kategori: 'Elektronik', tanggalAkuisisi: '2025-07-28', hargaBeli: 1000000, keterangan: 'Untuk podcast', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-015', namaBarang: 'Loker Besi 6 Pintu', kategori: 'Perabotan', tanggalAkuisisi: '2025-08-01', hargaBeli: 2000000, keterangan: 'Di area gudang', status: 'Tersedia', pengguna: '', deskripsiKerusakan: '' },
+                { nomorInventaris: 'ELK-2025-020', namaBarang: 'Headset Gaming', kategori: 'Elektronik', tanggalAkuisisi: '2025-08-05', hargaBeli: 1500000, keterangan: 'Mic tidak berfungsi', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Mikrofon rusak' },
+                { nomorInventaris: 'ATK-2025-013', namaBarang: 'Tipe-X', kategori: 'Alat Kantor', tanggalAkuisisi: '2025-08-08', hargaBeli: 8000, keterangan: 'Cairan habis', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Kering' },
+                { nomorInventaris: 'ELK-2025-021', namaBarang: 'Kabel HDMI', kategori: 'Elektronik', tanggalAkuisisi: '2025-08-10', hargaBeli: 50000, keterangan: 'Dipinjam oleh Tim Desain', status: 'Digunakan', pengguna: 'Tim Desain', deskripsiKerusakan: '' },
+                { nomorInventaris: 'PRB-2025-016', namaBarang: 'Standing Lamp', kategori: 'Perabotan', tanggalAkuisisi: '2025-08-12', hargaBeli: 700000, keterangan: 'Lampu mati', status: 'Rusak', pengguna: '', deskripsiKerusakan: 'Lampu tidak menyala' }
+            ];
+
+            let currentStatusFilter = 'Semua';
+            let currentCategoryFilter = 'Semua';
+            let currentSearchQuery = '';
+            let sortConfig = { key: 'nomorInventaris', direction: 'ascending' };
+
+            const tableBody = document.getElementById('inventory-table-body');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const statusButtons = document.querySelectorAll('.btn-filter');
+            const noResultsMessage = document.getElementById('no-results');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.add(savedTheme);
+            themeToggleBtn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                const newTheme = isDark ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                themeToggleBtn.innerHTML = isDark ? '☀️' : '🌙';
+                updateChartColors();
+            });
+
+            function populateCategoryFilter() {
+                const categories = [...new Set(inventoryData.map(item => item.kategori))];
+                categories.sort().forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+            }
+
+            function renderTable() {
+                let filteredData = inventoryData;
+
+                if (currentSearchQuery) {
+                    filteredData = filteredData.filter(item =>
+                        item.namaBarang.toLowerCase().includes(currentSearchQuery) ||
+                        item.nomorInventaris.toLowerCase().includes(currentSearchQuery)
+                    );
+                }
+
+                if (currentStatusFilter !== 'Semua') {
+                    filteredData = filteredData.filter(item => item.status === currentStatusFilter);
+                }
+                
+                if (currentCategoryFilter !== 'Semua') {
+                    filteredData = filteredData.filter(item => item.kategori === currentCategoryFilter);
+                }
+
+                filteredData.sort((a, b) => {
+                    const aValue = a[sortConfig.key];
+                    const bValue = b[sortConfig.key];
+                    if (aValue < bValue) {
+                        return sortConfig.direction === 'ascending' ? -1 : 1;
+                    }
+                    if (aValue > bValue) {
+                        return sortConfig.direction === 'ascending' ? 1 : -1;
+                    }
+                    return 0;
+                });
+
+                tableBody.innerHTML = '';
+
+                if (filteredData.length === 0) {
+                    noResultsMessage.classList.remove('hidden');
+                } else {
+                    noResultsMessage.classList.add('hidden');
+                }
+
+                filteredData.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    let statusClass = '';
+                    switch (item.status) {
+                        case 'Tersedia': statusClass = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200'; break;
+                        case 'Digunakan': statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-200'; break;
+                        case 'Rusak': statusClass = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-200'; break;
+                    }
+
+                    let detailText = '';
+                    if (item.status === 'Digunakan') {
+                        detailText = `Pengguna: ${item.pengguna}`;
+                    } else if (item.status === 'Rusak') {
+                        detailText = `Kerusakan: ${item.deskripsiKerusakan}`;
+                    } else {
+                        detailText = '-';
+                    }
+
+                    row.innerHTML = `
+                        <td class="px-4 py-2 whitespace-nowrap text-sm-adjusted font-medium text-gray-900 dark:text-gray-100">${item.nomorInventaris}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm-adjusted text-gray-700 dark:text-gray-300">${item.namaBarang}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm-adjusted text-gray-500 dark:text-gray-400">${item.kategori}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm-adjusted">
+                            <span class="px-2 inline-flex text-xs-adjusted leading-5 font-semibold rounded-full ${statusClass}">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm-adjusted text-gray-500 dark:text-gray-400">${detailText}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                updateDashboard(filteredData);
+                updateChart(filteredData);
+            }
+
+            function updateDashboard(data) {
+                document.getElementById('total-items').textContent = data.length;
+                document.getElementById('available-items').textContent = data.filter(item => item.status === 'Tersedia').length;
+                document.getElementById('in-use-items').textContent = data.filter(item => item.status === 'Digunakan').length;
+                document.getElementById('damaged-items').textContent = data.filter(item => item.status === 'Rusak').length;
+            }
+
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            const statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tersedia', 'Digunakan', 'Rusak'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: ['#22C55E', '#3B82F6', '#EF4444'],
+                        borderColor: document.documentElement.classList.contains('dark') ? '#1A202C' : '#F0F4F8',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                },
+                                color: document.documentElement.classList.contains('dark') ? '#F7FAFC' : '#334155',
+                            }
+                        },
+                        tooltip: {
+                            padding: 12,
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            function updateChart(data) {
+                const available = data.filter(item => item.status === 'Tersedia').length;
+                const inUse = data.filter(item => item.status === 'Digunakan').length;
+                const damaged = data.filter(item => item.status === 'Rusak').length;
+                statusChart.data.datasets[0].data = [available, inUse, damaged];
+                updateChartColors();
+                statusChart.update();
+            }
+
+            function updateChartColors() {
+                const isDark = document.documentElement.classList.contains('dark');
+                statusChart.data.datasets[0].borderColor = isDark ? '#1A202C' : '#F0F4F8';
+                statusChart.options.plugins.legend.labels.color = isDark ? '#F7FAFC' : '#334155';
+                statusChart.update();
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                currentSearchQuery = e.target.value.toLowerCase();
+                renderTable();
+            });
+
+            categoryFilter.addEventListener('change', (e) => {
+                currentCategoryFilter = e.target.value;
+                renderTable();
+            });
+
+            statusButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    statusButtons.forEach(btn => {
+                      btn.classList.remove('active');
+                      if (document.documentElement.classList.contains('dark')) {
+                        btn.classList.remove('dark:bg-gray-600');
+                      }
+                    });
+                    button.classList.add('active');
+                    if (document.documentElement.classList.contains('dark')) {
+                        button.classList.add('dark:bg-gray-600');
+                    }
+                    currentStatusFilter = button.dataset.status;
+                    renderTable();
+                });
+            });
+
+            document.querySelectorAll('th[data-sort]').forEach(headerCell => {
+                headerCell.addEventListener('click', () => {
+                    const sortKey = headerCell.dataset.sort;
+                    if (sortConfig.key === sortKey) {
+                        sortConfig.direction = sortConfig.direction === 'ascending' ? 'descending' : 'ascending';
+                    } else {
+                        sortConfig.key = sortKey;
+                        sortConfig.direction = 'ascending';
+                    }
+                    renderTable();
+                });
+            });
+
+            populateCategoryFilter();
+            renderTable();
+        });
+    </script>
+</body>
+</html>

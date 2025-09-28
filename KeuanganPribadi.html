@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajer Keuangan Pribadi</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for reports -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* gray-50 */
+        }
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2511&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1); /* shadow-lg */
+        }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        .transaction-item.plus {
+            border-left: 5px solid #22c55e; /* green-500 */
+        }
+        .transaction-item.minus {
+            border-left: 5px solid #ef4444; /* red-500 */
+        }
+        .delete-btn {
+            cursor: pointer;
+            background: #ef4444;
+            color: white;
+            border: 0;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0.5rem;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .transaction-item:hover .delete-btn {
+            opacity: 1;
+        }
+        .btn-primary {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb; /* blue-600 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Hero Section -->
+        <header class="hero-section text-white rounded-xl p-8 md:p-16 mb-8 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
+            <div class="relative z-10">
+                <h1 class="text-3xl md:text-5xl font-bold mb-2">Manajer Keuangan Pribadi</h1>
+                <p class="text-lg md:text-xl">Kelola keuangan Anda dengan cerdas, mudah, dan menyenangkan.</p>
+            </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Summary and Form -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Summary Cards -->
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Ringkasan Keuangan</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Current Balance -->
+                        <div class="card p-6 flex items-center space-x-4">
+                            <i class="fa-solid fa-wallet text-3xl text-blue-500"></i>
+                            <div>
+                                <h3 class="text-gray-500">Saldo Saat Ini</h3>
+                                <p id="balance" class="text-2xl font-bold text-gray-800">Rp 0</p>
+                            </div>
+                        </div>
+                        <!-- Total Income -->
+                        <div class="card p-6 flex items-center space-x-4">
+                            <i class="fa-solid fa-arrow-down text-3xl text-green-500"></i>
+                            <div>
+                                <h3 class="text-gray-500">Total Pemasukan</h3>
+                                <p id="money-plus" class="text-2xl font-bold text-green-500">Rp 0</p>
+                            </div>
+                        </div>
+                        <!-- Total Expense -->
+                        <div class="card p-6 flex items-center space-x-4">
+                            <i class="fa-solid fa-arrow-up text-3xl text-red-500"></i>
+                            <div>
+                                <h3 class="text-gray-500">Total Pengeluaran</h3>
+                                <p id="money-minus" class="text-2xl font-bold text-red-500">Rp 0</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Transaction Form -->
+                <section class="card p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Tambah Transaksi Baru</h2>
+                    <form id="form">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2">Jenis Transaksi</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="type" value="plus" class="form-radio text-green-500" checked>
+                                    <span class="ml-2 text-gray-700">Pemasukan</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="type" value="minus" class="form-radio text-red-500">
+                                    <span class="ml-2 text-gray-700">Pengeluaran</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="text" class="block text-gray-700 font-medium mb-2">Deskripsi</label>
+                            <input type="text" id="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Gaji bulanan, bayar listrik...">
+                        </div>
+                        <div class="mb-6">
+                            <label for="amount" class="block text-gray-700 font-medium mb-2">Jumlah (Rp)</label>
+                            <input type="number" id="amount" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan jumlah tanpa titik atau koma">
+                        </div>
+                        <button class="btn-primary w-full">
+                            <i class="fa-solid fa-plus mr-2"></i> Tambahkan Transaksi
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Transaction History -->
+                <section class="card p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Riwayat Transaksi</h2>
+                    <ul id="list" class="list-none m-0 p-0">
+                        <!-- Items will be inserted here by JavaScript -->
+                    </ul>
+                </section>
+            </div>
+
+            <!-- Right Column: Report and Tips -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- Report Chart -->
+                <section class="card p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Laporan Keuangan</h2>
+                    <canvas id="finance-chart"></canvas>
+                </section>
+
+                <!-- Financial Tips -->
+                <section class="card p-6 bg-blue-500 text-white">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fa-solid fa-lightbulb mr-2"></i>Saran Keuangan</h2>
+                    <p id="financial-tip" class="mb-4 text-lg">Buat anggaran bulanan dan patuhi. Ini adalah langkah pertama menuju kebebasan finansial.</p>
+                    <button id="new-tip-btn" class="w-full bg-white text-blue-500 font-semibold py-2 px-4 rounded-lg hover:bg-blue-100 transition">
+                        Dapatkan Saran Lain
+                    </button>
+                </section>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element Selection ---
+            const balance = document.getElementById('balance');
+            const money_plus = document.getElementById('money-plus');
+            const money_minus = document.getElementById('money-minus');
+            const list = document.getElementById('list');
+            const form = document.getElementById('form');
+            const textInput = document.getElementById('text');
+            const amountInput = document.getElementById('amount');
+            const typeInputs = document.querySelectorAll('input[name="type"]');
+            const chartCanvas = document.getElementById('finance-chart');
+            const financialTip = document.getElementById('financial-tip');
+            const newTipBtn = document.getElementById('new-tip-btn');
+
+            // --- Financial Tips Data ---
+            const tips = [
+                "Buat anggaran bulanan dan patuhi. Ini adalah langkah pertama menuju kebebasan finansial.",
+                "Sisihkan setidaknya 10-20% dari pendapatan Anda untuk tabungan atau investasi.",
+                "Lacak pengeluaran Anda setiap hari untuk mengetahui ke mana uang Anda pergi.",
+                "Hindari utang konsumtif. Jika harus berutang, pastikan untuk tujuan produktif.",
+                "Siapkan dana darurat setidaknya 3-6 bulan dari pengeluaran bulanan Anda.",
+                "Review keuangan Anda secara berkala, misalnya setiap minggu atau setiap bulan.",
+                "Manfaatkan promo dan diskon dengan bijak, jangan membeli sesuatu hanya karena murah.",
+                "Belajar tentang investasi. Mulailah dari yang berisiko rendah seperti reksa dana pasar uang.",
+                "Prioritaskan kebutuhan di atas keinginan. Tunda pembelian yang tidak mendesak.",
+                "Otomatiskan tabungan Anda dengan mengatur transfer otomatis setiap kali gajian."
+            ];
+
+            // --- State Management ---
+            // Get transactions from local storage or initialize an empty array
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            let financeChart;
+
+            // --- Core Functions ---
+
+            // Function to format number as Indonesian Rupiah
+            function formatCurrency(num) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(num);
+            }
+
+            // Function to generate a random ID
+            function generateID() {
+                return Math.floor(Math.random() * 1000000000);
+            }
+
+            // Function to add a new transaction
+            function addTransaction(e) {
+                e.preventDefault();
+
+                const type = document.querySelector('input[name="type"]:checked').value;
+                const text = textInput.value.trim();
+                const amount = +amountInput.value;
+
+                if (text === '' || amount === 0) {
+                    alert('Mohon isi deskripsi dan jumlah transaksi.');
+                    return;
+                }
+
+                const transaction = {
+                    id: generateID(),
+                    type: type,
+                    text: text,
+                    amount: type === 'minus' ? -Math.abs(amount) : Math.abs(amount)
+                };
+
+                transactions.push(transaction);
+                updateLocalStorage();
+                init();
+
+                textInput.value = '';
+                amountInput.value = '';
+            }
+
+            // Function to delete a transaction by ID
+            function deleteTransaction(id) {
+                transactions = transactions.filter(transaction => transaction.id !== id);
+                updateLocalStorage();
+                init();
+            }
+
+            // Function to update the DOM with transaction history
+            function updateDOM() {
+                list.innerHTML = ''; // Clear the list first
+
+                transactions.forEach(transaction => {
+                    const sign = transaction.amount < 0 ? '-' : '+';
+                    const itemClass = transaction.amount < 0 ? 'minus' : 'plus';
+
+                    const item = document.createElement('li');
+                    item.classList.add('transaction-item', itemClass);
+
+                    item.innerHTML = `
+                        <span class="font-medium text-gray-700">${transaction.text}</span>
+                        <div class="flex items-center space-x-4">
+                            <span class="font-semibold ${itemClass === 'plus' ? 'text-green-600' : 'text-red-600'}">
+                                ${sign}${formatCurrency(Math.abs(transaction.amount))}
+                            </span>
+                            <button class="delete-btn" onclick="deleteTransaction(${transaction.id})">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+
+            // Function to update the summary cards
+            function updateSummary() {
+                const amounts = transactions.map(t => t.amount);
+                const total = amounts.reduce((acc, item) => (acc += item), 0);
+                const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
+                const expense = amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1;
+
+                balance.innerText = formatCurrency(total);
+                money_plus.innerText = formatCurrency(income);
+                money_minus.innerText = formatCurrency(expense);
+            }
+
+            // Function to update the report chart
+            function updateChart() {
+                const income = transactions
+                    .filter(t => t.amount > 0)
+                    .reduce((acc, t) => acc + t.amount, 0);
+                
+                const expense = transactions
+                    .filter(t => t.amount < 0)
+                    .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+
+                if (financeChart) {
+                    financeChart.destroy(); // Destroy old chart before creating a new one
+                }
+
+                financeChart = new Chart(chartCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Pemasukan', 'Pengeluaran'],
+                        datasets: [{
+                            label: 'Total',
+                            data: [income, expense],
+                            backgroundColor: [
+                                'rgba(34, 197, 94, 0.8)', // green-500
+                                'rgba(239, 68, 68, 0.8)'  // red-500
+                            ],
+                            borderColor: [
+                                'rgba(34, 197, 94, 1)',
+                                'rgba(239, 68, 68, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += formatCurrency(context.parsed);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Function to show a new financial tip
+            function showFinancialTip() {
+                const randomIndex = Math.floor(Math.random() * tips.length);
+                financialTip.innerText = tips[randomIndex];
+            }
+
+            // Function to update local storage
+            function updateLocalStorage() {
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+            }
+            
+            // Expose deleteTransaction to global scope so it can be called from onclick attribute
+            window.deleteTransaction = deleteTransaction;
+
+            // --- Initialization ---
+            function init() {
+                updateDOM();
+                updateSummary();
+                updateChart();
+            }
+
+            // --- Event Listeners ---
+            form.addEventListener('submit', addTransaction);
+            newTipBtn.addEventListener('click', showFinancialTip);
+
+            // Initial call
+            init();
+            showFinancialTip(); // Show a tip on first load
+        });
+    </script>
+</body>
+</html>
