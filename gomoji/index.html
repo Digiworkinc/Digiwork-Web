@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Gomoji" />
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAARNSURBVHic7d1NruNGEARgVf8q7sQ+3Y/9qIhQYEAgoaCgQEAgoaD4e7rnlSxLUmxfsfaEt2+SJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJD1qgNu2/flv/0mSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJH1u5MCPAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgfPjh9v3Yt/35j5+SJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJGm7B/yVpCTf+MvHkyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJa3vAr5uHbyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkjTWbIAb8Pj5b5/7f5IkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIk6V8d8Pj5b58P+FfmT5IkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkfTvg5eU/SZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZKk1QO+8g/4kyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTp1YAvgF8lSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSZL06oCvAP6VJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEl69cCvV/k/SZIkSZIkSZIkSZIkSZIkSZIkSZIkSZIkSVLrgV8n/wZJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkjTWbICr/DN8kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpVYBHkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTprwP+W/kP8ZPkkyRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkvSLAZ8v/gUAAAD4l/VPAJz6gEwAAAAASUVORK5CYII=">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Gomoji - Mata Dinamis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      }
+      @keyframes grow-smile {
+        0% { transform: scale(0.1); opacity: 0; }
+        60% { transform: scale(1.2); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .animate-grow-smile {
+        animation: grow-smile 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        transform-origin: center;
+      }
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: lime; }
+      }
+      .code-cursor {
+        /* Simulates a block cursor with a border */
+        border-right: .15em solid lime;
+        padding-right: .1em;
+        animation: blink-caret 1s step-end infinite;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(error => {
+              console.log('ServiceWorker registration failed: ', error);
+            });
+        });
+      }
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
