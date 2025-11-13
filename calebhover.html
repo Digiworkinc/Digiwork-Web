@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pdt. Caleb Hover Bintoro - Gembala & Konseptor</title>
+    <!-- Memuat Tailwind CSS dan Lucide Icons --><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Konfigurasi Font dan Warna Kustom Tailwind --><script>
+        tailwind.config = {
+            darkMode: 'class', // Mengaktifkan Dark Mode berdasarkan class 'dark' di <html>
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#003366', // Biru Navy Tua
+                        'accent': '#00ADB5', // Teal Cerah/Cyan
+                        'highlight': '#FFC947', // Kuning Cerah
+                        'bg-light': '#F5F7FA',
+                        'bg-dark': '#1A202C',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        '3xl': '0 10px 40px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Gaya Kustom Umum */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .header-bg {
+            background: linear-gradient(135deg, #003366 0%, #00ADB5 100%);
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 4px;
+            width: 50px;
+            background-color: #FFC947; 
+            border-radius: 9999px;
+        }
+        /* Penyesuaian Card Hover agar tetap halus di ponsel */
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 51, 102, 0.15);
+        }
+        
+        /* Styling untuk Dark Mode */
+        .dark {
+            background-color: #1A202C;
+            color: #E2EE0;
+        }
+        .dark .bg-white {
+            background-color: #2D3748;
+            color: #E2E8F0;
+        }
+        .dark .section-title::after {
+            background-color: #00ADB5;
+        }
+        .dark .text-primary {
+            color: #FFC947;
+        }
+        .dark .text-gray-700 {
+            color: #CBD5E0;
+        }
+
+        /* Styling Tab Navigation - Disesuaikan untuk Mobile */
+        .tab-button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+            /* Pastikan tombol penuh lebar di layar kecil */
+            width: 100%; 
+        }
+        @media (min-width: 768px) {
+            .tab-button {
+                width: auto; /* Kembali ke lebar otomatis di desktop */
+            }
+        }
+        .tab-button.active {
+            background-color: #00ADB5; /* accent */
+            color: white;
+            border-color: #FFC947; /* highlight */
+        }
+        .dark .tab-button.active {
+            background-color: #FFC947; /* highlight */
+            color: #003366; /* primary */
+        }
+
+        /* Styling Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 8px;
+            height: 8px;
+            background-color: #00ADB5;
+            border-radius: 50%;
+            border: 2px solid #FFC947;
+        }
+
+    </style>
+</head>
+<body class="bg-bg-light dark:bg-bg-dark text-gray-800 dark:text-gray-200">
+
+    <!-- Tombol Dark Mode (Interaktif) --><button id="darkModeToggle" class="fixed top-4 right-4 p-3 rounded-full bg-white dark:bg-gray-700 shadow-lg z-50 transition duration-300 hover:scale-105">
+        <i data-lucide="sun" id="sunIcon" class="w-6 h-6 text-highlight dark:hidden"></i>
+        <i data-lucide="moon" id="moonIcon" class="w-6 h-6 text-primary hidden dark:block"></i>
+    </button>
+
+    <!-- Header / Hero Section --><header class="header-bg text-white p-6 md:p-16 shadow-2xl">
+        <div class="max-w-4xl mx-auto text-center">
+            
+            <!-- Foto Profil Persegi/Standar (Tanpa Border Kuning) -->
+            <!-- PENTING: Untuk foto profil, silakan ganti URL di bawah ini dengan tautan gambar yang di-host secara publik (misalnya, di layanan hosting gambar, BUKAN link berbagi Google Drive). -->
+            <img id="profile-picture" 
+                 src="photo B.png" 
+                 alt="Foto Profil Pdt. Caleb Hover Bintoro" 
+                 class="w-36 h-36 md:w-56 md:h-56 mx-auto mb-4 object-cover shadow-xl rounded-lg"/>
+            
+            <h1 class="text-3xl md:text-6xl font-extrabold tracking-tight">
+                Pdt. Caleb Hover Bintoro
+            </h1>
+            <p class="text-lg md:text-2xl font-medium mt-2 text-highlight">
+                Gembala Senior GBI ROCK Griya Jogja
+            </p>
+            <p class="mt-4 text-sm md:text-base opacity-90 px-2">
+                Visioner, Konseptor Event, dan Penggerak Komunitas Rohani & Sosial.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content Container --><main class="container mx-auto p-4 md:p-10 max-w-5xl">
+
+        <!-- Section 1: Jaringan Pelayanan (Cards) --><section class="my-8 md:my-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-primary dark:text-highlight mb-6 md:mb-8 text-center section-title">Jaringan Pelayanan</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+
+                <!-- Card 1: GBI ROCK Griya Jogja --><div class="card-hover bg-white dark:bg-gray-700 p-5 md:p-6 rounded-xl shadow-xl transition duration-300 ease-in-out border-b-4 border-accent">
+                    <i data-lucide="church" class="w-7 h-7 md:w-8 md:h-8 text-accent mb-3"></i>
+                    <h3 class="text-lg md:text-xl font-semibold text-primary dark:text-highlight mb-2">Pusat Pelayanan</h3>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">Gembala Senior GBI ROCK Griya Jogja (2016 - Sekarang).</p>
+                </div>
+
+                <!-- Card 2: Ekspansi Nasional --><div class="card-hover bg-white dark:bg-gray-700 p-5 md:p-6 rounded-xl shadow-xl transition duration-300 ease-in-out border-b-4 border-accent">
+                    <i data-lucide="map" class="w-7 h-7 md:w-8 md:h-8 text-accent mb-3"></i>
+                    <h3 class="text-lg md:text-xl font-semibold text-primary dark:text-highlight mb-2">Rayon DIY-Jateng</h3>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">Ketua Rayon dan Pembina ROCKMAN Ministry DIY-Jateng.</p>
+                </div>
+
+                <!-- Card 3: Pendirian Gereja Baru --><div class="card-hover bg-white dark:bg-gray-700 p-5 md:p-6 rounded-xl shadow-xl transition duration-300 ease-in-out border-b-4 border-accent">
+                    <i data-lucide="split-square-horizontal" class="w-7 h-7 md:w-8 md:h-8 text-accent mb-3"></i>
+                    <h3 class="text-lg md:text-xl font-semibold text-primary dark:text-highlight mb-2">Ekspansi Gereja</h3>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400">Membentuk GBI ROCK Temanggung (2017) & Griya Solo (2022).</p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Section 2: Konten Dinamis (Tabbed Navigation) --><section class="my-8 md:my-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-primary dark:text-highlight mb-6 md:mb-8 text-center section-title">Detail Pengalaman</h2>
+
+            <div class="bg-white dark:bg-gray-800 p-4 md:p-8 rounded-2xl shadow-3xl">
+
+                <!-- Tab Buttons (Flex-col di Mobile, Flex-row di Desktop) --><div class="flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-4 mb-6 border-b dark:border-gray-700 pb-4">
+                    <button class="tab-button active bg-accent text-white" data-tab="pelayanan">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 inline-block mr-2"></i> Pelayanan Rohani
+                    </button>
+                    <button class="tab-button" data-tab="konseptor">
+                        <i data-lucide="lightbulb" class="w-5 h-5 inline-block mr-2"></i> Konseptor & Event
+                    </button>
+                    <button class="tab-button" data-tab="profesional">
+                        <i data-lucide="briefcase" class="w-5 h-5 inline-block mr-2"></i> Latar Belakang Bisnis
+                    </button>
+                </div>
+
+                <!-- Tab Content 1: Pelayanan Rohani --><div id="pelayanan" class="tab-content space-y-5">
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Pembentukan Gereja</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Pembentukan GBI ROCK Griya Jogja (2016-Sekarang), GBI ROCK Temanggung (2017), GBI ROCK Griya Solo (2022-Sekarang).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Kepemimpinan GKA</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Ketua Departemen Pengajaran GKA (GBI Keluarga Allah) Periode 2001-2008.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Komunitas & Ministry</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Ketua Pembina ROCKMAN Ministry DIY-Jateng, Ketua Pembina Indonesian God’s Rider.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Aksi Peduli Kasih</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Penyelenggara Program Peduli Kasih di Hari Pahlawan (Mission Trip, Peduli Covid-19, Pasar Kranggan).</p>
+                    </div>
+                </div>
+
+                <!-- Tab Content 2: Konseptor & Event (Tersembunyi Awalnya) --><div id="konseptor" class="tab-content hidden space-y-5">
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Retret Pengembangan Diri</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Konseptor Retret Pemulihan Encounter (2003-2008) dan Retret ESBC (Elite Soldier Boot Camp) (2005-2008).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Event Musik (GPO)</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Membentuk Gracerockclan Philharmonic Orchestra (GPO). Penggagas Christmas Love Concert 2015 dan Pesach Love Concert.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Acara Komunitas</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Penyelenggara ROCK EXTRA ORDINARY League (2019) dan ROCKET CAMP Surabaya/Tawangmangu.</p>
+                    </div>
+                </div>
+
+                <!-- Tab Content 3: Latar Belakang Bisnis (Tersembunyi Awalnya) --><div id="profesional" class="tab-content hidden space-y-5">
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Entrepreneurship</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Owner CV. Braveredholywhite. Conceptor Eplex Bandung.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Event Organizer (EO)</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">EO berbagai event besar: Marlboro Adventure Team, Gathering Kalbe Nutrition, Wedding, Promosi TVS Motor, dan Gathering PT. OT Finance (2016).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Media & IT Projects</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Project Pembuatan website Putri duyung Ancol. Pembuatan Majalah Online Freedom Magz.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-semibold text-primary dark:text-highlight">Karir Awal</p>
+                        <p class="text-sm text-gray-700 dark:text-gray-400">Bekerja sebagai Karyawan Dagadu.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Kontak Cepat (Simple CTA) --><section class="mt-12 md:mt-16 bg-accent dark:bg-gray-700 p-6 md:p-8 rounded-2xl shadow-3xl text-center">
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Connect & Follow</h2>
+            <p class="text-sm md:text-lg text-primary dark:text-highlight font-medium mb-6">Informasi lebih lanjut tentang pelayanan dan kegiatan terbaru.</p>
+            <!-- Tombol Contoh (Penuh lebar di Mobile) --><div class="space-y-4 md:space-y-0 md:space-x-6 flex flex-col md:flex-row justify-center">
+                <a href="#" target="_blank" class="w-full md:w-auto inline-flex items-center justify-center bg-highlight text-primary font-bold py-3 px-6 rounded-full shadow-lg hover:bg-white transition duration-200 hover:scale-105">
+                    <i data-lucide="youtube" class="w-5 h-5 inline-block mr-2"></i>
+                    YouTube GBI ROCK
+                </a>
+                <a href="#" target="_blank" class="w-full md:w-auto inline-flex items-center justify-center border border-white text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-white hover:text-primary transition duration-200 hover:scale-105">
+                    <i data-lucide="instagram" class="w-5 h-5 inline-block mr-2"></i>
+                    Instagram
+                </a>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer --><footer class="bg-primary text-white p-6 text-center mt-8 dark:bg-gray-900">
+        <p class="text-xs md:text-sm">Dibangun dengan Semangat Dinamis | GBI ROCK Griya Jogja | &copy; 2025</p>
+        
+        <!-- Skrip Interaktif --><script>
+            // 1. Inisialisasi Lucide Icons
+            lucide.createIcons();
+
+            // 2. Logika Dark Mode Toggle
+            const toggle = document.getElementById('darkModeToggle');
+            const html = document.documentElement;
+
+            // Memuat preferensi dari localStorage atau default ke light
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+
+            toggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.theme = 'light';
+                } else {
+                    html.classList.add('dark');
+                    localStorage.theme = 'dark';
+                }
+            });
+
+            // 3. Logika Tabbed Navigation
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            const activateTab = (button) => {
+                const tabId = button.getAttribute('data-tab');
+
+                // Non-aktifkan semua tombol dan sembunyikan konten
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-accent', 'text-white', 'dark:bg-highlight', 'dark:text-primary');
+                    // Tambahkan kelas default non-aktif
+                    btn.classList.add('bg-white', 'text-primary', 'dark:bg-gray-700', 'dark:text-gray-200', 'hover:bg-gray-50', 'dark:hover:bg-gray-600');
+                });
+                tabContents.forEach(content => content.classList.add('hidden'));
+
+                // Aktifkan tombol yang diklik dan tampilkan konten terkait
+                button.classList.add('active', 'bg-accent', 'text-white');
+                button.classList.remove('bg-white', 'text-primary', 'dark:bg-gray-700', 'dark:text-gray-200', 'hover:bg-gray-50', 'dark:hover:bg-gray-600');
+                
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => activateTab(button));
+            });
+
+            // Pastikan tab pertama aktif saat dimuat
+            document.addEventListener('DOMContentLoaded', () => {
+                // Hapus kelas default dari tab pertama agar styling active muncul
+                const firstButton = tabButtons[0];
+                if (firstButton) {
+                    firstButton.classList.remove('bg-white', 'text-primary', 'dark:bg-gray-700', 'dark:text-gray-200', 'hover:bg-gray-50', 'dark:hover:bg-gray-600');
+                }
+            });
+        </script>
+    </footer>
+
+</body>
+</html>
