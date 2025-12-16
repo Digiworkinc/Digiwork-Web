@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Interaktif - Caleb Hover Bintoro</title>
+    <!-- Memuat Tailwind CSS CDN untuk styling yang cepat dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Styling kustom untuk progress bar (opsional, bisa diganti dengan Tailwind) */
+        .progress-bar-fill {
+            transition: width 1.5s ease-out;
+            width: 0%; /* Dimulai dari 0 untuk animasi JS */
+        }
+        
+        /* Efek hover untuk kartu proyek */
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Styling kustom untuk list item pengalaman */
+        .experience-item {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: theme('colors.teal.500');
+            box-shadow: 0 0 5px theme('colors.teal.500');
+        }
+        
+        /* Variasi warna untuk item Leadership/Training */
+        .leadership-item::before {
+            background-color: theme('colors.amber.500');
+            box-shadow: 0 0 5px theme('colors.amber.500');
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- 
+        HEADER & NAVIGATION BAR
+        Menggunakan fixed position agar navigasi selalu terlihat
+    -->
+    <header class="fixed top-0 left-0 right-0 bg-gray-900 bg-opacity-95 z-50 shadow-lg">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-teal-400 hover:text-teal-300 transition duration-300">Caleb H.B.</a>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#profile" class="hover:text-teal-400 transition duration-300">Profil</a>
+                <a href="#skills" class="hover:text-teal-400 transition duration-300">Keahlian</a>
+                <a href="#experience" class="hover:text-teal-400 transition duration-300">Pengalaman</a>
+                <a href="#contact" class="hover:text-teal-400 transition duration-300">Kontak</a>
+            </div>
+            <!-- Tombol Mobile Menu (Tidak fungsional penuh di mode single-file ini, tapi disertakan untuk desain responsif) -->
+            <button class="md:hidden text-gray-200 hover:text-teal-400 transition duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+        
+        <!-- BAGIAN HOME/PROFILE EKSEKUTIF (THE HOOK) -->
+        <section id="home" class="container mx-auto px-4 py-16 md:py-32 min-h-screen flex items-center">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Kolom Teks -->
+                <div class="order-2 md:order-1">
+                    <span class="text-teal-400 text-lg font-semibold uppercase tracking-widest">Creative Media & Peak Performance</span>
+                    <h1 class="text-6xl md:text-8xl font-extrabold leading-tight mt-2 text-white">
+                        Caleb Hover Bintoro
+                    </h1>
+                    <!-- Detail Kelahiran Ditambahkan -->
+                    <p class="mt-2 text-xl font-medium text-gray-500">Lahir di Solo, 11 Januari 1977</p> 
+                    <p class="mt-4 text-3xl font-light text-gray-400">
+                        "Menciptakan Narasi yang Kuat, Membangun Potensi yang Tak Terbatas."
+                    </p>
+                    <p class="mt-8 text-gray-400 text-lg">
+                        Saya adalah seorang profesional hibrida yang menyelaraskan narasi luar (media) dengan narasi dalam (pola pikir) guna mencapai hasil yang transformatif.
+                    </p>
+                    <a href="#experience" class="inline-block mt-8 px-6 py-3 bg-teal-500 text-gray-900 font-bold rounded-lg shadow-lg hover:bg-teal-400 transition duration-300 transform hover:scale-105">
+                        Lihat Proyek & Dampak
+                    </a>
+                </div>
+                <!-- Kolom Visual/Foto Profile -->
+                <div class="order-1 md:order-2 flex justify-center">
+                    <!-- Placeholder untuk Foto Profil (Ganti URL ini dengan foto asli) -->
+                    <img 
+                        src="https://digiwork.web.id/photo%20B.png" 
+                        alt="Foto Profil Caleb Hover Bintoro"
+                        class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full border-4 border-teal-500 shadow-2xl transition duration-500 transform hover:scale-105"
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN CORE COMPETENCIES (KEAHLIAN) -->
+        <section id="skills" class="container mx-auto px-4 py-20 bg-gray-800 rounded-2xl shadow-2xl my-16">
+            <h2 class="text-5xl font-bold text-center mb-16 text-white">2. Keahlian Inti & Tingkat Kemahiran</h2>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- KOLOM A: MEDIA KREATIF & STRATEGI -->
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6 text-teal-400 border-b border-teal-600 pb-2">A. Creative Media & Strategi</h3>
+                    
+                    <!-- Skill Bar: Storytelling Visual -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Storytelling Visual</span>
+                            <span id="storytelling-level">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="storytelling-bar" class="progress-bar-fill h-2.5 rounded-full bg-teal-500" data-level="90"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Mengembangkan konsep video dan konten digital, berfokus pada resonansi emosional.</p>
+                    </div>
+
+                    <!-- Skill Bar: Manajemen Produksi & Inisiasi Konten Digital (Telah Diperbarui) -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Manajemen Produksi & Inisiasi Konten Digital</span>
+                            <span id="produksi-level">88%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="produksi-bar" class="progress-bar-fill h-2.5 rounded-full bg-teal-500" data-level="88"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Mengelola proyek kreatif skala besar (website, orkestra, event) dan memprakarsai platform digital baru (YouTube Channel, Majalah Online).</p>
+                    </div>
+
+                    <!-- Skill Bar: Strategi Konten -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Strategi Konten</span>
+                            <span id="strategi-level">95%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="strategi-bar" class="progress-bar-fill h-2.5 rounded-full bg-teal-500" data-level="95"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Merancang dan mengeksekusi kampanye konten terintegrasi.</p>
+                    </div>
+                </div>
+
+                <!-- KOLOM B: PEAK PERFORMANCE & PELATIHAN -->
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6 text-amber-500 border-b border-amber-700 pb-2">B. Peak Performance & Pelatihan</h3>
+                    
+                    <!-- Skill Bar: Coaching Kinerja -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Coaching Kinerja (Mindset)</span>
+                            <span id="coaching-level">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="coaching-bar" class="progress-bar-fill h-2.5 rounded-full bg-amber-500" data-level="90"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Meningkatkan fokus, motivasi, dan ketahanan mental tim atau individu.</p>
+                    </div>
+
+                    <!-- Skill Bar: Fasilitasi Workshop -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Fasilitasi Workshop & Public Speaking</span>
+                            <span id="fasilitasi-level">95%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="fasilitasi-bar" class="progress-bar-fill h-2.5 rounded-full bg-amber-500" data-level="95"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Merancang dan memimpin sesi pelatihan interaktif tentang mindset dan komunikasi asertif.</p>
+                    </div>
+
+                    <!-- Skill Bar: Desain Kurikulum -->
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-1 text-sm font-medium">
+                            <span>Desain Kurikulum (L&D)</span>
+                            <span id="kurikulum-level">80%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div id="kurikulum-bar" class="progress-bar-fill h-2.5 rounded-full bg-amber-500" data-level="80"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Mengembangkan modul pelatihan custom untuk program pengembangan kepemimpinan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN PENGALAMAN PROFESIONAL UTAMA (THE IMPACT) - TELAH DIPERBARUI -->
+        <section id="experience" class="container mx-auto px-4 py-20">
+            <h2 class="text-5xl font-bold text-center mb-16 text-white">3. Pengalaman Profesional Utama</h2>
+
+            <!-- Media Kreatif & Event Management Section (Teal) -->
+            <h3 class="text-4xl font-semibold text-teal-400 mb-8 border-b border-gray-700 pb-3">I. Media Kreatif, Event Management & Bisnis</h3>
+            <div class="max-w-4xl mx-auto space-y-6 border-l-2 border-gray-700 pl-6 pb-6">
+
+                <!-- Bisnis & Media -->
+                <div class="experience-item">
+                    <h4 class="text-xl font-bold text-white">Kepemilikan Bisnis & Proyek Media</h4>
+                    <p class="text-gray-400 text-sm mb-2">Owner CV. Braveredholywhite, Conceptor Eplex Bandung. Proyek Pembuatan Website Putri Duyung Ancol dan Majalah Online Freedom Magz. Owner & Manager Gracerockclan Philharmonic Orchestra (GPO), Owner Cafe Kopi Oma, dan Penggagas Cafe Anak Jalanan Kereta Kopi. **Penggagas Youtube Channel: Sungai Tawa (Video Drama Pendek Motivasional).**</p>
+                </div>
+                
+                <!-- Event Organizer & Produksi -->
+                <div class="experience-item">
+                    <h4 class="text-xl font-bold text-white">Event Organizer (EO) & Produksi</h4>
+                    <ul class="list-disc list-inside text-gray-300 ml-4 space-y-1 text-sm">
+                        <li>EO (Maxima) Marlboro Adventure Team.</li>
+                        <li>EO Gathering Kalbe Nutrition, PT. OT Finance (Hyatt, 2016).</li>
+                        <li>EO Promosi Launching TVS Motor (Mandala Krida).</li>
+                        <li>EO Wedding Jogjakarta.</li>
+                        <li>Mengadakan Pelatihan Nugraha Stationary Outbond Training.</li>
+                        <li>Konser GMB (Giving My Best) Kridosono.</li>
+                        <li>**Penyelenggara & Konseptor Creative Explosion (2007):** Mengundang 27 artis dan penggiat kreatif di Yogyakarta.</li>
+                    </ul>
+                </div>
+
+                <!-- GRACEROCKCLAN PHILHARMONIC ORCHESTRA (GPO) -->
+                <div class="experience-item">
+                    <h4 class="text-xl font-bold text-white">Pembentukan & Manajemen Konser GPO</h4>
+                    <ul class="list-disc list-inside text-gray-300 ml-4 space-y-1 text-sm">
+                        <li>Membentuk tim Gracerockclan Philharmonic Orchestra (GPO).</li>
+                        <li>Ketua Penyelenggara & Penggagas Event Christmas Love Concert (2015 di Graha Driyarkara, GBI ROCK Pluit).</li>
+                        <li>Konser GPO di ulang tahun GBI ROCK Ambassador, GBI ROCK Lumajang, BOPKRI Satu Jogjakarta.</li>
+                        <li>Konser GPO bersama BOPKRI Satu Jogjakarta di Taman Budaya Yogyakarta (TBY) Th. 2023.</li>
+                        <li>Mengadakan Pesach Love Concert (Online Youtube GBI ROCK Griya Jogja, GBI ROCK Ambassador, BOPKRI Satu).</li>
+                    </ul>
+                </div>
+                
+                <!-- Pengalaman Kerja Awal -->
+                <div class="experience-item">
+                    <h4 class="text-xl font-bold text-white">Pengalaman Kerja Awal</h4>
+                    <p class="text-gray-400 text-sm">Bekerja sebagai Karyawan Dagadu.</p>
+                </div>
+                
+            </div>
+
+            <!-- Mental Building & Spiritual Leadership Section (Amber) -->
+            <h3 class="text-4xl font-semibold text-amber-500 mt-16 mb-8 border-b border-gray-700 pb-3">II. Mental Building, Leadership & Pengembangan Organisasi</h3>
+            <div class="max-w-4xl mx-auto space-y-6 border-l-2 border-gray-700 pl-6 pb-6">
+                
+                <!-- Leadership & Pengembangan Organisasi (Diubah dari Gereja) -->
+                <div class="experience-item leadership-item">
+                    <h4 class="text-xl font-bold text-white">Kepemimpinan Organisasi & Pengembangan Cabang</h4>
+                    <ul class="list-disc list-inside text-gray-300 ml-4 space-y-1 text-sm">
+                        <li>**Ketua Keluarga Besar Gracerock Clan.**</li>
+                        <li>Ketua Regional DIY-Jateng Periode (Mengelola operasi regional, tim, dan logistik).</li>
+                        <li>Ketua Pembina Pengembangan Komunitas Regional (ROCKMAN Ministry & Indonesian God’s Rider).</li>
+                        <li>Inisiator & Pengembang Cabang Organisasi Baru di 4+ lokasi (GTA Elia, Griya Jogja 2016-sekarang, Temanggung 2017, Griya Solo 2022-Sekarang).</li>
+                    </ul>
+                </div>
+
+                <!-- Program Pelatihan & Retret (Diubah dari Gereja) -->
+                <div class="experience-item leadership-item">
+                    <h4 class="text-xl font-bold text-white">Konseptor, Trainer, & Kepala Departemen Pelatihan</h4>
+                    <ul class="list-disc list-inside text-gray-300 ml-4 space-y-1 text-sm">
+                        <!-- New/Updated Corporate Training Entries -->
+                        <li>**Trainer Mental Health & Marketing:** Pelatihan Marketing Honda wilayah Tenggarong (2025).</li>
+                        <li>**Trainer Marketing Nasional:** Pelatihan Marketing Nasional Kalbe Nutrition di Yogyakarta (2008).</li>
+                        <li>**Fasilitator Leadership Muda Internasional:** Pelatihan Pemuda 40 pemimpin muda Korea "Korean Project" di Yogyakarta (2007).</li>
+                        <li>**Trainer Outbond & Karyawan:** Pelatihan Karyawan Nugraha Stationery (2005).</li>
+                        
+                        <!-- Existing Core Program Entries -->
+                        <li>Ketua Departemen Pengajaran & Kurikulum (2001-2008).</li>
+                        <li>Konseptor Program Transformasi Diri "Encounter" (2003-2008).</li>
+                        <li>Konseptor Program Kinerja Tinggi "ESBC (Elite Soldier Boot Camp)" (2005-2008).</li>
+                        <li>Penyelenggara & Penggagas Kompetisi Pengembangan Kompetensi "ROCK EXTRA ORDINARY League" (2019).</li>
+                        <li>Penyelenggara Program Pelatihan Intensif "ROCKET CAMP" (Surabaya 2017-2019, Tawangmangu 2024).</li>
+                    </ul>
+                </div>
+
+                <!-- Inisiatif Sosial & Peduli Kasih (Dipertahankan, bersifat umum) -->
+                <div class="experience-item leadership-item">
+                    <h4 class="text-xl font-bold text-white">Inisiatif Sosial & Community Building</h4>
+                    <ul class="list-disc list-inside text-gray-300 ml-4 space-y-1 text-sm">
+                        <li>Penyelenggara Program Peduli Kasih di setiap Hari Pahlawan.</li>
+                        <li>Mission Trip Pengembangan Komunitas di wilayah Surabaya (3x).</li>
+                        <li>Peduli Kasih Covid-19 di Parangtritis, DI. Yogyakarta (2021).</li>
+                        <li>Peduli Kasih di Pasar Kranggan dan sekitarnya (2022).</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BAGIAN HUBUNGI & CALL TO ACTION -->
+        <section id="contact" class="container mx-auto px-4 py-20 text-center">
+            <h2 class="text-5xl font-bold mb-6 text-white">4. Hubungi Caleb Hover Bintoro</h2>
+            <p class="text-xl text-gray-400 mb-12">Tertarik dengan transformasi narasi atau kinerja? **Mari kita bicara.**</p>
+
+            <div class="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-8">
+                <a href="mailto:caleb.hover@example.com" class="px-8 py-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-500 transition duration-300 transform hover:scale-105 shadow-xl">
+                    <span class="text-lg">Email Langsung</span>
+                </a>
+                <a href="https://www.google.com/search?q=linkedin.com/in/calebhb" target="_blank" class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-500 transition duration-300 transform hover:scale-105 shadow-xl">
+                    <span class="text-lg">Kunjungi LinkedIn</span>
+                </a>
+                <a href="https://www.revou.co/panduan-karir/contoh-portofolio-social-media-specialist" target="_blank" class="px-8 py-4 bg-gray-700 text-white font-semibold rounded-xl hover:bg-gray-600 transition duration-300 transform hover:scale-105 shadow-xl">
+                    <span class="text-lg">Lihat Portofolio Digital</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 border-t border-gray-800 mt-16 py-8">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2025 Caleb Hover Bintoro. Dibuat dengan semangat Creative & Performance.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript untuk Interaktivitas (Animasi Skill Bar) -->
+    <script>
+        // Fungsi untuk menginisialisasi animasi skill bar
+        function animateSkillBars() {
+            // Mengambil semua elemen progress bar
+            const bars = document.querySelectorAll('.progress-bar-fill');
+
+            bars.forEach(bar => {
+                const level = bar.getAttribute('data-level'); // Ambil nilai kemahiran dari data-level
+                // Mengatur properti width setelah penundaan singkat untuk memicu transisi CSS
+                setTimeout(() => {
+                    bar.style.width = level + '%';
+                }, 100); 
+            });
+        }
+
+        // Jalankan animasi setelah halaman dimuat
+        window.addEventListener('load', animateSkillBars);
+        
+        // Menambahkan smooth scroll untuk navigasi internal (menggunakan JavaScript murni)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // Hitung posisi scroll (mengurangi tinggi header fixed)
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
