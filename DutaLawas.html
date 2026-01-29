@@ -5,245 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DK Jati - Spesialis Bangunan Kayu & Joglo</title>
     
-    <!-- Library CSS -->
+    <!-- CSS Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Library JS (Stable UMD Versions) -->
-    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
-    <script src="https://unpkg.com/react-router-dom@6.11.2/dist/umd/react-router-dom.production.min.js"></script>
-    <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
-    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fdfaf6; margin: 0; overflow-x: hidden; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #fdfaf6; 
+            margin: 0; 
+            overflow-x: hidden; 
+        }
         h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
         .text-teak { color: #5d4037; }
         .bg-teak { background-color: #5d4037; }
+        .bg-nature { background-color: #2d3e34; }
+        .bg-nature-dark { background-color: #1a261f; }
+        .text-nature { color: #2d3e34; }
+        
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #5d4037; border-radius: 10px; }
-        
-        .hero-gradient { background: linear-gradient(to bottom, rgba(93, 64, 55, 0.8), rgba(93, 64, 55, 0.4)); }
     </style>
-<script type="importmap">
+
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.29.0?deps=react@19.0.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.475.0?deps=react@19.0.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
-
-    <script type="text/babel">
-        // Global variables dari UMD
-        const { HashRouter, Routes, Route, Link, useLocation } = ReactRouterDOM;
-        const { useState, useEffect, useRef } = React;
-
-        // --- ICON HELPER ---
-        const Icon = ({ name, size = 24, className = "" }) => {
-            const iconRef = useRef(null);
-            useEffect(() => {
-                if (window.lucide && iconRef.current) {
-                    window.lucide.createIcons();
-                }
-            }, [name]);
-            return <i data-lucide={name} ref={iconRef} style={{width: size, height: size}} className={`inline-block ${className}`}></i>;
-        };
-
-        // --- DATA DEFAULT ---
-        const INITIAL_PROJECTS = [
-            { id: 'p1', name: 'Joglo Agung Solo', loc: 'Surakarta', type: 'Joglo', img: 'https://images.unsplash.com/photo-1600585154340-be6199f7a009?auto=format&fit=crop&w=800' },
-            { id: 'p2', name: 'Villa Kayu Merapi', loc: 'Yogyakarta', type: 'Villa', img: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800' },
-            { id: 'p3', name: 'Gazebo Minimalis', loc: 'Semarang', type: 'Gazebo', img: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800' }
-        ];
-
-        // --- COMPONENTS ---
-        const Navbar = () => {
-            const [isOpen, setIsOpen] = useState(false);
-            const location = useLocation();
-            const links = [
-                { n: 'Beranda', p: '/' },
-                { n: 'Layanan', p: '/services' },
-                { n: 'Portofolio', p: '/portfolio' },
-                { n: 'Harga', p: '/prices' },
-                { n: 'Hubungi', p: '/contact' }
-            ];
-
-            return (
-                <nav className="sticky top-0 z-50 bg-[#fdfaf6]/95 backdrop-blur-md border-b border-[#5d4037]/10">
-                    <div className="max-w-7xl mx-auto px-4 flex justify-between h-20 items-center">
-                        <Link to="/" className="text-2xl font-bold font-serif text-[#5d4037] tracking-tight">DK JATI</Link>
-                        <div className="hidden md:flex space-x-8 items-center">
-                            {links.map(l => (
-                                <Link key={l.p} to={l.p} className={`text-sm transition-colors ${location.pathname === l.p ? 'font-bold text-[#5d4037]' : 'text-gray-500 hover:text-[#5d4037]'}`}>{l.n}</Link>
-                            ))}
-                            <Link to="/admin" className="text-gray-300 hover:text-[#5d4037] ml-4"><Icon name="layout-dashboard" size={18} /></Link>
-                        </div>
-                        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-[#5d4037]"><Icon name={isOpen ? "x" : "menu"} /></button>
-                    </div>
-                    {isOpen && (
-                        <div className="md:hidden bg-white border-b p-4 space-y-3 shadow-lg">
-                            {links.map(l => <Link key={l.p} to={l.p} onClick={() => setIsOpen(false)} className="block py-2 text-gray-700">{l.n}</Link>)}
-                            <Link to="/admin" onClick={() => setIsOpen(false)} className="block py-2 text-[#5d4037] font-bold">Admin Panel</Link>
-                        </div>
-                    )}
-                </nav>
-            );
-        };
-
-        const Footer = () => (
-            <footer className="bg-[#5d4037] text-white py-16 px-4 mt-20">
-                <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left">
-                    <div>
-                        <h2 className="text-2xl font-serif font-bold italic mb-4">DK JATI</h2>
-                        <p className="text-stone-300 text-sm">Spesialis bangunan kayu jati berkualitas tinggi sejak 2008.</p>
-                    </div>
-                    <div>
-                        <h3 className="font-bold mb-4 text-amber-400">Pintasan</h3>
-                        <div className="flex flex-col space-y-2 text-sm text-stone-300">
-                            <Link to="/portfolio" className="hover:text-white transition-colors">Lihat Karya</Link>
-                            <Link to="/prices" className="hover:text-white transition-colors">Estimasi Biaya</Link>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 className="font-bold mb-4 text-amber-400">Kontak</h3>
-                        <p className="text-sm text-stone-300">WhatsApp: +62 812-3456-7890</p>
-                        <p className="text-sm text-stone-300">Jepara, Jawa Tengah</p>
-                    </div>
-                </div>
-            </footer>
-        );
-
-        // --- PAGES ---
-        const Home = ({ projs }) => (
-            <div className="animate-fade-in">
-                <header className="relative h-[75vh] flex items-center justify-center text-white text-center bg-[#5d4037]">
-                    <img src="https://images.unsplash.com/photo-1542662565-7e4b66bae529?auto=format&fit=crop&w=1600" className="absolute inset-0 w-full h-full object-cover opacity-40" />
-                    <div className="relative z-10 px-4">
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 font-serif">Mahakarya Kayu <span className="text-amber-400 italic">Jati Jepara</span></h1>
-                        <p className="text-lg max-w-xl mx-auto mb-10 text-stone-200">Spesialis pembuatan Joglo, Rumah Kayu, dan Gazebo premium dengan dedikasi budaya Jawa.</p>
-                        <Link to="/contact" className="bg-amber-500 hover:bg-amber-600 px-10 py-4 rounded-full font-bold shadow-2xl transition-all transform hover:scale-105 inline-block uppercase tracking-widest text-xs">Konsultasi Gratis</Link>
-                    </div>
-                </header>
-                
-                <section className="py-24 px-4 max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-[#5d4037] mb-4">Karya Terbaru</h2>
-                        <div className="w-20 h-1 bg-amber-400 mx-auto"></div>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-10">
-                        {projs.slice(0, 3).map(p=>(
-                            <div key={p.id} className="rounded-3xl overflow-hidden shadow-xl bg-white group cursor-pointer border border-stone-100">
-                                <div className="overflow-hidden aspect-video">
-                                    <img src={p.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
-                                </div>
-                                <div className="p-6">
-                                    <h4 className="font-bold text-lg text-[#5d4037]">{p.name}</h4>
-                                    <p className="text-sm text-gray-400 flex items-center gap-1 uppercase tracking-tighter mt-1"><Icon name="map-pin" size={12} /> {p.loc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            </div>
-        );
-
-        // --- MAIN APP ---
-        const App = () => {
-            const [projects, setProjects] = useState(() => {
-                const saved = localStorage.getItem('dk_jati_vfinal');
-                return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
-            });
-
-            useEffect(() => {
-                localStorage.setItem('dk_jati_vfinal', JSON.stringify(projects));
-            }, [projects]);
-
-            const Admin = () => {
-                const [auth, setAuth] = useState(false);
-                const [pw, setPw] = useState('');
-                const [name, setName] = useState('');
-                const [loc, setLoc] = useState('');
-                const [img, setImg] = useState('');
-
-                if (!auth) return (
-                    <div className="h-[60vh] flex items-center justify-center p-4">
-                        <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm border">
-                            <h2 className="text-2xl font-bold mb-6 text-center text-[#5d4037] font-serif">Login Admin</h2>
-                            <input type="password" placeholder="dkjati2024" className="w-full p-4 bg-stone-50 rounded-xl mb-6 outline-none border focus:border-amber-400" onChange={e=>setPw(e.target.value)} />
-                            <button onClick={()=>pw === 'dkjati2024' ? setAuth(true) : alert('Password Salah!')} className="w-full bg-[#5d4037] text-white py-4 rounded-xl font-bold">Masuk Panel</button>
-                        </div>
-                    </div>
-                );
-
-                return (
-                    <div className="max-w-4xl mx-auto py-12 px-4 animate-fade-in">
-                        <div className="flex justify-between items-center mb-10">
-                            <h1 className="text-3xl font-bold text-[#5d4037] font-serif italic">Manajemen Proyek</h1>
-                            <button onClick={() => setAuth(false)} className="text-sm text-red-500 font-bold">Keluar</button>
-                        </div>
-                        <div className="bg-white p-8 rounded-3xl shadow-xl mb-10 border">
-                            <h3 className="font-bold mb-6">Tambah Proyek</h3>
-                            <div className="grid gap-4">
-                                <input placeholder="Nama Proyek" className="p-4 bg-stone-50 rounded-xl outline-none border" value={name} onChange={e=>setName(e.target.value)} />
-                                <input placeholder="Lokasi" className="p-4 bg-stone-50 rounded-xl outline-none border" value={loc} onChange={e=>setLoc(e.target.value)} />
-                                <input placeholder="URL Link Gambar" className="p-4 bg-stone-50 rounded-xl outline-none border" value={img} onChange={e=>setImg(e.target.value)} />
-                                <button onClick={()=>{
-                                    if(!name || !loc) return alert('Lengkapi data!');
-                                    setProjects([{id:Date.now(), name, loc, img: img || 'https://images.unsplash.com/photo-1600585154340-be6199f7a009?auto=format&fit=crop&w=800'}, ...projects]);
-                                    setName(''); setLoc(''); setImg('');
-                                }} className="bg-green-600 text-white p-4 rounded-xl font-bold shadow-lg">Simpan ke Portofolio</button>
-                            </div>
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <h3 className="font-bold text-gray-400 uppercase text-xs tracking-widest">Daftar Proyek Aktif</h3>
-                            {projects.map(p => (
-                                <div key={p.id} className="flex justify-between items-center p-4 bg-white rounded-2xl border shadow-sm">
-                                    <div className="flex items-center gap-4">
-                                        <img src={p.img} className="w-12 h-12 rounded-lg object-cover" />
-                                        <div><span className="font-bold block">{p.name}</span><span className="text-xs text-gray-400">{p.loc}</span></div>
-                                    </div>
-                                    <button onClick={() => { if(confirm('Hapus?')) setProjects(projects.filter(x=>x.id!==p.id)) }} className="bg-red-50 text-red-500 p-3 rounded-xl hover:bg-red-500 hover:text-white transition-all">
-                                        <Icon name="trash-2" size={18} />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                );
-            };
-
-            return (
-                <HashRouter>
-                    <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Home projs={projects} />} />
-                        <Route path="/portfolio" element={<div className="py-24 px-4 max-w-7xl mx-auto"><h2 className="text-4xl font-bold mb-16 text-center text-[#5d4037] font-serif">Galeri Karya</h2><div className="grid md:grid-cols-3 gap-8">{projects.map(p=>(<div key={p.id} className="rounded-3xl overflow-hidden shadow-md border bg-white group"><div className="overflow-hidden aspect-video"><img src={p.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/></div><div className="p-6"><h4 className="font-bold text-lg">{p.name}</h4><p className="text-sm text-gray-400">{p.loc}</p></div></div>))}</div></div>} />
-                        <Route path="/prices" element={<div className="py-24 px-4 max-w-4xl mx-auto text-center"><h2 className="text-4xl font-bold mb-16 text-[#5d4037] font-serif">Estimasi Harga</h2><div className="bg-white rounded-3xl shadow-xl overflow-hidden border"><table className="w-full text-left"><thead className="bg-[#5d4037] text-white"><tr><th className="p-6 uppercase tracking-widest text-xs">Produk</th><th className="p-6 uppercase tracking-widest text-xs">Harga Mulai</th></tr></thead><tbody className="divide-y"><tr><td className="p-6 font-bold">Gazebo Jati 3x3</td><td className="p-6 text-green-700 font-bold">Rp 15 Juta</td></tr><tr><td className="p-6 font-bold">Rumah Kayu Minimalis</td><td className="p-6 text-green-700 font-bold">Rp 120 Juta</td></tr><tr><td className="p-6 font-bold">Joglo Soko 20</td><td className="p-6 text-green-700 font-bold">Rp 85 Juta</td></tr></tbody></table></div></div>} />
-                        <Route path="/services" element={<div className="py-32 px-4 max-w-2xl mx-auto text-center"><h2 className="text-3xl font-bold mb-6 text-[#5d4037]">Layanan Kami</h2><p className="text-gray-500 leading-relaxed">Kami melayani pembuatan bangunan kayu jati custom, bongkar pasang rumah joglo/limasan, dan konstruksi hunian kayu modern dengan material kualitas ekspor Jepara.</p></div>} />
-                        <Route path="/contact" element={<div className="py-24 px-4 max-w-lg mx-auto text-center"><h2 className="text-4xl font-bold mb-10 text-[#5d4037] font-serif">Mulai Proyek Impian</h2><div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border space-y-4"><input placeholder="Nama Lengkap" className="w-full p-5 bg-stone-50 rounded-2xl outline-none" /><input placeholder="Nomor WhatsApp" className="w-full p-5 bg-stone-50 rounded-2xl outline-none" /><textarea placeholder="Ceritakan rencana Anda..." className="w-full p-5 bg-stone-50 rounded-2xl h-40 outline-none resize-none"></textarea><button className="w-full bg-[#5d4037] text-white py-5 rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:bg-[#3d2b26] transition-all">Hubungi Tim Ahli</button></div></div>} />
-                        <Route path="/admin" element={<Admin />} />
-                    </Routes>
-                    <Footer />
-                </HashRouter>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+    <!-- index.tsx will be loaded automatically as a module -->
 </body>
 </html>
