@@ -3,35 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DK Jati - Spesialis Bangunan Kayu Tradisional</title>
+    <title>DK Jati - Spesialis Bangunan Kayu & Joglo</title>
     
-    <!-- Dependencies -->
+    <!-- CSS Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/react-router-dom@6/dist/umd/react-router-dom.production.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
+    <!-- JS Dependencies (Stable UMD Versions - No Importmap) -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.11.2/dist/umd/react-router-dom.production.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fdfaf6; }
+        body { font-family: 'Inter', sans-serif; background-color: #fdfaf6; margin: 0; overflow-x: hidden; }
         h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
         .bg-teak { background-color: #5d4037; }
         .text-teak { color: #5d4037; }
         .border-teak { border-color: #5d4037; }
         .bg-nature { background-color: #2e7d32; }
-        .text-nature { color: #2e7d32; }
-        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #5d4037; border-radius: 10px; }
+        
+        .hero-gradient { background: linear-gradient(to bottom, rgba(93, 64, 55, 0.8), rgba(93, 64, 55, 0.4)); }
     </style>
 <script type="importmap">
 {
   "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
   }
@@ -42,213 +49,209 @@
     <div id="root"></div>
 
     <script type="text/babel">
+        // Access UMD globals
         const { HashRouter, Routes, Route, Link, useLocation } = ReactRouterDOM;
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
 
         // --- ICONS HELPER ---
         const Icon = ({ name, size = 24, className = "" }) => {
-            const [iconHtml, setIconHtml] = useState('');
+            const iconRef = useRef(null);
             useEffect(() => {
-                if (window.lucide) {
-                    const icon = window.lucide.icons[name];
-                    if (icon) {
-                        const svg = window.lucide.createIcons({ icons: { [name]: icon } });
-                    }
+                if (window.lucide && iconRef.current) {
+                    window.lucide.createIcons();
                 }
             }, [name]);
-            
-            // Fallback render using Lucide's global createIcons
-            useEffect(() => {
-                window.lucide.createIcons();
-            });
-
-            return <i data-lucide={name} style={{width: size, height: size}} className={className}></i>;
+            return <i data-lucide={name} ref={iconRef} style={{width: size, height: size}} className={`inline-block ${className}`}></i>;
         };
 
-        // --- CONSTANTS & DATA ---
+        // --- DATA ---
         const INITIAL_SERVICES = [
-            { id: '1', title: 'Rumah Kayu Jati', icon: 'home', description: 'Hunian eksklusif dengan sentuhan alami kayu jati grade A.', estimatedTime: '3-6 Bulan', imageUrl: 'https://images.unsplash.com/photo-1510620389141-ce747447ef7e?auto=format&fit=crop&w=800' },
-            { id: '2', title: 'Joglo Tradisional', icon: 'compass', description: 'Mahakarya arsitektur Jawa dengan struktur tumpang sari megah.', estimatedTime: '4-8 Bulan', imageUrl: 'https://images.unsplash.com/photo-1590076033480-163e79051877?auto=format&fit=crop&w=800' },
-            { id: '3', title: 'Gazebo & Pendopo', icon: 'trees', description: 'Tempat berkumpul nyaman dengan desain terbuka estetik.', estimatedTime: '2-4 Minggu', imageUrl: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=800' }
+            { id: '1', title: 'Rumah Kayu Jati', icon: 'home', description: 'Hunian eksklusif dengan kayu jati grade A pilihan.', time: '3-6 Bulan', img: 'https://images.unsplash.com/photo-1510620389141-ce747447ef7e?auto=format&fit=crop&w=800' },
+            { id: '2', title: 'Joglo Tradisional', icon: 'compass', description: 'Arsitektur klasik Jawa dengan struktur tumpang sari megah.', time: '4-8 Bulan', img: 'https://images.unsplash.com/photo-1590076033480-163e79051877?auto=format&fit=crop&w=800' },
+            { id: '3', title: 'Gazebo & Pendopo', icon: 'trees', description: 'Tempat santai outdoor dengan desain terbuka estetik.', time: '2-4 Minggu', img: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=800' }
         ];
 
         const INITIAL_PROJECTS = [
-            { id: 'p1', name: 'Joglo Agung Solo', location: 'Surakarta', type: 'Joglo', imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6199f7a009?auto=format&fit=crop&w=800' },
-            { id: 'p2', name: 'Villa Kayu Merapi', location: 'Yogyakarta', type: 'Villa', imageUrl: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800' },
-            { id: 'p3', name: 'Gazebo Jati Minimalis', location: 'Semarang', type: 'Gazebo', imageUrl: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800' }
+            { id: 'p1', name: 'Joglo Agung Solo', loc: 'Surakarta', type: 'Joglo', img: 'https://images.unsplash.com/photo-1600585154340-be6199f7a009?auto=format&fit=crop&w=800' },
+            { id: 'p2', name: 'Villa Kayu Merapi', loc: 'Yogyakarta', type: 'Villa', img: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800' },
+            { id: 'p3', name: 'Gazebo Minimalis', loc: 'Semarang', type: 'Gazebo', img: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800' }
         ];
 
         // --- COMPONENTS ---
-
         const Navbar = () => {
             const [isOpen, setIsOpen] = useState(false);
             const location = useLocation();
-            const navLinks = [
-                { name: 'Beranda', path: '/' },
-                { name: 'Tentang', path: '/about' },
-                { name: 'Layanan', path: '/services' },
-                { name: 'Portofolio', path: '/portfolio' },
-                { name: 'Harga', path: '/prices' },
-                { name: 'Hubungi', path: '/contact' },
+            const links = [
+                { n: 'Beranda', p: '/' },
+                { n: 'Layanan', p: '/services' },
+                { n: 'Portofolio', p: '/portfolio' },
+                { n: 'Harga', p: '/prices' },
+                { n: 'Hubungi', p: '/contact' }
             ];
 
             return (
-                <nav className="sticky top-0 z-50 bg-[#fdfaf6]/95 backdrop-blur-sm border-b border-[#5d4037]/10">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex justify-between h-20">
-                            <div className="flex items-center">
-                                <Link to="/" className="text-2xl font-bold font-serif text-[#5d4037] tracking-tight">DK JATI</Link>
-                            </div>
-                            <div className="hidden md:flex items-center space-x-8">
-                                {navLinks.map((link) => (
-                                    <Link key={link.path} to={link.path} className={`text-sm font-medium hover:text-[#5d4037] transition-colors ${location.pathname === link.path ? 'text-[#5d4037] font-bold' : 'text-gray-600'}`}>
-                                        {link.name}
-                                    </Link>
-                                ))}
-                                <Link to="/admin" className="text-gray-400 hover:text-[#5d4037]"><Icon name="layout-dashboard" size={20} /></Link>
-                            </div>
-                            <div className="md:hidden flex items-center">
-                                <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600"><Icon name={isOpen ? "x" : "menu"} size={28} /></button>
-                            </div>
+                <nav className="sticky top-0 z-50 bg-[#fdfaf6]/95 backdrop-blur-md border-b border-[#5d4037]/10">
+                    <div className="max-w-7xl mx-auto px-4 flex justify-between h-20 items-center">
+                        <Link to="/" className="text-2xl font-bold font-serif text-[#5d4037] tracking-tighter">DK JATI</Link>
+                        <div className="hidden md:flex space-x-8 items-center">
+                            {links.map(l => (
+                                <Link key={l.p} to={l.p} className={`text-sm hover:text-[#5d4037] transition-colors ${location.pathname === l.p ? 'font-bold text-[#5d4037]' : 'text-gray-500'}`}>{l.n}</Link>
+                            ))}
+                            <Link to="/admin" className="text-gray-300 hover:text-[#5d4037]"><Icon name="layout-dashboard" size={18} /></Link>
                         </div>
+                        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-[#5d4037] p-2"><Icon name={isOpen ? "x" : "menu"} /></button>
                     </div>
                     {isOpen && (
-                        <div className="md:hidden bg-[#fdfaf6] border-b border-[#5d4037]/10 px-4 py-4 space-y-2">
-                            {navLinks.map((link) => (
-                                <Link key={link.path} to={link.path} onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base text-gray-700 hover:bg-[#5d4037]/5 rounded-md">{link.name}</Link>
-                            ))}
-                            <Link to="/admin" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-[#5d4037] font-bold">Admin Panel</Link>
+                        <div className="md:hidden bg-white/95 border-b p-4 space-y-3 shadow-lg absolute w-full left-0 animate-fade-in">
+                            {links.map(l => <Link key={l.p} to={l.p} onClick={() => setIsOpen(false)} className="block py-2 px-4 hover:bg-stone-50 rounded text-gray-700">{l.n}</Link>)}
+                            <Link to="/admin" onClick={() => setIsOpen(false)} className="block py-2 px-4 text-[#5d4037] font-bold">Admin Panel</Link>
                         </div>
                     )}
                 </nav>
             );
         };
 
-        const Home = ({ projects }) => (
-            <div className="animate-fade-in">
-                <section className="relative h-[70vh] flex items-center bg-[#5d4037] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1542662565-7e4b66bae529?auto=format&fit=crop&w=1920&q=80" className="absolute inset-0 w-full h-full object-cover opacity-40" />
-                    <div className="relative z-10 max-w-7xl mx-auto px-4 text-white">
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6">Hunian Kayu Jati <br/><span className="text-amber-400">Klasik & Berkualitas</span></h1>
-                        <p className="text-lg md:text-xl text-stone-200 max-w-2xl mb-8">Spesialis pembuatan Joglo, Limasan, dan Rumah Kayu Jati premium asli pengrajin Jepara.</p>
-                        <Link to="/contact" className="bg-white text-[#5d4037] px-8 py-3 rounded-lg font-bold hover:bg-stone-200 transition-all inline-block">Konsultasi Sekarang</Link>
+        const Footer = () => (
+            <footer className="bg-[#5d4037] text-white py-16 px-4">
+                <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+                    <div className="space-y-4">
+                        <h2 className="text-2xl font-serif font-bold italic tracking-tighter">DK JATI</h2>
+                        <p className="text-stone-300 text-sm leading-relaxed">Membangun mahakarya arsitektur kayu jati dengan presisi tinggi dan dedikasi budaya.</p>
                     </div>
-                </section>
-                
-                <section className="py-20 max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-[#5d4037]">Portofolio Terbaru</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {projects.slice(0, 3).map(p => (
-                            <div key={p.id} className="group">
-                                <div className="aspect-video overflow-hidden rounded-xl mb-4 shadow-lg">
-                                    <img src={p.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                </div>
-                                <h4 className="font-bold text-lg">{p.name}</h4>
-                                <p className="text-sm text-gray-500">{p.location}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            </div>
-        );
-
-        const Admin = ({ projects, setProjects }) => {
-            const [isAuth, setIsAuth] = useState(false);
-            const [pass, setPass] = useState('');
-            const [name, setName] = useState('');
-            const [loc, setLoc] = useState('');
-            const [url, setUrl] = useState('');
-
-            if (!isAuth) {
-                return (
-                    <div className="min-h-screen flex items-center justify-center p-4">
-                        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-                            <h2 className="text-2xl font-bold mb-6 text-center text-[#5d4037]">Login Admin</h2>
-                            <input type="password" placeholder="Password (dkjati2024)" className="w-full p-4 bg-stone-100 rounded-xl mb-4" onChange={e => setPass(e.target.value)} />
-                            <button onClick={() => pass === 'dkjati2024' ? setIsAuth(true) : alert('Salah!')} className="w-full bg-[#5d4037] text-white py-4 rounded-xl font-bold">Masuk</button>
+                    <div>
+                        <h3 className="font-bold mb-4 uppercase text-xs tracking-widest text-amber-400">Navigasi</h3>
+                        <div className="flex flex-col space-y-2 text-sm text-stone-300">
+                            <Link to="/portfolio" className="hover:text-white transition-colors">Portofolio Kami</Link>
+                            <Link to="/services" className="hover:text-white transition-colors">Layanan Lengkap</Link>
+                            <Link to="/prices" className="hover:text-white transition-colors">Estimasi Harga</Link>
                         </div>
                     </div>
-                );
-            }
-
-            const handleAdd = (e) => {
-                e.preventDefault();
-                const newProj = { id: Date.now().toString(), name, location: loc, type: 'Joglo', imageUrl: url || 'https://picsum.photos/seed/1/800/600' };
-                setProjects([newProj, ...projects]);
-                setName(''); setLoc(''); setUrl('');
-                alert('Proyek ditambahkan!');
-            };
-
-            return (
-                <div className="max-w-4xl mx-auto py-20 px-4">
-                    <h1 className="text-3xl font-bold mb-10 text-[#5d4037]">Panel Admin</h1>
-                    <div className="bg-white p-8 rounded-2xl shadow-md mb-10">
-                        <h3 className="font-bold mb-4">Tambah Proyek Baru</h3>
-                        <form onSubmit={handleAdd} className="space-y-4">
-                            <input placeholder="Nama Proyek" value={name} onChange={e => setName(e.target.value)} required className="w-full p-3 border rounded-lg" />
-                            <input placeholder="Lokasi" value={loc} onChange={e => setLoc(e.target.value)} required className="w-full p-3 border rounded-lg" />
-                            <input placeholder="URL Gambar" value={url} onChange={e => setUrl(e.target.value)} className="w-full p-3 border rounded-lg" />
-                            <button className="bg-[#5d4037] text-white px-6 py-2 rounded-lg font-bold">Simpan Proyek</button>
-                        </form>
+                    <div>
+                        <h3 className="font-bold mb-4 uppercase text-xs tracking-widest text-amber-400">Hubungi Kami</h3>
+                        <p className="text-sm text-stone-300 flex items-center gap-3 mb-3"><Icon name="phone" size={14} /> +62 812-3456-7890</p>
+                        <p className="text-sm text-stone-300 flex items-center gap-3"><Icon name="map-pin" size={14} /> Jepara, Jawa Tengah</p>
                     </div>
-                    <div className="space-y-4">
-                        {projects.map(p => (
-                            <div key={p.id} className="flex justify-between items-center bg-white p-4 rounded-xl border">
-                                <span>{p.name}</span>
-                                <button onClick={() => setProjects(projects.filter(x => x.id !== p.id))} className="text-red-500 font-bold">Hapus</button>
+                </div>
+            </footer>
+        );
+
+        const Home = ({ projs }) => (
+            <div className="animate-fade-in">
+                <section className="relative h-[80vh] flex items-center justify-center text-center bg-[#5d4037] overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1542662565-7e4b66bae529?auto=format&fit=crop&w=1600" className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105" />
+                    <div className="absolute inset-0 hero-gradient"></div>
+                    <div className="relative z-10 px-4 text-white">
+                        <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif leading-tight">Keindahan Kayu <br/><span className="text-amber-400 italic">Jati Sejati</span></h1>
+                        <p className="text-lg md:text-xl text-stone-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">Spesialis pembuatan Joglo, Rumah Kayu, dan Pendopo premium dengan kualitas kayu grade A Jepara.</p>
+                        <Link to="/contact" className="bg-amber-500 hover:bg-amber-600 text-white px-10 py-4 rounded-full font-bold shadow-2xl transform hover:scale-105 transition-all inline-block uppercase tracking-widest text-xs">Konsultasi Gratis</Link>
+                    </div>
+                </section>
+
+                <section className="py-24 max-w-7xl mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold text-[#5d4037] mb-4">Proyek Terbaru</h2>
+                        <div className="w-20 h-1 bg-amber-400 mx-auto"></div>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-10">
+                        {projs.slice(0, 3).map(p => (
+                            <div key={p.id} className="group cursor-pointer">
+                                <div className="aspect-[4/3] rounded-3xl overflow-hidden mb-6 shadow-2xl border-8 border-white">
+                                    <img src={p.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                </div>
+                                <h4 className="font-bold text-xl text-[#5d4037] mb-1">{p.name}</h4>
+                                <p className="text-sm text-gray-400 flex items-center gap-1 uppercase tracking-tighter"><Icon name="map-pin" size={12} /> {p.loc}</p>
                             </div>
                         ))}
                     </div>
-                </div>
-            );
-        };
-
-        const PageWrapper = ({ children }) => (
-            <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main className="flex-grow">{children}</main>
-                <footer className="bg-[#5d4037] text-white py-12 px-4 mt-20">
-                    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div><h2 className="text-2xl font-serif font-bold mb-4">DK JATI</h2><p className="text-stone-300 text-sm">Spesialis bangunan kayu jati berkualitas sejak 2008.</p></div>
-                        <div><h3 className="font-bold mb-4">Navigasi</h3><div className="flex flex-col space-y-2 text-sm text-stone-300"><Link to="/">Beranda</Link><Link to="/portfolio">Portofolio</Link><Link to="/prices">Harga</Link></div></div>
-                        <div><h3 className="font-bold mb-4">Kontak</h3><p className="text-sm text-stone-300">WhatsApp: +62 812-3456-7890<br/>Workshop: Jepara, Jawa Tengah</p></div>
-                    </div>
-                </footer>
-                <a href="https://wa.me/6281234567890" target="_blank" className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl flex items-center gap-2">
-                    <Icon name="message-circle" /> <span>WhatsApp</span>
-                </a>
+                </section>
             </div>
         );
 
         // --- APP MAIN ---
         const App = () => {
             const [projects, setProjects] = useState(() => {
-                const saved = localStorage.getItem('dk_jati_projs');
+                const saved = localStorage.getItem('dk_jati_v3');
                 return saved ? JSON.parse(saved) : INITIAL_PROJECTS;
             });
 
             useEffect(() => {
-                localStorage.setItem('dk_jati_projs', JSON.stringify(projects));
+                localStorage.setItem('dk_jati_v3', JSON.stringify(projects));
             }, [projects]);
+
+            const Admin = () => {
+                const [auth, setAuth] = useState(false);
+                const [pw, setPw] = useState('');
+                const [name, setName] = useState('');
+                const [loc, setLoc] = useState('');
+                const [img, setImg] = useState('');
+
+                if (!auth) return (
+                    <div className="h-[80vh] flex items-center justify-center p-4 bg-stone-50">
+                        <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm border border-stone-100">
+                            <h2 className="text-2xl font-bold mb-6 text-center text-[#5d4037] font-serif">Admin Login</h2>
+                            <input type="password" placeholder="dkjati2024" className="w-full p-4 bg-stone-50 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-amber-400 transition-all" onChange={e=>setPw(e.target.value)} />
+                            <button onClick={()=>pw === 'dkjati2024' ? setAuth(true) : alert('Password Salah!')} className="w-full bg-[#5d4037] text-white py-4 rounded-xl font-bold hover:bg-[#3d2b26] transition-colors">Login Ke Dashboard</button>
+                        </div>
+                    </div>
+                );
+
+                return (
+                    <div className="max-w-4xl mx-auto py-16 px-4 animate-fade-in">
+                        <div className="flex justify-between items-center mb-10">
+                            <h1 className="text-3xl font-bold text-[#5d4037] font-serif italic">Dashboard Portofolio</h1>
+                            <button onClick={() => setAuth(false)} className="text-sm text-red-500 font-bold">Logout</button>
+                        </div>
+                        <div className="bg-white p-8 rounded-3xl shadow-xl mb-10 border border-stone-100">
+                            <h3 className="font-bold mb-6 text-gray-700">Tambah Portofolio Baru</h3>
+                            <div className="grid gap-5">
+                                <input placeholder="Nama Proyek (Contoh: Joglo Pak Budi)" className="p-4 bg-stone-50 rounded-xl outline-none" value={name} onChange={e=>setName(e.target.value)} />
+                                <input placeholder="Lokasi (Contoh: Jakarta Selatan)" className="p-4 bg-stone-50 rounded-xl outline-none" value={loc} onChange={e=>setLoc(e.target.value)} />
+                                <input placeholder="URL Link Gambar (Unsplash/Imgur)" className="p-4 bg-stone-50 rounded-xl outline-none" value={img} onChange={e=>setImg(e.target.value)} />
+                                <button onClick={()=>{
+                                    if(!name || !loc) return alert('Nama dan Lokasi wajib diisi');
+                                    setProjects([{id:Date.now(), name, loc, img: img||'https://images.unsplash.com/photo-1600585154340-be6199f7a009?auto=format&fit=crop&w=800'}, ...projects]);
+                                    setName(''); setLoc(''); setImg('');
+                                    alert('Proyek Berhasil Disimpan!');
+                                }} className="bg-green-600 text-white p-4 rounded-xl font-bold hover:bg-green-700 transition-colors shadow-lg">Simpan Portofolio</button>
+                            </div>
+                        </div>
+                        <div className="grid gap-3">
+                            <h3 className="font-bold text-gray-400 uppercase text-xs tracking-widest mb-2">Daftar Proyek Aktif</h3>
+                            {projects.map(p => (
+                                <div key={p.id} className="flex justify-between items-center p-5 bg-white rounded-2xl border border-stone-100 shadow-sm">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-lg bg-stone-100 overflow-hidden"><img src={p.img} className="w-full h-full object-cover" /></div>
+                                        <div><span className="font-bold block text-gray-800">{p.name}</span><span className="text-xs text-gray-400">{p.loc}</span></div>
+                                    </div>
+                                    <button onClick={()=>setProjects(projects.filter(x=>x.id!==p.id))} className="text-red-400 hover:text-red-600 p-2"><Icon name="trash-2" size={18} /></button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
 
             return (
                 <HashRouter>
-                    <Routes>
-                        <Route path="/" element={<PageWrapper><Home projects={projects} /></PageWrapper>} />
-                        <Route path="/about" element={<PageWrapper><div className="py-20 text-center"><h1 className="text-4xl font-bold">Tentang Kami</h1><p className="mt-4 max-w-xl mx-auto">DK Jati adalah pionir pembangunan rumah kayu jati dengan standar kualitas ekspor.</p></div></PageWrapper>} />
-                        <Route path="/services" element={<PageWrapper><div className="py-20 max-w-7xl mx-auto px-4"><h1 className="text-4xl font-bold mb-10 text-center">Layanan Kami</h1><div className="grid md:grid-cols-3 gap-8">{INITIAL_SERVICES.map(s => <div key={s.id} className="bg-white p-6 rounded-2xl shadow-sm border"><h3 className="text-xl font-bold mb-2">{s.title}</h3><p className="text-gray-500 text-sm">{s.description}</p></div>)}</div></div></PageWrapper>} />
-                        <Route path="/portfolio" element={<PageWrapper><div className="py-20 max-w-7xl mx-auto px-4"><h1 className="text-4xl font-bold mb-10 text-center">Galeri Proyek</h1><div className="grid md:grid-cols-3 gap-8">{projects.map(p => <div key={p.id} className="rounded-xl overflow-hidden border"><img src={p.imageUrl} className="w-full aspect-square object-cover" /><div className="p-4"><h4 className="font-bold">{p.name}</h4><p className="text-sm text-gray-500">{p.location}</p></div></div>)}</div></div></PageWrapper>} />
-                        <Route path="/prices" element={<PageWrapper><div className="py-20 max-w-4xl mx-auto px-4"><h1 className="text-4xl font-bold mb-10 text-center">Estimasi Harga</h1><div className="bg-white rounded-2xl shadow-md overflow-hidden"><table className="w-full text-left"><thead className="bg-stone-50 border-b"><tr><th className="p-4">Jenis</th><th className="p-4">Harga Mulai</th></tr></thead><tbody><tr><td className="p-4">Gazebo 3x3</td><td className="p-4 text-green-700 font-bold">Rp 15.000.000</td></tr><tr><td className="p-4">Rumah Kayu 6x8</td><td className="p-4 text-green-700 font-bold">Rp 120.000.000</td></tr><tr><td className="p-4">Joglo Soko 20</td><td className="p-4 text-green-700 font-bold">Rp 85.000.000</td></tr></tbody></table></div></div></PageWrapper>} />
-                        <Route path="/contact" element={<PageWrapper><div className="py-20 max-w-xl mx-auto px-4 text-center"><h1 className="text-4xl font-bold mb-6">Hubungi Kami</h1><p className="mb-10 text-gray-600">Konsultasikan desain impian Anda secara gratis.</p><div className="bg-white p-8 rounded-2xl shadow-xl space-y-4"><input placeholder="Nama Anda" className="w-full p-4 bg-stone-50 rounded-lg" /><input placeholder="No. WhatsApp" className="w-full p-4 bg-stone-50 rounded-lg" /><textarea placeholder="Ceritakan rencana Anda..." className="w-full p-4 bg-stone-50 rounded-lg h-32"></textarea><button className="w-full bg-[#5d4037] text-white py-4 rounded-lg font-bold">Kirim Sekarang</button></div></div></PageWrapper>} />
-                        <Route path="/admin" element={<Admin projects={projects} setProjects={setProjects} />} />
-                    </Routes>
+                    <Navbar />
+                    <div className="min-h-[70vh]">
+                        <Routes>
+                            <Route path="/" element={<Home projs={projects} />} />
+                            <Route path="/services" element={<div className="py-24 px-4 max-w-7xl mx-auto"><h2 className="text-4xl font-bold mb-16 text-center text-[#5d4037] font-serif leading-tight">Layanan Eksklusif</h2><div className="grid md:grid-cols-3 gap-10">{INITIAL_SERVICES.map(s => <div key={s.id} className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-stone-50 hover:shadow-2xl transition-all"><div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-6"><Icon name={s.icon} size={30} /></div><h4 className="text-2xl font-bold mb-4 text-[#5d4037]">{s.title}</h4><p className="text-gray-500 text-sm leading-relaxed mb-6">{s.description}</p><p className="text-xs font-bold text-amber-600 uppercase tracking-widest">Waktu Pengerjaan: {s.time}</p></div>)}</div></div>} />
+                            <Route path="/portfolio" element={<div className="py-24 px-4 max-w-7xl mx-auto"><h2 className="text-4xl font-bold mb-16 text-center text-[#5d4037] font-serif leading-tight">Galeri Karya</h2><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">{projects.map(p => <div key={p.id} className="rounded-3xl overflow-hidden shadow-xl border border-stone-100 bg-white group"><div className="overflow-hidden"><img src={p.img} className="w-full aspect-[4/3] object-cover group-hover:scale-110 transition-transform duration-700" /></div><div className="p-6"><h4 className="font-bold text-lg text-[#5d4037]">{p.name}</h4><p className="text-sm text-gray-400 flex items-center gap-1 italic"><Icon name="map-pin" size={12} /> {p.loc}</p></div></div>)}</div></div>} />
+                            <Route path="/prices" element={<div className="py-24 px-4 max-w-4xl mx-auto"><h2 className="text-4xl font-bold mb-16 text-center text-[#5d4037] font-serif leading-tight">Panduan Investasi</h2><div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-stone-100"><table className="w-full text-left"><thead className="bg-[#5d4037] text-white"><tr><th className="p-6 text-sm uppercase tracking-widest">Jenis Bangunan</th><th className="p-6 text-sm uppercase tracking-widest">Estimasi Harga</th></tr></thead><tbody className="divide-y divide-stone-100"><tr><td className="p-6 font-bold text-gray-800">Gazebo Jati 3x3</td><td className="p-6 text-green-700 font-bold">Mulai Rp 15 Juta</td></tr><tr><td className="p-6 font-bold text-gray-800">Rumah Kayu Minimalis</td><td className="p-6 text-green-700 font-bold">Mulai Rp 120 Juta</td></tr><tr><td className="p-6 font-bold text-gray-800">Joglo Utama Soko 20</td><td className="p-6 text-green-700 font-bold">Mulai Rp 85 Juta</td></tr><tr><td className="p-6 font-bold text-gray-800">Villa Kayu Tropis</td><td className="p-6 text-green-700 font-bold">Hubungi Kami</td></tr></tbody></table></div><div className="mt-10 p-6 bg-amber-50 rounded-2xl border border-amber-100"><p className="text-sm text-amber-800 leading-relaxed italic">* Estimasi harga diatas sudah termasuk material kayu jati solid Jepara. Harga akhir bergantung pada kerumitan ukiran dan lokasi pemasangan di seluruh Indonesia.</p></div></div>} />
+                            <Route path="/contact" element={<div className="py-24 px-4 max-w-2xl mx-auto text-center"><h2 className="text-4xl font-bold mb-6 text-[#5d4037] font-serif">Mulai Proyek Anda</h2><p className="text-gray-500 mb-12 max-w-lg mx-auto leading-relaxed">Konsultasikan desain, ukuran, dan kebutuhan hunian kayu Anda secara gratis kepada tim ahli kami.</p><div className="bg-white p-10 rounded-[3rem] shadow-2xl space-y-5 border border-stone-50"><input placeholder="Nama Lengkap" className="w-full p-5 bg-stone-50 rounded-2xl outline-none border border-transparent focus:border-amber-400 transition-all" /><input placeholder="Nomor WhatsApp" className="w-full p-5 bg-stone-50 rounded-2xl outline-none border border-transparent focus:border-amber-400 transition-all" /><textarea placeholder="Ceritakan rencana bangunan impian Anda..." className="w-full p-5 bg-stone-50 rounded-2xl h-40 outline-none border border-transparent focus:border-amber-400 transition-all resize-none"></textarea><button className="w-full bg-[#5d4037] text-white py-5 rounded-2xl font-bold text-lg shadow-xl hover:bg-[#3d2b26] transform active:scale-95 transition-all uppercase tracking-widest">Kirim Pesan Sekarang</button></div></div>} />
+                            <Route path="/admin" element={<Admin />} />
+                        </Routes>
+                    </div>
+                    <Footer />
+                    <a href="https://wa.me/6281234567890" target="_blank" className="fixed bottom-8 right-8 bg-green-500 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-[100] border-4 border-white"><Icon name="message-circle" size={28} /></a>
                 </HashRouter>
             );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
         root.render(<App />);
     </script>
 </body>
