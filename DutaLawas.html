@@ -54,24 +54,26 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // --- Konfigurasi Firebase ---
+        // =========================================================================
+        // KONFIGURASI FIREBASE
+        // =========================================================================
         const firebaseConfig = (() => {
-            // Jika ada __firebase_config, gunakan itu (untuk lingkungan Preview)
-            if (typeof __firebase_config !== 'undefined') {
+            // Gunakan konfigurasi otomatis jika di lingkungan Preview Canvas
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 return JSON.parse(__firebase_config);
             }
-            // Ganti bagian ini dengan konfigurasi Firebase asli Anda untuk digiwork.web.id
+            // SILAKAN GANTI INI DENGAN CONFIG ANDA SAAT UPLOAD KE DIGIWORK.WEB.ID
             return {
-                apiKey: "MASUKKAN_API_KEY_ASLI_ANDA",
-                authDomain: "PROJECT_ID_ANDA.firebaseapp.com",
-                projectId: "PROJECT_ID_ANDA",
-                storageBucket: "PROJECT_ID_ANDA.appspot.com",
-                messagingSenderId: "SENDER_ID_ANDA",
-                appId: "APP_ID_ANDA"
+                apiKey: "PASTE_API_KEY_ANDA",
+                authDomain: "PROJECT_ID.firebaseapp.com",
+                projectId: "PROJECT_ID",
+                storageBucket: "PROJECT_ID.appspot.com",
+                messagingSenderId: "SENDER_ID",
+                appId: "APP_ID"
             };
         })();
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'duta-lawas-djogja';
+        const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'duta-lawas-djogja';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Inisialisasi Firebase
@@ -110,22 +112,22 @@
             const [isUploading, setIsUploading] = useState(false);
             const [filter, setFilter] = useState('Semua');
 
-            // Jalur Koleksi Pintar (Deteksi apakah di Preview atau Produksi)
+            // Jalur Koleksi Sesuai Aturan (Rule 1)
             const getCol = (name) => {
                 if (typeof __app_id !== 'undefined') {
-                    return db.collection('artifacts').doc(appId).collection('public').doc('data').collection(name);
+                    return db.collection('artifacts').doc(currentAppId).collection('public').doc('data').collection(name);
                 }
                 return db.collection(name);
             };
 
             const getSetDoc = () => {
                 if (typeof __app_id !== 'undefined') {
-                    return db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('admin');
+                    return db.collection('artifacts').doc(currentAppId).collection('public').doc('data').collection('settings').doc('admin');
                 }
                 return db.collection('settings').doc('admin');
             };
 
-            // --- 1. Autentikasi Dahulu ---
+            // --- 1. Autentikasi Dahulu (Rule 3) ---
             useEffect(() => {
                 const performAuth = async () => {
                     try {
@@ -135,7 +137,7 @@
                             await auth.signInAnonymously();
                         }
                     } catch (err) {
-                        console.error("Firebase Auth Error:", err);
+                        console.error("Autentikasi Firebase gagal:", err);
                     }
                 };
                 performAuth();
@@ -153,13 +155,14 @@
                 // Sync Galeri
                 const unsubGallery = getCol('gallery').onSnapshot(snap => {
                     const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    // Sort memory (Rule 2)
                     data.sort((a, b) => {
                         const dateA = a.createdAt?.seconds || 0;
                         const dateB = b.createdAt?.seconds || 0;
                         return dateB - dateA;
                     });
                     setGallery(data);
-                }, err => console.error("Gallery Sync Error:", err));
+                }, err => console.error("Error Galeri:", err));
 
                 // Sync Harga
                 const unsubPrices = getCol('prices').onSnapshot(snap => {
@@ -193,7 +196,7 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
-            // --- Admin Logic ---
+            // --- Logika Admin ---
             const handleAdminLogin = (e) => {
                 e.preventDefault();
                 if (adminPasswordInput === storedPassword) {
@@ -209,50 +212,53 @@
 
             const handleAddProject = (e) => {
                 e.preventDefault();
-                if (!user) return;
+                if (!user) {
+                    setAdminStatusMsg('❌ Anda belum terautentikasi.');
+                    return;
+                }
+                
                 const form = e.currentTarget;
                 const formData = new FormData(form);
+                const title = formData.get('title');
+                const category = formData.get('category');
+                const location = formData.get('location');
                 const file = formData.get('image');
 
-                if (!formData.get('title') || !formData.get('location')) {
-                    setAdminStatusMsg('⚠️ Harap isi nama dan lokasi!');
+                if (!title || !location || !file || file.size === 0) {
+                    setAdminStatusMsg('⚠️ Harap isi nama, lokasi, dan pilih foto!');
                     return;
                 }
 
                 setIsUploading(true);
-                setAdminStatusMsg('⏳ Sedang Mengunggah...');
+                setAdminStatusMsg('⏳ Sedang Memproses Mahakarya...');
 
                 const reader = new FileReader();
                 reader.onloadend = async () => {
                     try {
                         await getCol('gallery').add({
-                            title: formData.get('title').toString(),
-                            category: formData.get('category').toString(),
-                            location: formData.get('location').toString(),
+                            title: title.toString(),
+                            category: category.toString(),
+                            location: location.toString(),
                             img: reader.result,
                             createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
                         setIsUploading(false);
                         form.reset();
-                        setAdminStatusMsg('✅ Berhasil Diunggah!');
+                        setAdminStatusMsg('✅ Mahakarya Berhasil Diunggah!');
                         setTimeout(() => setAdminStatusMsg(''), 3000);
                     } catch (err) {
-                        setAdminStatusMsg('❌ Gagal menyimpan ke basis data.');
+                        console.error("Firebase Add Error:", err);
+                        setAdminStatusMsg('❌ Gagal menyimpan. Pastikan Firestore Rules sudah diatur.');
                         setIsUploading(false);
                     }
                 };
                 
-                if (file && file.size > 0) {
-                    if (file.size > 850000) {
-                        setAdminStatusMsg('❌ Foto terlalu besar (Maks 800KB)');
-                        setIsUploading(false);
-                        return;
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    setAdminStatusMsg('⚠️ Pilih foto proyek!');
+                if (file.size > 800000) {
+                    setAdminStatusMsg('❌ Foto terlalu besar (Maks 800KB)');
                     setIsUploading(false);
+                    return;
                 }
+                reader.readAsDataURL(file);
             };
 
             const handleDeleteProject = async (id) => {
@@ -332,7 +338,7 @@
                                 <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6 text-left">
                                     <div>
                                         <h2 className="text-4xl font-serif italic text-[#3E2723]">Portal Kontrol</h2>
-                                        <p className="text-stone-400 font-bold uppercase tracking-widest text-[10px]">Basis Data Online Terkoneksi</p>
+                                        <p className="text-stone-400 font-bold uppercase tracking-widest text-[10px]">Penyimpanan Basis Data Online Terdeteksi</p>
                                     </div>
                                     <div className="flex gap-4">
                                         <button onClick={() => setShowPasswordForm(!showPasswordForm)} className="px-6 py-2 rounded-xl font-bold flex items-center gap-2 bg-white border text-stone-600 text-[10px] uppercase shadow-sm font-sans"><Icon name="key-round" size={16}/> {showPasswordForm ? 'Batal' : 'Ganti PIN'}</button>
@@ -340,7 +346,12 @@
                                     </div>
                                 </div>
 
-                                {adminStatusMsg && <div className="mb-8 p-4 bg-white border-l-4 border-amber-500 rounded-xl shadow-md text-sm font-bold animate-in slide-in-from-top-4 text-left">{adminStatusMsg}</div>}
+                                {adminStatusMsg && (
+                                    <div className="mb-8 p-4 bg-white border-l-4 border-amber-500 rounded-xl shadow-md text-sm font-bold animate-in slide-in-from-top-4 text-left flex items-center gap-3">
+                                        {isUploading && <Icon name="loader-2" className="animate-spin text-amber-600" size={20}/>}
+                                        {adminStatusMsg}
+                                    </div>
+                                )}
 
                                 <div className="grid lg:grid-cols-3 gap-12 text-left">
                                     <div className="lg:col-span-1 space-y-8">
@@ -352,12 +363,12 @@
                                                     <input type="password" value={passwordForm.newPassword} onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})} className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="PIN Baru" required />
                                                     <input type="password" value={passwordForm.confirmPassword} onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})} className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="Konfirmasi PIN" required />
                                                     {passwordStatus.msg && <div className={`p-4 rounded-xl text-[10px] font-bold ${passwordStatus.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>{passwordStatus.msg}</div>}
-                                                    <button type="submit" className="w-full bg-amber-600 text-white py-4 rounded-xl font-black uppercase text-[10px]">Simpan PIN Baru</button>
+                                                    <button type="submit" className="w-full bg-amber-600 text-white py-4 rounded-xl font-black uppercase text-[10px]">Simpan PIN Permanen</button>
                                                 </form>
                                             </div>
                                         )}
                                         <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-stone-200">
-                                            <h3 className="text-sm font-bold mb-6 uppercase tracking-widest flex items-center gap-2"><Icon name="plus" className="text-amber-600" size={18}/> Tambah Galeri</h3>
+                                            <h3 className="text-sm font-bold mb-6 uppercase tracking-widest flex items-center gap-2"><Icon name="plus" className="text-amber-600" size={18}/> Tambah Mahakarya</h3>
                                             <form onSubmit={handleAddProject} className="space-y-4 text-left">
                                                 <input name="title" required className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="Nama Proyek (Misal: Joglo Lawas)"/>
                                                 <select name="category" className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border">
@@ -378,7 +389,7 @@
 
                                     <div className="lg:col-span-2 space-y-10">
                                         <div className="bg-white p-10 rounded-[2.5rem] shadow-xl text-left">
-                                            <h3 className="text-sm font-bold mb-8 uppercase tracking-widest">Sinkron Koleksi ({gallery.length})</h3>
+                                            <h3 className="text-sm font-bold mb-8 uppercase tracking-widest">Koleksi Terdata ({gallery.length})</h3>
                                             <div className="grid sm:grid-cols-2 gap-6 text-left">
                                                 {gallery.map(item => (
                                                     <div key={item.id} className="flex gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100 items-center hover:bg-white transition-all group">
@@ -390,7 +401,7 @@
                                                         <button onClick={() => handleDeleteProject(item.id)} className="p-3 text-stone-300 hover:text-red-600 transition-colors"><Icon name="trash-2" size={20}/></button>
                                                     </div>
                                                 ))}
-                                                {gallery.length === 0 && <div className="col-span-2 py-10 text-center text-stone-400 font-serif italic">Belum ada karya terdata di Firebase.</div>}
+                                                {gallery.length === 0 && <div className="col-span-2 py-10 text-center text-stone-400 font-serif italic">Belum ada karya yang tersinkron online.</div>}
                                             </div>
                                         </div>
                                         
@@ -440,10 +451,10 @@
                             {/* KOLEKSI GALERI */}
                             <section id="galeri" className="py-32 bg-[#FDFBF7]">
                                 <div className="container mx-auto px-6">
-                                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-left">
-                                        <div className="space-y-4 text-left">
+                                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-left text-[#3E2723]">
+                                        <div className="space-y-4">
                                             <div className="w-12 h-1 bg-amber-600"></div>
-                                            <h2 className="text-5xl font-serif italic text-[#3E2723]">Koleksi Mahakarya</h2>
+                                            <h2 className="text-5xl font-serif italic">Koleksi Mahakarya</h2>
                                             <p className="text-stone-500 font-bold uppercase tracking-[0.3em] text-[10px]">Bangunan Tradisional Jawa & Bali Pilihan</p>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
@@ -464,6 +475,7 @@
                                             </div>
                                         ))}
                                     </div>
+                                    {gallery.length === 0 && <div className="py-20 text-center text-stone-400 italic">Basis data sedang dimuat atau masih kosong.</div>}
                                 </div>
                             </section>
 
@@ -502,7 +514,7 @@
                     <footer className="bg-[#3E2723] text-stone-300 py-24 text-center mt-0">
                         <div className="container mx-auto px-6 space-y-10 relative z-10 text-white">
                             <div className="flex items-center justify-center space-x-3 mb-10">
-                                <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-[#3E2723] font-black text-3xl italic shadow-2xl">DL</div>
+                                <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-[#3E2723] font-black text-3xl italic">DL</div>
                                 <div className="text-left text-white font-sans">
                                     <span className="text-3xl font-black italic tracking-tighter uppercase block leading-none">Duta Lawas</span>
                                     <span className="text-xs font-bold text-amber-500 uppercase tracking-[0.4em]">Heritage Architecture</span>
@@ -520,7 +532,7 @@
                         </div>
                     </footer>
 
-                    {/* MODALS */}
+                    {/* LOGIN MODAL */}
                     {showLoginModal && (
                         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4" onClick={() => setShowLoginModal(false)}>
                             <div className="bg-white p-12 rounded-[3.5rem] max-w-md w-full relative shadow-2xl overflow-hidden text-left border-8 border-stone-50" onClick={e => e.stopPropagation()}>
@@ -528,7 +540,7 @@
                                 <div className="w-24 h-24 bg-amber-50 text-amber-600 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-amber-100/50">
                                     <Icon name="shield-check" size={48}/>
                                 </div>
-                                <h3 className="text-3xl font-black mb-4 text-center text-[#3E2723] uppercase tracking-tighter italic text-center">Admin Portal</h3>
+                                <h3 className="text-3xl font-black mb-4 text-center text-[#3E2723] uppercase tracking-tighter italic text-center">Portal Akses</h3>
                                 <form onSubmit={handleAdminLogin} className="space-y-6">
                                     <div className="relative group text-center">
                                         <input type="password" value={adminPasswordInput} onChange={(e) => setAdminPasswordInput(e.target.value)} placeholder="PIN AKSES" className={`w-full pl-6 pr-6 py-5 bg-stone-50 rounded-[1.5rem] outline-none border-2 transition-all text-center font-black tracking-[0.5em] text-xl ${loginError ? 'border-red-500 bg-red-50/50' : 'border-stone-100 focus:border-amber-500'}`} autoFocus />
@@ -546,7 +558,7 @@
                             <div className="max-w-5xl w-full text-left" onClick={e => e.stopPropagation()}>
                                 <img src={selectedImage.img} className="w-full h-auto rounded-[2.5rem] shadow-2xl object-contain max-h-[80vh] border-2 border-white/10 mx-auto" alt={selectedImage.title} />
                                 <div className="mt-8 text-center text-white space-y-2">
-                                    <span className="text-amber-500 text-[10px] font-black uppercase tracking-[0.2em]">{selectedImage.category}</span>
+                                    <span className="text-amber-500 text-[10px] font-black uppercase tracking-widest">{selectedImage.category}</span>
                                     <h2 className="text-2xl md:text-4xl font-black tracking-tight uppercase italic">{selectedImage.title}</h2>
                                     <p className="text-stone-400 text-xs font-bold flex items-center justify-center gap-2 uppercase tracking-widest mt-2"><Icon name="map-pin" size={16} className="text-amber-500"/>{selectedImage.location}</p>
                                 </div>
