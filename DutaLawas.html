@@ -54,15 +54,11 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // =========================================================================
-        // KONFIGURASI FIREBASE
-        // =========================================================================
+        // --- Konfigurasi Firebase ---
         const firebaseConfig = (() => {
-            // Gunakan konfigurasi otomatis jika di lingkungan Preview Canvas
             if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 return JSON.parse(__firebase_config);
             }
-            // SILAKAN GANTI INI DENGAN CONFIG ANDA SAAT UPLOAD KE DIGIWORK.WEB.ID
             return {
                 apiKey: "PASTE_API_KEY_ANDA",
                 authDomain: "PROJECT_ID.firebaseapp.com",
@@ -73,7 +69,7 @@
             };
         })();
 
-        const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'duta-lawas-djogja';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'duta-lawas-djogja';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Inisialisasi Firebase
@@ -115,14 +111,14 @@
             // Jalur Koleksi Sesuai Aturan (Rule 1)
             const getCol = (name) => {
                 if (typeof __app_id !== 'undefined') {
-                    return db.collection('artifacts').doc(currentAppId).collection('public').doc('data').collection(name);
+                    return db.collection('artifacts').doc(appId).collection('public').doc('data').collection(name);
                 }
                 return db.collection(name);
             };
 
             const getSetDoc = () => {
                 if (typeof __app_id !== 'undefined') {
-                    return db.collection('artifacts').doc(currentAppId).collection('public').doc('data').collection('settings').doc('admin');
+                    return db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('admin');
                 }
                 return db.collection('settings').doc('admin');
             };
@@ -137,13 +133,18 @@
                             await auth.signInAnonymously();
                         }
                     } catch (err) {
-                        console.error("Autentikasi Firebase gagal:", err);
+                        console.error("Firebase Auth Error:", err);
                     }
                 };
+
+                // Jalankan autentikasi
                 performAuth();
 
+                // Listener status login
                 const unsubscribe = auth.onAuthStateChanged((u) => {
-                    setUser(u);
+                    if (u) {
+                        setUser(u);
+                    }
                 });
                 return () => unsubscribe();
             }, []);
@@ -155,7 +156,6 @@
                 // Sync Galeri
                 const unsubGallery = getCol('gallery').onSnapshot(snap => {
                     const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    // Sort memory (Rule 2)
                     data.sort((a, b) => {
                         const dateA = a.createdAt?.seconds || 0;
                         const dateB = b.createdAt?.seconds || 0;
@@ -210,11 +210,21 @@
                 }
             };
 
-            const handleAddProject = (e) => {
+            const handleAddProject = async (e) => {
                 e.preventDefault();
-                if (!user) {
-                    setAdminStatusMsg('❌ Anda belum terautentikasi.');
-                    return;
+                
+                // Pastikan user ada, jika tidak coba login anonim secara instan
+                let currentUser = user || auth.currentUser;
+                if (!currentUser) {
+                    setAdminStatusMsg('⏳ Menyiapkan koneksi aman...');
+                    try {
+                        const cred = await auth.signInAnonymously();
+                        currentUser = cred.user;
+                        setUser(currentUser);
+                    } catch (authErr) {
+                        setAdminStatusMsg('❌ Gagal menyambung ke server.');
+                        return;
+                    }
                 }
                 
                 const form = e.currentTarget;
@@ -248,12 +258,12 @@
                         setTimeout(() => setAdminStatusMsg(''), 3000);
                     } catch (err) {
                         console.error("Firebase Add Error:", err);
-                        setAdminStatusMsg('❌ Gagal menyimpan. Pastikan Firestore Rules sudah diatur.');
+                        setAdminStatusMsg('❌ Gagal menyimpan. Periksa izin folder.');
                         setIsUploading(false);
                     }
                 };
                 
-                if (file.size > 800000) {
+                if (file.size > 850000) {
                     setAdminStatusMsg('❌ Foto terlalu besar (Maks 800KB)');
                     setIsUploading(false);
                     return;
@@ -262,7 +272,7 @@
             };
 
             const handleDeleteProject = async (id) => {
-                if (!user) return;
+                if (!user && !auth.currentUser) return;
                 if (window.confirm("Hapus mahakarya ini secara permanen dari basis data?")) {
                     try {
                         await getCol('gallery').doc(id).delete();
@@ -275,7 +285,7 @@
             };
 
             const handleUpdatePrice = async (id, field, value) => {
-                if (!user) return;
+                if (!user && !auth.currentUser) return;
                 try {
                     await getCol('prices').doc(id).update({ [field]: value });
                 } catch (err) {
@@ -285,7 +295,7 @@
 
             const handleChangePassword = async (e) => {
                 e.preventDefault();
-                if (!user) return;
+                if (!user && !auth.currentUser) return;
                 if (passwordForm.oldPassword !== storedPassword) { setPasswordStatus({ type: 'error', msg: 'PIN lama salah!' }); return; }
                 if (passwordForm.newPassword !== passwordForm.confirmPassword) { setPasswordStatus({ type: 'error', msg: 'Konfirmasi tidak sesuai!' }); return; }
                 
@@ -520,7 +530,7 @@
                                     <span className="text-xs font-bold text-amber-500 uppercase tracking-[0.4em]">Heritage Architecture</span>
                                 </div>
                             </div>
-                            <p className="text-stone-500 text-lg max-w-2xl mx-auto italic font-serif leading-relaxed opacity-70">
+                            <p className="text-stone-500 text-lg max-w-2xl mx-auto italic font-serif leading-relaxed opacity-70 text-center">
                                 "Seni membangun hunian tradisional nusantara dengan pendekatan kustom yang inklusif terhadap anggaran Anda."
                             </p>
                             <div className="flex justify-center space-x-12 pt-8 text-stone-400">
@@ -546,7 +556,7 @@
                                         <input type="password" value={adminPasswordInput} onChange={(e) => setAdminPasswordInput(e.target.value)} placeholder="PIN AKSES" className={`w-full pl-6 pr-6 py-5 bg-stone-50 rounded-[1.5rem] outline-none border-2 transition-all text-center font-black tracking-[0.5em] text-xl ${loginError ? 'border-red-500 bg-red-50/50' : 'border-stone-100 focus:border-amber-500'}`} autoFocus />
                                     </div>
                                     {loginError && <p className="text-red-500 text-xs font-black text-center animate-shake uppercase tracking-widest">{loginError}</p>}
-                                    <button type="submit" className="w-full bg-[#3E2723] text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-black transition-all">Verifikasi</button>
+                                    <button type="submit" className="w-full bg-[#3E2723] text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-black transition-all text-center">Verifikasi</button>
                                 </form>
                             </div>
                         </div>
@@ -559,7 +569,7 @@
                                 <img src={selectedImage.img} className="w-full h-auto rounded-[2.5rem] shadow-2xl object-contain max-h-[80vh] border-2 border-white/10 mx-auto" alt={selectedImage.title} />
                                 <div className="mt-8 text-center text-white space-y-2">
                                     <span className="text-amber-500 text-[10px] font-black uppercase tracking-widest">{selectedImage.category}</span>
-                                    <h2 className="text-2xl md:text-4xl font-black tracking-tight uppercase italic">{selectedImage.title}</h2>
+                                    <h2 className="text-2xl md:text-4xl font-black tracking-tight uppercase italic text-center">{selectedImage.title}</h2>
                                     <p className="text-stone-400 text-xs font-bold flex items-center justify-center gap-2 uppercase tracking-widest mt-2"><Icon name="map-pin" size={16} className="text-amber-500"/>{selectedImage.location}</p>
                                 </div>
                             </div>
