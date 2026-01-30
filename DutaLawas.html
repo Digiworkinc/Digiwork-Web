@@ -89,6 +89,7 @@
 
             // --- State ---
             const [user, setUser] = useState(null);
+            const [isAuthReady, setIsAuthReady] = useState(false);
             const [isScrolled, setIsScrolled] = useState(false);
             const [isAdminMode, setIsAdminMode] = useState(false);
             const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -134,24 +135,23 @@
                         }
                     } catch (err) {
                         console.error("Firebase Auth Error:", err);
+                        setAdminStatusMsg('❌ Gagal menyambung ke sistem keamanan.');
+                    } finally {
+                        setIsAuthReady(true);
                     }
                 };
 
-                // Jalankan autentikasi
                 performAuth();
 
-                // Listener status login
                 const unsubscribe = auth.onAuthStateChanged((u) => {
-                    if (u) {
-                        setUser(u);
-                    }
+                    setUser(u || null);
                 });
                 return () => unsubscribe();
             }, []);
 
             // --- 2. Sinkronisasi Data ---
             useEffect(() => {
-                if (!user) return;
+                if (!user || !isAuthReady) return;
 
                 // Sync Galeri
                 const unsubGallery = getCol('gallery').onSnapshot(snap => {
@@ -162,7 +162,12 @@
                         return dateB - dateA;
                     });
                     setGallery(data);
-                }, err => console.error("Error Galeri:", err));
+                }, err => {
+                    console.error("Error Galeri:", err);
+                    if (err.code === 'permission-denied') {
+                        setAdminStatusMsg('❌ Akses ditolak. Pastikan aturan database sudah benar.');
+                    }
+                });
 
                 // Sync Harga
                 const unsubPrices = getCol('prices').onSnapshot(snap => {
@@ -188,7 +193,7 @@
                 });
 
                 return () => { unsubGallery(); unsubPrices(); unsubSettings(); };
-            }, [user]);
+            }, [user, isAuthReady]);
 
             useEffect(() => {
                 const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -213,16 +218,16 @@
             const handleAddProject = async (e) => {
                 e.preventDefault();
                 
-                // Pastikan user ada, jika tidak coba login anonim secara instan
-                let currentUser = user || auth.currentUser;
-                if (!currentUser) {
-                    setAdminStatusMsg('⏳ Menyiapkan koneksi aman...');
+                // Cek ulang autentikasi sebelum operasi tulis
+                let activeUser = auth.currentUser;
+                if (!activeUser) {
+                    setAdminStatusMsg('⏳ Sedang menyegarkan koneksi...');
                     try {
                         const cred = await auth.signInAnonymously();
-                        currentUser = cred.user;
-                        setUser(currentUser);
-                    } catch (authErr) {
-                        setAdminStatusMsg('❌ Gagal menyambung ke server.');
+                        activeUser = cred.user;
+                        setUser(activeUser);
+                    } catch (err) {
+                        setAdminStatusMsg('❌ Gagal melakukan autentikasi ulang.');
                         return;
                     }
                 }
@@ -245,6 +250,7 @@
                 const reader = new FileReader();
                 reader.onloadend = async () => {
                     try {
+                        // Pastikan path benar sesuai Rule 1
                         await getCol('gallery').add({
                             title: title.toString(),
                             category: category.toString(),
@@ -255,10 +261,10 @@
                         setIsUploading(false);
                         form.reset();
                         setAdminStatusMsg('✅ Mahakarya Berhasil Diunggah!');
-                        setTimeout(() => setAdminStatusMsg(''), 3000);
+                        setTimeout(() => setAdminStatusMsg(''), 4000);
                     } catch (err) {
                         console.error("Firebase Add Error:", err);
-                        setAdminStatusMsg('❌ Gagal menyimpan. Periksa izin folder.');
+                        setAdminStatusMsg('❌ Gagal menyimpan: ' + (err.message || 'Izin ditolak'));
                         setIsUploading(false);
                     }
                 };
@@ -272,8 +278,8 @@
             };
 
             const handleDeleteProject = async (id) => {
-                if (!user && !auth.currentUser) return;
-                if (window.confirm("Hapus mahakarya ini secara permanen dari basis data?")) {
+                if (!auth.currentUser) return;
+                if (window.confirm("Hapus mahakarya ini secara permanen?")) {
                     try {
                         await getCol('gallery').doc(id).delete();
                         setAdminStatusMsg('🗑️ Proyek dihapus.');
@@ -285,7 +291,7 @@
             };
 
             const handleUpdatePrice = async (id, field, value) => {
-                if (!user && !auth.currentUser) return;
+                if (!auth.currentUser) return;
                 try {
                     await getCol('prices').doc(id).update({ [field]: value });
                 } catch (err) {
@@ -295,7 +301,7 @@
 
             const handleChangePassword = async (e) => {
                 e.preventDefault();
-                if (!user && !auth.currentUser) return;
+                if (!auth.currentUser) return;
                 if (passwordForm.oldPassword !== storedPassword) { setPasswordStatus({ type: 'error', msg: 'PIN lama salah!' }); return; }
                 if (passwordForm.newPassword !== passwordForm.confirmPassword) { setPasswordStatus({ type: 'error', msg: 'Konfirmasi tidak sesuai!' }); return; }
                 
@@ -368,7 +374,7 @@
                                         {showPasswordForm && (
                                             <div className="bg-white p-8 rounded-[2rem] shadow-xl border border-amber-100 animate-in slide-in-from-top-4">
                                                 <h3 className="text-sm font-bold mb-6 uppercase tracking-widest">Update PIN Akses</h3>
-                                                <form onSubmit={handleChangePassword} className="space-y-4">
+                                                <form onSubmit={handleChangePassword} className="space-y-4 text-left">
                                                     <input type="password" value={passwordForm.oldPassword} onChange={(e) => setPasswordForm({...passwordForm, oldPassword: e.target.value})} className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="PIN Lama" required />
                                                     <input type="password" value={passwordForm.newPassword} onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})} className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="PIN Baru" required />
                                                     <input type="password" value={passwordForm.confirmPassword} onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})} className="w-full p-4 bg-stone-50 rounded-xl outline-none text-sm border focus:border-amber-500" placeholder="Konfirmasi PIN" required />
@@ -391,7 +397,7 @@
                                                 </div>
                                                 <button type="submit" disabled={isUploading} className="w-full bg-[#3E2723] text-white py-4 rounded-xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all hover:bg-black">
                                                     {isUploading ? <Icon name="loader-2" className="animate-spin" size={16}/> : <Icon name="upload" size={16}/>}
-                                                    {isUploading ? 'Sedang Mengunggah...' : 'Terbitkan'}
+                                                    {isUploading ? 'Sedang Mengunggah...' : 'Terbitkan Mahakarya'}
                                                 </button>
                                             </form>
                                         </div>
@@ -417,13 +423,13 @@
                                         
                                         <div className="bg-white p-10 rounded-[2.5rem] shadow-xl text-left">
                                             <h3 className="text-sm font-bold mb-8 uppercase tracking-widest flex items-center gap-2"><Icon name="dollar-sign" className="text-green-600"/> Edit Investasi Publik</h3>
-                                            <div className="space-y-4 text-left">
+                                            <div className="space-y-4 text-left text-xs font-bold">
                                                 {prices.map(p => (
                                                     <div key={p.id} className="grid md:grid-cols-4 gap-4 p-5 bg-stone-50 rounded-2xl border border-stone-100 items-center">
-                                                        <input value={p.type} onChange={e => handleUpdatePrice(p.id, 'type', e.target.value)} className="bg-transparent font-bold text-xs outline-none border-b border-transparent focus:border-amber-500 w-full"/>
-                                                        <input value={p.size} onChange={e => handleUpdatePrice(p.id, 'size', e.target.value)} className="bg-transparent text-[10px] text-stone-500 font-bold outline-none border-b border-transparent focus:border-amber-500 w-full"/>
+                                                        <input value={p.type} onChange={e => handleUpdatePrice(p.id, 'type', e.target.value)} className="bg-transparent font-bold outline-none border-b border-transparent focus:border-amber-500 w-full"/>
+                                                        <input value={p.size} onChange={e => handleUpdatePrice(p.id, 'size', e.target.value)} className="bg-transparent text-stone-500 font-bold outline-none border-b border-transparent focus:border-amber-500 w-full"/>
                                                         <div className="bg-white px-3 py-1 rounded-full text-[9px] font-black uppercase outline-none border border-stone-100 text-center">{p.material}</div>
-                                                        <input value={p.price} onChange={e => handleUpdatePrice(p.id, 'price', e.target.value)} className="bg-transparent font-black text-amber-700 text-xs text-right outline-none w-full"/>
+                                                        <input value={p.price} onChange={e => handleUpdatePrice(p.id, 'price', e.target.value)} className="bg-transparent font-black text-amber-700 text-right outline-none w-full"/>
                                                     </div>
                                                 ))}
                                             </div>
@@ -446,7 +452,7 @@
                                         <span className="font-bold uppercase tracking-[0.5em] text-[10px]">Heritage Architecture</span>
                                         <div className="h-[1px] w-12 bg-amber-500"></div>
                                     </div>
-                                    <h1 className="text-5xl md:text-8xl font-serif text-white leading-tight italic text-center">Joglo, Bali & <br /><span className="not-italic font-sans font-black text-amber-500 uppercase tracking-tighter">Rumah Kustom</span></h1>
+                                    <h1 className="text-5xl md:text-8xl font-serif text-white leading-tight italic text-center text-left">Joglo, Bali & <br /><span className="not-italic font-sans font-black text-amber-500 uppercase tracking-tighter">Rumah Kustom</span></h1>
                                     <p className="text-stone-300 max-w-3xl mx-auto text-lg md:text-xl font-medium leading-relaxed italic text-center">"Membangun tradisi yang dipersonalisasi sepenuhnya sesuai impian dan anggaran Anda."</p>
                                     <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8 text-center">
                                         <a href="#kontak" className="bg-amber-600 text-white px-10 py-5 rounded-full font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-amber-700 transition-all shadow-2xl">Mulai Diskusi</a>
@@ -460,7 +466,7 @@
 
                             {/* KOLEKSI GALERI */}
                             <section id="galeri" className="py-32 bg-[#FDFBF7]">
-                                <div className="container mx-auto px-6">
+                                <div className="container mx-auto px-6 text-left">
                                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-left text-[#3E2723]">
                                         <div className="space-y-4">
                                             <div className="w-12 h-1 bg-amber-600"></div>
@@ -490,7 +496,7 @@
                             </section>
 
                             <section id="kontak" className="py-32 bg-white">
-                                <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-24 items-start">
+                                <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-24 items-start text-left">
                                     <div className="space-y-12 text-left text-[#3E2723]">
                                         <div className="space-y-4">
                                             <h2 className="text-6xl font-serif italic leading-none">Diskusi <br />Anggaran</h2>
@@ -523,8 +529,8 @@
 
                     <footer className="bg-[#3E2723] text-stone-300 py-24 text-center mt-0">
                         <div className="container mx-auto px-6 space-y-10 relative z-10 text-white">
-                            <div className="flex items-center justify-center space-x-3 mb-10">
-                                <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-[#3E2723] font-black text-3xl italic">DL</div>
+                            <div className="flex items-center justify-center space-x-3 mb-10 text-left">
+                                <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-[#3E2723] font-black text-3xl italic shadow-2xl">DL</div>
                                 <div className="text-left text-white font-sans">
                                     <span className="text-3xl font-black italic tracking-tighter uppercase block leading-none">Duta Lawas</span>
                                     <span className="text-xs font-bold text-amber-500 uppercase tracking-[0.4em]">Heritage Architecture</span>
@@ -547,8 +553,8 @@
                         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4" onClick={() => setShowLoginModal(false)}>
                             <div className="bg-white p-12 rounded-[3.5rem] max-w-md w-full relative shadow-2xl overflow-hidden text-left border-8 border-stone-50" onClick={e => e.stopPropagation()}>
                                 <button onClick={() => setShowLoginModal(false)} className="absolute top-8 right-8 text-stone-300 hover:text-stone-600 transition-colors"><Icon name="x" size={24}/></button>
-                                <div className="w-24 h-24 bg-amber-50 text-amber-600 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-amber-100/50">
-                                    <Icon name="shield-check" size={48}/>
+                                <div className="w-24 h-24 bg-amber-50 text-amber-600 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-inner border border-amber-100/50 text-center">
+                                    <Icon name="shield-check" size={48} className="mx-auto" />
                                 </div>
                                 <h3 className="text-3xl font-black mb-4 text-center text-[#3E2723] uppercase tracking-tighter italic text-center">Portal Akses</h3>
                                 <form onSubmit={handleAdminLogin} className="space-y-6">
