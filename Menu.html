@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereal Bistro - Menu Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .menu-card:hover .add-btn {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        /* Smooth transition for category filtering */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <!-- Header / Hero Section -->
+    <header class="relative h-[40vh] flex items-center justify-center overflow-hidden bg-stone-900">
+        <div class="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center"></div>
+        <div class="relative text-center text-white px-4">
+            <h1 class="font-serif text-5xl md:text-7xl mb-2">Ethereal Bistro</h1>
+            <p class="text-sm md:text-lg tracking-[0.3em] uppercase font-light">Seni dalam Setiap Rasa</p>
+        </div>
+    </header>
+
+    <!-- Navigation / Categories -->
+    <nav class="sticky top-0 z-40 glass-morphism shadow-sm border-b border-stone-200">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex space-x-6 overflow-x-auto no-scrollbar py-1">
+                <button onclick="filterMenu('all')" class="category-btn active border-b-2 border-stone-800 font-semibold px-2 transition-all">Semua</button>
+                <button onclick="filterMenu('main')" class="category-btn border-b-2 border-transparent text-stone-500 hover:text-stone-800 px-2 transition-all">Utama</button>
+                <button onclick="filterMenu('snack')" class="category-btn border-b-2 border-transparent text-stone-500 hover:text-stone-800 px-2 transition-all">Camilan</button>
+                <button onclick="filterMenu('drink')" class="category-btn border-b-2 border-transparent text-stone-500 hover:text-stone-800 px-2 transition-all">Minuman</button>
+            </div>
+            <button onclick="toggleCart()" class="relative p-2 text-stone-800">
+                <i data-lucide="shopping-bag"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menu Grid -->
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Menu items will be injected by JS -->
+        </div>
+    </main>
+
+    <!-- Ordering Guide Section -->
+    <section class="bg-stone-100 py-16 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="font-serif text-3xl mb-8">Cara Pemesanan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                        <i data-lucide="mouse-pointer-2" class="text-amber-700"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Pilih Menu</h3>
+                    <p class="text-sm text-stone-500">Pilih hidangan favoritmu dan tambahkan ke keranjang.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                        <i data-lucide="shopping-cart" class="text-amber-700"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Periksa Pesanan</h3>
+                    <p class="text-sm text-stone-500">Lihat rincian pesanan dan total harga di keranjang.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                        <i data-lucide="message-circle" class="text-amber-700"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Konfirmasi WA</h3>
+                    <p class="text-sm text-stone-500">Klik 'Pesan Sekarang' untuk mengirim rincian ke WhatsApp kami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 invisible">
+        <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="font-serif text-2xl">Keranjang Anda</h2>
+                <button onclick="toggleCart()" class="p-2"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- Cart items will be injected here -->
+                <div class="text-center text-stone-400 mt-20">
+                    <i data-lucide="shopping-basket" class="mx-auto w-12 h-12 mb-4 opacity-20"></i>
+                    <p>Keranjang masih kosong</p>
+                </div>
+            </div>
+
+            <div class="p-6 border-t bg-stone-50">
+                <div class="flex justify-between mb-4 font-semibold text-lg">
+                    <span>Total Estimasi</span>
+                    <span id="cart-total">Rp 0</span>
+                </div>
+                <button onclick="checkoutWhatsApp()" class="w-full bg-stone-900 text-white py-4 rounded-lg font-semibold hover:bg-stone-800 transition-colors flex items-center justify-center space-x-2">
+                    <i data-lucide="send"></i>
+                    <span>Pesan Sekarang via WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-stone-900 text-white px-6 py-3 rounded-full shadow-lg transition-all opacity-0 translate-y-10 pointer-events-none z-[100]">
+        Ditambahkan ke keranjang
+    </div>
+
+    <footer class="py-12 text-center text-stone-400 text-sm">
+        <p>&copy; 2024 Ethereal Bistro. Dibuat dengan cinta untuk pecinta rasa.</p>
+    </footer>
+
+    <script>
+        // Database Menu
+        const menuData = [
+            { id: 1, category: 'main', name: 'Truffle Mushroom Risotto', price: 85000, desc: 'Nasi Arborio krimi dengan minyak truffle putih dan jamur liar.', img: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&q=80&w=500' },
+            { id: 2, category: 'main', name: 'Grilled Wagyu Steak', price: 185000, desc: 'Daging Wagyu MB5 dengan saus red wine dan kentang tumbuk.', img: 'https://images.unsplash.com/photo-1546241072-48010ad2862c?auto=format&fit=crop&q=80&w=500' },
+            { id: 3, category: 'snack', name: 'Classic Garlic Bread', price: 35000, desc: 'Roti baguette panggang dengan mentega bawang dan peterseli.', img: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&q=80&w=500' },
+            { id: 4, category: 'drink', name: 'Midnight Berry Mojito', price: 42000, desc: 'Campuran berry segar, daun mint, dan soda kristal.', img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=500' },
+            { id: 5, category: 'main', name: 'Pan-Seared Salmon', price: 125000, desc: 'Salmon segar dengan saus lemon butter dan asparagus.', img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=500' },
+            { id: 6, category: 'drink', name: 'Gold Brew Coffee', price: 38000, desc: 'Kopi seduh dingin dengan sentuhan vanilla dan krim kelapa.', img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&q=80&w=500' },
+        ];
+
+        let cart = [];
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Render Menu
+        function renderMenu(items) {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = items.map(item => `
+                <div class="fade-in menu-card group">
+                    <div class="relative overflow-hidden rounded-2xl mb-4 aspect-[4/5]">
+                        <img src="${item.img}" alt="${item.name}" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 transition-opacity group-hover:bg-opacity-40"></div>
+                        <button onclick="addToCart(${item.id})" class="add-btn absolute bottom-4 right-4 bg-white text-stone-900 p-3 rounded-full shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 hover:bg-amber-600 hover:text-white">
+                            <i data-lucide="plus"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-serif text-xl font-bold">${item.name}</h3>
+                        <span class="text-amber-700 font-semibold">Rp ${item.price.toLocaleString('id-ID')}</span>
+                    </div>
+                    <p class="text-sm text-stone-500 line-clamp-2">${item.desc}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Filter Functionality
+        function filterMenu(category) {
+            // Update UI buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-stone-800', 'font-semibold');
+                btn.classList.add('border-transparent', 'text-stone-500');
+            });
+            event.target.classList.add('active', 'border-stone-800', 'font-semibold');
+            event.target.classList.remove('border-transparent', 'text-stone-500');
+
+            if (category === 'all') {
+                renderMenu(menuData);
+            } else {
+                const filtered = menuData.filter(item => item.category === category);
+                renderMenu(filtered);
+            }
+        }
+
+        // Cart Logic
+        function addToCart(id) {
+            const item = menuData.find(i => i.id === id);
+            const existing = cart.find(i => i.id === id);
+            
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            
+            updateCartUI();
+            showNotification(`${item.name} ditambahkan!`);
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const itemsEl = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            countEl.innerText = totalQty;
+            totalEl.innerText = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = `
+                    <div class="text-center text-stone-400 mt-20">
+                        <i data-lucide="shopping-basket" class="mx-auto w-12 h-12 mb-4 opacity-20"></i>
+                        <p>Keranjang masih kosong</p>
+                    </div>
+                `;
+            } else {
+                itemsEl.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 bg-white p-3 rounded-xl border border-stone-100">
+                        <img src="${item.img}" class="w-16 h-16 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm">${item.name}</h4>
+                            <p class="text-xs text-stone-500">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center rounded bg-stone-100">-</button>
+                            <span class="text-sm font-medium">${item.qty}</span>
+                            <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center rounded bg-stone-100">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function updateQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const inner = drawer.querySelector('.transform');
+            
+            if (drawer.classList.contains('invisible')) {
+                drawer.classList.remove('invisible');
+                setTimeout(() => inner.classList.remove('translate-x-full'), 10);
+            } else {
+                inner.classList.add('translate-x-full');
+                setTimeout(() => drawer.classList.add('invisible'), 300);
+            }
+        }
+
+        function showNotification(msg) {
+            const notif = document.getElementById('notification');
+            notif.innerText = msg;
+            notif.classList.remove('opacity-0', 'translate-y-10');
+            notif.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                notif.classList.add('opacity-0', 'translate-y-10');
+                notif.classList.remove('opacity-100', 'translate-y-0');
+            }, 2000);
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showNotification("Keranjang Anda kosong!");
+                return;
+            }
+
+            let message = "Halo Ethereal Bistro! Saya ingin memesan:\n\n";
+            let total = 0;
+            
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                message += `- ${item.name} x${item.qty} (Rp ${subtotal.toLocaleString('id-ID')})\n`;
+                total += subtotal;
+            });
+            
+            message += `\nTotal Estimasi: Rp ${total.toLocaleString('id-ID')}\n`;
+            message += "\nMohon instruksi selanjutnya untuk pengiriman.";
+            
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/6281234567890?text=${encoded}`, '_blank');
+        }
+
+        // Initial render
+        window.onload = () => renderMenu(menuData);
+    </script>
+</body>
+</html>
