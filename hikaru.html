@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikaru Bakehouse - Healthier Bread For Your Loved Ones</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Alpine.js for Interactivity -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        [x-cloak] { display: none !important; }
+        .bg-warm { background-color: #FFFDF9; }
+        .text-hikaru { color: #451A03; }
+        .scroll-mt-20 { scroll-margin-top: 5rem; }
+    </style>
+</head>
+<body class="bg-warm text-hikaru" x-data="{ scrolled: false, mobileMenu: false, activeTab: 'jogja' }" @scroll.window="scrolled = (window.pageYOffset > 50)">
+
+    <!-- Navigation -->
+    <nav :class="scrolled ? 'bg-white/95 backdrop-blur-md py-3 shadow-md' : 'bg-transparent py-6'" 
+         class="fixed w-full z-50 transition-all duration-500">
+        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+            <div :class="scrolled ? 'text-orange-900' : 'text-white'" class="text-2xl font-serif font-bold tracking-tighter transition-colors">
+                HIKARU<span class="text-orange-500">.</span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-[0.2em]" :class="scrolled ? 'text-gray-600' : 'text-white/80'">
+                <a href="#tentang" class="hover:text-orange-500 transition">Tentang</a>
+                <a href="#menu" class="hover:text-orange-500 transition">Menu</a>
+                <a href="#order" class="hover:text-orange-500 transition">Pesan</a>
+                <a href="#lokasi" class="hover:text-orange-500 transition">Outlet</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.instagram.com/hikarubakehouse" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-full text-xs font-bold hover:bg-orange-700 transition shadow-lg shadow-orange-900/20">
+                    <i data-lucide="instagram" class="w-4 h-4"></i> FOLLOW US
+                </a>
+                <button class="md:hidden" :class="scrolled ? 'text-orange-900' : 'text-white'" @click="mobileMenu = true">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div x-show="mobileMenu" x-cloak class="fixed inset-0 z-[60] bg-white p-10 flex flex-col gap-8 text-center justify-center transition-all">
+        <button @click="mobileMenu = false" class="absolute top-6 right-6 p-2 bg-orange-50 rounded-full"><i data-lucide="x"></i></button>
+        <a href="#tentang" @click="mobileMenu = false" class="text-3xl font-serif font-bold">Tentang</a>
+        <a href="#order" @click="mobileMenu = false" class="text-3xl font-serif font-bold">Cara Pesan</a>
+        <a href="#lokasi" @click="mobileMenu = false" class="text-3xl font-serif font-bold">Lokasi Outlet</a>
+        <div class="flex justify-center gap-4 mt-8">
+            <a href="https://www.instagram.com/hikarubakehouse" class="p-4 bg-orange-50 rounded-full text-orange-600"><i data-lucide="instagram"></i></a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1600&auto=format&fit=crop" 
+                 alt="" 
+                 class="w-full h-full object-cover scale-105">
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#451A03] via-transparent to-black/20"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-6 max-w-4xl">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-xs font-bold uppercase tracking-widest mb-8">
+                <i data-lucide="clock" class="w-4 h-4 text-orange-400"></i> Freshly Baked Every Day
+            </div>
+            <h1 class="text-5xl md:text-8xl font-serif font-bold text-white leading-[1.1] mb-8">
+                Roti Sehat Untuk <br>
+                <span class="italic text-orange-400">Si Tersayang</span>
+            </h1>
+            <p class="text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                Menyajikan kehangatan dari dapur Hikaru tanpa bahan kimia tambahan. Karena keluarga Anda layak mendapatkan yang terbaik.
+            </p>
+            <div class="flex flex-col sm:row items-center justify-center gap-4">
+                <a href="#order" class="w-full sm:w-auto px-10 py-5 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-bold transition-all shadow-2xl shadow-orange-900/40 text-lg">
+                    Pesan Sekarang
+                </a>
+                <a href="#lokasi" class="w-full sm:w-auto px-10 py-5 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-2xl font-bold hover:bg-white/20 transition-all text-lg">
+                    Cari Outlet
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="tentang" class="py-24 bg-white overflow-hidden scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div class="relative">
+                    <div class="relative z-10 aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-[#FFFDF9]">
+                        <img src="https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?q=80&w=800&auto=format&fit=crop" 
+                             alt="" 
+                             class="w-full h-full object-cover transition-transform duration-1000 hover:scale-110">
+                    </div>
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-orange-100 rounded-full blur-3xl opacity-60"></div>
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl border border-orange-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-serif italic text-xl">D</div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Salam dari</p>
+                                <p class="font-serif text-lg font-bold text-orange-900">Dyana</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-8">
+                    <div class="inline-block p-3 bg-orange-50 rounded-2xl text-orange-600">
+                        <i data-lucide="heart" class="w-8 h-8 fill-current"></i>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-orange-900 leading-tight">
+                        Dibuat Tanpa <br>
+                        <span class="text-orange-600 italic">Obat & Pengawet</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Di Hikaru Bakehouse, kami tidak hanya menjual roti. Kami menyebarkan kehangatan. Setiap helai roti kami dibuat dengan teknik fermentasi yang tepat, menggunakan bahan premium tanpa tambahan pelembut buatan (Bread Improver).
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div class="flex flex-col gap-2">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-green-600"></i>
+                            <p class="font-bold text-sm">100% Aman Anak</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <i data-lucide="heart" class="w-6 h-6 text-red-500"></i>
+                            <p class="font-bold text-sm">Resep Spesial Dyana</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-[#FAF9F6] scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4 text-orange-900">Favorit Hikaru</h2>
+                <div class="w-20 h-1 bg-orange-600 mx-auto rounded-full"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-orange-50">
+                    <div class="h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-2 text-orange-900">Roti Artisanal</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Dibuat tanpa obat pemutih & pengawet.</p>
+                    </div>
+                </div>
+                <div class="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-orange-50">
+                    <div class="h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-2 text-orange-900">Bluder Klasik</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Kelembutan alami dari bahan premium.</p>
+                    </div>
+                </div>
+                <div class="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-orange-50">
+                    <div class="h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800&auto=format&fit=crop" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-2 text-orange-900">Sushi Tart</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Inovasi unik khusus Hikaru Dining.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="order" class="py-24 bg-white scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4 text-orange-900">Ingin Order Roti?</h2>
+                <p class="text-gray-500">Pilih admin yang sesuai agar pesanan Anda tidak terlewatkan.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Luar Kota -->
+                <div class="bg-amber-50/50 p-10 rounded-[3rem] border border-amber-100 flex flex-col items-center text-center group hover:bg-amber-100/50 transition-colors">
+                    <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-amber-600 shadow-sm mb-8 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="globe" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Luar Kota</h3>
+                    <p class="text-sm text-gray-500 mb-10 leading-relaxed">Chat ke Admin Pusat agar tertangani lebih cepat. Cocok untuk stok roti sehat di rumah!</p>
+                    <a href="https://wa.me/6282251553838" target="_blank" class="w-full py-5 bg-amber-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-amber-700 transition-shadow shadow-lg shadow-amber-900/20">
+                        Chat Admin <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </a>
+                </div>
+
+                <!-- Palagan -->
+                <div class="bg-orange-50/50 p-10 rounded-[3rem] border border-orange-100 flex flex-col items-center text-center group hover:bg-orange-100/50 transition-colors scale-105 shadow-xl shadow-orange-900/5">
+                    <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-orange-600 shadow-sm mb-8 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="store" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Outlet Palagan</h3>
+                    <p class="text-sm text-gray-500 mb-10 leading-relaxed">Pemesanan khusus area Jalan Palagan dan Mlati Jogja. Ambil di toko atau antar kurir.</p>
+                    <a href="https://wa.me/6285867144147" target="_blank" class="w-full py-5 bg-orange-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-orange-700 transition-shadow shadow-lg shadow-orange-900/20">
+                        Pesan di Palagan <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </a>
+                </div>
+
+                <!-- Sushi Tart -->
+                <div class="bg-emerald-50/50 p-10 rounded-[3rem] border border-emerald-100 flex flex-col items-center text-center group hover:bg-emerald-100/50 transition-colors">
+                    <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-emerald-600 shadow-sm mb-8 group-hover:rotate-6 transition-transform">
+                        <i data-lucide="shopping-bag" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Sushi Tart & Bluder</h3>
+                    <p class="text-sm text-gray-500 mb-10 leading-relaxed">Tersedia eksklusif di Outlet Hikaru Colombo dan Hikaru Dining Jogja.</p>
+                    <a href="https://wa.me/6287739238010" target="_blank" class="w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-emerald-700 transition-shadow shadow-lg shadow-emerald-900/20">
+                        Pesan di Colombo <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-[#451A03] text-white p-10 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center justify-between">
+                <div class="max-w-md text-left">
+                    <p class="text-orange-400 font-bold text-sm uppercase tracking-widest mb-2 italic">Note dari Dyana:</p>
+                    <h4 class="text-xl font-serif italic leading-relaxed">"Boleh chat ke saya, tapi biasanya suka kelupaan 🤩 Jadi, langsung ke Admin di atas ya agar cepat dilayani!"</h4>
+                </div>
+                <div class="flex -space-x-4">
+                    <div class="w-16 h-16 rounded-full border-4 border-[#451A03] bg-orange-200 overflow-hidden shadow-lg">
+                        <img src="https://i.pravatar.cc/150?u=1" alt="[Admin 1]" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-16 h-16 rounded-full border-4 border-[#451A03] bg-orange-300 overflow-hidden shadow-lg">
+                        <img src="https://i.pravatar.cc/150?u=2" alt="[Admin 2]" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-16 h-16 rounded-full border-4 border-[#451A03] bg-orange-400 overflow-hidden shadow-lg">
+                        <img src="https://i.pravatar.cc/150?u=3" alt="[Admin 3]" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="lokasi" class="py-24 bg-[#FAF9F6] scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-12 gap-6 text-left">
+                <div class="space-y-2">
+                    <h2 class="text-4xl font-serif font-bold text-orange-900 tracking-tight">Kunjungi Outlet Kami</h2>
+                    <p class="text-gray-500 italic">Kami hadir di Jogja dan Malang untukmu.</p>
+                </div>
+                <div class="flex bg-white p-2 rounded-[1.5rem] shadow-sm border border-orange-100">
+                    <button @click="activeTab = 'jogja'" 
+                            :class="activeTab === 'jogja' ? 'bg-orange-600 text-white shadow-lg' : 'text-gray-400'"
+                            class="px-10 py-3 rounded-xl text-sm font-bold transition-all">
+                        Jogja
+                    </button>
+                    <button @click="activeTab = 'malang'" 
+                            :class="activeTab === 'malang' ? 'bg-orange-600 text-white shadow-lg' : 'text-gray-400'"
+                            class="px-10 py-3 rounded-xl text-sm font-bold transition-all">
+                        Malang
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <!-- Jogja Content -->
+                <template x-if="activeTab === 'jogja'">
+                    <div class="contents">
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-orange-50 shadow-sm hover:shadow-md transition-all group">
+                            <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Outlet Palagan</h4>
+                            <p class="text-sm text-gray-500 mb-8 leading-relaxed">Jalan Palagan, Sleman, DIY</p>
+                            <a href="https://wa.me/6285867144147" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-700 border-b-2 border-orange-100 pb-1 hover:border-orange-600 transition-all">
+                                Hubungi Toko <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-orange-50 shadow-sm hover:shadow-md transition-all group">
+                            <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Outlet Colombo</h4>
+                            <p class="text-sm text-gray-500 mb-8 leading-relaxed">Jalan Colombo (Hikaru Dining)</p>
+                            <a href="https://wa.me/6287739238010" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-700 border-b-2 border-orange-100 pb-1 hover:border-orange-600 transition-all">
+                                Hubungi Toko <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-orange-50 shadow-sm hover:shadow-md transition-all group">
+                            <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Puspa Indah Mlati</h4>
+                            <p class="text-sm text-gray-500 mb-8 leading-relaxed">Mlati, Sleman, DIY</p>
+                            <a href="https://wa.me/6282251553838" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-700 border-b-2 border-orange-100 pb-1 hover:border-orange-600 transition-all">
+                                Hubungi Toko <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Malang Content -->
+                <template x-if="activeTab === 'malang'">
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-orange-50 shadow-sm hover:shadow-md transition-all group">
+                        <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">Outlet Malang</h4>
+                        <p class="text-sm text-gray-500 mb-8 leading-relaxed">Kota Malang, Jawa Timur</p>
+                        <a href="https://wa.me/6282251553838" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-700 border-b-2 border-orange-100 pb-1 hover:border-orange-600 transition-all">
+                            Hubungi Toko <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#451A03] text-white py-20 border-t border-white/5">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center border-b border-white/10 pb-16 text-left">
+                <div>
+                    <div class="text-3xl font-serif font-bold mb-4">HIKARU<span class="text-orange-500">.</span></div>
+                    <p class="text-white/60 max-w-sm mb-8 leading-relaxed">
+                        Healthier Bread For Your Loved Ones. Spesialis roti tanpa obat dan pengawet tambahan.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/hikarubakehouse" target="_blank" class="p-3 bg-white/10 rounded-full hover:bg-orange-600 transition-colors text-white">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-orange-300 font-bold text-sm uppercase tracking-widest mb-2">Salam Hangat,</p>
+                    <p class="text-5xl font-serif italic text-white leading-tight">Dyana</p>
+                    <p class="text-xs text-white/40 mt-2 uppercase tracking-tighter">Specialist Roti / Kue Tanpa Obat & Pengawet</p>
+                </div>
+            </div>
+            <div class="mt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-white/30 text-[10px] uppercase tracking-widest font-bold">
+                <p>© 2024 HIKARU BAKEHOUSE JOGJA & MALANG</p>
+                <div class="flex gap-6">
+                    <span>Fresh</span>
+                    <span>Natural</span>
+                    <span>Artisanal</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
