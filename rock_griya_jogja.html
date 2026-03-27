@@ -1,0 +1,298 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Clock, 
+  MapPin, 
+  Phone, 
+  Users, 
+  Heart, 
+  Rocket, 
+  Instagram, 
+  Facebook, 
+  Youtube,
+  Menu,
+  X,
+  ChevronRight,
+  ArrowRight,
+  Zap,
+  Play
+} from 'lucide-react';
+
+const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Gambar dengan vibe concert/youth gathering
+  const images = {
+    hero: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1600", // Concert/Event vibe
+    worship: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&q=80&w=1200", // Energetic worship
+    pastor: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800",
+    kids: "https://images.unsplash.com/photo-1472653425572-f4df1ba15e4d?auto=format&fit=crop&q=80&w=800", // Fun kids ministry
+    community: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800" // Youth community
+  };
+
+  const schedule = [
+    { time: "08:00", title: "SUNDAY SERVICE 01", type: "General" },
+    { time: "10:00", title: "SUNDAY SERVICE 02", type: "General + Kids" },
+    { time: "17:00", title: "ROCK YOUTH SERVICE", type: "Youth + Kids", highlight: true },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] font-sans text-white overflow-x-hidden selection:bg-orange-500 selection:text-black">
+      
+      {/* Marquee Motto (Top) */}
+      <div className="bg-orange-600 py-3 overflow-hidden whitespace-nowrap border-b border-black z-[60] relative">
+        <div className="inline-block animate-marquee font-black uppercase tracking-tighter text-sm">
+          {[...Array(10)].map((_, i) => (
+            <span key={i} className="mx-4">
+              WE ARE HERE TO HELP YOU FULFILL YOUR DESTINY • GBI ROCK GRIYA JOGJA • 
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 py-4' : 'bg-transparent py-8'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="w-12 h-12 bg-white text-black flex items-center justify-center font-black text-2xl italic rotate-3 group-hover:rotate-0 transition-transform shadow-[4px_4px_0px_#ea580c]">
+              R
+            </div>
+            <div className="hidden sm:block">
+              <p className="font-black text-xl leading-none tracking-tighter uppercase">GBI ROCK</p>
+              <p className="text-orange-500 font-bold text-[10px] tracking-[0.3em] uppercase">Griya Jogja</p>
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-10 font-black text-[11px] uppercase tracking-[0.2em]">
+            <a href="#about" className="hover:text-orange-500 transition-colors">Vision</a>
+            <a href="#schedule" className="hover:text-orange-500 transition-colors">Times</a>
+            <a href="#contact" className="hover:text-orange-500 transition-colors">Connect</a>
+            <a href="#contact" className="px-6 py-3 bg-white text-black hover:bg-orange-600 hover:text-white transition-all">Join Us</a>
+          </div>
+
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 bg-white text-black">
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-black p-10 flex flex-col justify-center gap-8 animate-in fade-in slide-in-from-right duration-300">
+          <button onClick={() => setIsMenuOpen(false)} className="absolute top-10 right-10 p-4 bg-white text-black"><X size={32}/></button>
+          <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-6xl font-black hover:text-orange-600 transition-colors">VISION</a>
+          <a href="#schedule" onClick={() => setIsMenuOpen(false)} className="text-6xl font-black hover:text-orange-600 transition-colors">TIMES</a>
+          <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-6xl font-black hover:text-orange-600 transition-colors">CONNECT</a>
+        </div>
+      )}
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center pt-20 px-6">
+        <div className="absolute inset-0 z-0">
+          <img src={images.hero} className="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000" alt="Church Atmosphere" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/80" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <div className="flex flex-col gap-4 mb-8">
+             <span className="flex items-center gap-2 bg-orange-600 text-black px-4 py-1 w-fit font-black text-xs uppercase tracking-widest italic animate-pulse">
+                <Zap size={14} fill="black" /> Live Atmosphere
+             </span>
+          </div>
+          <h1 className="text-[14vw] sm:text-[10vw] font-black leading-[0.85] tracking-tighter uppercase mb-8">
+            HELPING <br/> YOU <span className="text-transparent stroke-white stroke-2" style={{ WebkitTextStroke: '1px white' }}>FULFILL</span> <br/>
+            <span className="text-orange-600">DESTINY.</span>
+          </h1>
+          
+          <div className="flex flex-col md:flex-row gap-10 items-end justify-between">
+            <p className="max-w-md text-slate-400 font-medium text-lg leading-relaxed">
+              Kami bukan sekadar gereja, kami adalah komunitas kerajaan Allah yang dinamis di jantung kota Jogja.
+            </p>
+            <div className="flex gap-4">
+              <button className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                <Play fill="black" />
+              </button>
+              <div className="text-left">
+                <p className="text-xs font-black uppercase text-orange-500 tracking-widest">Watch Trailer</p>
+                <p className="text-xl font-black uppercase italic">The Movement</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision Marquee */}
+      <div className="py-20 bg-white text-black rotate-[-2deg] scale-105 relative z-20">
+        <div className="overflow-hidden whitespace-nowrap flex font-black text-7xl md:text-9xl uppercase tracking-tighter italic">
+          <div className="animate-marquee-slow">
+            WE ARE HERE TO HELP YOU FULFILL YOUR DESTINY • WE ARE HERE TO HELP YOU FULFILL YOUR DESTINY • 
+          </div>
+        </div>
+      </div>
+
+      {/* Senior Pastor Section */}
+      <section id="about" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          <div className="relative group">
+            <div className="absolute -inset-2 bg-orange-600 rotate-2 group-hover:rotate-0 transition-transform duration-500 z-0"></div>
+            <div className="relative aspect-square overflow-hidden z-10">
+              <img src={images.pastor} className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-700" alt="Pdt. Caleb" />
+              <div className="absolute bottom-10 left-10 text-white z-20">
+                 <p className="text-xs font-black tracking-widest uppercase mb-1">Senior Pastor</p>
+                 <h3 className="text-5xl font-black tracking-tighter italic">PDT. CALEB <br/> HOVER BINTORO</h3>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-8">
+            <h2 className="text-7xl font-black uppercase tracking-tighter leading-none italic">OUR <span className="text-orange-600">CULTURE.</span></h2>
+            <p className="text-2xl font-medium text-slate-400 leading-relaxed italic">
+              "Fokus kami adalah membangun generasi yang tidak hanya sekadar 'beragama', tapi hidup dalam destiny yang Tuhan berikan."
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-10">
+              <div className="p-8 border border-white/10 bg-white/5 hover:border-orange-600 transition-colors">
+                <Rocket className="text-orange-600 mb-4" size={40} />
+                <h4 className="text-xl font-black uppercase mb-2">ROCKET & KGC</h4>
+                <p className="text-slate-500 text-sm">Every Tuesday 1st Week. Komunitas bertumbuh yang radikal.</p>
+              </div>
+              <div className="p-8 border border-white/10 bg-white/5 hover:border-orange-600 transition-colors">
+                <Users className="text-blue-500 mb-4" size={40} />
+                <h4 className="text-xl font-black uppercase mb-2">KIDS MINISTRY</h4>
+                <p className="text-slate-500 text-sm">Ibadah Anak tersedia di jam 10:00 & 17:00.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Schedule / Gig List Vibe */}
+      <section id="schedule" className="py-32 bg-[#111] border-y border-white/5 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+             <h2 className="text-8xl md:text-[12rem] font-black uppercase leading-[0.7] tracking-tighter italic">GIG <br/><span className="text-orange-600">LIST.</span></h2>
+             <p className="max-w-xs text-slate-500 font-bold uppercase tracking-widest text-right">Join our weekly gathering at Hotel Griya Jogja.</p>
+          </div>
+
+          <div className="space-y-1">
+            {schedule.map((item, idx) => (
+              <div key={idx} className={`group flex flex-col md:flex-row justify-between items-center p-10 border-b border-white/10 hover:bg-orange-600 transition-all duration-300 ${item.highlight ? 'bg-orange-600/5' : ''}`}>
+                <div className="flex flex-col md:flex-row gap-8 md:items-center w-full">
+                  <span className={`text-6xl md:text-8xl font-black italic tracking-tighter ${item.highlight ? 'text-orange-500 group-hover:text-black' : 'text-white/20 group-hover:text-black'}`}>
+                    {item.time}
+                  </span>
+                  <div>
+                    <h4 className="text-3xl md:text-5xl font-black uppercase tracking-tighter group-hover:text-black">{item.title}</h4>
+                    <p className="text-slate-500 font-bold uppercase tracking-widest group-hover:text-black/70">{item.type}</p>
+                  </div>
+                </div>
+                <button className="mt-8 md:mt-0 px-8 py-4 border-2 border-white/20 rounded-full font-black text-sm uppercase tracking-widest group-hover:border-black group-hover:text-black flex items-center gap-4">
+                  RSVP <ArrowRight size={18} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Location / Contact */}
+      <section id="contact" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
+          <div className="space-y-12">
+            <div>
+              <h2 className="text-7xl font-black uppercase tracking-tighter leading-none mb-6">PULL UP TO <br/>THE <span className="text-orange-600">STREETS.</span></h2>
+              <div className="w-32 h-4 bg-orange-600 mb-10"></div>
+            </div>
+
+            <div className="space-y-10">
+              <div className="flex items-start gap-6">
+                <MapPin className="text-orange-600 shrink-0" size={32} />
+                <div>
+                  <h4 className="font-black text-2xl uppercase italic mb-2">The Basehall</h4>
+                  <p className="text-slate-400 text-lg leading-relaxed">
+                    Jl. Pakuningratan No 3,<br/>Mainhall Hotel Griya Jogja, Yogyakarta
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-6">
+                <Phone className="text-orange-600 shrink-0" size={32} />
+                <div>
+                  <h4 className="font-black text-2xl uppercase italic mb-2">Connect Line</h4>
+                  <p className="text-slate-400 text-lg leading-relaxed">0851 0300 0970</p>
+                  <a href="https://wa.me/6285103000970" target="_blank" className="text-orange-600 font-black uppercase tracking-widest text-sm hover:underline">Chat via WhatsApp</a>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {[Instagram, Facebook, Youtube].map((Icon, i) => (
+                <a key={i} href="#" className="w-16 h-16 border-2 border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                  <Icon size={24} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative group overflow-hidden">
+            <div className="absolute inset-0 bg-orange-600/20 z-10 group-hover:opacity-0 transition-opacity"></div>
+            <img src={images.location} className="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000" alt="Location" />
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+               <div className="bg-white text-black p-10 rotate-3 shadow-[10px_10px_0px_#ea580c]">
+                  <p className="font-black text-xs uppercase tracking-[0.3em] mb-4">Location Tag</p>
+                  <h5 className="text-4xl font-black uppercase tracking-tighter italic leading-none mb-6">HOTEL GRIYA <br/>JOGJA.</h5>
+                  <a href="#" className="flex items-center gap-2 font-black text-sm uppercase tracking-widest hover:text-orange-600">Open Maps <ArrowRight size={16}/></a>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-20 bg-white text-black px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="text-center md:text-left">
+             <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none mb-2">GBI ROCK GRIYA JOGJA</h2>
+             <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Helping you fulfill your destiny.</p>
+          </div>
+          
+          <div className="flex gap-10 font-black text-[10px] uppercase tracking-widest italic">
+            <a href="#" className="hover:text-orange-600">Instagram</a>
+            <a href="#" className="hover:text-orange-600">Youtube</a>
+            <a href="#" className="hover:text-orange-600">Give</a>
+            <a href="#" className="hover:text-orange-600">Join</a>
+          </div>
+
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            © {new Date().getFullYear()} • Movement of Kingdom
+          </p>
+        </div>
+      </footer>
+
+      {/* CSS for animations */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-slow {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: inline-block;
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee-slow {
+          display: inline-block;
+          animation: marquee-slow 60s linear infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default App;
