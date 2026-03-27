@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust X | Petualangan Tanpa Batas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+            background-color: var(--bg-dark);
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8)), 
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .adventure-card {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s;
+        }
+        .adventure-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .adventure-card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-10px) translateX(-50%);}
+            60% {transform: translateY(-5px) translateX(-50%);}
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 glass-nav py-5 px-6 md:px-12 flex justify-between items-center">
+        <div class="text-2xl font-extrabold tracking-tighter flex items-center gap-2 group cursor-pointer">
+            <i class="fas fa-compass text-orange-500 group-hover:rotate-180 transition-transform duration-700"></i>
+            <span class="tracking-tight">WANDERLUST <span class="text-orange-500">X</span></span>
+        </div>
+        
+        <div class="hidden lg:flex gap-10 font-semibold text-sm uppercase tracking-wider">
+            <a href="#home" class="nav-link hover:text-orange-500">Beranda</a>
+            <a href="#routes" class="nav-link hover:text-orange-500">Rute Terbaik</a>
+            <a href="#guides" class="nav-link hover:text-orange-500">Guide</a>
+            <a href="#stats" class="nav-link hover:text-orange-500">Pencapaian</a>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <button class="hidden sm:block text-sm font-bold hover:text-orange-500 transition">MASUK</button>
+            <button class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold text-sm transition transform hover:scale-105 shadow-lg shadow-orange-500/20">
+                BOOK NOW
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative h-screen flex items-center justify-center overflow-hidden hero-gradient">
+        <div class="container mx-auto px-6 text-center z-10">
+            <div class="inline-block px-4 py-1 border border-orange-500/30 rounded-full bg-orange-500/10 mb-6 reveal">
+                <span class="text-orange-400 text-xs font-bold tracking-[0.2em] uppercase">Premium Travel Agency</span>
+            </div>
+            <h1 class="text-5xl md:text-8xl font-black mb-6 leading-[1.1] tracking-tight reveal">
+                JELAJAHI DUNIA<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-yellow-200 to-orange-500">TANPA BATAS</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed reveal">
+                Kami merancang rute paling menantang dan pengalaman otentik yang takkan Anda temukan di mana pun. Siapkan ranselmu, petualangan dimulai di sini.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-5 justify-center reveal">
+                <a href="#routes" class="bg-orange-500 px-10 py-4 rounded-full font-bold text-lg hover:bg-orange-600 transition flex items-center justify-center gap-3 shadow-xl shadow-orange-500/40">
+                    Cari Rute <i class="fas fa-chevron-right text-sm"></i>
+                </a>
+                <a href="#" class="bg-white/5 backdrop-blur-md border border-white/10 px-10 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition flex items-center justify-center gap-3">
+                    <i class="fas fa-play-circle text-orange-500"></i> Lihat Video
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down text-white/50 text-xl"></i>
+        </div>
+        
+        <!-- Floating Info Card -->
+        <div class="absolute bottom-16 right-10 hidden xl:block animate-float">
+            <div class="bg-slate-900/80 p-5 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl flex items-center gap-4">
+                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-map-marked-alt text-white"></i>
+                </div>
+                <div>
+                    <div class="text-[10px] text-orange-400 uppercase font-black tracking-widest">Hot Destination</div>
+                    <div class="text-sm font-bold">Patagonia Expedition</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section id="stats" class="py-16 bg-slate-950 border-y border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="reveal">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">12K+</div>
+                    <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Travelers</div>
+                </div>
+                <div class="reveal" style="transition-delay: 100ms;">
+                    <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2">500+</div>
+                    <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Routes</div>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <div class="text-4xl md:text-5xl font-black text-white mb-2">150+</div>
+                    <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Guides</div>
+                </div>
+                <div class="reveal" style="transition-delay: 300ms;">
+                    <div class="text-4xl md:text-5xl font-black text-orange-500 mb-2">99%</div>
+                    <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rute Section -->
+    <section id="routes" class="py-32">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                <div class="max-w-xl">
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight leading-tight">
+                        RUTE PILIHAN <br><span class="text-orange-500">PARA PETUALANG</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg">Kami tidak menawarkan liburan biasa. Kami menawarkan ekspedisi yang menembus batas kenyamanan Anda.</p>
+                </div>
+                <div class="mt-8 md:mt-0">
+                    <button class="group flex items-center gap-3 font-bold text-orange-500 hover:text-orange-400 transition">
+                        LIHAT SEMUA RUTE <i class="fas fa-long-arrow-alt-right group-hover:translate-x-2 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Card 1 -->
+                <div class="adventure-card group relative overflow-hidden rounded-[2.5rem] h-[550px] reveal">
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Alps" class="card-img absolute inset-0 w-full h-full object-cover transition-transform duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-orange-500 text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-tighter">Extreme Adventure</span>
+                    </div>
+                    <div class="absolute bottom-0 p-10 w-full">
+                        <h3 class="text-3xl font-black mb-3">Alps Peak Challenge</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                            Ekspedisi melintasi puncak tertinggi Swiss dengan rute teknis yang jarang dilalui turis umum.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Mulai Dari</span>
+                                <span class="text-2xl font-black text-orange-500">$1,299</span>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="adventure-card group relative overflow-hidden rounded-[2.5rem] h-[550px] reveal" style="transition-delay: 150ms;">
+                    <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Venice" class="card-img absolute inset-0 w-full h-full object-cover transition-transform duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-blue-600 text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-tighter">Cultural Trails</span>
+                    </div>
+                    <div class="absolute bottom-0 p-10 w-full">
+                        <h3 class="text-3xl font-black mb-3">Hidden Venice</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                            Menelusuri kanal rahasia dan paviliun seni tersembunyi yang hanya diketahui oleh warga lokal.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Mulai Dari</span>
+                                <span class="text-2xl font-black text-orange-500">$899</span>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="adventure-card group relative overflow-hidden rounded-[2.5rem] h-[550px] reveal" style="transition-delay: 300ms;">
+                    <img src="https://images.unsplash.com/photo-1502675135487-e971002a6adb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sea" class="card-img absolute inset-0 w-full h-full object-cover transition-transform duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-emerald-600 text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-tighter">Marine Life</span>
+                    </div>
+                    <div class="absolute bottom-0 p-10 w-full">
+                        <h3 class="text-3xl font-black mb-3">Raja Ampat Deep</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                            Petualangan bawah laut di jantung segitiga terumbu karang dunia dengan visibilitas sempurna.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Mulai Dari</span>
+                                <span class="text-2xl font-black text-orange-500">$2,450</span>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides Section -->
+    <section id="guides" class="py-32 bg-slate-900 border-y border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">GUIDE <span class="text-orange-500">TERASIK</span></h2>
+                <p class="text-slate-400">Mereka bukan hanya penunjuk jalan, tapi partner diskusi dan teman bertahan hidup di alam liar yang paling profesional.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Guide 1 -->
+                <div class="group reveal">
+                    <div class="relative overflow-hidden rounded-3xl mb-6 h-80">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Guide" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-1">Marco Polo Jr.</h4>
+                    <p class="text-orange-500 text-xs font-black uppercase tracking-widest mb-3">Mountain Specialist</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-orange-500 transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-orange-500 transition-colors"><i class="fab fa-twitter text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Guide 2 -->
+                <div class="group reveal" style="transition-delay: 100ms;">
+                    <div class="relative overflow-hidden rounded-3xl mb-6 h-80">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Guide" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-1">Elena Volkov</h4>
+                    <p class="text-blue-500 text-xs font-black uppercase tracking-widest mb-3">Culture Specialist</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-blue-500 transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-blue-500 transition-colors"><i class="fab fa-twitter text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Guide 3 -->
+                <div class="group reveal" style="transition-delay: 200ms;">
+                    <div class="relative overflow-hidden rounded-3xl mb-6 h-80">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Guide" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-1">Capt. Aris</h4>
+                    <p class="text-emerald-500 text-xs font-black uppercase tracking-widest mb-3">Marine Specialist</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-emerald-500 transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-emerald-500 transition-colors"><i class="fab fa-twitter text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Guide 4 -->
+                <div class="group reveal" style="transition-delay: 300ms;">
+                    <div class="relative overflow-hidden rounded-3xl mb-6 h-80">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Guide" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-1">Zacky Wild</h4>
+                    <p class="text-yellow-500 text-xs font-black uppercase tracking-widest mb-3">Survivalist</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-yellow-500 transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-yellow-500 transition-colors"><i class="fab fa-twitter text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-32 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="bg-gradient-to-br from-orange-600 to-orange-400 rounded-[3rem] p-12 md:p-24 text-center shadow-2xl shadow-orange-500/20 reveal">
+                <h2 class="text-4xl md:text-7xl font-black mb-8 leading-tight tracking-tight text-slate-900">
+                    KAPAN TERAKHIR KALI <br>ANDA MERASA <span class="text-white italic">HIDUP?</span>
+                </h2>
+                <p class="text-slate-900/80 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
+                    Jangan biarkan rutinitas membunuh jiwamu. Pesan perjalananmu sekarang dan temukan versi terbaik dirimu di alam bebas.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button class="bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-lg hover:scale-105 transition shadow-2xl">
+                        AMBIL SLOTMU SEKARANG
+                    </button>
+                    <button class="bg-white/20 backdrop-blur-md border border-white/30 text-slate-900 px-12 py-5 rounded-2xl font-black text-lg hover:bg-white/30 transition">
+                        TANYA DULU AJA
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Decorative bg icon -->
+        <i class="fas fa-mountain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[400px] text-white/5 pointer-events-none"></i>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 pt-24 pb-12 border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
+                <div class="md:col-span-5">
+                    <div class="text-2xl font-black tracking-tighter mb-8 flex items-center gap-2">
+                        <i class="fas fa-compass text-orange-500"></i> WANDERLUST <span class="text-orange-500">X</span>
+                    </div>
+                    <p class="text-slate-500 leading-relaxed mb-8 max-w-sm">
+                        Menjadi agen perjalanan nomor satu untuk para pencari adrenalin. Kami melayani rute global dengan standar keamanan tertinggi dan pengalaman paling asik.
+                    </p>
+                    <div class="flex gap-5">
+                        <a href="#" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center hover:bg-orange-500 transition-all transform hover:-translate-y-1"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center hover:bg-orange-500 transition-all transform hover:-translate-y-1"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center hover:bg-orange-500 transition-all transform hover:-translate-y-1"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <h5 class="font-black text-xs uppercase tracking-[0.2em] text-orange-500 mb-8">Perusahaan</h5>
+                    <ul class="space-y-4 text-slate-400 font-medium text-sm">
+                        <li><a href="#" class="hover:text-white transition">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-white transition">Karier <span class="bg-orange-500/20 text-orange-500 px-2 py-0.5 rounded text-[10px] ml-1">HIRING</span></a></li>
+                        <li><a href="#" class="hover:text-white transition">Tim Kami</a></li>
+                        <li><a href="#" class="hover:text-white transition">Press Kit</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-2">
+                    <h5 class="font-black text-xs uppercase tracking-[0.2em] text-orange-500 mb-8">Bantuan</h5>
+                    <ul class="space-y-4 text-slate-400 font-medium text-sm">
+                        <li><a href="#" class="hover:text-white transition">Pusat Bantuan</a></li>
+                        <li><a href="#" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-white transition">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-white transition">Refund & Cancel</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h5 class="font-black text-xs uppercase tracking-[0.2em] text-orange-500 mb-8">Newsletter</h5>
+                    <p class="text-slate-500 text-sm mb-6 font-medium">Jangan lewatkan promo rute ekspedisi terbaru.</p>
+                    <div class="relative group">
+                        <input type="email" placeholder="Email Anda" class="w-full bg-slate-900 border-2 border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-orange-500 transition text-sm">
+                        <button class="absolute right-2 top-2 bottom-2 bg-orange-500 text-white px-5 rounded-xl hover:bg-orange-600 transition">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-slate-600 text-xs font-bold uppercase tracking-widest">
+                    &copy; 2026 Wanderlust X Expedition. All Rights Reserved.
+                </p>
+                <div class="flex gap-8">
+                    <span class="flex items-center gap-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                        <i class="fas fa-lock text-orange-500"></i> Secure Payment
+                    </span>
+                    <span class="flex items-center gap-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                        <i class="fas fa-shield-alt text-orange-500"></i> Certified Safety
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Function
+        const revealElements = () => {
+            const reveals = document.querySelectorAll(".reveal");
+            const windowHeight = window.innerHeight;
+            
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add("active");
+                }
+            });
+        };
+
+        window.addEventListener("scroll", revealElements);
+        window.addEventListener("load", revealElements);
+
+        // Navbar Scroll Handler
+        window.onscroll = () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('py-3', 'shadow-2xl');
+                navbar.classList.remove('py-5');
+            } else {
+                navbar.classList.add('py-5');
+                navbar.classList.remove('py-3', 'shadow-2xl');
+            }
+        };
+
+        // Subtle parallax for cards
+        document.querySelectorAll('.adventure-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xPercent = (x / rect.width - 0.5) * 5;
+                const yPercent = (y / rect.height - 0.5) * 5;
+                
+                card.style.transform = `perspective(1000px) rotateY(${xPercent}deg) rotateX(${-yPercent}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0px)`;
+            });
+        });
+    </script>
+</body>
+</html>
