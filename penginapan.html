@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omah Sayidan Guest House - Terasa Seperti Rumah Sendiri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FDFBFA; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        .bg-terracotta { background-color: #C06014; }
+        .text-terracotta { color: #C06014; }
+        .border-terracotta { border-color: #C06014; }
+        
+        .hero-image {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544124499-58912cbddaad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 30px -15px rgba(192, 96, 20, 0.2);
+        }
+
+        .scroll-smooth { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="text-stone-800 scroll-smooth">
+
+    <!-- Navigasi -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-100">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-terracotta p-1.5 rounded-lg">
+                    <i data-lucide="home" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-stone-900">Omah Sayidan</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-stone-600">
+                <a href="#suasana" class="hover:text-terracotta transition">Suasana</a>
+                <a href="#kamar" class="hover:text-terracotta transition">Kamar</a>
+                <a href="#lokasi" class="hover:text-terracotta transition">Lokasi</a>
+                <a href="https://wa.me/6281234567890" class="bg-terracotta text-white px-5 py-2 rounded-full hover:bg-orange-700 transition">Pesan Kamar</a>
+            </div>
+            <button class="md:hidden text-stone-900"><i data-lucide="menu"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-[90vh] hero-image flex items-center justify-center text-center px-6 pt-16">
+        <div class="max-w-3xl">
+            <h1 class="text-4xl md:text-6xl text-white mb-6 leading-tight">Selamat Datang di Rumah Baru Anda di Jogja</h1>
+            <p class="text-lg md:text-xl text-stone-100 mb-10 font-light opacity-90">
+                Nikmati kenyamanan guest house yang hangat, tenang, dan akrab. Cocok untuk Anda yang merindukan suasana rumah di tengah liburan.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#kamar" class="bg-white text-terracotta px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-stone-50 transition">
+                    Lihat Pilihan Kamar
+                </a>
+                <a href="https://wa.me/6281234567890" class="bg-terracotta text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-orange-700 transition flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i> Tanya Lewat WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Suasana Section -->
+    <section id="suasana" class="py-24 container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <img src="https://images.unsplash.com/photo-1512918766465-867f165937ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ruang Tamu Guest House" class="rounded-3xl shadow-2xl">
+            </div>
+            <div>
+                <span class="text-terracotta font-bold tracking-widest uppercase text-xs mb-4 block">Lebih Dari Sekadar Tempat Inap</span>
+                <h2 class="text-4xl md:text-5xl mb-6 text-stone-900">Hangat & Kekeluargaan</h2>
+                <p class="text-stone-600 leading-relaxed mb-8">
+                    Di Omah Sayidan, kami mengutamakan kenyamanan personal. Area komunal kami dirancang agar para tamu bisa saling menyapa, berbagi cerita perjalanan, atau sekadar menikmati sore dengan segelas teh hangat dan penganan lokal.
+                </p>
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="bg-orange-50 p-3 rounded-2xl text-terracotta">
+                            <i data-lucide="coffee"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Kopi & Teh 24 Jam</h4>
+                            <p class="text-sm text-stone-500">Tersedia gratis di ruang makan untuk teman mengobrol Anda.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="bg-orange-50 p-3 rounded-2xl text-terracotta">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Ruang Bersama yang Nyaman</h4>
+                            <p class="text-sm text-stone-500">Area patio dan ruang TV untuk bersantai bersama tamu lainnya.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kamar Section -->
+    <section id="kamar" class="py-24 bg-stone-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl mb-4">Pilihan Kamar Kami</h2>
+                <p class="text-stone-500">Sederhana, bersih, dan sangat nyaman untuk istirahat Anda.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Kamar 1 -->
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kamar Standar" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-2">Kamar Melati</h3>
+                        <p class="text-stone-500 text-sm mb-6 leading-relaxed">Kamar tipe standar yang pas untuk solo traveler atau pasangan. Nyaman dan tenang.</p>
+                        <ul class="text-xs space-y-2 mb-8 text-stone-400">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> AC & WiFi Kencang</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> Kamar Mandi Dalam</li>
+                        </ul>
+                        <div class="flex justify-between items-center">
+                            <span class="text-terracotta font-bold">Rp 350.000<span class="text-xs text-stone-400 font-normal">/malam</span></span>
+                            <a href="https://wa.me/6281234567890" class="p-2 bg-stone-100 rounded-full hover:bg-terracotta hover:text-white transition"><i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Kamar 2 -->
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow group">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kamar Deluxe" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-2">Kamar Kenanga</h3>
+                        <p class="text-stone-500 text-sm mb-6 leading-relaxed">Kamar lebih luas dengan Smart TV dan area meja kerja kecil untuk Anda.</p>
+                        <ul class="text-xs space-y-2 mb-8 text-stone-400">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> Smart TV & Netflix</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> Sarapan Spesial</li>
+                        </ul>
+                        <div class="flex justify-between items-center">
+                            <span class="text-terracotta font-bold">Rp 450.000<span class="text-xs text-stone-400 font-normal">/malam</span></span>
+                            <a href="https://wa.me/6281234567890" class="p-2 bg-stone-100 rounded-full hover:bg-terracotta hover:text-white transition"><i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Kamar 3 -->
+                <div class="bg-white rounded-3xl overflow-hidden card-shadow group border-2 border-terracotta/20">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kamar Suite" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-2">Kamar Cempaka</h3>
+                        <p class="text-stone-500 text-sm mb-6 leading-relaxed">Kamar keluarga dengan kapasitas hingga 4 orang. Area balkon menghadap taman.</p>
+                        <ul class="text-xs space-y-2 mb-8 text-stone-400">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> 2 Bed (Queen & Twin)</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-terracotta"></i> Teras Privat</li>
+                        </ul>
+                        <div class="flex justify-between items-center">
+                            <span class="text-terracotta font-bold">Rp 650.000<span class="text-xs text-stone-400 font-normal">/malam</span></span>
+                            <a href="https://wa.me/6281234567890" class="p-2 bg-stone-100 rounded-full hover:bg-terracotta hover:text-white transition"><i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layanan Extra -->
+    <section class="py-24 container mx-auto px-6">
+        <div class="bg-stone-900 rounded-[3rem] p-10 md:p-20 text-white flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-terracotta/20 rounded-full blur-3xl"></div>
+            <div class="md:w-1/2 relative z-10">
+                <h2 class="text-4xl mb-6">Service Extra Menarik</h2>
+                <p class="text-stone-400 mb-10 leading-relaxed">Kami senang membantu Anda menjelajahi Jogja. Biarkan kami yang mengurus detail kecilnya agar Anda bisa fokus menikmati perjalanan.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="bike" class="text-terracotta"></i>
+                        <span class="text-sm">Sewa Motor & Sepeda</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="utensils-crossed" class="text-terracotta"></i>
+                        <span class="text-sm">Saran Kuliner Lokal</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="plane" class="text-terracotta"></i>
+                        <span class="text-sm">Antar Jemput Stasiun</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="shirt" class="text-terracotta"></i>
+                        <span class="text-sm">Laundry Kilat</span>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative z-10">
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl">
+                    <p class="text-sm italic mb-6">"Pemiliknya sangat ramah, serasa nginep di rumah saudara sendiri. Lokasinya masuk gang tapi tenang banget dari kebisingan kota."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-terracotta rounded-full flex items-center justify-center font-bold">R</div>
+                        <div>
+                            <p class="text-xs font-bold">Rizky Ramadhan</p>
+                            <p class="text-[10px] text-stone-500">Tamu dari Bandung</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lokasi Section -->
+    <section id="lokasi" class="py-24 container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl mb-4">Dekat Dari Mana Saja</h2>
+            <p class="text-stone-500">Lokasi kami di Sayidan, sangat strategis untuk menjangkau ikon-ikon Jogja.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center">
+                <h4 class="text-3xl font-bold text-terracotta mb-1">5</h4>
+                <p class="text-xs uppercase tracking-widest text-stone-400">Menit ke Malioboro</p>
+            </div>
+            <div class="text-center">
+                <h4 class="text-3xl font-bold text-terracotta mb-1">8</h4>
+                <p class="text-xs uppercase tracking-widest text-stone-400">Menit ke Keraton</p>
+            </div>
+            <div class="text-center">
+                <h4 class="text-3xl font-bold text-terracotta mb-1">10</h4>
+                <p class="text-xs uppercase tracking-widest text-stone-400">Menit ke Stasiun Tugu</p>
+            </div>
+            <div class="text-center">
+                <h4 class="text-3xl font-bold text-terracotta mb-1">12</h4>
+                <p class="text-xs uppercase tracking-widest text-stone-400">Menit ke Prawirotaman</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-50 pt-20 pb-12 border-t border-stone-200">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-16">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="bg-terracotta p-1 rounded-lg">
+                            <i data-lucide="home" class="text-white w-4 h-4"></i>
+                        </div>
+                        <span class="text-lg font-bold">Omah Sayidan</span>
+                    </div>
+                    <p class="text-sm text-stone-500 leading-relaxed max-w-xs">
+                        Guest house dengan sentuhan etnik modern yang menawarkan kenyamanan rumah di tengah keramaian kota Yogyakarta.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-6 text-sm uppercase tracking-widest">Navigasi</h5>
+                    <ul class="text-sm text-stone-500 space-y-3">
+                        <li><a href="#suasana" class="hover:text-terracotta">Tentang Kami</a></li>
+                        <li><a href="#kamar" class="hover:text-terracotta">Pilihan Kamar</a></li>
+                        <li><a href="#lokasi" class="hover:text-terracotta">Peta Lokasi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-6 text-sm uppercase tracking-widest">Hubungi Kami</h5>
+                    <p class="text-sm text-stone-500 mb-4">Jl. Sayidan No. 123, Gondomanan, Yogyakarta</p>
+                    <a href="https://wa.me/6281234567890" class="text-terracotta font-bold text-lg flex items-center gap-2">
+                        <i data-lucide="phone" class="w-5 h-5"></i> 0812-3456-7890
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-[10px] text-stone-400 uppercase tracking-widest pt-12 border-t border-stone-200">
+                &copy; 2024 Omah Sayidan Guest House. Papan, Pangan, lan Kekancan.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WA for Mobile -->
+    <a href="https://wa.me/6281234567890" class="fixed bottom-6 right-6 z-[100] bg-green-500 text-white p-4 rounded-full shadow-2xl md:hidden">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </a>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
