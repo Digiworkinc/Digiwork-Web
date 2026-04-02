@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theo: Jurnal Teologi dan Pendidikan Kristiani</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .article-card:hover .article-title {
+            color: #4f46e5; /* indigo-600 */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- TOP BAR -->
+    <div class="bg-indigo-900 text-white py-2 px-4 text-xs md:text-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex gap-4">
+                <span>ISSN (Print): 2614-1111</span>
+                <span class="hidden md:inline">ISSN (Online): 2614-2222</span>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-indigo-200 transition-colors">Masuk</a>
+                <span class="text-indigo-400">|</span>
+                <a href="#" class="hover:text-indigo-200 transition-colors">Daftar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="bg-indigo-600 p-2 rounded-lg">
+                        <i data-lucide="book-open" class="text-white w-6 h-6 md:w-8 md:h-8"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-indigo-900 tracking-tight leading-none uppercase">Theo</h1>
+                        <p class="text-[10px] md:text-xs text-slate-500 font-medium uppercase tracking-widest mt-1">Jurnal Teologi & Pendidikan</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#" class="text-sm font-semibold text-indigo-600">Beranda</a>
+                    <a href="#" class="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">Edisi Terbaru</a>
+                    <a href="#" class="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">Arsip</a>
+                    <a href="#" class="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">Tentang</a>
+                    <a href="#" class="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">Kirim Naskah</a>
+                    
+                    <div class="relative group">
+                        <input type="text" placeholder="Cari artikel..." class="pl-4 pr-10 py-2 bg-slate-100 rounded-full text-sm border-none focus:ring-2 focus:ring-indigo-500 w-48 transition-all focus:w-64">
+                        <i data-lucide="search" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-600">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-xl">
+            <a href="#" class="block px-4 py-2 text-slate-700 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Beranda</a>
+            <a href="#" class="block px-4 py-2 text-slate-700 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Edisi Terbaru</a>
+            <a href="#" class="block px-4 py-2 text-slate-700 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Arsip</a>
+            <a href="#" class="block px-4 py-2 text-slate-700 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Tentang</a>
+            <a href="#" class="block px-4 py-2 text-slate-700 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Kirim Naskah</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative overflow-hidden bg-indigo-900 text-white py-16 md:py-24">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10 text-center">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-indigo-500/30 border border-indigo-400/30 text-indigo-100 text-sm font-medium mb-6">
+                STT Kingdom International
+            </span>
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight max-w-4xl mx-auto">
+                Theo: Jurnal Teologi dan Pendidikan Kristiani
+            </h2>
+            <p class="text-lg md:text-xl text-indigo-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Platform publikasi ilmiah yang berdedikasi untuk pengembangan pemikiran teologis dan inovasi pendidikan Kristen di Indonesia.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#articles" class="px-8 py-4 bg-white text-indigo-900 font-bold rounded-xl shadow-lg hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 group">
+                    Baca Artikel <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#" class="px-8 py-4 bg-indigo-700 text-white font-bold rounded-xl shadow-lg border border-indigo-600 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="file-text" class="w-5 h-5"></i> Kirim Naskah
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- ARTICLE LIST AREA -->
+            <div class="lg:col-span-8 space-y-12" id="articles">
+                
+                <div>
+                    <div class="flex items-center justify-between mb-8 border-b border-slate-200 pb-4">
+                        <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="chevron-right" class="text-indigo-600"></i>
+                            Edisi Saat Ini: Vol 5 No 2 (2023)
+                        </h3>
+                        <a href="#" class="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-400" title="Arsip">
+                            <i data-lucide="archive" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+
+                    <!-- Article Card 1 -->
+                    <div class="article-card group bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all mb-6">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase rounded-md">Pendidikan Kristiani</span>
+                                    <span class="text-slate-400 text-xs flex items-center gap-1">
+                                        <i data-lucide="users" class="w-3 h-3"></i> Dr. Andreas Setiawan
+                                    </span>
+                                </div>
+                                <h4 class="article-title text-xl font-bold text-slate-900 transition-colors mb-3 leading-snug cursor-pointer">
+                                    Integrasi Iman dan Ilmu dalam Pendidikan Kristen di Era Digital
+                                </h4>
+                                <p class="text-slate-600 text-sm mb-4 line-clamp-2 italic">
+                                    "Penelitian ini mengeksplorasi bagaimana institusi pendidikan Kristen dapat mengintegrasikan nilai-nilai teologis ke dalam kurikulum berbasis teknologi modern..."
+                                </p>
+                                <div class="flex flex-wrap items-center gap-6 pt-4 border-t border-slate-50 text-xs text-slate-500">
+                                    <div><span class="font-semibold text-slate-700">DOI:</span> 10.555/theo.v5i2.123</div>
+                                    <div><span class="font-semibold text-slate-700">Terbit:</span> Desember 2023</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-row md:flex-col gap-2 shrink-0">
+                                <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 text-white rounded-lg text-sm font-semibold hover:bg-indigo-600 transition-colors">
+                                    <i data-lucide="download" class="w-4 h-4"></i> PDF
+                                </button>
+                                <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:border-indigo-200 hover:bg-indigo-50 transition-colors">
+                                    <i data-lucide="info" class="w-4 h-4"></i> Detail
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Card 2 -->
+                    <div class="article-card group bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all mb-6">
+                        <div class="flex flex-col md:flex-row md:items-start gap-6">
+                            <div class="flex-1">
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase rounded-md">Teologi Biblika</span>
+                                    <span class="text-slate-400 text-xs flex items-center gap-1">
+                                        <i data-lucide="users" class="w-3 h-3"></i> Pdt. Maria Kristiani, Th.M
+                                    </span>
+                                </div>
+                                <h4 class="article-title text-xl font-bold text-slate-900 transition-colors mb-3 leading-snug cursor-pointer">
+                                    Analisis Hermeneutik Terhadap Narasi Penciptaan dalam Konteks Ekologi
+                                </h4>
+                                <p class="text-slate-600 text-sm mb-4 line-clamp-2 italic">
+                                    "Artikel ini membahas interpretasi teologis terhadap Kitab Kejadian dalam merespons krisis lingkungan hidup global saat ini..."
+                                </p>
+                                <div class="flex flex-wrap items-center gap-6 pt-4 border-t border-slate-50 text-xs text-slate-500">
+                                    <div><span class="font-semibold text-slate-700">DOI:</span> 10.555/theo.v5i2.124</div>
+                                    <div><span class="font-semibold text-slate-700">Terbit:</span> Desember 2023</div>
+                                </div>
+                            </div>
+                            <div class="flex flex-row md:flex-col gap-2 shrink-0">
+                                <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 text-white rounded-lg text-sm font-semibold hover:bg-indigo-600 transition-colors">
+                                    <i data-lucide="download" class="w-4 h-4"></i> PDF
+                                </button>
+                                <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:border-indigo-200 hover:bg-indigo-50 transition-colors">
+                                    <i data-lucide="info" class="w-4 h-4"></i> Detail
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 text-center">
+                        <button class="px-6 py-3 border-2 border-indigo-100 text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition-all">
+                            Lihat Semua Artikel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CALL TO ACTION -->
+                <div class="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Ingin Memublikasikan Penelitian Anda?</h3>
+                        <p class="text-indigo-100 mb-8 max-w-lg">Bergabunglah dengan jajaran akademisi yang telah berkontribusi bagi pengembangan iman dan ilmu melalui Jurnal Theo.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center gap-2 text-sm">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-indigo-300"></i> Peer-Review Profesional
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-indigo-300"></i> Akses Terbuka (Open Access)
+                            </div>
+                        </div>
+                        <button class="w-full sm:w-auto px-8 py-4 bg-white text-indigo-900 font-bold rounded-xl shadow-lg hover:scale-105 transition-transform">
+                            Pelajari Panduan Penulis
+                        </button>
+                    </div>
+                    <i data-lucide="file-text" class="absolute -right-12 -bottom-12 w-64 h-64 text-white/10"></i>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <aside class="lg:col-span-4 space-y-8">
+                
+                <!-- Indexing -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h5 class="font-bold text-slate-800 mb-4 flex items-center gap-2 uppercase text-sm tracking-wide">
+                        <i data-lucide="award" class="w-5 h-5 text-indigo-600"></i> Pengindeksan
+                    </h5>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-slate-50 border border-slate-100 rounded-lg py-3 px-2 text-center text-[10px] font-bold text-slate-400 grayscale hover:grayscale-0 transition-all cursor-default">SINTA</div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-lg py-3 px-2 text-center text-[10px] font-bold text-slate-400 grayscale hover:grayscale-0 transition-all cursor-default">GOOGLE SCHOLAR</div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-lg py-3 px-2 text-center text-[10px] font-bold text-slate-400 grayscale hover:grayscale-0 transition-all cursor-default">GARUDA</div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-lg py-3 px-2 text-center text-[10px] font-bold text-slate-400 grayscale hover:grayscale-0 transition-all cursor-default">CROSSREF</div>
+                    </div>
+                </div>
+
+                <!-- Menu Links -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h5 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Informasi Jurnal</h5>
+                    </div>
+                    <div class="divide-y divide-slate-100 text-sm">
+                        <a href="#" class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 group">
+                            <span class="font-medium text-slate-600 group-hover:text-indigo-600 flex items-center gap-3">
+                                <i data-lucide="search" class="w-4 h-4"></i> Fokus & Ruang Lingkup
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-600"></i>
+                        </a>
+                        <a href="#" class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 group">
+                            <span class="font-medium text-slate-600 group-hover:text-indigo-600 flex items-center gap-3">
+                                <i data-lucide="users" class="w-4 h-4"></i> Proses Peer Review
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-600"></i>
+                        </a>
+                        <a href="#" class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 group">
+                            <span class="font-medium text-slate-600 group-hover:text-indigo-600 flex items-center gap-3">
+                                <i data-lucide="award" class="w-4 h-4"></i> Etika Publikasi
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-600"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Template Download -->
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6">
+                    <h5 class="font-bold text-indigo-900 mb-2">Template Naskah</h5>
+                    <p class="text-xs text-indigo-700 mb-4">Gunakan template resmi kami untuk mempercepat proses peninjauan.</p>
+                    <button class="w-full py-3 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-md hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i> Unduh (.docx)
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6">
+                    <h5 class="text-[10px] font-bold mb-4 opacity-50 uppercase tracking-widest">Statistik Pengunjung</h5>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm opacity-80">Total Pengunjung</span>
+                            <span class="font-mono font-bold">12.842</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm opacity-80">Pembaca Hari Ini</span>
+                            <span class="font-mono font-bold">42</span>
+                        </div>
+                        <div class="h-1 w-full bg-slate-800 rounded-full mt-4">
+                            <div class="h-full w-2/3 bg-indigo-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 pt-16 pb-8 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-600 p-2 rounded-lg">
+                            <i data-lucide="book-open" class="text-white w-5 h-5"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-indigo-900 uppercase">Theo</h1>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Diterbitkan oleh LPPM Sekolah Tinggi Teologi Kingdom International. Berkomitmen pada keunggulan akademis teologi.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white transition-all">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white transition-all">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h6 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Tautan</h6>
+                    <ul class="space-y-4 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Kontak Redaksi</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Bantuan OJS</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">STT Kingdom</a></li>
+                    </ul>
+                </div>
+
+                <!-- Map -->
+                <div>
+                    <h6 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Alamat</h6>
+                    <div class="flex gap-3 text-sm text-slate-500">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-indigo-600 shrink-0"></i>
+                        <address class="not-italic leading-relaxed">
+                            Jl. Raya Kingdom No. 10, Ungaran Barat,<br>
+                            Kab. Semarang, Jawa Tengah,<br>
+                            Indonesia
+                        </address>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h6 class="font-bold text-slate-900 mb-6 uppercase text-xs tracking-widest">Update Jurnal</h6>
+                    <p class="text-sm text-slate-500 mb-4">Daftarkan email Anda untuk info edisi terbaru.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Anda" class="flex-1 px-4 py-2 bg-slate-100 border-none rounded-l-lg text-sm focus:ring-1 focus:ring-indigo-500">
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700 transition-colors">
+                            Kirim
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-100 text-center">
+                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+                    &copy; 2024 Theo: Jurnal Teologi dan Pendidikan Kristiani. STT Kingdom International.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle Logic
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        let isMenuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons(); // Re-render icon
+        });
+    </script>
+</body>
+</html>
