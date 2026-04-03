@@ -3,335 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digiwork | Kreativitas Tanpa Batas di Yogyakarta</title>
+    <title>Digiwork - Landing Page Siap Pakai</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        /* Animasi Floating */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-float-delayed {
-            animation: float 8s ease-in-out infinite;
-            animation-delay: 2s;
-        }
-
-        /* Glassmorphism yang lebih halus */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        /* Gradasi Teks */
-        .text-gradient {
-            background: linear-gradient(135deg, #2563eb 0%, #a855f7 50%, #ec4899 100%);
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(90deg, #ef4444, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        /* Bentuk Blob di Background */
-        .blob {
-            position: absolute;
-            z-index: -1;
-            filter: blur(60px);
-            opacity: 0.4;
-            border-radius: 50%;
+        .bg-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
         }
-
-        /* Hover Card yang lebih dinamis */
-        .card-dynamic {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .card-dynamic:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body class="bg-[#fafbff] text-slate-900">
+<body class="bg-slate-50 text-slate-900">
 
-    <!-- Blobs Background Decor -->
-    <div class="blob bg-blue-400 w-96 h-96 top-[-10%] left-[-10%]"></div>
-    <div class="blob bg-purple-400 w-[500px] h-[500px] bottom-[10%] right-[-10%] animate-float-delayed"></div>
-    <div class="blob bg-pink-300 w-80 h-80 top-[40%] left-[20%] animate-float"></div>
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 px-6 py-4">
-        <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center shadow-lg shadow-blue-900/5">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-lg"></div>
-                <span class="text-xl font-extrabold tracking-tighter text-slate-800">DIGIWORK.</span>
-            </div>
-            
-            <div class="hidden md:flex items-center space-x-10 text-sm font-semibold text-slate-600">
-                <a href="#home" class="hover:text-blue-600 transition-all">Mulai</a>
-                <a href="#services" class="hover:text-blue-600 transition-all">Layanan</a>
-                <a href="#portfolio" class="hover:text-blue-600 transition-all">Karya</a>
-                <a href="#contact" class="bg-slate-900 text-white px-6 py-2.5 rounded-xl hover:bg-blue-600 transition-all shadow-lg hover:shadow-blue-500/30">Hubungi Kami</a>
-            </div>
-
-            <button class="md:hidden text-slate-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/></svg>
-            </button>
+    <!-- Sticky Header -->
+    <nav class="fixed top-0 w-full z-50 bg-glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="font-extrabold text-2xl tracking-tighter text-blue-600">DIGIWORK<span class="text-red-500">.</span></div>
+            <a href="https://wa.me/your-number" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2">
+                <i class="fab fa-whatsapp"></i> <span class="hidden md:inline">Konsultasi</span> Gratis
+            </a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative pt-44 pb-32 overflow-hidden px-6">
-        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
-            <div class="inline-flex items-center space-x-2 px-4 py-2 mb-8 text-xs font-bold tracking-widest text-blue-700 uppercase bg-blue-100/50 border border-blue-200 rounded-full animate-bounce">
-                <span>📍 Berbasis di Yogyakarta</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
-                Kami Mendefinisikan Ulang <br>
-                <span class="text-gradient">Eksistensi Digital</span> Anda
+    <!-- 1. HERO SECTION -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-white uppercase bg-red-600 rounded-full">
+                🚀 Solusi Jualan Laris
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                Jualan Sepi? Ubah Pengunjung Jadi Pembeli dengan <span class="gradient-text">Landing Page Siap Pakai</span>
             </h1>
-            
-            <p class="max-w-2xl text-lg md:text-xl text-slate-500 mb-12 leading-relaxed font-medium">
-                Solusi desain dan teknologi yang berani untuk bisnis yang ingin tampil beda. Dari Jogja untuk masa depan digital Indonesia.
+            <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
+                Tanpa coding, tanpa ribet — langsung bisa dipakai untuk <span class="font-bold text-slate-900 underline decoration-red-500">closing hari ini juga.</span>
             </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 items-center">
-                <a href="#portfolio" class="group relative px-10 py-5 bg-slate-900 text-white rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-xl shadow-slate-900/20 overflow-hidden">
-                    <span class="relative z-10">Eksplorasi Karya</span>
-                    <div class="absolute inset-0 bg-blue-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#penawaran" class="bg-red-600 hover:bg-red-700 text-white text-lg font-bold px-8 py-4 rounded-xl shadow-lg transition-transform hover:scale-105">
+                    🔥 Saya Mau Landing Page Ini
                 </a>
-                <a href="#contact" class="px-10 py-5 bg-white text-slate-700 border-2 border-slate-100 rounded-2xl font-bold hover:bg-slate-50 transition-all">
-                    Diskusi Proyek
+                <a href="https://wa.me/your-number" class="bg-white border-2 border-slate-200 hover:border-green-500 text-slate-700 hover:text-green-600 text-lg font-bold px-8 py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-green-500"></i> Konsultasi via WhatsApp
                 </a>
-            </div>
-        </div>
-
-        <!-- Floating Elements Decor -->
-        <div class="absolute top-1/4 left-10 animate-float hidden lg:block">
-            <div class="w-16 h-16 glass rounded-2xl flex items-center justify-center shadow-xl rotate-12">
-                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            </div>
-        </div>
-        <div class="absolute bottom-20 right-20 animate-float-delayed hidden lg:block">
-            <div class="w-20 h-20 glass rounded-full flex items-center justify-center shadow-xl -rotate-12">
-                <svg class="w-10 h-10 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-32 relative px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row items-end justify-between mb-20">
-                <div class="max-w-xl">
-                    <h2 class="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">Layanan Yang <br>Menggerakkan <span class="text-blue-600">Bisnis</span></h2>
-                    <p class="text-slate-500 font-medium text-lg">Kami tidak hanya membuat desain, kami membangun infrastruktur visual dan fungsional untuk pertumbuhan Anda.</p>
-                </div>
-                <div class="mt-8 md:mt-0">
-                    <div class="flex -space-x-4">
-                        <img src="https://i.pravatar.cc/100?img=1" class="w-12 h-12 rounded-full border-4 border-white shadow-lg" alt="User">
-                        <img src="https://i.pravatar.cc/100?img=2" class="w-12 h-12 rounded-full border-4 border-white shadow-lg" alt="User">
-                        <img src="https://i.pravatar.cc/100?img=3" class="w-12 h-12 rounded-full border-4 border-white shadow-lg" alt="User">
-                        <div class="w-12 h-12 rounded-full bg-blue-600 border-4 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold">+50</div>
+    <!-- 2. PROBLEM SECTION -->
+    <section class="py-20 bg-slate-900 text-white">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Pernah ngalamin ini?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 bg-slate-800 rounded-2xl flex items-start gap-4">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center shrink-0">
+                        <i class="fas fa-times text-red-500"></i>
                     </div>
-                    <p class="text-xs font-bold text-slate-400 mt-2 uppercase tracking-widest text-right">Klien Puas</p>
+                    <p class="text-lg">Sudah promosi tapi tetap sepi order</p>
+                </div>
+                <div class="p-6 bg-slate-800 rounded-2xl flex items-start gap-4">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center shrink-0">
+                        <i class="fas fa-times text-red-500"></i>
+                    </div>
+                    <p class="text-lg">Banyak yang tanya tapi tidak jadi beli</p>
+                </div>
+                <div class="p-6 bg-slate-800 rounded-2xl flex items-start gap-4">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center shrink-0">
+                        <i class="fas fa-times text-red-500"></i>
+                    </div>
+                    <p class="text-lg">Jualan cuma lewat chat → capek jelasin berulang</p>
+                </div>
+                <div class="p-6 bg-slate-800 rounded-2xl flex items-start gap-4">
+                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center shrink-0">
+                        <i class="fas fa-times text-red-500"></i>
+                    </div>
+                    <p class="text-lg">Calon pembeli hilang sebelum closing</p>
                 </div>
             </div>
+            <p class="mt-12 text-center text-xl text-slate-400">
+                👉 <span class="text-white font-semibold">Kalau iya… kamu tidak sendirian.</span>
+            </p>
+        </div>
+    </section>
 
+    <!-- 3. SOLUSI SECTION -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-2xl text-slate-500 mb-2">Solusinya bukan tambah promosi…</h3>
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-12">Tapi cara kamu menjualnya yang harus diubah.</h2>
+            
+            <div class="bg-blue-50 p-8 md:p-12 rounded-3xl border border-blue-100">
+                <h4 class="text-2xl font-bold mb-8 flex items-center justify-center gap-2">
+                    🔥 Dengan landing page:
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <div class="text-3xl mb-4">📋</div>
+                        <p class="font-semibold">Semua info jualan tersusun rapi</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-4">💡</div>
+                        <p class="font-semibold">Calon pembeli langsung paham</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-4">🖱️</div>
+                        <p class="font-semibold">Tinggal klik → langsung order</p>
+                    </div>
+                </div>
+                <hr class="my-8 border-blue-200">
+                <p class="text-lg font-medium text-blue-800 italic">
+                    "Jadi kamu tidak perlu jelasin berulang-ulang lagi."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. DEMO SECTION -->
+    <section class="py-20 bg-slate-100">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold mb-4">🎯 Lihat Demo Senjata Utama Kamu</h2>
+                <p class="text-slate-600">Contoh landing page yang sudah siap mendongkrak penjualan kamu</p>
+            </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Card 1: Graphic Design -->
-                <div class="group card-dynamic bg-white p-10 rounded-[40px] shadow-2xl shadow-blue-900/5 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-150 group-hover:rotate-12 transition-transform duration-700">
-                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
+                <!-- Demo 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl group">
+                    <div class="h-48 bg-slate-200 flex items-center justify-center overflow-hidden">
+                        <i class="fas fa-plane-departure text-6xl text-blue-300 group-hover:scale-110 transition-transform"></i>
                     </div>
-                    <div class="w-16 h-16 bg-blue-600 rounded-3xl flex items-center justify-center mb-8 shadow-lg shadow-blue-200">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Sektor Travel & Tour</h4>
+                        <p class="text-slate-600 mb-4 text-sm">Desain elegan yang menonjolkan destinasi dan paket wisata.</p>
+                        <a href="https://digiwork.web.id/Traveling.html" target="_blank" class="block text-center bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            Buka Demo Travel
+                        </a>
                     </div>
-                    <h3 class="text-2xl font-extrabold mb-4">Desain Grafis Kreatif</h3>
-                    <p class="text-slate-500 leading-relaxed mb-6 font-medium">Bukan sekadar gambar indah, tapi identitas visual yang bercerita dan membangun kepercayaan pelanggan secara instan.</p>
-                    <ul class="text-sm font-bold text-slate-400 space-y-2">
-                        <li>• Brand Identity & Logo</li>
-                        <li>• Social Media Content</li>
-                        <li>• Marketing Material</li>
+                </div>
+                <!-- Demo 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl group">
+                    <div class="h-48 bg-slate-200 flex items-center justify-center overflow-hidden">
+                        <i class="fas fa-dumbbell text-6xl text-orange-300 group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-2">Personal Trainer / Jasa</h4>
+                        <p class="text-slate-600 mb-4 text-sm">Fokus pada personal branding dan tombol booking cepat.</p>
+                        <a href="https://digiwork.web.id/Personal_Trainer.html" target="_blank" class="block text-center bg-orange-500 text-white font-bold py-3 rounded-lg hover:bg-orange-600 transition-colors">
+                            Buka Demo Personal Trainer
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-center space-y-2">
+                <p class="font-bold text-lg">👉 Ini bukan demo biasa</p>
+                <p class="font-bold text-lg text-red-600">👉 Ini contoh yang langsung bisa dipakai untuk jualan</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. BENEFIT SECTION -->
+    <section class="py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-extrabold text-center mb-12">🔥 Hasil Yang Akan Kamu Dapatkan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Lebih Cepat Closing</h4>
+                    <p class="text-sm text-slate-600">Alur yang memudahkan pembeli langsung transfer.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Terlihat Profesional</h4>
+                    <p class="text-sm text-slate-600">Meningkatkan kelas brand kamu di mata kompetitor.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Hemat Energi</h4>
+                    <p class="text-sm text-slate-600">Tidak capek jawab chat yang menanyakan hal sama.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Jualan 24 Jam</h4>
+                    <p class="text-sm text-slate-600">Website bekerja saat kamu sedang tidur.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Tingkatkan Trust</h4>
+                    <p class="text-sm text-slate-600">Calon pembeli lebih yakin bertransaksi.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl card-shadow">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-4"></i>
+                    <h4 class="font-bold mb-2">Siap Iklan</h4>
+                    <p class="text-sm text-slate-600">Cocok dipasang di Ads (TikTok, FB, IG).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. BEFORE vs AFTER -->
+    <section class="py-20 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-extrabold text-center mb-12">⚡ Bandingkan Bedanya</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Before -->
+                <div class="bg-red-50 p-8 rounded-3xl border border-red-100">
+                    <h4 class="text-red-600 font-extrabold text-xl mb-6 flex items-center gap-2">
+                        ❌ Sebelum
+                    </h4>
+                    <ul class="space-y-4 font-medium text-slate-700">
+                        <li class="flex items-center gap-3"><i class="fas fa-ban text-red-400"></i> Jualan via chat manual</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-ban text-red-400"></i> Banyak tanya, no order</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-ban text-red-400"></i> Sedikit closing</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-ban text-red-400"></i> Link berantakan</li>
                     </ul>
                 </div>
-
-                <!-- Card 2: Landing Page -->
-                <div class="group card-dynamic bg-slate-900 p-10 rounded-[40px] shadow-2xl shadow-blue-900/20 text-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-150 transition-transform duration-700">
-                        <svg class="w-32 h-32 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>
-                    </div>
-                    <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center mb-8 shadow-lg shadow-white/10">
-                        <svg class="w-8 h-8 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    </div>
-                    <h3 class="text-2xl font-extrabold mb-4">Landing Page Performa</h3>
-                    <p class="text-slate-300 leading-relaxed mb-6 font-medium">Halaman web yang dirancang khusus untuk mengubah pengunjung menjadi pembeli setia dengan kecepatan akses maksimal.</p>
-                    <div class="flex space-x-2">
-                        <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] uppercase font-bold">SEO Ready</span>
-                        <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] uppercase font-bold">High Speed</span>
-                    </div>
-                </div>
-
-                <!-- Card 3: Dashboard -->
-                <div class="group card-dynamic bg-white p-10 rounded-[40px] shadow-2xl shadow-blue-900/5 lg:mt-[-40px]">
-                    <div class="w-16 h-16 bg-purple-600 rounded-3xl flex items-center justify-center mb-8 shadow-lg shadow-purple-200">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-extrabold mb-4">Dashboard Informasi</h3>
-                    <p class="text-slate-500 leading-relaxed font-medium">Ubah data rumit menjadi keputusan bisnis cerdas melalui visualisasi dashboard yang interaktif dan mudah dipahami.</p>
-                </div>
-
-                <!-- Card 4: Tools -->
-                <div class="group card-dynamic bg-blue-50 p-10 rounded-[40px] shadow-2xl shadow-blue-900/5">
-                    <div class="w-16 h-16 bg-pink-500 rounded-3xl flex items-center justify-center mb-8 shadow-lg shadow-pink-200">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-extrabold mb-4">Tool Pendukung</h3>
-                    <p class="text-slate-500 leading-relaxed font-medium">Kami membangun alat khusus yang membuat operasional perusahaan Anda jauh lebih efisien dan terotomatisasi.</p>
+                <!-- After -->
+                <div class="bg-green-50 p-8 rounded-3xl border border-green-100">
+                    <h4 class="text-green-600 font-extrabold text-xl mb-6 flex items-center gap-2">
+                        ✅ Sesudah
+                    </h4>
+                    <ul class="space-y-4 font-medium text-slate-700">
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500"></i> Pakai landing page</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500"></i> Orang langsung paham</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500"></i> Tinggal klik → order</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500"></i> Terintegrasi WhatsApp</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-32 bg-slate-900 text-white rounded-[60px] md:rounded-[100px] mx-4 px-6 overflow-hidden">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <span class="text-blue-400 font-extrabold tracking-widest text-xs uppercase mb-4 block animate-pulse">Eksplorasi Proyek</span>
-                <h2 class="text-4xl md:text-5xl font-extrabold">Karya Terbaru Kami</h2>
+    <!-- 7. TRUST SECTION -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-extrabold mb-8">🤝 Saya sudah membantu berbagai usaha:</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-6 py-3 bg-white border border-slate-200 rounded-full font-bold shadow-sm">Travel & Tour</span>
+                <span class="px-6 py-3 bg-white border border-slate-200 rounded-full font-bold shadow-sm">Kuliner & Toko Roti</span>
+                <span class="px-6 py-3 bg-white border border-slate-200 rounded-full font-bold shadow-sm">Personal Trainer</span>
+                <span class="px-6 py-3 bg-white border border-slate-200 rounded-full font-bold shadow-sm">UMKM & Jasa</span>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Portofolio 1 -->
-                <div class="group relative rounded-[40px] overflow-hidden aspect-[3/4] card-dynamic">
-                    <img src="https://images.unsplash.com/photo-1541462608141-ad60397d5883?auto=format&fit=crop&w=800&q=80" alt="Work" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <span class="text-blue-400 font-bold text-xs uppercase mb-2 tracking-widest">Digital Branding</span>
-                        <h4 class="text-2xl font-extrabold">Modern Tech Hub</h4>
-                        <p class="text-sm text-slate-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Visual Identity for Startup ecosystem.</p>
-                    </div>
-                </div>
-
-                <!-- Portofolio 2 (Asymmetric Offset) -->
-                <div class="group relative rounded-[40px] overflow-hidden aspect-[3/4] card-dynamic md:mt-12">
-                    <img src="https://images.unsplash.com/photo-1551288049-bbb65216f78d?auto=format&fit=crop&w=800&q=80" alt="Work" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <span class="text-purple-400 font-bold text-xs uppercase mb-2 tracking-widest">Dashboard System</span>
-                        <h4 class="text-2xl font-extrabold">Finance Tracker 2.0</h4>
-                        <p class="text-sm text-slate-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Full data visualization for fintech.</p>
-                    </div>
-                </div>
-
-                <!-- Portofolio 3 -->
-                <div class="group relative rounded-[40px] overflow-hidden aspect-[3/4] card-dynamic">
-                    <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Work" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <span class="text-pink-400 font-bold text-xs uppercase mb-2 tracking-widest">Web Solution</span>
-                        <h4 class="text-2xl font-extrabold">E-Commerce Boutique</h4>
-                        <p class="text-sm text-slate-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">Converting visitors into loyal customers.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-20 flex justify-center">
-                <button class="px-8 py-4 glass text-white rounded-2xl font-bold hover:bg-white hover:text-slate-900 transition-all">Lihat Galeri Lengkap</button>
-            </div>
+            <p class="mt-12 text-lg font-medium text-slate-500">
+                👉 Landing page dibuat khusus untuk <span class="text-slate-900 font-bold underline">fokus closing</span>, bukan sekadar tampilan.
+            </p>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
-            <div class="lg:w-1/2">
-                <span class="text-blue-600 font-extrabold tracking-widest text-xs uppercase mb-4 block">Kontak Kami</span>
-                <h2 class="text-5xl font-extrabold text-slate-900 mb-8 leading-tight">Mulai Perjalanan Digital <br>Anda Hari Ini.</h2>
-                <p class="text-slate-500 text-lg mb-10 font-medium">Tim kami di Yogyakarta siap membantu memecahkan tantangan visual dan teknologi bisnis Anda.</p>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <div class="p-6 bg-white rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-50">
-                        <h4 class="font-extrabold mb-2">Workspace</h4>
-                        <p class="text-sm text-slate-500">Jl. Kaliurang KM 5, Sleman, <br>DI Yogyakarta 55281</p>
+    <!-- 8 & 9. PENAWARAN + BONUS + URGENCY -->
+    <section id="penawaran" class="py-20 bg-blue-600 text-white relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500 rounded-full opacity-50"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-400 rounded-full opacity-50"></div>
+
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="bg-white text-slate-900 p-8 md:p-12 rounded-[2rem] shadow-2xl">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">🎁 Penawaran Spesial</h2>
+                    <p class="text-slate-500 font-medium italic">Semua yang Anda butuhkan untuk meledakkan penjualan</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <h4 class="font-extrabold text-xl mb-6">🔥 Kamu akan dapat:</h4>
+                        <ul class="space-y-4">
+                            <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 mt-1"></i> <span>Landing page siap pakai</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 mt-1"></i> <span>Request sesuai usaha kamu</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 mt-1"></i> <span>Desain fokus closing</span></li>
+                            <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 mt-1"></i> <span>Support sampai bisa digunakan</span></li>
+                        </ul>
                     </div>
-                    <div class="p-6 bg-white rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-50">
-                        <h4 class="font-extrabold mb-2">Drop a Message</h4>
-                        <p class="text-sm text-slate-500">hello@digiwork.id <br>+62 812 3456 7890</p>
+                    <div class="bg-blue-50 p-6 rounded-2xl border-2 border-dashed border-blue-200">
+                        <h4 class="font-extrabold text-xl mb-4 text-blue-700">🎁 Bonus:</h4>
+                        <ul class="space-y-3 font-medium">
+                            <li class="flex items-center gap-2"><i class="fas fa-gift text-blue-500"></i> Gratis konsultasi strategi</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-gift text-blue-500"></i> Gratis revisi (terbatas)</li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t border-blue-200">
+                            <div class="text-red-600 font-extrabold flex items-center gap-2 mb-2">
+                                <i class="fas fa-hourglass-half"></i> URGENCY:
+                            </div>
+                            <p class="text-sm font-bold">Hanya untuk beberapa client minggu ini. Setelah penuh → harga kembali normal!</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="lg:w-1/2">
-                <form onsubmit="event.preventDefault();" class="glass p-10 rounded-[40px] shadow-2xl shadow-blue-900/5 space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-extrabold text-slate-400 uppercase ml-2 tracking-widest">Nama Lengkap</label>
-                            <input type="text" class="w-full bg-white/50 border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-all" placeholder="Eko Wijaya">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-extrabold text-slate-400 uppercase ml-2 tracking-widest">Email Bisnis</label>
-                            <input type="email" class="w-full bg-white/50 border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-all" placeholder="eko@bisnis.com">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-extrabold text-slate-400 uppercase ml-2 tracking-widest">Detail Proyek</label>
-                        <textarea rows="4" class="w-full bg-white/50 border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-blue-500 focus:outline-none transition-all" placeholder="Ceritakan apa yang ingin Anda bangun..."></textarea>
-                    </div>
-                    <button class="w-full py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all hover:scale-[1.02] active:scale-95">
-                        Kirim Penawaran Sekarang
-                    </button>
-                </form>
+                <div class="mt-12 text-center">
+                    <p class="text-lg font-bold mb-6">Jangan biarkan calon pembeli kamu kabur setiap hari.</p>
+                    <a href="https://wa.me/your-number" class="inline-block w-full bg-red-600 hover:bg-red-700 text-white text-xl font-extrabold py-5 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95">
+                        💬 Pesan Sekarang via WhatsApp
+                    </a>
+                    <p class="mt-4 text-sm font-medium text-slate-400 italic">"Mulai sekarang, jualan lebih cepat closing"</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-20 px-6 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 text-center md:text-left">
-            <div>
-                <div class="flex items-center justify-center md:justify-start space-x-2 mb-4">
-                    <div class="w-8 h-8 bg-slate-900 rounded-lg"></div>
-                    <span class="text-xl font-extrabold tracking-tighter text-slate-800">DIGIWORK.</span>
-                </div>
-                <p class="text-slate-400 text-sm font-medium">© 2024 Digiwork Creative Studio. <br>Crafted with passion in Jogja.</p>
-            </div>
-            
-            <div class="flex space-x-8 text-sm font-bold text-slate-600">
-                <a href="#" class="hover:text-blue-600 transition-colors">Instagram</a>
-                <a href="#" class="hover:text-blue-600 transition-colors">Behance</a>
-                <a href="#" class="hover:text-blue-600 transition-colors">LinkedIn</a>
-            </div>
-
-            <div class="flex items-center space-x-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span>Available for new projects</span>
-            </div>
-        </div>
+    <footer class="py-10 bg-slate-900 text-slate-500 text-center text-sm px-4">
+        <p>&copy; 2024 Digiwork Indonesia. All rights reserved.</p>
+        <p class="mt-2">Ini bukan sekadar web, ini <span class="text-white font-bold underline">mesin closing</span>.</p>
     </footer>
+
+    <!-- Floating Mobile CTA -->
+    <div class="fixed bottom-6 left-6 right-6 md:hidden z-40">
+        <a href="https://wa.me/your-number" class="flex items-center justify-center gap-3 bg-green-500 text-white font-extrabold py-4 rounded-full shadow-2xl animate-bounce">
+            <i class="fab fa-whatsapp text-2xl"></i> AMBIL PROMO SEKARANG
+        </a>
+    </div>
 
 </body>
 </html>
