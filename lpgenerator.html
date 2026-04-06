@@ -37,7 +37,7 @@
             const iconRef = useRef(null);
 
             useEffect(() => {
-                if (window.lucide && iconRef.current) {
+                if (window.lucide && iconRef.current && typeof name === 'string') {
                     iconRef.current.innerHTML = `<i data-lucide="${name}"></i>`;
                     window.lucide.createIcons({
                         root: iconRef.current,
@@ -221,7 +221,7 @@
                     { key: 'targetMarket', label: 'Siapa calon pembelinya?', placeholder: 'Contoh: Pekerja Kreatif', icon: 'users' },
                     { key: 'price', label: 'Berapa harganya?', placeholder: 'Contoh: Rp 35.000', icon: 'tag' },
                     { key: 'benefits', label: 'Sebutkan 1 keunggulan utama', placeholder: 'Contoh: Biji Kopi Organik', icon: 'check-circle' },
-                    { key: 'whatsapp', label: 'Nomor WhatsApp (62...)', placeholder: '628123456789', icon: 'phone' }
+                    { key: 'whatsapp', label: 'Nomor WhatsApp Anda?', placeholder: 'Contoh: 628123456789', icon: 'phone' }
                 ];
                 const current = configs[wizardStep];
 
