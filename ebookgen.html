@@ -59,7 +59,7 @@
             const [renderSteps, setRenderSteps] = useState([]);
             const [error, setError] = useState(null);
 
-            // Nama model standar
+            // Menggunakan versi API v1 yang lebih stabil untuk model flash
             const TEXT_MODEL = "gemini-1.5-flash";
             const IMAGE_MODEL = "imagen-3.0-generate-001";
 
@@ -97,30 +97,33 @@
                 setRenderSteps(Array(6).fill({ status: 'pending', text: 'Menyiapkan adegan...' }));
 
                 try {
-                    const systemPrompt = `Bagi cerita menjadi tepat 6 segmen narasi dengan prompt gambar detail yang konsisten (gaya: Digital Illustration, Storybook Style). Kembalikan JSON murni: { "title": "Judul", "segments": [{ "text": "Narasi", "imagePrompt": "Prompt visual detail" }] }`;
+                    const systemPrompt = `Bagi cerita menjadi tepat 6 segmen narasi dengan prompt gambar detail yang konsisten (gaya: Digital Illustration, Storybook Style). Kembalikan JSON murni tanpa markdown: { "title": "Judul", "segments": [{ "text": "Narasi", "imagePrompt": "Prompt visual detail" }] }`;
 
-                    // 1. Generate Text Content
+                    // Menggunakan endpoint v1 untuk stabilitas model 1.5 Flash
                     const textResponse = await fetchWithRetry(
-                        `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL}:generateContent?key=${MY_GEMINI_API_KEY}`,
+                        `https://generativelanguage.googleapis.com/v1/models/${TEXT_MODEL}:generateContent?key=${MY_GEMINI_API_KEY}`,
                         {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                contents: [{ parts: [{ text: story }] }],
-                                systemInstruction: { parts: [{ text: systemPrompt }] },
-                                generationConfig: { responseMimeType: "application/json" }
+                                contents: [{ parts: [{ text: story + "\n\n" + systemPrompt }] }]
                             })
                         }
                     );
 
-                    const analyzedData = JSON.parse(textResponse.candidates[0].content.parts[0].text);
+                    let rawText = textResponse.candidates[0].content.parts[0].text;
+                    // Membersihkan markdown jika AI menyertakannya secara tidak sengaja
+                    const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                    const analyzedData = JSON.parse(cleanJson);
+                    
                     setRenderSteps(analyzedData.segments.map(s => ({ ...s, status: 'queued', imageUrl: null })));
 
-                    // 2. Generate Images
+                    // 2. Generate Images (Tetap menggunakan v1beta untuk Imagen jika tersedia)
                     const finalPages = [];
                     for (let i = 0; i < analyzedData.segments.length; i++) {
                         setRenderSteps(prev => prev.map((s, idx) => idx === i ? { ...s, status: 'rendering' } : s));
                         try {
+                            // Mencoba Imagen melalui endpoint predict v1beta
                             const imgResponse = await fetchWithRetry(
                                 `https://generativelanguage.googleapis.com/v1beta/models/${IMAGE_MODEL}:predict?key=${MY_GEMINI_API_KEY}`,
                                 {
@@ -138,7 +141,7 @@
                             finalPages.push({ text: analyzedData.segments[i].text, imageUrl: base64Image });
                         } catch (imgErr) {
                             console.error("Gagal merender gambar:", imgErr);
-                            const fallback = "https://via.placeholder.com/1024x1024?text=Gagal+Merender+Gambar";
+                            const fallback = `https://via.placeholder.com/1024x1024?text=Adegan+${i+1}`;
                             finalPages.push({ text: analyzedData.segments[i].text, imageUrl: fallback });
                             setRenderSteps(prev => prev.map((s, idx) => idx === i ? { ...s, status: 'error', imageUrl: fallback } : s));
                         }
@@ -150,7 +153,7 @@
                     }, 1000);
                 } catch (err) {
                     console.error("Error utama:", err);
-                    setError(`Error: ${err.message}. Pastikan API Key valid.`);
+                    setError(`Error: ${err.message}. Pastikan model Gemini 1.5 Flash aktif di API Key Anda.`);
                     setIsGenerating(false);
                 }
             };
