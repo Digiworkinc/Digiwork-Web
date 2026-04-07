@@ -1,0 +1,385 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  BookOpen, 
+  Loader2, 
+  ChevronLeft, 
+  ChevronRight, 
+  Download, 
+  Sparkles,
+  RefreshCw,
+  CheckCircle2,
+  Clock,
+  Layout,
+  Info
+} from 'lucide-react';
+
+/**
+ * KONFIGURASI API
+ * Menggunakan pengecekan yang lebih aman untuk menghindari error pada target kompilasi lama.
+ * Jika Anda menggunakan Vite, pastikan file .env berisi: VITE_GEMINI_API_KEY=kunci_anda
+ */
+const getApiKey = () => {
+  try {
+    // Mencoba mengambil dari import.meta.env (Vite standard)
+    return import.meta.env.VITE_GEMINI_API_KEY || "";
+  } catch (e) {
+    // Fallback jika lingkungan tidak mendukung import.meta
+    return "";
+  }
+};
+
+const API_KEY = getApiKey(); 
+const TEXT_MODEL = "gemini-2.5-flash-preview-09-2025";
+const IMAGE_MODEL = "imagen-4.0-generate-001";
+
+const App = () => {
+  const [story, setStory] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [ebookData, setEbookData] = useState(null);
+  const [renderSteps, setRenderSteps] = useState([]); 
+  const [error, setError] = useState(null);
+
+  // Helper untuk memanggil API dengan mekanisme retry (exponential backoff)
+  const fetchWithRetry = async (url, options, retries = 5, backoff = 1000) => {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (err) {
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, backoff));
+        return fetchWithRetry(url, options, retries - 1, backoff * 2);
+      }
+      throw err;
+    }
+  };
+
+  const generateEbook = async () => {
+    if (!story.trim()) return;
+    
+    // Validasi API Key
+    if (!API_KEY) {
+      setError("API Key tidak ditemukan. Jika Anda menjalankan secara lokal, pastikan file .env berisi VITE_GEMINI_API_KEY.");
+      return;
+    }
+
+    setIsGenerating(true);
+    setError(null);
+    setRenderSteps(Array(6).fill({ status: 'pending', text: 'Menunggu antrean...' }));
+
+    try {
+      const systemPrompt = `
+        Tugas Anda adalah menjadi sutradara kreatif. 
+        Ambil cerita pengguna dan bagi menjadi tepat 6 segmen narasi. 
+        Untuk setiap segmen, buatlah prompt gambar yang sangat detail.
+        PENTING: Pastikan gaya seni "Whimsical Digital Painting, Cinematic Lighting, high detail" KONSISTEN di semua 6 prompt.
+        Sebutkan karakter yang sama dengan deskripsi fisik yang sama di setiap prompt.
+        Kembalikan dalam format JSON:
+        {
+          "title": "Judul Buku",
+          "segments": [
+            { "text": "Teks narasi segmen 1", "imagePrompt": "Prompt visual detail untuk segmen 1" },
+            ... (sampai 6)
+          ]
+        }
+      `;
+
+      const textResponse = await fetchWithRetry(
+        `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL}:generateContent?key=${API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: story }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+            generationConfig: { responseMimeType: "application/json" }
+          })
+        }
+      );
+
+      const analyzedData = JSON.parse(textResponse.candidates[0].content.parts[0].text);
+      
+      const initialSteps = analyzedData.segments.map(seg => ({
+        text: seg.text,
+        imagePrompt: seg.imagePrompt,
+        status: 'queued',
+        imageUrl: null
+      }));
+      setRenderSteps(initialSteps);
+
+      const finalPages = [];
+      for (let i = 0; i < initialSteps.length; i++) {
+        setRenderSteps(prev => prev.map((s, idx) => idx === i ? { ...s, status: 'rendering' } : s));
+
+        try {
+          const imgResponse = await fetchWithRetry(
+            `https://generativelanguage.googleapis.com/v1beta/models/${IMAGE_MODEL}:predict?key=${API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                instances: [{ prompt: initialSteps[i].imagePrompt }],
+                parameters: { sampleCount: 1 }
+              })
+            }
+          );
+
+          const base64Image = `data:image/png;base64,${imgResponse.predictions[0].bytesBase64Encoded}`;
+          
+          setRenderSteps(prev => prev.map((s, idx) => 
+            idx === i ? { ...s, status: 'completed', imageUrl: base64Image } : s
+          ));
+
+          finalPages.push({
+            text: initialSteps[i].text,
+            imageUrl: base64Image
+          });
+
+        } catch (imgErr) {
+          const fallback = "https://via.placeholder.com/1024x1024?text=Render+Error";
+          finalPages.push({ text: initialSteps[i].text, imageUrl: fallback });
+          setRenderSteps(prev => prev.map((s, idx) => 
+            idx === i ? { ...s, status: 'error', imageUrl: fallback } : s
+          ));
+        }
+      }
+
+      setTimeout(() => {
+        setEbookData({
+          title: analyzedData.title,
+          pages: finalPages
+        });
+        setIsGenerating(false);
+      }, 1000);
+
+    } catch (err) {
+      setError("Gagal memproses cerita. Pastikan API Key benar dan kuota API tersedia.");
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    window.print();
+  };
+
+  return (
+    <div className="min-h-screen bg-stone-50 text-slate-900 font-serif pb-20">
+      {/* Navigasi - Sembunyi saat cetak */}
+      <nav className="no-print sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 px-6 py-4">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="bg-amber-600 p-2 rounded-lg">
+              <BookOpen className="text-white w-5 h-5" />
+            </div>
+            <h1 className="text-xl font-bold font-sans tracking-tight">Lumina Story AI</h1>
+          </div>
+          
+          {ebookData && (
+            <div className="flex gap-3">
+              <button 
+                onClick={handleDownloadPDF}
+                className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-all font-sans text-sm shadow-md"
+              >
+                <Download className="w-4 h-4" /> Simpan PDF
+              </button>
+              <button 
+                onClick={() => { setEbookData(null); setRenderSteps([]); setStory(""); }}
+                className="p-2 text-stone-400 hover:text-amber-600 transition-colors"
+              >
+                <RefreshCw className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      <main className="max-w-6xl mx-auto px-4 mt-8">
+        
+        {/* Tahap 1: Input Cerita */}
+        {!ebookData && !isGenerating && (
+          <div className="no-print max-w-2xl mx-auto bg-white p-8 rounded-[2rem] shadow-xl border border-stone-100 animate-in fade-in duration-500">
+            <div className="text-center mb-8">
+              <div className="inline-flex p-3 bg-amber-50 text-amber-600 rounded-2xl mb-4">
+                <Sparkles className="w-8 h-8" />
+              </div>
+              <h2 className="text-3xl font-bold font-sans">Mulakan Cerita Anda</h2>
+              <p className="text-stone-500 font-sans mt-2 italic text-sm">AI akan membahagikan cerita kepada 6 adegan bergambar otomatis.</p>
+            </div>
+
+            <textarea 
+              value={story}
+              onChange={(e) => setStory(e.target.value)}
+              placeholder="Contoh: Petualangan seorang ksatria kecil yang menemukan pedang cahaya di hutan kristal..."
+              className="w-full h-44 p-5 bg-stone-50 border-2 border-stone-100 rounded-2xl focus:border-amber-500 outline-none transition-all resize-none text-lg font-sans leading-relaxed"
+            />
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2 font-sans border border-red-100">
+                <Info className="w-4 h-4" /> {error}
+              </div>
+            )}
+
+            <button
+              onClick={generateEbook}
+              disabled={!story.trim()}
+              className="w-full mt-6 py-4 bg-amber-600 text-white rounded-2xl font-bold text-lg font-sans shadow-lg hover:bg-amber-700 active:scale-95 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+            >
+              Hasilkan E-Book & Ilustrasi
+            </button>
+          </div>
+        )}
+
+        {/* Tahap 2: Visualisasi Proses Rendering */}
+        {isGenerating && (
+          <div className="no-print animate-in fade-in duration-700">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl font-bold font-sans flex items-center justify-center gap-3 text-amber-700">
+                <Loader2 className="w-6 h-6 animate-spin" />
+                Seni Digital Sedang Dihasilkan...
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {renderSteps.map((step, idx) => (
+                <div key={idx} className={`bg-white rounded-2xl p-4 border transition-all duration-500 ${
+                  step.status === 'rendering' ? 'border-amber-400 ring-4 ring-amber-50 shadow-xl' : 'border-stone-200 shadow-sm'
+                }`}>
+                  <div className="aspect-square bg-stone-100 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center">
+                    {step.imageUrl ? (
+                      <img src={step.imageUrl} alt="" className="w-full h-full object-cover animate-in fade-in duration-1000" />
+                    ) : (
+                      <div className="flex flex-col items-center gap-3 text-stone-300">
+                        {step.status === 'rendering' ? (
+                          <div className="w-10 h-10 border-4 border-amber-100 border-t-amber-600 rounded-full animate-spin"></div>
+                        ) : (
+                          <Clock className="w-10 h-10" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold font-sans text-amber-600 uppercase tracking-widest">Halaman {idx + 1}</span>
+                      {step.status === 'completed' && <CheckCircle2 className="w-4 h-4 text-green-500" />}
+                    </div>
+                    <p className="text-xs text-stone-500 line-clamp-2 italic font-sans">{step.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tahap 3: Pembaca E-Book Interaktif */}
+        {ebookData && (
+          <div className="no-print">
+            <div className="flex flex-col lg:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden border border-stone-200 min-h-[600px]">
+              <div className="lg:w-3/5 relative bg-stone-900 group">
+                <img 
+                  src={ebookData.pages[currentPage].imageUrl} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  key={currentPage}
+                />
+                <div className="absolute bottom-6 left-6 bg-black/40 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest border border-white/20">
+                  Adegan {currentPage + 1} / 6
+                </div>
+              </div>
+
+              <div className="lg:w-2/5 p-12 flex flex-col justify-between bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]">
+                <div>
+                  <h2 className="text-3xl font-bold text-slate-800 mb-8 leading-tight">{ebookData.title}</h2>
+                  <p className="text-xl leading-relaxed text-slate-700 italic border-l-4 border-amber-500 pl-6">
+                    {ebookData.pages[currentPage].text}
+                  </p>
+                </div>
+
+                <div className="mt-12 flex items-center gap-4">
+                  <button 
+                    onClick={() => setCurrentPage(c => Math.max(0, c - 1))}
+                    disabled={currentPage === 0}
+                    className="p-4 border border-stone-200 rounded-full hover:bg-white transition-all disabled:opacity-20 shadow-sm"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <div className="flex-1 h-2 bg-stone-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-amber-500 transition-all duration-500" 
+                      style={{ width: `${((currentPage + 1) / 6) * 100}%` }}
+                    ></div>
+                  </div>
+                  <button 
+                    onClick={() => setCurrentPage(c => Math.min(5, c + 1))}
+                    disabled={currentPage === 5}
+                    className="p-4 border border-stone-200 rounded-full hover:bg-white transition-all disabled:opacity-20 shadow-sm"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tahap 4: Template Cetak PDF - Hanya terlihat saat cetak */}
+        {ebookData && (
+          <div className="print-only hidden">
+            <div className="text-center mb-10 py-20 bg-stone-50 flex flex-col items-center justify-center h-screen page-break">
+              <h1 className="text-6xl font-bold mb-4">{ebookData.title}</h1>
+              <p className="text-stone-400 font-sans uppercase tracking-[0.5em]">Koleksi Ilustrasi AI Terpadu</p>
+            </div>
+            {ebookData.pages.map((page, idx) => (
+              <div key={idx} className="page-break h-screen flex flex-col p-0 m-0 bg-white">
+                <div className="h-[70%] w-full">
+                  <img src={page.imageUrl} className="w-full h-full object-cover" alt="" />
+                </div>
+                <div className="h-[30%] p-16 flex flex-col justify-center items-center text-center bg-white border-t border-stone-100">
+                  <div className="max-w-4xl">
+                    <p className="text-2xl italic leading-relaxed text-slate-800 font-serif">
+                      {page.text}
+                    </p>
+                  </div>
+                  <div className="mt-8 text-stone-300 font-sans text-xs tracking-[0.3em] uppercase">
+                    Halaman {idx + 1}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+
+      <style>{`
+        @media screen {
+          .print-only { display: none !important; }
+        }
+        
+        @media print {
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          
+          body { 
+            background: white !important; 
+            margin: 0 !important; 
+            padding: 0 !important;
+            -webkit-print-color-adjust: exact;
+          }
+          
+          .page-break { 
+            page-break-after: always;
+            break-after: page;
+          }
+          
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+          
+          main { margin: 0 !important; max-width: 100% !important; padding: 0 !important; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default App;
