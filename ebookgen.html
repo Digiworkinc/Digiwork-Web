@@ -57,8 +57,9 @@
             const [renderSteps, setRenderSteps] = useState([]);
             const [error, setError] = useState(null);
 
-            const TEXT_MODEL = "gemini-2.5-flash-preview-09-2025";
-            const IMAGE_MODEL = "imagen-4.0-generate-001";
+            // Update model names to standard public models
+            const TEXT_MODEL = "gemini-1.5-flash";
+            const IMAGE_MODEL = "imagen-3.0-generate-001";
 
             useEffect(() => {
                 localStorage.setItem('gemini_api_key', apiKey.trim());
@@ -74,7 +75,6 @@
                     }
                     return await response.json();
                 } catch (err) {
-                    // Hanya retry jika error jaringan atau server sibuk (429/503)
                     if (retries > 0 && (err.message.includes('429') || err.message.includes('503') || err.message === 'Failed to fetch')) {
                         await new Promise(resolve => setTimeout(resolve, backoff));
                         return fetchWithRetry(url, options, retries - 1, backoff * 2);
@@ -148,7 +148,7 @@
                     }, 1000);
                 } catch (err) {
                     console.error("Error utama:", err);
-                    setError(`Error: ${err.message}. Pastikan API Key valid dan mendukung model Gemini 2.5.`);
+                    setError(`Error: ${err.message}. Pastikan API Key valid dan mendukung model Gemini 1.5 Flash.`);
                     setIsGenerating(false);
                 }
             };
