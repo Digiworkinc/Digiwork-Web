@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCK HILL Tenggarong | Elegan & Minimalis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stone: #F2F0ED;
+            --clay: #5D4037;
+            --gold-soft: #C5A059;
+            --charcoal: #2D2D2D;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--stone);
+            color: var(--charcoal);
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
+        /* Mengembalikan gambar suasana ibadah dramatis dengan pencahayaan panggung yang powerful */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544427920-c49ccfb85579?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-blur {
+            backdrop-filter: blur(15px);
+            background-color: rgba(242, 240, 237, 0.7);
+        }
+        .letter-spacing-widest {
+            letter-spacing: 0.2em;
+        }
+        .img-container {
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+        .img-container img {
+            transition: transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .img-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-black/5">
+        <div class="max-w-7xl mx-auto px-8 h-24 flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="font-serif text-2xl leading-none tracking-tight text-gray-900">ROCK HILL</span>
+                <span class="text-[10px] letter-spacing-widest uppercase opacity-60">Tenggarong</span>
+            </div>
+            <div class="hidden md:flex space-x-12 text-[11px] font-semibold uppercase letter-spacing-widest">
+                <a href="#about" class="hover:text-[--gold-soft] transition">Legacy</a>
+                <a href="#services" class="hover:text-[--gold-soft] transition">Gatherings</a>
+                <a href="#community" class="hover:text-[--gold-soft] transition">Life Groups</a>
+                <a href="#contact" class="hover:text-[--gold-soft] transition">Contact</a>
+            </div>
+            <button class="text-[11px] font-bold letter-spacing-widest border-b border-black pb-1 hover:opacity-50 transition">JOIN US</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative hero-section flex items-center justify-center overflow-hidden">
+        <div class="z-10 text-center px-6">
+            <h1 class="text-white text-6xl md:text-8xl mb-8 opacity-90 leading-tight">Divine Presence.<br><span class="italic font-light">Authentic Family.</span></h1>
+            <p class="text-white/80 text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto italic">
+                Menemukan kedamaian dan tujuan hidup dalam hadirat Tuhan yang nyata.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-8">
+                <a href="#services" class="text-white text-xs letter-spacing-widest font-bold border border-white/40 px-10 py-5 hover:bg-white hover:text-black transition uppercase">Join Worship This Sunday</a>
+            </div>
+        </div>
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/50 animate-bounce">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 14l-7 7-7-7"></path></svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-7 reveal">
+                    <span class="text-[10px] letter-spacing-widest uppercase text-[--gold-soft] font-bold block mb-4">Our Heart</span>
+                    <h2 class="text-4xl md:text-5xl text-[--clay] mb-8 leading-snug">Gereja bukan sekadar gedung. Ia adalah detak jantung kota ini.</h2>
+                    <p class="text-gray-500 font-light leading-relaxed text-lg mb-8">
+                        Kami percaya bahwa setiap orang diciptakan untuk memiliki koneksi yang mendalam dengan Penciptanya. ROCK HILL Tenggarong hadir untuk memfasilitasi perjalanan spiritual Anda dengan kejujuran, kasih, dan kuasa transformasi Kristus.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="h-[1px] w-20 bg-[--gold-soft]"></div>
+                        <span class="font-serif italic text-xl">Pastur Senior, RH Tenggarong</span>
+                    </div>
+                </div>
+                <div class="md:col-span-5 reveal">
+                    <div class="img-container aspect-[4/5] overflow-hidden rounded-sm grayscale hover:grayscale-0 transition duration-1000 shadow-2xl">
+                        <!-- Gambar Interior Arsitektur Modern -->
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800" alt="Interior Arsitektur Modern Gereja" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-24 reveal">
+                <h2 class="text-5xl mb-4 italic">The Weekly Gatherings</h2>
+                <p class="text-gray-400 font-light tracking-widest uppercase text-xs">Temukan waktu ibadah yang sesuai untuk Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 border-t border-gray-100">
+                <div class="p-12 border-b md:border-b-0 md:border-r border-gray-100 hover:bg-[--stone] transition reveal">
+                    <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-40 mb-12 block">Morning</span>
+                    <h3 class="text-3xl mb-4">Ibadah Raya 1</h3>
+                    <p class="text-4xl font-light text-[--gold-soft] mb-6 font-serif">09:00</p>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-8">Suasana ibadah yang khidmat, pujian penyembahan, dan pesan Firman Tuhan.</p>
+                    <button class="text-[10px] font-bold border-b border-black pb-1 uppercase letter-spacing-widest">Directions</button>
+                </div>
+                <div class="p-12 border-b md:border-b-0 md:border-r border-gray-100 hover:bg-[--stone] transition reveal">
+                    <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-40 mb-12 block">Afternoon</span>
+                    <h3 class="text-3xl mb-4">Ibadah Raya 2</h3>
+                    <p class="text-4xl font-light text-[--gold-soft] mb-6 font-serif">11:30</p>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-8">Opsi ibadah bagi keluarga dan jemaat yang lebih nyaman di siang hari.</p>
+                    <button class="text-[10px] font-bold border-b border-black pb-1 uppercase letter-spacing-widest">Directions</button>
+                </div>
+                <div class="p-12 hover:bg-[--stone] transition reveal">
+                    <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-40 mb-12 block">Night</span>
+                    <h3 class="text-3xl mb-4">RH Youth</h3>
+                    <p class="text-4xl font-light text-[--gold-soft] mb-6 font-serif">17:00</p>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-8">Ibadah khusus generasi muda dengan energi tinggi dan komunitas yang solid.</p>
+                    <button class="text-[10px] font-bold border-b border-black pb-1 uppercase letter-spacing-widest">Join Community</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aesthetic Gallery -->
+    <section class="py-32 px-8 overflow-hidden">
+        <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto items-center">
+            <div class="space-y-8">
+                <div class="img-container aspect-square reveal rounded-lg shadow-lg">
+                    <!-- Gambar Orang Berdoa Khidmat -->
+                    <img src="https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=600" alt="Orang Berdoa Khidmat" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700">
+                </div>
+                <div class="text-right reveal">
+                    <h3 class="text-4xl italic mb-4 text-[--clay]">Experience</h3>
+                    <p class="text-sm font-light text-gray-500">Momen yang mengubah hidup.</p>
+                </div>
+            </div>
+            <div class="img-container aspect-[3/4] reveal rounded-lg shadow-2xl">
+                <!-- Gambar Panggung Ibadah Modern -->
+                <img src="https://images.unsplash.com/photo-1510531704581-5b2870972060?q=80&w=600" alt="Panggung Ibadah ROCK HILL" class="w-full h-full object-cover">
+            </div>
+            <div class="space-y-8">
+                <div class="reveal">
+                    <h3 class="text-4xl italic mb-4 text-[--clay]">Belonging</h3>
+                    <p class="text-sm font-light text-gray-500">Keluarga di mana Anda diterima.</p>
+                </div>
+                <div class="img-container aspect-square reveal rounded-lg shadow-lg">
+                    <!-- Gambar Komunitas Pemuda -->
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600" alt="Komunitas ROCK HILL" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community CTA -->
+    <section id="community" class="py-40 bg-[--clay] text-white">
+        <div class="max-w-4xl mx-auto px-8 text-center reveal">
+            <span class="text-[10px] letter-spacing-widest uppercase opacity-60 mb-8 block">Community Life</span>
+            <h2 class="text-5xl md:text-7xl mb-12 leading-tight">Kehidupan yang lebih baik dimulai dalam komunitas.</h2>
+            <a href="#" class="inline-block text-[11px] font-bold letter-spacing-widest border border-white/30 px-12 py-6 hover:bg-white hover:text-black transition">FIND A LIFE GROUP</a>
+        </div>
+    </section>
+
+    <!-- Contact & Location -->
+    <section id="contact" class="py-32 px-8 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-24">
+            <div class="reveal">
+                <h2 class="text-4xl mb-12">Visit Our Home</h2>
+                <div class="space-y-12">
+                    <div>
+                        <p class="text-xs font-bold uppercase letter-spacing-widest mb-4 opacity-40">The Location</p>
+                        <p class="text-xl font-light">Jl. Gunung Sentul No. 123, <br>Tenggarong, Kutai Kartanegara</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase letter-spacing-widest mb-4 opacity-40">Office Hours</p>
+                        <p class="text-xl font-light">Selasa - Sabtu <br>09:00 - 17:00 WITA</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase letter-spacing-widest mb-4 opacity-40">Connection</p>
+                        <p class="text-xl font-light">hello@rockhilltenggarong.com <br>+62 812 3456 789</p>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="bg-[--stone] p-12 h-full rounded-sm">
+                    <h4 class="text-2xl mb-8 italic">Stay Connected</h4>
+                    <form class="space-y-8">
+                        <input type="text" placeholder="Full Name" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black transition font-light">
+                        <input type="email" placeholder="Email Address" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black transition font-light">
+                        <textarea placeholder="How can we help you?" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black transition font-light h-32"></textarea>
+                        <button type="button" class="w-full bg-[--clay] text-white text-[10px] font-bold letter-spacing-widest py-5 uppercase tracking-[0.3em] hover:brightness-110 transition">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="text-center md:text-left">
+                <h4 class="font-serif text-2xl tracking-tight">ROCK HILL</h4>
+                <p class="text-[10px] letter-spacing-widest uppercase opacity-40 mt-1">Tenggarong</p>
+            </div>
+            <div class="flex gap-12 text-[10px] font-bold letter-spacing-widest opacity-60">
+                <a href="#" class="hover:opacity-100 transition">INSTAGRAM</a>
+                <a href="#" class="hover:opacity-100 transition">YOUTUBE</a>
+                <a href="#" class="hover:opacity-100 transition">FACEBOOK</a>
+            </div>
+            <p class="text-[10px] font-light opacity-30 italic">Made with Love for Tenggarong. © 2026 By Digiwork</p>
+        </div>
+    </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+    </script>
+
+</body>
+</html>
