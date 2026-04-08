@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panoramic | Premium Photography & Timeless Stories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --beige: #F5F5DC;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .text-gold { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-zoom {
+            animation: zoom-out 20s infinite alternate;
+        }
+        @keyframes zoom-out {
+            from { transform: scale(1.1); }
+            to { transform: scale(1); }
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .portfolio-item:hover .overlay {
+            opacity: 1;
+        }
+        .portfolio-item img {
+            transition: transform 0.5s ease;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .btn-premium {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-premium:hover {
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .floating-wa {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav py-4 px-6 md:px-12 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-[0.3em] uppercase serif">Panoramic</div>
+        <div class="hidden md:flex space-x-8 uppercase text-xs tracking-widest font-medium">
+            <a href="#portfolio" class="hover:text-gold transition">Portfolio</a>
+            <a href="#about" class="hover:text-gold transition">About</a>
+            <a href="#services" class="hover:text-gold transition">Services</a>
+            <a href="#contact" class="hover:text-gold transition">Contact</a>
+        </div>
+        <a href="#contact" class="hidden md:block bg-white text-black px-6 py-2 text-xs font-bold uppercase tracking-tighter btn-premium">Book Now</a>
+        <button class="md:hidden text-2xl"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=2000" alt="Hero Background" class="w-full h-full object-cover hero-zoom">
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-5xl md:text-8xl font-light mb-4 fade-in">Capturing Moments That <br><span class="italic">Last Forever</span></h1>
+            <p class="text-lg md:text-xl font-light tracking-widest uppercase mb-10 opacity-80 fade-in delay-200">Premium Photography for Timeless Stories</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 fade-in delay-500">
+                <a href="#contact" class="bg-gold text-black px-10 py-4 font-bold uppercase tracking-widest btn-premium w-full md:w-auto">Book a Session</a>
+                <a href="#portfolio" class="border border-white/50 px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-black transition w-full md:w-auto">View Portfolio</a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 px-6 md:px-12 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl mb-4 italic">The Collection</h2>
+                <div class="flex flex-wrap justify-center gap-6 uppercase text-xs tracking-widest mt-8 font-medium">
+                    <button class="text-gold border-b border-gold pb-1">All Work</button>
+                    <button class="hover:text-gold transition opacity-60 hover:opacity-100">Wedding</button>
+                    <button class="hover:text-gold transition opacity-60 hover:opacity-100">Portrait</button>
+                    <button class="hover:text-gold transition opacity-60 hover:opacity-100">Landscape</button>
+                    <button class="hover:text-gold transition opacity-60 hover:opacity-100">Commercial</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Portfolio Items -->
+                <div class="portfolio-item relative group overflow-hidden aspect-[4/5] fade-in">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="Wedding">
+                    <div class="overlay absolute inset-0 bg-black/60 opacity-0 transition-opacity flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-2xl italic mb-2">Ethereal Unions</h3>
+                        <p class="text-xs uppercase tracking-widest opacity-70">Wedding Photography</p>
+                    </div>
+                </div>
+                <div class="portfolio-item relative group overflow-hidden aspect-[4/5] md:translate-y-12 fade-in">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="Portrait">
+                    <div class="overlay absolute inset-0 bg-black/60 opacity-0 transition-opacity flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-2xl italic mb-2">Soulful Frames</h3>
+                        <p class="text-xs uppercase tracking-widest opacity-70">Portrait Series</p>
+                    </div>
+                </div>
+                <div class="portfolio-item relative group overflow-hidden aspect-[4/5] fade-in">
+                    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover" alt="Landscape">
+                    <div class="overlay absolute inset-0 bg-black/60 opacity-0 transition-opacity flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-2xl italic mb-2">Vast Horizons</h3>
+                        <p class="text-xs uppercase tracking-widest opacity-70">Fine Art Landscape</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 md:px-12 bg-[#111]">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div class="relative fade-in">
+                <div class="absolute -top-4 -left-4 w-full h-full border border-gold/30"></div>
+                <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&q=80&w=800" alt="Photographer Profile" class="relative z-10 w-full object-cover grayscale hover:grayscale-0 transition duration-700">
+            </div>
+            <div class="fade-in">
+                <h2 class="text-4xl md:text-6xl mb-6 italic">The Visionary Behind the Lens</h2>
+                <p class="text-lg opacity-80 leading-relaxed mb-8">
+                    With over a decade of capturing the world's most intimate moments, Panoramic was founded on the philosophy that every frame should tell a legacy. We don't just take pictures; we preserve feelings, textures, and the silent poetry of a second in time (Panoramic. 2026).
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-white/10 pt-10">
+                    <div>
+                        <div class="text-3xl font-light text-gold mb-1 serif">10+</div>
+                        <p class="text-[10px] uppercase tracking-widest opacity-60">Years of Craft</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-light text-gold mb-1 serif">500+</div>
+                        <p class="text-[10px] uppercase tracking-widest opacity-60">Stories Told</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-light text-gold mb-1 serif">Int'l</div>
+                        <p class="text-[10px] uppercase tracking-widest opacity-60">Global Reach</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl mb-4 italic">Bespoke Experiences</h2>
+                <p class="uppercase text-xs tracking-widest opacity-60">Tailored to your narrative</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="bg-white/5 p-10 border border-white/10 hover:border-gold/50 transition-all group fade-in">
+                    <div class="text-gold text-3xl mb-6"><i class="fas fa-rings-wedding"></i></div>
+                    <h3 class="text-2xl serif mb-4 italic">Weddings</h3>
+                    <p class="text-sm opacity-60 mb-6">Full-day coverage of your most sacred union, captured with cinematic depth.</p>
+                    <p class="text-xs tracking-widest opacity-40 mb-6 uppercase">Starting from $3,500</p>
+                    <a href="#contact" class="text-gold uppercase text-[10px] tracking-widest font-bold border-b border-gold pb-1 group-hover:pr-4 transition-all">Inquire Now</a>
+                </div>
+                <div class="bg-white/5 p-10 border border-white/10 hover:border-gold/50 transition-all group fade-in delay-100">
+                    <div class="text-gold text-3xl mb-6"><i class="fas fa-user-tie"></i></div>
+                    <h3 class="text-2xl serif mb-4 italic">Branding</h3>
+                    <p class="text-sm opacity-60 mb-6">Elevate your professional identity with high-impact visual storytelling.</p>
+                    <p class="text-xs tracking-widest opacity-40 mb-6 uppercase">Starting from $1,200</p>
+                    <a href="#contact" class="text-gold uppercase text-[10px] tracking-widest font-bold border-b border-gold pb-1 group-hover:pr-4 transition-all">Inquire Now</a>
+                </div>
+                <div class="bg-white/5 p-10 border border-white/10 hover:border-gold/50 transition-all group fade-in delay-200">
+                    <div class="text-gold text-3xl mb-6"><i class="fas fa-camera-retro"></i></div>
+                    <h3 class="text-2xl serif mb-4 italic">Portraits</h3>
+                    <p class="text-sm opacity-60 mb-6">Artistic sessions focused on revealing the authentic self through light.</p>
+                    <p class="text-xs tracking-widest opacity-40 mb-6 uppercase">Starting from $800</p>
+                    <a href="#contact" class="text-gold uppercase text-[10px] tracking-widest font-bold border-b border-gold pb-1 group-hover:pr-4 transition-all">Inquire Now</a>
+                </div>
+                <div class="bg-white/5 p-10 border border-white/10 hover:border-gold/50 transition-all group fade-in delay-300">
+                    <div class="text-gold text-3xl mb-6"><i class="fas fa-building"></i></div>
+                    <h3 class="text-2xl serif mb-4 italic">Commercial</h3>
+                    <p class="text-sm opacity-60 mb-6">High-end architecture and product shoots for luxury global brands.</p>
+                    <p class="text-xs tracking-widest opacity-40 mb-6 uppercase">Custom Quotes Only</p>
+                    <a href="#contact" class="text-gold uppercase text-[10px] tracking-widest font-bold border-b border-gold pb-1 group-hover:pr-4 transition-all">Inquire Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="relative py-32 px-6 parallax" style="background-image: url('https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&q=80&w=2000')">
+        <div class="absolute inset-0 bg-black/70"></div>
+        <div class="relative z-10 max-w-4xl mx-auto text-center fade-in">
+            <h2 class="text-4xl md:text-7xl mb-6 italic">Let's Create Something <br>Beautiful Together</h2>
+            <p class="text-xl mb-10 opacity-80 font-light">Book your session today and capture your story for the generations to come.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#contact" class="bg-white text-black px-12 py-4 font-bold uppercase tracking-widest btn-premium">Schedule Now</a>
+                <button class="bg-transparent border border-white px-12 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Download Pricing Guide</button>
+            </div>
+            <p class="mt-8 text-xs uppercase tracking-[0.4em] text-gold animate-pulse">Limited slots available this month</p>
+        </div>
+    </section>
+
+    <!-- Contact & Lead Capture -->
+    <section id="contact" class="py-24 px-6 md:px-12 bg-white text-black">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+            <div class="fade-in">
+                <h2 class="text-4xl md:text-6xl mb-8 serif italic">Get in Touch</h2>
+                <p class="text-lg mb-10 opacity-70">Tell us about your vision. Whether it's a grand wedding or an intimate portrait, we're here to bring it to life.</p>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center"><i class="fas fa-envelope"></i></div>
+                        <p class="text-sm tracking-widest">HELLO@PANORAMIC.COM</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center"><i class="fab fa-instagram"></i></div>
+                        <p class="text-sm tracking-widest">@PANORAMIC_STUDIO</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#f9f9f9] p-8 md:p-12 fade-in">
+                <form id="contactForm" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase tracking-widest font-bold">Name</label>
+                            <input type="text" placeholder="Your full name" class="w-full bg-transparent border-b border-black/20 py-2 focus:border-black outline-none transition">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase tracking-widest font-bold">Email</label>
+                            <input type="email" placeholder="email@address.com" class="w-full bg-transparent border-b border-black/20 py-2 focus:border-black outline-none transition">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase tracking-widest font-bold">Type of Shoot</label>
+                        <select class="w-full bg-transparent border-b border-black/20 py-2 focus:border-black outline-none transition cursor-pointer">
+                            <option>Wedding</option>
+                            <option>Branding</option>
+                            <option>Portrait</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase tracking-widest font-bold">Message</label>
+                        <textarea rows="4" placeholder="Tell us about your dream project..." class="w-full bg-transparent border-b border-black/20 py-2 focus:border-black outline-none transition"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-4 font-bold uppercase tracking-widest btn-premium">Get a Quote</button>
+                    <p class="text-[10px] text-center opacity-40 uppercase tracking-widest">We respond within 24 hours</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 md:px-12 bg-[#0a0a0a] border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+                <div class="text-3xl font-bold tracking-[0.4em] uppercase serif">Panoramic</div>
+                <div class="flex gap-8 text-[10px] uppercase tracking-widest opacity-60">
+                    <a href="#" class="hover:text-gold transition">Instagram</a>
+                    <a href="#" class="hover:text-gold transition">Vero</a>
+                    <a href="#" class="hover:text-gold transition">LinkedIn</a>
+                    <a href="#" class="hover:text-gold transition">Pinterest</a>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-[10px] uppercase tracking-[0.2em] opacity-40">
+                <div class="space-y-4">
+                    <p class="font-bold opacity-100 mb-4">Studios</p>
+                    <p>New York, NY</p>
+                    <p>Paris, France</p>
+                </div>
+                <div class="space-y-4">
+                    <p class="font-bold opacity-100 mb-4">Inquiries</p>
+                    <p>bookings@panoramic.com</p>
+                    <p>+1 (555) 098 7654</p>
+                </div>
+                <div class="space-y-4 col-span-2">
+                    <p class="font-bold opacity-100 mb-4">Journal</p>
+                    <p>Join our private list for exclusive sessions and early-access bookings.</p>
+                    <div class="flex mt-4 border-b border-white/20 pb-2">
+                        <input type="email" placeholder="EMAIL ADDRESS" class="bg-transparent outline-none w-full">
+                        <button class="text-gold"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-4 text-[10px] opacity-30 uppercase tracking-widest">
+                <p>&copy; 2026 Panoramic Studio. All Rights Reserved. By Digiwork</p>
+                <div class="flex gap-6">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Actions -->
+    <a href="https://wa.me/yourphonenumber" class="floating-wa bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl hover:scale-110 transition" title="Chat with us">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Form Submission Mockup
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'SENDING...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerText = 'MESSAGE SENT';
+                btn.classList.replace('bg-black', 'bg-green-600');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-green-600', 'bg-black');
+                    btn.disabled = false;
+                    this.reset();
+                }, 3000);
+            }, 1500);
+        });
+
+        // Sticky Nav Change
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+    </script>
+</body>
+</html>
