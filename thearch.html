@@ -29,7 +29,6 @@
         .heading-serif { font-family: 'Playfair Display', serif; letter-spacing: -0.03em; }
         .mono-detail { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; }
         
-        /* Smooth Reveal Animation */
         .animate-reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -42,7 +41,6 @@
             transform: translateY(0);
         }
 
-        /* Floating Hero Animation */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -75,7 +73,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Interactive Mouse Spotlight */
         #spotlight {
             background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.07) 0%, transparent 60%);
             pointer-events: none;
@@ -84,7 +81,6 @@
             z-index: 1;
         }
         
-        /* Custom Scrollbar for Elite look */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #222; }
@@ -98,24 +94,114 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Custom SVG Icons
+        const translations = {
+            ID: {
+                nav: { solutions: "Framework", methodology: "Ekosistem", mastery: "Benchmarks", cta: "HUBUNGI_SAYA" },
+                hero: {
+                    version: "VERSI_4.0 // SISTEM_FIDELITI_TINGGI",
+                    headline: "Precision Over <br/> Complexity.",
+                    sub: "Kami mengeliminasi friksi operasional dengan arsitektur otomatisasi tingkat lanjut. Bukan sekadar alat, tapi mesin pertumbuhan yang beroperasi tanpa henti.",
+                    cta: "MULA_DIAGNOSTIK",
+                    email: "HUBUNGI_MELALUI_EMEL",
+                    status: "Koneksi_Terenkripsi_Aktif"
+                },
+                audit: {
+                    title: "Audit Operasional.",
+                    items: [
+                        { title: "Capital Leakage", desc: "Setiap jam yang dihabiskan untuk tugas manual adalah modal yang terbuang dari neraca Anda." },
+                        { title: "Scalability Debt", desc: "Sistem yang bergantung pada tenaga manusia tidak akan pernah bisa berkembang secara eksponensial." },
+                        { title: "Information Lag", desc: "Data yang tidak terintegrasi menciptakan kebutaan strategis bagi para pengambil keputusan." }
+                    ]
+                },
+                methodology: {
+                    tag: "INFRASTRUKTUR",
+                    title: "Advanced <br/> Ecosystems.",
+                    sub: "Dibangun dengan standar keamanan enterprise dan efisiensi maksimal.",
+                    modules: [
+                        { tag: "MODUL_01", title: "Neurify Content Pipeline", desc: "Produksi konten berbasis kecerdasan buatan yang menjaga integritas jenama tetap konsisten." },
+                        { tag: "MODUL_02", title: "Unified Business Logic", desc: "Arsitektur n8n yang menghubungkan ribuan titik data menjadi satu aliran kerja cerdas." },
+                        { tag: "MODUL_03", title: "Real-Time Nexus Dashboard", desc: "Visualisasi data masa nyata yang memberikan kendali penuh pada hujung jari anda." }
+                    ]
+                },
+                metrics: {
+                    title: "Hard Metrics.",
+                    sub: "KAMI TIDAK MENJUAL ESTETIKA, KAMI MENJUAL HASIL.",
+                    items: [
+                        { metric: "120j", label: "PEMULIHAN_BULANAN", detail: "Waktu operasional yang dialokasikan kembali ke strategi." },
+                        { metric: "10x", label: "HALAJU_KONTEN", detail: "Kecepatan distribusi konten tanpa penambahan tenaga kerja." }
+                    ]
+                },
+                finalCta: {
+                    status: "STATUS: AKSES_TERHAD // 02_SLOT_DIBUKA",
+                    headline: "Elevate Your <br/> Infrastructure.",
+                    whatsapp: "HUBUNGI_WHATSAPP",
+                    email: "HANTAR_EMEL",
+                    secure: "Talian Selamat: +62 878-7822-4307 // eleazaragung@gmail.com"
+                }
+            },
+            EN: {
+                nav: { solutions: "Framework", methodology: "Ecosystem", mastery: "Benchmarks", cta: "CONTACT_ME" },
+                hero: {
+                    version: "VERSION_4.0 // HIGH_FIDELITY_SYSTEMS",
+                    headline: "Precision Over <br/> Complexity.",
+                    sub: "We eliminate operational friction with advanced automation architecture. Not just a tool, but a growth engine that operates relentlessly.",
+                    cta: "START_DIAGNOSTIC",
+                    email: "CONTACT_VIA_EMAIL",
+                    status: "Encrypted_Connection_Active"
+                },
+                audit: {
+                    title: "Operational Audit.",
+                    items: [
+                        { title: "Capital Leakage", desc: "Every hour spent on manual tasks is capital wasted from your balance sheet." },
+                        { title: "Scalability Debt", desc: "Systems dependent on human labor can never scale exponentially." },
+                        { title: "Information Lag", desc: "Unintegrated data creates strategic blindness for decision makers." }
+                    ]
+                },
+                methodology: {
+                    tag: "INFRASTRUCTURE",
+                    title: "Advanced <br/> Ecosystems.",
+                    sub: "Built with enterprise security standards and maximum efficiency.",
+                    modules: [
+                        { tag: "MODULE_01", title: "Neurify Content Pipeline", desc: "AI-based content production that maintains brand integrity consistently." },
+                        { tag: "MODULE_02", title: "Unified Business Logic", desc: "n8n architecture connecting thousands of data points into one smart workflow." },
+                        { tag: "MODULE_03", title: "Real-Time Nexus Dashboard", desc: "Real-time data visualization providing full control at your fingertips." }
+                    ]
+                },
+                metrics: {
+                    title: "Hard Metrics.",
+                    sub: "WE DON'T SELL AESTHETICS, WE SELL RESULTS.",
+                    items: [
+                        { metric: "120h", label: "MONTHLY_RECOVERY", detail: "Operational time reclaimed and reallocated to growth strategy." },
+                        { metric: "10x", label: "CONTENT_VELOCITY", detail: "Content distribution speed without increasing headcount." }
+                    ]
+                },
+                finalCta: {
+                    status: "STATUS: LIMITED_ACCESS // 02_SLOTS_OPEN",
+                    headline: "Elevate Your <br/> Infrastructure.",
+                    whatsapp: "CONTACT_WHATSAPP",
+                    email: "SEND_EMAIL",
+                    secure: "Secure Line: +62 878-7822-4307 // eleazaragung@gmail.com"
+                }
+            }
+        };
+
         const ArrowRight = () => (
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         );
-        const Monitor = ({size = 18, className = ""}) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        const Monitor = ({size = 18}) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         );
-        const BarChart3 = ({size = 24, className = ""}) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        const BarChart3 = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         );
-        const Database = ({size = 24, className = ""}) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+        const Database = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
         );
-        const Compass = ({size = 24, className = ""}) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        const Compass = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
         );
-        const Lock = ({size = 24, className = ""}) => (
-            <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        const Lock = ({size = 14}) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         );
 
         const FadeInSection = ({ children, className = "" }) => {
@@ -127,7 +213,7 @@
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             setVisible(true);
-                            observer.unobserve(entry.target); // Once visible, stop observing
+                            observer.unobserve(entry.target);
                         }
                     });
                 }, { threshold: 0.15 });
@@ -144,7 +230,11 @@
         };
 
         const App = () => {
-            const [formSubmitted, setFormSubmitted] = useState(false);
+            const [lang, setLang] = useState('ID');
+            const t = translations[lang];
+
+            const waLink = "https://wa.me/6287878224307?text=Halo%20Architect%20%26%20Co.,%20saya%20ingin%20konsultasi%20mengenai%20otomatisasi%20bisnis.";
+            const emailLink = "mailto:eleazaragung@gmail.com";
 
             useEffect(() => {
                 const handleMouseMove = (e) => {
@@ -158,87 +248,86 @@
                 return () => window.removeEventListener('mousemove', handleMouseMove);
             }, []);
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                setFormSubmitted(true);
-            };
-
             return (
                 <div className="min-h-screen bg-black grid-deep selection:bg-white selection:text-black relative z-10">
                     
-                    {/* Corporate Nav */}
+                    {/* Navigation */}
                     <nav className="fixed top-0 w-full z-50 px-8 py-8 flex justify-between items-center backdrop-blur-md border-b border-white/5">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 border border-white/20 flex items-center justify-center bg-black">
-                                <Monitor size={18} className="text-white" />
+                                <Monitor size={18} />
                             </div>
                             <span className="mono-detail text-[10px] font-bold text-white tracking-[0.3em] uppercase">
                                 Architect & Co.
                             </span>
                         </div>
+                        
                         <div className="hidden md:flex gap-12 text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600">
-                            <a href="#solutions" className="hover:text-white transition-colors">Framework</a>
-                            <a href="#methodology" className="hover:text-white transition-colors">Ecosystem</a>
-                            <a href="#mastery" className="hover:text-white transition-colors">Benchmarks</a>
+                            <a href="#solutions" className="hover:text-white transition-colors">{t.nav.solutions}</a>
+                            <a href="#methodology" className="hover:text-white transition-colors">{t.nav.methodology}</a>
+                            <a href="#mastery" className="hover:text-white transition-colors">{t.nav.mastery}</a>
                         </div>
-                        <button className="px-6 py-2 bg-white text-black text-[10px] font-bold mono-detail tracking-widest hover:bg-zinc-200 transition-all">
-                            GET_ACCESS
-                        </button>
+
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center border border-white/10 p-1">
+                                <button 
+                                    onClick={() => setLang('ID')}
+                                    className={`px-3 py-1 text-[8px] mono-detail font-bold transition-all ${lang === 'ID' ? 'bg-white text-black' : 'text-zinc-600 hover:text-white'}`}
+                                >
+                                    ID
+                                </button>
+                                <button 
+                                    onClick={() => setLang('EN')}
+                                    className={`px-3 py-1 text-[8px] mono-detail font-bold transition-all ${lang === 'EN' ? 'bg-white text-black' : 'text-zinc-600 hover:text-white'}`}
+                                >
+                                    EN
+                                </button>
+                            </div>
+                            <a href={waLink} target="_blank" rel="noopener noreferrer" className="hidden sm:block px-6 py-2 bg-white text-black text-[10px] font-bold mono-detail tracking-widest hover:bg-zinc-200 transition-all uppercase">
+                                {t.nav.cta}
+                            </a>
+                        </div>
                     </nav>
 
                     {/* Hero Section */}
                     <section className="relative pt-64 pb-48 px-6 flex flex-col items-center text-center overflow-hidden">
                         <FadeInSection>
                             <div className="inline-block px-4 py-1 mb-10 border border-zinc-800 text-zinc-500 text-[9px] mono-detail tracking-[0.5em] bg-black/50">
-                                VERSION_4.0 // HIGH_FIDELITY_SYSTEMS
+                                {t.hero.version}
                             </div>
-                            <h1 className="heading-serif text-6xl md:text-[100px] font-black mb-12 leading-[0.9] gradient-text italic animate-float">
-                                Precision Over <br/> Complexity.
+                            <h1 className="heading-serif text-6xl md:text-[100px] font-black mb-12 leading-[0.9] gradient-text italic animate-float" dangerouslySetInnerHTML={{ __html: t.hero.headline }}>
                             </h1>
                             <p className="text-zinc-500 text-lg md:text-xl max-w-2xl mx-auto mb-16 leading-relaxed font-light">
-                                Kami mengeliminasi friksi operasional dengan arsitektur otomatisasi tingkat lanjut. Bukan sekadar alat, tapi <span className="text-white italic">mesin pertumbuhan</span> yang beroperasi tanpa henti.
+                                {t.hero.sub}
                             </p>
-                            <div className="flex flex-col items-center gap-8">
-                                <button className="group relative bg-transparent text-white border border-white/20 px-12 py-6 text-xs font-bold mono-detail tracking-[0.3em] overflow-hidden transition-all hover:border-white">
+                            <div className="flex flex-col md:flex-row items-center gap-6">
+                                <a href={waLink} target="_blank" rel="noopener noreferrer" className="group relative bg-transparent text-white border border-white/20 px-12 py-6 text-xs font-bold mono-detail tracking-[0.3em] overflow-hidden transition-all hover:border-white">
                                     <span className="relative z-10 flex items-center gap-4 group-hover:text-black transition-colors duration-300">
-                                        INITIALIZE DIAGNOSTIC <ArrowRight />
+                                        {t.hero.cta} <ArrowRight />
                                     </span>
                                     <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-                                </button>
-                                <span className="text-zinc-700 mono-detail text-[9px] tracking-[0.4em] uppercase">Encrypted_Connection_Active</span>
+                                </a>
+                                <a href={emailLink} className="mono-detail text-[10px] text-zinc-500 hover:text-white tracking-[0.2em] transition-colors uppercase border-b border-zinc-800 pb-1">
+                                    {t.hero.email}
+                                </a>
                             </div>
+                            <span className="mt-12 block text-zinc-800 mono-detail text-[9px] tracking-[0.4em] uppercase">{t.hero.status}</span>
                         </FadeInSection>
                     </section>
 
-                    {/* Strategic Observations */}
+                    {/* Audit Observations */}
                     <section id="solutions" className="py-48 px-6 md:px-12 relative border-y border-white/5 bg-black">
                         <div className="max-w-7xl mx-auto">
                             <FadeInSection className="mb-32">
-                                <h2 className="heading-serif text-4xl md:text-7xl text-white mb-8 italic">The Operational Audit.</h2>
+                                <h2 className="heading-serif text-4xl md:text-7xl text-white mb-8 italic text-left">{t.audit.title}</h2>
                                 <div className="w-24 h-px bg-zinc-800"></div>
                             </FadeInSection>
                             
                             <div className="grid md:grid-cols-3 gap-12 text-left">
-                                {[
-                                    {
-                                        title: "Capital Leakage",
-                                        desc: "Setiap jam yang dihabiskan untuk tugas manual adalah modal yang terbuang dari neraca Anda.",
-                                        icon: <BarChart3 />
-                                    },
-                                    {
-                                        title: "Scalability Debt",
-                                        desc: "Sistem yang bergantung pada tenaga manusia tidak akan pernah bisa berkembang secara eksponensial.",
-                                        icon: <Database />
-                                    },
-                                    {
-                                        title: "Information Lag",
-                                        desc: "Data yang tidak terintegrasi menciptakan kebutaan strategis bagi para pengambil keputusan.",
-                                        icon: <Compass />
-                                    }
-                                ].map((item, idx) => (
+                                {t.audit.items.map((item, idx) => (
                                     <FadeInSection key={idx} className="group border-t border-zinc-900 pt-12">
                                         <div className="mb-10 opacity-30 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-500">
-                                            {item.icon}
+                                            {idx === 0 ? <BarChart3 /> : idx === 1 ? <Database /> : <Compass />}
                                         </div>
                                         <h3 className="mono-detail text-white font-bold text-sm mb-6 uppercase tracking-widest">{item.title}</h3>
                                         <p className="text-zinc-500 text-sm leading-[1.8] font-light">{item.desc}</p>
@@ -249,25 +338,21 @@
                     </section>
 
                     {/* Methodology */}
-                    <section id="methodology" className="py-48 px-6 md:px-12 bg-black">
+                    <section id="methodology" className="py-48 px-6 md:px-12 bg-black text-left">
                         <div className="max-w-7xl mx-auto">
                             <div className="flex flex-col md:flex-row items-end justify-between mb-32 gap-8">
-                                <FadeInSection className="max-w-2xl text-left">
-                                    <span className="mono-detail text-[9px] text-zinc-600 block mb-6 tracking-[0.5em]">INFRASTRUCTURE</span>
-                                    <h2 className="heading-serif text-4xl md:text-7xl text-white">Advanced <br/> Ecosystems.</h2>
+                                <FadeInSection className="max-w-2xl">
+                                    <span className="mono-detail text-[9px] text-zinc-600 block mb-6 tracking-[0.5em]">{t.methodology.tag}</span>
+                                    <h2 className="heading-serif text-4xl md:text-7xl text-white" dangerouslySetInnerHTML={{ __html: t.methodology.title }}></h2>
                                 </FadeInSection>
                                 <p className="text-zinc-500 mono-detail text-[10px] max-w-xs text-right tracking-widest uppercase">
-                                    Dibangun dengan standar keamanan enterprise dan efisiensi maksimal.
+                                    {t.methodology.sub}
                                 </p>
                             </div>
 
                             <div className="space-y-4">
-                                {[
-                                    { tag: "MODULE_01", title: "Neurify Content Pipeline", desc: "Produksi konten berbasis kecerdasan buatan yang menjaga integritas brand tetap konsisten." },
-                                    { tag: "MODULE_02", title: "Unified Business Logic", desc: "Arsitektur n8n yang menghubungkan ribuan titik data menjadi satu aliran kerja cerdas." },
-                                    { tag: "MODULE_03", title: "Real-Time Nexus Dashboard", desc: "Visualisasi data real-time yang memberikan kendali penuh pada ujung jari Anda." }
-                                ].map((item, idx) => (
-                                    <FadeInSection key={idx} className="glass-card p-12 flex flex-col md:flex-row gap-8 md:items-center justify-between text-left group">
+                                {t.methodology.modules.map((item, idx) => (
+                                    <FadeInSection key={idx} className="glass-card p-12 flex flex-col md:flex-row gap-8 md:items-center justify-between group">
                                         <div>
                                             <span className="mono-detail text-[9px] text-zinc-700 block mb-2">{item.tag}</span>
                                             <h3 className="heading-serif text-3xl text-white font-bold italic">{item.title}</h3>
@@ -282,19 +367,16 @@
                         </div>
                     </section>
 
-                    {/* Hard Metrics */}
+                    {/* Metrics */}
                     <section id="mastery" className="py-48 px-6 md:px-12 bg-zinc-950/20">
                         <div className="max-w-7xl mx-auto">
                             <FadeInSection className="mb-32 text-center">
-                                <h2 className="heading-serif text-5xl md:text-8xl text-white italic mb-4">Hard Metrics.</h2>
-                                <p className="mono-detail text-zinc-600 text-xs tracking-[0.4em]">KAMI TIDAK MENJUAL ESTETIKA, KAMI MENJUAL HASIL.</p>
+                                <h2 className="heading-serif text-5xl md:text-8xl text-white italic mb-4">{t.metrics.title}</h2>
+                                <p className="mono-detail text-zinc-600 text-xs tracking-[0.4em] uppercase">{t.metrics.sub}</p>
                             </FadeInSection>
 
                             <div className="grid md:grid-cols-2 gap-8">
-                                {[
-                                    { metric: "120h", label: "MONTHLY_RECOVERY", detail: "Waktu operasional yang dialokasikan kembali ke strategi." },
-                                    { metric: "10x", label: "CONTENT_VELOCITY", detail: "Kecepatan distribusi konten tanpa penambahan headcount." }
-                                ].map((stat, idx) => (
+                                {t.metrics.items.map((stat, idx) => (
                                     <FadeInSection key={idx} className="border border-zinc-900 p-16 hover:bg-zinc-900/40 transition-all group text-left">
                                         <p className="mono-detail text-[10px] text-zinc-700 mb-10 tracking-[0.3em] uppercase">{stat.label}</p>
                                         <h4 className="heading-serif text-8xl md:text-[120px] text-white font-black mb-10 group-hover:italic transition-all duration-700">{stat.metric}</h4>
@@ -305,37 +387,28 @@
                         </div>
                     </section>
 
-                    {/* CTA Section */}
+                    {/* Final CTA */}
                     <section className="py-64 px-6 md:px-12 relative bg-black">
                         <div className="max-w-3xl mx-auto text-center">
                             <FadeInSection>
                                 <div className="mb-12 inline-block px-6 py-2 border border-white/10 text-zinc-600 text-[9px] mono-detail tracking-[0.5em]">
-                                    STATUS: ACCESS_LIMITED // 02_SLOTS_OPEN
+                                    {t.finalCta.status}
                                 </div>
-                                <h2 className="heading-serif text-4xl md:text-7xl text-white mb-12 italic font-black">
-                                    Elevate Your <br/> Infrastructure.
+                                <h2 className="heading-serif text-4xl md:text-7xl text-white mb-12 italic font-black" dangerouslySetInnerHTML={{ __html: t.finalCta.headline }}>
                                 </h2>
                                 
-                                {!formSubmitted ? (
-                                    <form onSubmit={handleSubmit} className="text-left space-y-6">
-                                        <div className="grid md:grid-cols-2 gap-6">
-                                            <input type="text" placeholder="NAME_IDENTIFIER" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white focus:outline-none focus:border-white transition-all placeholder:text-zinc-800" required />
-                                            <input type="email" placeholder="EMAIL_ENCRYPTED" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white focus:outline-none focus:border-white transition-all placeholder:text-zinc-800" required />
-                                        </div>
-                                        <textarea placeholder="OPERATIONAL_PARAMETERS" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white h-24 focus:outline-none focus:border-white transition-all placeholder:text-zinc-800 resize-none" required></textarea>
-                                        <button type="submit" className="w-full bg-white text-black font-black py-8 mono-detail tracking-[0.5em] text-[10px] hover:bg-zinc-200 transition-all uppercase mt-12">
-                                            REQUEST_INITIAL_DIAGNOSTIC
-                                        </button>
-                                    </form>
-                                ) : (
-                                    <div className="p-20 border border-zinc-800 bg-zinc-950/50">
-                                        <Lock size={40} className="mx-auto mb-8 text-white opacity-20" />
-                                        <h3 className="mono-detail text-sm text-white font-bold mb-4 tracking-widest uppercase">Request_Logged.</h3>
-                                        <p className="text-xs text-zinc-600 mono-detail leading-relaxed uppercase">
-                                            Data Anda sedang diproses. Konfirmasi akan dikirimkan segera.
-                                        </p>
-                                    </div>
-                                )}
+                                <div className="flex flex-col gap-6 max-w-sm mx-auto mt-16">
+                                    <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full bg-white text-black font-black py-8 mono-detail tracking-[0.5em] text-[10px] hover:bg-zinc-200 transition-all uppercase flex items-center justify-center gap-4">
+                                        {t.finalCta.whatsapp}
+                                    </a>
+                                    <a href={emailLink} className="w-full border border-white/10 text-white font-black py-8 mono-detail tracking-[0.5em] text-[10px] hover:border-white transition-all uppercase flex items-center justify-center gap-4">
+                                        {t.finalCta.email}
+                                    </a>
+                                </div>
+                                
+                                <p className="text-[9px] mono-detail text-zinc-700 mt-12 tracking-[0.3em] uppercase italic">
+                                    {t.finalCta.secure}
+                                </p>
                             </FadeInSection>
                         </div>
                     </section>
@@ -347,29 +420,29 @@
                                 <div>
                                     <div className="flex items-center gap-3 mb-8">
                                         <div className="w-8 h-8 border border-white/30 flex items-center justify-center bg-black">
-                                            <Monitor size={14} className="text-white" />
+                                            <Monitor size={14} />
                                         </div>
                                         <span className="mono-detail text-[10px] font-bold text-white tracking-[0.3em] uppercase">Architect & Co.</span>
                                     </div>
-                                    <p className="text-[9px] mono-detail text-zinc-700 max-w-[200px] leading-loose uppercase">
-                                        Rekayasa efisiensi untuk pemimpin yang tidak mau menunggu masa depan.
+                                    <p className="text-[9px] mono-detail text-zinc-700 max-w-[200px] leading-loose uppercase italic">
+                                        {lang === 'ID' ? 'Rekayasa efisiensi untuk pemimpin yang tidak mau menunggu masa depan.' : 'Engineering efficiency for leaders who refuse to wait for the future.'}
                                     </p>
                                 </div>
                                 <div className="grid grid-cols-2 gap-20">
                                     <div className="flex flex-col gap-4">
-                                        <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4">SYSTEMS</span>
+                                        <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4 uppercase">SYSTEMS</span>
                                         <span className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">Ai_Pipeline</span>
                                         <span className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">Automation_Core</span>
                                     </div>
                                     <div className="flex flex-col gap-4">
-                                        <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4">ACCESS</span>
-                                        <span className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">Client_Login</span>
-                                        <span className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">Private_Rfp</span>
+                                        <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4 uppercase">ACCESS</span>
+                                        <a href={waLink} className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">WhatsApp</a>
+                                        <a href={emailLink} className="text-[9px] mono-detail text-zinc-700 hover:text-white cursor-pointer uppercase">Email</a>
                                     </div>
                                 </div>
                             </div>
                             <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-                                <p className="text-[8px] mono-detail text-zinc-800 tracking-[0.2em] uppercase">© 2026 Architect & Co. Advisory_Group. Secure_Protocol_Active.</p>
+                                <p className="text-[8px] mono-detail text-zinc-800 tracking-[0.2em] uppercase">© 2026 Architect & Co. Advisory_Group. {lang === 'ID' ? 'Protokol_Selamat_Aktif' : 'Secure_Protocol_Active'}.</p>
                                 <div className="flex gap-10">
                                     <Lock size={14} className="text-zinc-800" />
                                 </div>
