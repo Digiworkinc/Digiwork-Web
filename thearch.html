@@ -1,0 +1,357 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Cpu, 
+  Layers, 
+  LayoutDashboard, 
+  ArrowRight, 
+  Zap, 
+  Database, 
+  Terminal as TerminalIcon,
+  Globe,
+  BarChart3,
+  ShieldCheck,
+  ChevronRight,
+  CheckCircle2,
+  Lock,
+  Compass,
+  Monitor
+} from 'lucide-react';
+
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500&display=swap');
+    
+    :root {
+      --accent-primary: #ffffff;
+      --accent-red: #ef4444; 
+      --bg-base: #000000; /* True Black */
+      --zinc-deep: #09090b;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: #71717a;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .heading-serif {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: -0.03em;
+    }
+
+    .mono-detail {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.1em;
+    }
+
+    .animate-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .glass-card {
+      background: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(0, 0, 0, 1) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .grid-deep {
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(180deg, #ffffff 0%, #52525b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .spotlight {
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+  `}</style>
+);
+
+const FadeInSection = ({ children, className = "" }) => {
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setVisible(true);
+      });
+    }, { threshold: 0.1 });
+    
+    if (domRef.current) observer.observe(domRef.current);
+    return () => domRef.current && observer.unobserve(domRef.current);
+  }, []);
+
+  return (
+    <div className={`animate-reveal ${isVisible ? 'visible' : ''} ${className}`} ref={domRef}>
+      {children}
+    </div>
+  );
+};
+
+const App = () => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-black grid-deep selection:bg-white selection:text-black">
+      <GlobalStyles />
+      
+      {/* Decorative Spotlight */}
+      <div className="fixed inset-0 spotlight z-0" />
+
+      {/* Corporate Nav */}
+      <nav className="fixed top-0 w-full z-50 px-8 py-8 flex justify-between items-center backdrop-blur-md">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 border border-white/20 flex items-center justify-center">
+            <Monitor size={18} className="text-white" />
+          </div>
+          <span className="mono-detail text-[10px] font-bold text-white tracking-[0.3em] uppercase">
+            Architect & Co.
+          </span>
+        </div>
+        <div className="hidden md:flex gap-12 text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600">
+          <a href="#solutions" className="hover:text-white transition-colors">Framework</a>
+          <a href="#methodology" className="hover:text-white transition-colors">Ecosystem</a>
+          <a href="#mastery" className="hover:text-white transition-colors">Benchmarks</a>
+        </div>
+        <button className="px-6 py-2 bg-white text-black text-[10px] font-bold mono-detail tracking-widest hover:invert transition-all">
+          GET_ACCESS
+        </button>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative pt-64 pb-48 px-6 flex flex-col items-center text-center overflow-hidden z-10">
+        <FadeInSection>
+          <div className="inline-block px-4 py-1 mb-10 border border-zinc-800 text-zinc-500 text-[9px] mono-detail tracking-[0.5em]">
+            VERSION_4.0 // HIGH_FIDELITY_SYSTEMS
+          </div>
+          <h1 className="heading-serif text-6xl md:text-[120px] font-black mb-12 leading-[0.9] gradient-text italic">
+            Precision Over <br/> Complexity.
+          </h1>
+          <p className="text-zinc-500 text-lg md:text-xl max-w-2xl mx-auto mb-16 leading-relaxed font-light">
+            Kami mengeliminasi friksi operasional dengan arsitektur otomatisasi tingkat lanjut. Bukan sekadar alat, tapi <span className="text-white italic">mesin pertumbuhan</span> yang beroperasi tanpa henti.
+          </p>
+          <div className="flex flex-col items-center gap-8">
+            <button className="group relative bg-transparent text-white border border-white/20 px-12 py-6 text-xs font-bold mono-detail tracking-[0.3em] overflow-hidden transition-all hover:border-white">
+              <span className="relative z-10 flex items-center gap-4 group-hover:text-black">
+                INITIALIZE DIAGNOSTIC <ArrowRight size={18} />
+              </span>
+              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+            </button>
+            <span className="text-zinc-700 mono-detail text-[9px] tracking-[0.4em]">ENCRYPTED_CONNECTION_ESTABLISHED</span>
+          </div>
+        </FadeInSection>
+      </section>
+
+      {/* Strategic Observations - Darkened */}
+      <section id="solutions" className="py-48 px-6 md:px-12 relative border-y border-white/5 bg-black z-10">
+        <div className="max-w-7xl mx-auto">
+          <FadeInSection className="mb-32">
+            <h2 className="heading-serif text-4xl md:text-7xl text-white mb-8 italic">The Operational Audit.</h2>
+            <div className="w-24 h-px bg-zinc-800"></div>
+          </FadeInSection>
+          
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                title: "Capital Leakage",
+                desc: "Setiap jam yang dihabiskan untuk tugas manual adalah modal yang terbuang dari neraca Anda.",
+                icon: <BarChart3 className="text-zinc-100" size={24} />
+              },
+              {
+                title: "Scalability Debt",
+                desc: "Sistem yang bergantung pada tenaga manusia tidak akan pernah bisa berkembang secara eksponensial.",
+                icon: <Database className="text-zinc-100" size={24} />
+              },
+              {
+                title: "Information Lag",
+                desc: "Data yang tidak terintegrasi menciptakan kebutaan strategis bagi para pengambil keputusan.",
+                icon: <Compass className="text-zinc-100" size={24} />
+              }
+            ].map((item, idx) => (
+              <FadeInSection key={idx} className="group border-t border-zinc-900 pt-12">
+                <div className="mb-10 opacity-30 group-hover:opacity-100 transition-opacity">
+                  {item.icon}
+                </div>
+                <h3 className="mono-detail text-white font-bold text-sm mb-6 uppercase tracking-widest">{item.title}</h3>
+                <p className="text-zinc-500 text-sm leading-[1.8] font-light">{item.desc}</p>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Methodology - The Core */}
+      <section id="methodology" className="py-48 px-6 md:px-12 z-10 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-32 gap-8">
+            <FadeInSection className="max-w-2xl">
+              <span className="mono-detail text-[9px] text-zinc-600 block mb-6 tracking-[0.5em]">INFRASTRUCTURE</span>
+              <h2 className="heading-serif text-4xl md:text-7xl text-white">Advanced <br/> Ecosystems.</h2>
+            </FadeInSection>
+            <p className="text-zinc-500 mono-detail text-[10px] max-w-xs text-right tracking-widest">
+              DIBANGUN DENGAN STANDAR KEAMANAN ENTERPRISE DAN EFISIENSI MAKSIMAL.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            {[
+              {
+                tag: "MODULE_01",
+                title: "Neurify Content Pipeline",
+                desc: "Produksi konten berbasis kecerdasan buatan yang menjaga integritas brand tetap konsisten di semua platform digital."
+              },
+              {
+                tag: "MODULE_02",
+                title: "Unified Business Logic",
+                desc: "Arsitektur n8n yang menghubungkan ribuan titik data menjadi satu aliran kerja yang cerdas dan tanpa error."
+              },
+              {
+                tag: "MODULE_03",
+                title: "Real-Time Nexus Dashboard",
+                desc: "Visualisasi data real-time yang dapat diakses secara instan, memberikan kendali penuh pada ujung jari Anda."
+              }
+            ].map((item, idx) => (
+              <FadeInSection key={idx} className="glass-card p-12 hover:border-white/10 transition-all flex flex-col md:flex-row gap-8 md:items-center justify-between">
+                <div>
+                  <span className="mono-detail text-[9px] text-zinc-700 block mb-2">{item.tag}</span>
+                  <h3 className="heading-serif text-3xl text-white font-bold italic">{item.title}</h3>
+                </div>
+                <p className="text-zinc-500 text-sm max-w-md leading-relaxed">{item.desc}</p>
+                <div className="p-4 border border-zinc-900 group-hover:border-white/20 transition-colors">
+                  <ChevronRight size={20} className="text-zinc-700 group-hover:text-white" />
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Proof of Mastery - Now Dark High Contrast */}
+      <section id="mastery" className="py-48 px-6 md:px-12 bg-zinc-950/30">
+        <div className="max-w-7xl mx-auto">
+          <FadeInSection className="mb-32 text-center">
+            <h2 className="heading-serif text-5xl md:text-8xl text-white italic mb-4">Hard Metrics.</h2>
+            <p className="mono-detail text-zinc-600 text-xs tracking-[0.4em]">KAMI TIDAK MENJUAL ESTETIKA, KAMI MENJUAL HASIL.</p>
+          </FadeInSection>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              {
+                metric: "120h",
+                label: "MONTHLY_RECOVERY",
+                detail: "Waktu operasional yang berhasil dialokasikan kembali ke strategi pertumbuhan."
+              },
+              {
+                metric: "10x",
+                label: "CONTENT_VELOCITY",
+                detail: "Kecepatan distribusi konten tanpa penambahan biaya tenaga kerja."
+              }
+            ].map((stat, idx) => (
+              <FadeInSection key={idx} className="border border-zinc-900 p-16 hover:bg-zinc-900/20 transition-all group text-center md:text-left">
+                <p className="mono-detail text-[10px] text-zinc-700 mb-10 tracking-[0.3em]">{stat.label}</p>
+                <h4 className="heading-serif text-8xl md:text-[140px] text-white font-black mb-10 group-hover:italic transition-all duration-700">{stat.metric}</h4>
+                <p className="text-zinc-500 text-sm italic font-light border-l border-zinc-800 pl-6 max-w-xs">{stat.detail}</p>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Exclusive CTA - True Black */}
+      <section className="py-64 px-6 md:px-12 relative bg-black">
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <FadeInSection>
+            <div className="mb-12 inline-block px-6 py-2 border border-white/10 text-zinc-600 text-[9px] mono-detail tracking-[0.5em]">
+              STATUS: ACCESS_LIMITED // 02_SLOTS_OPEN
+            </div>
+            <h2 className="heading-serif text-4xl md:text-7xl text-white mb-12 italic font-black">
+              Elevate Your <br/> Infrastructure.
+            </h2>
+            
+            {!formSubmitted ? (
+              <form onSubmit={handleSubmit} className="text-left space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <input type="text" placeholder="NAME_IDENTIFIER" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white focus:outline-none focus:border-white transition-all placeholder:text-zinc-800" required />
+                  <input type="email" placeholder="EMAIL_ENCRYPTED" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white focus:outline-none focus:border-white transition-all placeholder:text-zinc-800" required />
+                </div>
+                <textarea placeholder="OPERATIONAL_PARAMETERS_&_CHALLENGES" className="w-full bg-transparent border-b border-zinc-800 py-4 text-[10px] mono-detail text-white h-24 focus:outline-none focus:border-white transition-all placeholder:text-zinc-800 resize-none" required></textarea>
+                <button type="submit" className="w-full bg-white text-black font-black py-8 mono-detail tracking-[0.5em] text-[10px] hover:bg-zinc-200 transition-all uppercase mt-12">
+                  REQUEST_INITIAL_DIAGNOSTIC
+                </button>
+              </form>
+            ) : (
+              <div className="p-20 border border-zinc-800 bg-zinc-950/50">
+                <Lock className="mx-auto mb-8 text-white opacity-20" size={40} />
+                <h3 className="mono-detail text-sm text-white font-bold mb-4 tracking-widest uppercase">Request_Logged.</h3>
+                <p className="text-xs text-zinc-600 mono-detail leading-relaxed tracking-wider">
+                  Data Anda sedang diproses oleh sistem kami. Konfirmasi jadwal diagnostik akan dikirimkan melalui jalur aman dalam waktu dekat.
+                </p>
+              </div>
+            )}
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* Footer - Minimalist Dark */}
+      <footer className="py-24 px-8 border-t border-white/5 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-20 mb-20">
+            <div>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-8 border border-white/30 flex items-center justify-center">
+                  <Monitor size={14} className="text-white" />
+                </div>
+                <span className="mono-detail text-[10px] font-bold text-white tracking-[0.3em]">ARCHITECT & CO.</span>
+              </div>
+              <p className="text-[9px] mono-detail text-zinc-700 max-w-[200px] leading-loose">
+                REKAYASA EFISIENSI UNTUK PEMIMPIN YANG TIDAK MAU MENUNGGU MASA DEPAN.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-20">
+              <div className="flex flex-col gap-4">
+                <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4">SYSTEMS</span>
+                <span className="text-[9px] mono-detail text-zinc-700 cursor-pointer hover:text-white">AI_PIPELINE</span>
+                <span className="text-[9px] mono-detail text-zinc-700 cursor-pointer hover:text-white">AUTOMATION_CORE</span>
+              </div>
+              <div className="flex flex-col gap-4">
+                <span className="text-[9px] mono-detail text-white font-black tracking-[0.4em] mb-4">ACCESS</span>
+                <span className="text-[9px] mono-detail text-zinc-700">CLIENT_LOGIN</span>
+                <span className="text-[9px] mono-detail text-zinc-700">PRIVATE_RFP</span>
+              </div>
+            </div>
+          </div>
+          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p className="text-[8px] mono-detail text-zinc-800 tracking-[0.2em]">© 2026 ARCHITECT & CO. ADVISORY_GROUP. SECURE_PROTOCOL_ACTIVE.</p>
+            <div className="flex gap-10">
+              <ShieldCheck size={14} className="text-zinc-800" />
+              <Globe size={14} className="text-zinc-800" />
+              <Lock size={14} className="text-zinc-800" />
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
