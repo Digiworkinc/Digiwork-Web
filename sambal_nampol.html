@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sambal Cumi Asin Nampol - Ane's Kitchen Jogja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .font-heading { font-family: 'Playfair Display', serif; }
+        .bg-chili-red { background-color: #C41E3A; }
+        .text-chili-red { color: #C41E3A; }
+        .bg-oil-yellow { background-color: #FFB800; }
+        .hero-pattern { background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png'); }
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(196, 30, 58, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(196, 30, 58, 0); }
+        }
+        .animate-pulse-custom { animation: pulse-red 2s infinite; }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { display: flex; width: fit-content; animation: marquee 20s linear infinite; }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 overflow-x-hidden">
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/6287878224307" class="fixed bottom-24 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition-all duration-300 md:bottom-10 animate-bounce" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-7.6 8.38 8.38 0 0 1 3.8.9L21 3.5Z"/></svg>
+    </a>
+
+    <!-- Sticky Bottom Mobile CTA -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 p-4 bg-white/95 backdrop-blur-md border-t border-zinc-200 md:hidden">
+        <a href="https://wa.me/6287878224307" class="flex items-center justify-center gap-2 w-full bg-chili-red text-white font-bold py-4 rounded-xl text-lg shadow-lg active:scale-95 transition-transform">
+            🔥 Pesan Sekarang - Rp 25rb
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-32 bg-zinc-950 hero-pattern overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/60 to-zinc-950"></div>
+
+        <div class="relative z-10 max-w-5xl">
+            <span class="inline-block px-4 py-1 mb-6 rounded-full bg-oil-yellow text-zinc-950 font-bold text-sm tracking-wider uppercase">
+                Oleh-Oleh Khas Jogja • Siap Kirim Jawa - Bali
+            </span>
+            <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight font-black uppercase tracking-tighter">
+                Sambal Cumi <br><span class="text-chili-red">NAMPOL!!</span>
+            </h1>
+            
+            <div class="mb-10 max-w-2xl mx-auto transform hover:scale-[1.02] transition-transform duration-500">
+                <img src="1000289831.png" alt="Poster Sambal Cumi Asin Nampol" class="rounded-2xl shadow-2xl border-4 border-white/10">
+            </div>
+
+            <div class="flex flex-col items-center gap-6">
+                <div class="bg-chili-red inline-block px-10 py-4 rounded-2xl shadow-xl">
+                    <p class="text-white text-4xl font-black italic">Rp 25.000 <span class="text-sm font-normal not-italic opacity-80">/ botol</span></p>
+                </div>
+                
+                <p class="text-zinc-300 text-lg md:text-xl max-w-xl mx-auto font-medium italic">
+                    "Pedasnya Nagih, Cuminya Kerasa Banget!"
+                </p>
+
+                <a href="https://wa.me/6287878224307" class="animate-pulse-custom flex items-center gap-3 bg-white text-zinc-950 px-12 py-5 rounded-2xl font-extrabold text-2xl shadow-2xl hover:bg-zinc-100 transition-all">
+                    🔥 Order Via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <div class="bg-zinc-900 py-4 overflow-hidden whitespace-nowrap border-y border-zinc-800">
+        <div class="animate-marquee space-x-12 items-center flex">
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-oil-yellow text-2xl">●</span> KIRIM JAWA - BALI</span>
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-chili-red text-2xl">●</span> HARGA 25K SAJA</span>
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-oil-yellow text-2xl">●</span> ASLI KHAS JOGJA</span>
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-chili-red text-2xl">●</span> TANPA PENGAWET</span>
+            <!-- Duplicate for loop -->
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-oil-yellow text-2xl">●</span> KIRIM JAWA - BALI</span>
+            <span class="text-zinc-400 font-bold flex items-center gap-3 uppercase tracking-widest"><span class="text-chili-red text-2xl">●</span> HARGA 25K SAJA</span>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <section class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-4">GURIH, PEDAS, NAMPOL!</h2>
+                <p class="text-zinc-500 font-medium">Foto asli produk Ane's Kitchen - Apa yang kamu lihat, itu yang kamu dapat.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group overflow-hidden rounded-3xl shadow-lg aspect-square">
+                    <img src="1000288204.jpg" alt="Sambal Cumi Gallery 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="group overflow-hidden rounded-3xl shadow-lg aspect-square">
+                    <img src="1000288171.jpg" alt="Sambal Cumi Gallery 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="group overflow-hidden rounded-3xl shadow-lg aspect-square">
+                    <img src="1000288229.jpg" alt="Sambal Cumi Gallery 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stock & Detail -->
+    <section class="py-24 px-6 bg-zinc-950 text-white">
+        <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+            <div class="w-full lg:w-1/2">
+                <div class="relative">
+                    <img src="1000289800.jpg" alt="Ready Stock Sambal Cumi" class="rounded-3xl shadow-2xl border-4 border-white/5">
+                    <div class="absolute -bottom-6 -left-6 bg-chili-red text-white p-6 rounded-2xl font-black text-2xl shadow-xl">
+                        READY SETIAP HARI!
+                    </div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2">
+                <h2 class="text-4xl md:text-5xl font-heading mb-8 italic">Kenapa Harus Stok Di Rumah?</h2>
+                <div class="space-y-8">
+                    <div class="flex gap-6">
+                        <div class="text-oil-yellow text-4xl font-bold italic">01</div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-2 uppercase">Praktis & Higienis</h4>
+                            <p class="text-zinc-400 leading-relaxed">Cocok untuk kamu yang sibuk. Tinggal ambil nasi hangat, makan jadi makin berselera!</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="text-oil-yellow text-4xl font-bold italic">02</div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-2 uppercase">Cumi Tidak Pelit</h4>
+                            <p class="text-zinc-400 leading-relaxed">Kami pastikan potongan cumi asinnya melimpah, tidak cuma minyak dan bumbu saja.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="text-oil-yellow text-4xl font-bold italic">03</div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-2 uppercase">Aman Dikirim</h4>
+                            <p class="text-zinc-400 leading-relaxed">Packing standar aman untuk perjalanan jauh ke seluruh wilayah Jawa dan Bali.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-24 px-6 bg-zinc-100 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-black mb-12 uppercase italic tracking-tighter">Penawaran <span class="text-chili-red">Spesial</span></h2>
+            
+            <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-zinc-200">
+                <h3 class="text-2xl font-bold mb-4 uppercase">Sambal Cumi Nampol (150ml)</h3>
+                <div class="text-6xl font-black text-chili-red mb-8">Rp 25.000 <span class="text-xl text-zinc-400 font-normal">/botol</span></div>
+                
+                <div class="flex flex-col md:flex-row gap-4 mb-10">
+                    <div class="flex-1 bg-zinc-50 p-6 rounded-2xl border border-zinc-100">
+                        <p class="text-sm font-bold text-zinc-400 uppercase mb-2">Wilayah Jawa</p>
+                        <p class="text-xl font-black">1-3 Hari Sampai</p>
+                    </div>
+                    <div class="flex-1 bg-zinc-50 p-6 rounded-2xl border border-zinc-100">
+                        <p class="text-sm font-bold text-zinc-400 uppercase mb-2">Wilayah Bali</p>
+                        <p class="text-xl font-black">2-4 Hari Sampai</p>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/6287878224307" class="block w-full bg-chili-red text-white py-6 rounded-3xl font-black text-3xl shadow-lg hover:bg-red-700 transition-all hover:-translate-y-1">
+                    👉 PESAN SEKARANG
+                </a>
+                <p class="mt-6 text-zinc-400 font-bold uppercase text-sm tracking-widest tracking-tighter">Stok Harian Terbatas • Homemade Fresh</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 bg-zinc-950 text-white text-center border-t border-zinc-800">
+        <div class="max-w-4xl mx-auto">
+            <h4 class="font-heading text-3xl italic font-black text-chili-red mb-4">Ane's Kitchen</h4>
+            <p class="text-zinc-500 mb-12">Yogyakarta, Indonesia • Siap Kirim Jawa - Bali</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-16 font-bold uppercase tracking-widest text-sm">
+                <a href="https://wa.me/6287878224307" class="bg-white/5 border border-white/10 py-4 rounded-xl hover:bg-chili-red transition-all">🔥 Coba Sekarang</a>
+                <a href="https://wa.me/6287878224307" class="bg-white/5 border border-white/10 py-4 rounded-xl hover:bg-chili-red transition-all">🌶️ Kirim ke Saya</a>
+                <a href="https://wa.me/6287878224307" class="bg-white/5 border border-white/10 py-4 rounded-xl hover:bg-chili-red transition-all">🦑 Order Sekarang</a>
+            </div>
+
+            <p class="text-zinc-700 text-xs font-bold uppercase tracking-[0.4em]">© 2024 Sambal Cumi Asin Nampol Jogja</p>
+        </div>
+    </footer>
+
+</body>
+</html>
