@@ -1,0 +1,925 @@
+import React, { useState, useEffect, useMemo } from 'react';
+
+const Icons = {
+  Whatsapp: ({ className = "w-5 h-5" }) => (
+    <svg className={`${className} fill-current`} viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.734-1.455L0 24zm11.953-21.813c-5.43 0-9.85 4.42-9.853 9.855-.001 1.951.511 3.854 1.485 5.543l.115.2-.982 3.58 3.662-.96.19.112c1.614.957 3.456 1.463 5.378 1.464h.005c5.431 0 9.851-4.42 9.854-9.856.002-2.633-1.022-5.108-2.885-6.973-1.861-1.864-4.337-2.884-6.975-2.884zm4.843 13.513c-.266-.134-1.571-.774-1.815-.863-.243-.089-.42-.134-.596.134-.176.267-.68.863-.833 1.041-.153.178-.306.201-.572.067-.266-.134-1.124-.415-2.14-1.32-.79-.705-1.324-1.576-1.48-1.843-.156-.267-.017-.411.117-.544.12-.12.266-.311.4-.467.133-.156.178-.267.266-.445.089-.178.044-.334-.022-.467-.067-.133-.596-1.434-.816-1.964-.214-.518-.45-.447-.618-.456-.16-.008-.343-.01-.527-.01-.184 0-.485.069-.738.344-.254.275-.968.947-.968 2.31 0 1.363 1.006 2.68 1.146 2.871.14.19 1.98 3.024 4.797 4.237.67.289 1.192.461 1.599.591.673.214 1.285.184 1.768.111.539-.08 1.571-.641 1.792-1.26.221-.619.221-1.149.155-1.26-.066-.109-.243-.177-.509-.311z" />
+    </svg>
+  ),
+  Cart: ({ className = "w-5 h-5" }) => (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+  ),
+  Settings: ({ className = "w-5 h-5" }) => (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  Shop: ({ className = "w-5 h-5" }) => (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+    </svg>
+  )
+};
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: '1',
+    name: 'Kopi Susu Gula Aren',
+    category: 'Minuman Dingin',
+    price: 18000,
+    description: 'Espresso premium dipadukan dengan susu segar creamy dan sirup gula aren murni berkualitas tinggi.',
+    image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=400',
+    status: 'Tersedia'
+  },
+  {
+    id: '2',
+    name: 'Caramel Macchiato',
+    category: 'Minuman Dingin',
+    price: 24000,
+    description: 'Kombinasi kaya espresso, susu kukus dengan sirup vanila dan ditutupi dengan saus karamel lezat.',
+    image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&q=80&w=400',
+    status: 'Tersedia'
+  },
+  {
+    id: '3',
+    name: 'Croissant Butter Mentega',
+    category: 'Makanan',
+    price: 15000,
+    description: 'Pastry klasik khas Prancis yang renyah di luar, sangat lembut dan beraroma mentega gurih di dalam.',
+    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400',
+    status: 'Tersedia'
+  },
+  {
+    id: '4',
+    name: 'Matcha Latte Premium',
+    category: 'Minuman Hangat',
+    price: 20000,
+    description: 'Bubuk teh hijau matcha Jepang berkualitas tinggi dipadukan dengan susu hangat yang lembut.',
+    image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=400',
+    status: 'Tersedia'
+  }
+];
+
+const DEFAULT_SETTINGS = {
+  storeName: 'Kopi Nusantara',
+  phone: '087878224307',
+  currency: 'IDR',
+  shippingCost: 10000,
+  addressRequired: true,
+  template: `Halo *{storeName}*! Saya ingin melakukan pemesanan:
+
+{items}
+
+*Subtotal:* {subtotal}
+*Ongkos Kirim:* {shipping}
+*Total Pembayaran:* {total}
+
+*Detail Pelanggan:*
+- Nama: {name}
+- No. WhatsApp: {customerPhone}
+- Alamat: {address}
+- Metode Pengiriman: {deliveryMethod}
+- Catatan Tambahan: {notes}
+
+Terima kasih!`
+};
+
+export default function App() {
+  const [view, setView] = useState('customer'); // 'customer' or 'seller'
+  const [sellerSettings, setSellerSettings] = useState(() => {
+    const saved = localStorage.getItem('wa_order_settings');
+    return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
+  });
+
+  const [products, setProducts] = useState(() => {
+    const saved = localStorage.getItem('wa_order_products');
+    return saved ? JSON.parse(saved) : DEFAULT_PRODUCTS;
+  });
+
+  const [cart, setCart] = useState([]);
+  const [customerInfo, setCustomerInfo] = useState({
+    name: '',
+    phone: '',
+    address: '',
+    deliveryMethod: 'Delivery',
+    notes: ''
+  });
+
+  const [activeCategory, setActiveCategory] = useState('Semua');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [cartOpen, setCartOpen] = useState(false);
+  const [simulatedOrders, setSimulatedOrders] = useState([]);
+  const [toast, setToast] = useState(null);
+
+  // Seller Dashboard Form State
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    category: 'Minuman Dingin',
+    price: '',
+    description: '',
+    image: '',
+    status: 'Tersedia'
+  });
+  const [editingProductId, setEditingProductId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('wa_order_settings', JSON.stringify(sellerSettings));
+  }, [sellerSettings]);
+
+  useEffect(() => {
+    localStorage.setItem('wa_order_products', JSON.stringify(products));
+  }, [products]);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const formatPrice = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: sellerSettings.currency || 'IDR',
+      minimumFractionDigits: 0
+    }).format(value);
+  };
+
+  const addToCart = (product) => {
+    const existingIndex = cart.findIndex(item => item.product.id === product.id);
+    if (existingIndex > -1) {
+      const updated = [...cart];
+      updated[existingIndex].quantity += 1;
+      setCart(updated);
+    } else {
+      setCart([...cart, { product, quantity: 1 }]);
+    }
+    showToast(`"${product.name}" berhasil dimasukkan ke keranjang`);
+  };
+
+  const removeFromCart = (productId) => {
+    setCart(cart.filter(item => item.product.id !== productId));
+  };
+
+  const updateQuantity = (productId, delta) => {
+    const updated = cart.map(item => {
+      if (item.product.id === productId) {
+        const newQty = item.quantity + delta;
+        return { ...item, quantity: Math.max(1, newQty) };
+      }
+      return item;
+    });
+    setCart(updated);
+  };
+
+  const getCartSubtotal = () => {
+    return cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  };
+
+  const getCartTotal = () => {
+    const sub = getCartSubtotal();
+    if (sub === 0) return 0;
+    return sub + (customerInfo.deliveryMethod === 'Delivery' ? parseInt(sellerSettings.shippingCost || 0) : 0);
+  };
+
+  const categories = useMemo(() => {
+    return ['Semua', ...new Set(products.map(p => p.category))];
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchCategory = activeCategory === 'Semua' || p.category === activeCategory;
+      const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          p.description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+  }, [products, activeCategory, searchQuery]);
+
+  const handleCheckoutSubmit = (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      showToast("Keranjang Anda masih kosong!", "error");
+      return;
+    }
+
+    if (!customerInfo.name || !customerInfo.phone) {
+      showToast("Silakan lengkapi nama dan nomor telepon Anda!", "error");
+      return;
+    }
+
+    const itemsFormatted = cart.map(item => 
+      `- *${item.product.name}* (x${item.quantity}) = ${formatPrice(item.product.price * item.quantity)}`
+    ).join('\n');
+
+    const subtotal = formatPrice(getCartSubtotal());
+    const shipping = customerInfo.deliveryMethod === 'Delivery' ? formatPrice(sellerSettings.shippingCost) : 'Gratis (Ambil Sendiri)';
+    const total = formatPrice(getCartTotal());
+
+    let textMessage = sellerSettings.template
+      .replace(/{storeName}/g, sellerSettings.storeName)
+      .replace(/{items}/g, itemsFormatted)
+      .replace(/{subtotal}/g, subtotal)
+      .replace(/{shipping}/g, shipping)
+      .replace(/{total}/g, total)
+      .replace(/{name}/g, customerInfo.name)
+      .replace(/{customerPhone}/g, customerInfo.phone)
+      .replace(/{address}/g, sellerSettings.addressRequired ? customerInfo.address : 'Tidak Perlu Pengiriman')
+      .replace(/{deliveryMethod}/g, customerInfo.deliveryMethod)
+      .replace(/{notes}/g, customerInfo.notes || 'Tidak ada');
+
+    let formattedPhone = sellerSettings.phone.replace(/[^0-9]/g, '');
+    if (formattedPhone.startsWith('0')) {
+        formattedPhone = '62' + formattedPhone.slice(1);
+    }
+
+    const whatsappLink = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(textMessage)}`;
+
+    const newOrder = {
+      id: Math.floor(Math.random() * 900000) + 100000,
+      customerName: customerInfo.name,
+      customerPhone: customerInfo.phone,
+      total: getCartTotal(),
+      itemsCount: cart.reduce((acc, c) => acc + c.quantity, 0),
+      timestamp: new Date().toLocaleString('id-ID'),
+      status: 'Dikirim ke WA'
+    };
+
+    setSimulatedOrders(prev => [newOrder, ...prev]);
+    
+    window.open(whatsappLink, '_blank');
+    setCart([]);
+    showToast("Pesanan Anda sedang dikirim ke WhatsApp penjual!");
+    setCartOpen(false);
+  };
+
+  const handleAddOrEditProduct = (e) => {
+    e.preventDefault();
+    if (!newProduct.name || !newProduct.price) {
+      showToast("Isi nama dan harga produk terlebih dahulu!", "error");
+      return;
+    }
+
+    const priceNum = parseInt(newProduct.price);
+    const finalImage = newProduct.image || `https://placehold.co/400x300/10b981/ffffff?text=${encodeURIComponent(newProduct.name)}`;
+
+    if (editingProductId) {
+      setProducts(products.map(p => p.id === editingProductId ? { ...newProduct, id: editingProductId, price: priceNum, image: finalImage } : p));
+      showToast("Produk berhasil diperbarui!");
+      setEditingProductId(null);
+    } else {
+      const freshProduct = {
+        ...newProduct,
+        id: (Date.now()).toString(),
+        price: priceNum,
+        image: finalImage
+      };
+      setProducts([freshProduct, ...products]);
+      showToast("Produk baru berhasil ditambahkan!");
+    }
+
+    setNewProduct({
+      name: '',
+      category: 'Minuman Dingin',
+      price: '',
+      description: '',
+      image: '',
+      status: 'Tersedia'
+    });
+  };
+
+  const handleEditProductClick = (product) => {
+    setEditingProductId(product.id);
+    setNewProduct({
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+      image: product.image,
+      status: product.status
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDeleteProduct = (id) => {
+    setProducts(products.filter(p => p.id !== id));
+    showToast("Produk berhasil dihapus!", "error");
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased flex flex-col">
+      {/* Toast Alert popup */}
+      {toast && (
+        <div className={`fixed top-4 right-4 z-50 flex items-center p-4 rounded-2xl shadow-xl text-white transition-all transform duration-300 scale-100 ${toast.type === 'error' ? 'bg-rose-600' : 'bg-emerald-600'}`}>
+          <span className="font-semibold text-sm">{toast.message}</span>
+        </div>
+      )}
+
+      {/* Navigation header bar */}
+      <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className="bg-emerald-600 text-white p-2.5 rounded-2xl shadow-md">
+                <Icons.Whatsapp />
+              </div>
+              <div>
+                <span className="text-lg font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 to-teal-700 bg-clip-text text-transparent">
+                  {sellerSettings.storeName}
+                </span>
+                <span className="block text-[10px] text-emerald-600 font-semibold tracking-wider uppercase">WhatsApp Order Engine</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setView(view === 'customer' ? 'seller' : 'customer')}
+                className={`px-4 py-2.5 rounded-full font-bold text-xs transition-all duration-300 flex items-center gap-2 border ${
+                  view === 'seller' 
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' 
+                    : 'bg-slate-950 text-white hover:bg-slate-800'
+                }`}
+              >
+                {view === 'customer' ? (
+                  <>
+                    <Icons.Settings className="w-4 h-4" />
+                    <span>Dashboard Penjual</span>
+                  </>
+                ) : (
+                  <>
+                    <Icons.Shop className="w-4 h-4" />
+                    <span>Lihat Toko</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Splash Hero Banner for customer view */}
+      {view === 'customer' && (
+        <div className="bg-gradient-to-r from-emerald-800 to-teal-900 text-white py-12 px-4 text-center relative overflow-hidden shadow-inner">
+          <div className="absolute inset-0 bg-opacity-10 bg-[radial-gradient(#ffffff_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none"></div>
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">Selamat Datang di {sellerSettings.storeName}</h1>
+          <p className="text-emerald-100 text-sm max-w-lg mx-auto mb-6">Nikmati kemudahan pesan menu favorit secara instan. Order dikirim otomatis ke WhatsApp toko kami.</p>
+          <div className="inline-flex flex-wrap justify-center items-center gap-4 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full text-xs font-medium">
+            <span className="flex items-center gap-1">🚀 Fast Response</span>
+            <span>•</span>
+            <span className="flex items-center gap-1">🟢 Chat Instant Order</span>
+            <span>•</span>
+            <span className="flex items-center gap-1">⭐ Rating Premium</span>
+          </div>
+        </div>
+      )}
+
+      {/* Main Container Area */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        {/* ==================== CUSTOMER SHOP VIEW ==================== */}
+        {view === 'customer' && (
+          <div>
+            {/* Category Navigation & Search bar */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-8">
+              <div className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-2 scrollbar-none">
+                {categories.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 ${
+                      activeCategory === cat 
+                        ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20' 
+                        : 'bg-white text-slate-600 border border-slate-200/85 hover:bg-slate-50'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="relative w-full sm:w-72">
+                <input
+                  type="text"
+                  placeholder="Cari menu kesukaanmu..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-full px-4 py-2.5 pl-10 text-xs focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all shadow-sm"
+                />
+                <span className="absolute left-3.5 top-3.5 text-slate-400 text-xs">🔍</span>
+              </div>
+            </div>
+
+            {/* Catalog Grid layout */}
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-slate-200">
+                <span className="text-4xl">☕</span>
+                <h3 className="text-md font-bold mt-4 text-slate-700">Tidak ada produk ditemukan</h3>
+                <p className="text-slate-500 text-xs mt-1">Coba cari dengan kata kunci lain atau pilih kategori berbeda.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {filteredProducts.map(product => (
+                  <div key={product.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
+                    <div className="relative overflow-hidden aspect-square bg-slate-100">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          e.target.src = `https://placehold.co/400x400/10b981/ffffff?text=${encodeURIComponent(product.name)}`;
+                        }}
+                      />
+                      <span className="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                        {product.category}
+                      </span>
+                    </div>
+                    
+                    <div className="p-5 flex-grow flex flex-col justify-between gap-4">
+                      <div>
+                        <h4 className="font-bold text-slate-800 text-sm mb-1">{product.name}</h4>
+                        <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">{product.description}</p>
+                      </div>
+                      
+                      <div className="pt-3 border-t border-slate-50 flex items-center justify-between">
+                        <span className="font-extrabold text-emerald-600 text-sm">{formatPrice(product.price)}</span>
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white px-3.5 py-2 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-1"
+                        >
+                          <span>+</span> Keranjang
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ==================== SELLER VIEW (DASHBOARD) ==================== */}
+        {view === 'seller' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Column 1: Store Configuration Settings */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col gap-6">
+              <div>
+                <h3 className="text-md font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                  <span>⚙️</span> Pengaturan Toko & WA
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1.5">Nama Toko</label>
+                    <input
+                      type="text"
+                      value={sellerSettings.storeName}
+                      onChange={(e) => setSellerSettings({ ...sellerSettings, storeName: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1.5">Nomor WhatsApp Toko</label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: 087878224307"
+                      value={sellerSettings.phone}
+                      onChange={(e) => setSellerSettings({ ...sellerSettings, phone: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                    />
+                    <span className="text-[10px] text-slate-400 block mt-1">Sistem otomatis menormalisasi nomor menjadi format internasional.</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1.5">Mata Uang</label>
+                      <select
+                        value={sellerSettings.currency}
+                        onChange={(e) => setSellerSettings({ ...sellerSettings, currency: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      >
+                        <option value="IDR">Rupiah (IDR)</option>
+                        <option value="USD">Dollar (USD)</option>
+                        <option value="MYR">Ringgit (MYR)</option>
+                        <option value="SGD">Singapore Dollar (SGD)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1.5">Ongkos Kirim</label>
+                      <input
+                        type="number"
+                        value={sellerSettings.shippingCost}
+                        onChange={(e) => setSellerSettings({ ...sellerSettings, shippingCost: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Template Text Customizer */}
+              <div>
+                <h3 className="text-md font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                  <span>📝</span> Template Teks WhatsApp
+                </h3>
+                <textarea
+                  rows="12"
+                  value={sellerSettings.template}
+                  onChange={(e) => setSellerSettings({ ...sellerSettings, template: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[11px] font-mono focus:ring-2 focus:ring-emerald-500 outline-none leading-relaxed"
+                />
+                <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 mt-2">
+                  <span className="block text-[10px] font-bold text-slate-500 mb-1">Daftar Kode Variabel Otomatis:</span>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[9px] text-slate-600 font-mono">
+                    <div>{`{storeName}`}</div>
+                    <div>{`{items}`}</div>
+                    <div>{`{subtotal}`}</div>
+                    <div>{`{shipping}`}</div>
+                    <div>{`{total}`}</div>
+                    <div>{`{name}`}</div>
+                    <div>{`{customerPhone}`}</div>
+                    <div>{`{address}`}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 2: Manage Products Form */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col gap-6">
+              <div>
+                <h3 className="text-md font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                  {editingProductId ? '✏️ Edit Produk' : '➕ Tambah Menu Baru'}
+                </h3>
+                
+                <form onSubmit={handleAddOrEditProduct} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Nama Menu</label>
+                    <input
+                      type="text"
+                      required
+                      value={newProduct.name}
+                      onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Kategori</label>
+                      <select
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      >
+                        <option value="Minuman Dingin">Minuman Dingin</option>
+                        <option value="Minuman Hangat">Minuman Hangat</option>
+                        <option value="Makanan">Makanan</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Harga ({sellerSettings.currency})</label>
+                      <input
+                        type="number"
+                        required
+                        value={newProduct.price}
+                        onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Deskripsi Menu</label>
+                    <textarea
+                      rows="3"
+                      value={newProduct.description}
+                      onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Gambar Produk (URL)</label>
+                    <div className="flex flex-col gap-2">
+                      <input
+                        type="text"
+                        placeholder="https://images.unsplash.com/..."
+                        value={newProduct.image}
+                        onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                    {newProduct.image && (
+                      <div className="mt-3 relative w-32 aspect-square rounded-xl overflow-hidden border border-slate-200 shadow-inner">
+                        <img src={newProduct.image} alt="Draf" className="w-full h-full object-cover" />
+                        <button 
+                          type="button" 
+                          onClick={() => setNewProduct({ ...newProduct, image: '' })}
+                          className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-[8px] h-4 w-4 flex items-center justify-center"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-bold shadow-md transition-all"
+                    >
+                      {editingProductId ? '💾 Simpan Perubahan' : '➕ Tambah Menu'}
+                    </button>
+                    {editingProductId && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingProductId(null);
+                          setNewProduct({ name: '', category: 'Minuman Dingin', price: '', description: '', image: '', status: 'Tersedia' });
+                        }}
+                        className="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition-all"
+                      >
+                        Batal
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* Column 3: Catalog List & Simulation Feeds */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col gap-6">
+              <div>
+                <h3 className="text-md font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                  <span>📋</span> Semua Menu ({products.length})
+                </h3>
+                <div className="space-y-3 overflow-y-auto max-h-[400px] pr-1">
+                  {products.map(p => (
+                    <div key={p.id} className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+                      <img 
+                        src={p.image} 
+                        alt={p.name} 
+                        className="w-12 h-12 rounded-xl object-cover bg-slate-200"
+                        onError={(e) => { e.target.src = 'https://placehold.co/100x100/10b981/ffffff?text=Kopi'; }}
+                      />
+                      <div className="flex-grow">
+                        <h4 className="font-bold text-xs text-slate-800 line-clamp-1">{p.name}</h4>
+                        <span className="text-[10px] text-emerald-600 font-bold block">{formatPrice(p.price)}</span>
+                        <span className="inline-block text-[9px] text-slate-400 bg-slate-200/50 px-1.5 py-0.5 rounded mt-0.5">{p.category}</span>
+                      </div>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => handleEditProductClick(p)}
+                          className="bg-sky-50 hover:bg-sky-100 text-sky-700 p-1.5 rounded-xl text-xs"
+                          title="Edit"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProduct(p.id)}
+                          className="bg-rose-50 hover:bg-rose-100 text-rose-700 p-1.5 rounded-xl text-xs"
+                          title="Hapus"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Simulated logs of placed orders */}
+              <div>
+                <h3 className="text-md font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                  <span>📈</span> Simulasi Pesanan Masuk
+                </h3>
+                {simulatedOrders.length === 0 ? (
+                  <div className="text-center py-8 text-slate-400 text-xs">
+                    Belum ada order masuk di sesi ini.
+                  </div>
+                ) : (
+                  <div className="space-y-3 overflow-y-auto max-h-[250px] pr-1">
+                    {simulatedOrders.map(order => (
+                      <div key={order.id} className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-[11px]">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-bold text-slate-800">Order #{order.id}</span>
+                          <span className="text-[9px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold">{order.status}</span>
+                        </div>
+                        <div className="text-slate-500 text-[10px] space-y-0.5">
+                          <div>Nama: {order.customerName} ({order.customerPhone})</div>
+                          <div>Jumlah item: {order.itemsCount} produk</div>
+                          <div>Waktu: {order.timestamp}</div>
+                        </div>
+                        <div className="border-t border-slate-200 mt-2 pt-1.5 flex justify-between items-center font-bold text-emerald-600">
+                          <span>Total:</span>
+                          <span>{formatPrice(order.total)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* FLOATING ACTION ELEMENT: CUSTOMER CART TOGGLE */}
+      {view === 'customer' && (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCartOpen(!cartOpen)}
+              className="bg-slate-900 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all flex items-center justify-center relative"
+            >
+              <Icons.Cart className="w-5 h-5" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] font-extrabold h-5 w-5 rounded-full flex items-center justify-center shadow-md animate-bounce">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== CART DRAWER PANEL ==================== */}
+      {cartOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden bg-black/40 backdrop-blur-sm flex justify-end">
+          <div className="bg-white w-full max-w-md h-full flex flex-col shadow-2xl animate-slide-left">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <Icons.Cart className="text-emerald-600" />
+                <span>Keranjang Belanja</span>
+              </h3>
+              <button onClick={() => setCartOpen(false)} className="text-slate-400 hover:text-slate-600 text-sm p-1">
+                Tutup ✕
+              </button>
+            </div>
+
+            <div className="flex-grow p-4 overflow-y-auto space-y-4">
+              {cart.length === 0 ? (
+                <div className="text-center py-20 text-slate-400">
+                  <span className="text-5xl block mb-3">🧺</span>
+                  <p className="text-xs font-semibold">Keranjang belanjamu kosong.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {cart.map(item => (
+                    <div key={item.product.id} className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+                      <img 
+                        src={item.product.image} 
+                        alt={item.product.name} 
+                        className="w-14 h-14 rounded-xl object-cover bg-slate-200"
+                      />
+                      <div className="flex-grow">
+                        <h4 className="font-bold text-xs text-slate-800">{item.product.name}</h4>
+                        <span className="text-[10px] text-emerald-600 font-bold block mt-0.5">{formatPrice(item.product.price)}</span>
+                        
+                        <div className="flex items-center gap-2 mt-2">
+                          <button
+                            onClick={() => updateQuantity(item.product.id, -1)}
+                            className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 rounded-lg h-5 w-5 flex items-center justify-center text-xs font-bold"
+                          >
+                            -
+                          </button>
+                          <span className="text-xs font-bold text-slate-800 w-4 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.product.id, 1)}
+                            className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 rounded-lg h-5 w-5 flex items-center justify-center text-xs font-bold"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.product.id)}
+                        className="text-rose-600 hover:text-rose-700 text-xs px-2.5 py-1.5 rounded-xl hover:bg-rose-50 font-semibold"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Checkout Customer Details Form */}
+              {cart.length > 0 && (
+                <form id="checkout-form" onSubmit={handleCheckoutSubmit} className="pt-4 border-t border-slate-100 mt-6 space-y-4">
+                  <h4 className="font-extrabold text-xs text-slate-800 mb-2">📋 Informasi Pengiriman & Pemesan</h4>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 mb-1">Nama Penerima</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: Andi"
+                        value={customerInfo.name}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 mb-1">No. WhatsApp</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: 0812..."
+                        value={customerInfo.phone}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 mb-1">Metode Pengiriman</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setCustomerInfo({ ...customerInfo, deliveryMethod: 'Delivery' })}
+                        className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                          customerInfo.deliveryMethod === 'Delivery' 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-400' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        Metode Delivery
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCustomerInfo({ ...customerInfo, deliveryMethod: 'Pickup' })}
+                        className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                          customerInfo.deliveryMethod === 'Pickup' 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-400' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        Ambil di Toko
+                      </button>
+                    </div>
+                  </div>
+
+                  {sellerSettings.addressRequired && customerInfo.deliveryMethod === 'Delivery' && (
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 mb-1">Alamat Lengkap Pengiriman</label>
+                      <textarea
+                        rows="2"
+                        required
+                        placeholder="Tulis alamat lengkap rumah..."
+                        value={customerInfo.address}
+                        onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                      />
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 mb-1">Catatan Tambahan (Opsional)</label>
+                    <input
+                      type="text"
+                      placeholder="Misal: Kurangi es batu..."
+                      value={customerInfo.notes}
+                      onChange={(e) => setCustomerInfo({ ...customerInfo, notes: e.target.value })}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+                    />
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Summary calculation & Checkout action */}
+            {cart.length > 0 && (
+              <div className="p-4 border-t border-slate-100 bg-slate-50 space-y-3">
+                <div className="space-y-1.5 text-xs text-slate-600">
+                  <div className="flex justify-between">
+                    <span>Subtotal Produk:</span>
+                    <span className="font-bold">{formatPrice(getCartSubtotal())}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Ongkos Kirim:</span>
+                    <span className="font-bold">
+                      {customerInfo.deliveryMethod === 'Delivery' ? formatPrice(sellerSettings.shippingCost) : 'Gratis'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-slate-800 font-extrabold text-sm pt-2 border-t border-slate-200">
+                    <span>Total Pembayaran:</span>
+                    <span className="text-emerald-600">{formatPrice(getCartTotal())}</span>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  form="checkout-form"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-xs shadow-md shadow-emerald-600/15 transition-all flex items-center justify-center gap-2"
+                >
+                  <Icons.Whatsapp /> Kirim Pesanan via WhatsApp
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
