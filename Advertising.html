@@ -1,514 +1,719 @@
-```react
-import React from 'react';
-import { 
-  Play, 
-  Video, 
-  Eye, 
-  Sparkles, 
-  Gem, 
-  TrendingUp, 
-  CheckCircle2, 
-  ArrowRight,
-  MessageSquare,
-  MonitorPlay,
-  Briefcase,
-  Mail,
-  Phone,
-  PlayCircle
-} from 'lucide-react';
+```html
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiwork Inc. | Creative Commercial Production</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Syne (Untuk aksen premium) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        syne: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fefbeb',
+                            100: '#fef3c7',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Efek ambient glow kustom */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-brand-950 text-slate-100 font-sans selection:bg-brand-500 selection:text-slate-900 overflow-x-hidden min-h-screen relative">
 
-export default function App() {
-  // Informasi Kontak
-  const phoneNumber = "6287878224307";
-  const emailAddress = "digiwork.inc@gmail.com";
+    <!-- Efek Atmosfer Sinematik (Background Glow) -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/10 blur-[130px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-900/10 blur-[130px]"></div>
+    </div>
 
-  // Template Pesan WhatsApp
-  const waBaseUrl = `https://wa.me/${phoneNumber}`;
-  const textGeneral = "?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20untuk%20konsultasi%20mengenai%20pembuatan%20video%20commercial%20untuk%20brand%20saya.";
-  const textLevel1 = "?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%201%20(Entry%20UMKM).%20Bisa%20minta%20info%20lebih%20lanjut?";
-  const textLevel2 = "?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%202%20(Premium%20Local%20Brand).%20Bisa%20minta%20info%20lebih%20lanjut?";
-  const textLevel3 = "?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%203%20(Commercial%20Campaign).%20Bisa%20minta%20info%20lebih%20lanjut?";
-
-  // Data Portofolio (Bisa diganti dengan gambar asli dari project Anda)
-  const portfolioItems = [
-    { 
-      id: 1, 
-      title: "Lumina Skincare", 
-      category: "Beauty Brand • Level 2", 
-      image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80" 
-    },
-    { 
-      id: 2, 
-      title: "Kopi Kenangan Senja", 
-      category: "F&B Commercial • Level 1", 
-      image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=800&q=80" 
-    },
-    { 
-      id: 3, 
-      title: "Grand Vista Resort", 
-      category: "Hospitality • Level 3", 
-      image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" 
-    },
-    { 
-      id: 4, 
-      title: "Urban Streetwear", 
-      category: "Fashion Campaign • Level 2", 
-      image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80" 
-    },
-  ];
-
-  // Smooth scroll helper for internal links
-  const scrollTo = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#020617] text-slate-50 font-sans selection:bg-amber-500 selection:text-slate-900 scroll-smooth overflow-x-hidden">
-      
-      {/* Background Ambience */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-amber-600/10 blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-amber-900/10 blur-[120px]"></div>
-      </div>
-
-      {/* Navigation */}
-      <nav className="fixed w-full z-50 top-0 bg-[#020617]/70 backdrop-blur-xl border-b border-white/5 transition-all">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-              <Video className="w-5 h-5 text-slate-950" />
-            </div>
-            <span className="text-xl font-bold tracking-tight ml-2">Digiwork<span className="text-amber-500">.</span></span>
-          </div>
-          <div className="hidden md:flex gap-8 lg:gap-10 text-sm font-medium text-slate-300">
-            <button onClick={() => scrollTo('solusi')} className="hover:text-amber-400 transition-colors">Solusi</button>
-            <button onClick={() => scrollTo('layanan')} className="hover:text-amber-400 transition-colors">Layanan</button>
-            <button onClick={() => scrollTo('portofolio')} className="hover:text-amber-400 transition-colors">Portofolio</button>
-            <button onClick={() => scrollTo('tentang')} className="hover:text-amber-400 transition-colors">Tentang Kami</button>
-          </div>
-          <a 
-            href={`${waBaseUrl}${textGeneral}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 px-6 py-2.5 rounded-full font-bold text-sm transition-all transform hover:scale-105 shadow-[0_0_20px_-5px_rgba(245,158,11,0.5)] flex items-center gap-2"
-          >
-            Konsultasi <span className="hidden sm:inline">Gratis</span>
-          </a>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative z-10 pt-40 pb-20 md:pt-52 md:pb-32 overflow-hidden flex flex-col justify-center min-h-[90vh]">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-semibold mb-8 backdrop-blur-sm animate-pulse">
-            <Sparkles className="w-4 h-4" />
-            <span>Creative Commercial Production</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-8 leading-[1.1]">
-            Bawa Brand Anda ke <br className="hidden md:block"/>
-            Level <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-500 to-yellow-700 drop-shadow-sm">Premium.</span>
-          </h1>
-          <p className="text-lg md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-            Bukan sekadar edit video. Kami merancang <strong className="text-slate-100 font-medium">"Perceived Commercial Value"</strong> untuk mendominasi atensi audiens Anda.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-            <a 
-              href={`${waBaseUrl}${textGeneral}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-full font-bold text-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 shadow-[0_10px_40px_-10px_rgba(245,158,11,0.7)] group"
-            >
-              Konsultasikan Project Anda
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <button 
-              onClick={() => scrollTo('portofolio')}
-              className="w-full sm:w-auto px-8 py-4 bg-slate-900/80 hover:bg-slate-800 text-white border border-slate-700/50 hover:border-amber-500/50 backdrop-blur-md rounded-full font-bold text-lg flex items-center justify-center gap-2 transition-all"
-            >
-              <Play className="w-5 h-5 text-amber-500" />
-              Lihat Showreel
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* The Problem & Value Section */}
-      <section id="solusi" className="py-24 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-amber-500/20 blur-2xl rounded-full opacity-50"></div>
-              <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 p-8 md:p-12 rounded-3xl shadow-2xl">
-                <div className="inline-block px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-8">
-                  <span className="text-red-400 font-bold tracking-wider text-xs md:text-sm uppercase flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                    Berhenti Membayar Menit Editing
-                  </span>
+    <!-- HEADER / NAVIGATION -->
+    <nav class="fixed w-full z-50 top-0 bg-brand-950/70 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-[0_0_15px_rgba(245,158,11,0.5)] group-hover:scale-105 transition-transform">
+                    <i data-lucide="video" class="w-5 h-5 text-slate-950"></i>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-                  Visual standar gagal menarik perhatian.
-                </h2>
-                <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                  Banyak brand terjebak membayar creative studio berdasarkan "berapa lama video diedit" atau tarif jasa operator semata. Hasilnya? Visual yang standar, tidak ada <em>soul</em>, dan audiens mengabaikannya.
+                <span class="text-2xl font-bold tracking-tight ml-1 font-syne">Digiwork<span class="text-brand-500">.</span></span>
+            </a>
+
+            <!-- Menu Navigasi (Desktop) -->
+            <div class="hidden md:flex gap-10 text-sm font-medium text-slate-300">
+                <a href="#solusi" class="hover:text-brand-400 transition-colors">Solusi</a>
+                <a href="#layanan" class="hover:text-brand-400 transition-colors">Layanan</a>
+                <a href="#kalkulator" class="hover:text-brand-400 transition-colors">Value Calculator</a>
+                <a href="#portofolio" class="hover:text-brand-400 transition-colors">Portofolio</a>
+                <a href="#tentang" class="hover:text-brand-400 transition-colors">Tentang Kami</a>
+            </div>
+
+            <!-- CTA Button -->
+            <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20untuk%20konsultasi%20mengenai%20pembuatan%20video%20commercial%20untuk%20brand%20saya." 
+               target="_blank" 
+               class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-slate-950 px-6 py-2.5 rounded-full font-bold text-sm transition-all transform hover:scale-105 shadow-[0_0_20px_-5px_rgba(245,158,11,0.5)] flex items-center gap-2 btn-glow">
+                Konsultasi Gratis <i data-lucide="phone-call" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative z-10 pt-44 pb-24 md:pt-56 md:pb-36 flex items-center min-h-[95vh] overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-sm font-semibold mb-8 backdrop-blur-sm animate-pulse">
+                <i data-lucide="sparkles" class="w-4 h-4 text-brand-400"></i>
+                <span>Premium Creative Commercial Production</span>
+            </div>
+            
+            <!-- Headline -->
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black font-syne tracking-tight mb-8 leading-[1.05] text-white">
+                Bawa Brand Anda ke <br/>
+                Level <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-brand-500 to-amber-600 drop-shadow-sm text-glow">Premium.</span>
+            </h1>
+            
+            <!-- Subheadline -->
+            <p class="text-lg md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
+                Bukan sekadar edit video komersial. Kami merancang <strong class="text-slate-100 font-medium">"Perceived Commercial Value"</strong> untuk mendominasi atensi audiens Anda di pasar modern.
+            </p>
+            
+            <!-- Hero Buttons -->
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20ingin%20konsultasi%20mengenai%20project%20video%20commercial%20brand%20saya." 
+                   target="_blank"
+                   class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-slate-950 rounded-full font-extrabold text-lg flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 shadow-[0_10px_40px_-10px_rgba(245,158,11,0.7)] group btn-glow">
+                    Mulai Konsultasi Project 
+                    <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#portofolio" 
+                   class="w-full sm:w-auto px-8 py-4 bg-slate-900/80 hover:bg-slate-800 text-white border border-slate-700/50 hover:border-brand-500/50 backdrop-blur-md rounded-full font-bold text-lg flex items-center justify-center gap-2 transition-all">
+                    <i data-lucide="play" class="w-5 h-5 text-brand-400"></i>
+                    Lihat Showreel
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE PROBLEM & VALUE SECTION -->
+    <section id="solusi" class="py-28 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Left Column (Problem Card) -->
+                <div class="relative">
+                  <div class="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-brand-500/20 blur-2xl rounded-[2.5rem] opacity-40"></div>
+                  <div class="relative glass-card p-8 md:p-12 rounded-[2.5rem] border border-white/5">
+                    <div class="inline-block px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-8">
+                      <span class="text-red-400 font-bold tracking-wider text-xs md:text-sm uppercase flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                        Masalah Terbesar Banyak Creative Studio
+                      </span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold font-syne text-white mb-6 leading-tight">
+                      Banyak brand terjebak membayar "Menit Editing"
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                      Mereka menghitung biaya seperti menyewa jasa operator, editor biasa, atau sekadar pembuat aset digital murah. Hasilnya? Visual yang diproduksi tidak memiliki nilai jual, gagal menyentuh emosi, dan dilompati oleh penonton.
+                    </p>
+                    <div class="p-6 bg-gradient-to-br from-brand-500/10 to-transparent border border-brand-500/20 rounded-2xl">
+                      <p class="text-lg md:text-xl text-brand-400 font-semibold italic">
+                        "Di Digiwork Inc., kami tidak menjual berapa menit waktu editing. Kami memproduksi branding impact, premium look, dan visual transformation."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Right Column (The Solution Cards) -->
+                <div class="grid sm:grid-cols-2 gap-5">
+                  <div class="p-8 rounded-3xl glass-card hover:border-brand-500/30 transition-all duration-300 group">
+                      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trending-up" class="w-7 h-7 text-brand-400"></i>
+                      </div>
+                      <h3 class="text-xl font-bold text-slate-100 mb-3">Branding Impact</h3>
+                      <p class="text-slate-400 text-sm leading-relaxed">Meningkatkan konversi penjualan & kesetiaan pelanggan terhadap brand Anda.</p>
+                  </div>
+                  <div class="p-8 rounded-3xl glass-card hover:border-brand-500/30 transition-all duration-300 group">
+                      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="monitor-play" class="w-7 h-7 text-brand-400"></i>
+                      </div>
+                      <h3 class="text-xl font-bold text-slate-100 mb-3">Cinematic Quality</h3>
+                      <p class="text-slate-400 text-sm leading-relaxed">Visual bernilai tinggi setara produksi iklan komersial televisi nasional.</p>
+                  </div>
+                  <div class="p-8 rounded-3xl glass-card hover:border-brand-500/30 transition-all duration-300 group">
+                      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="eye" class="w-7 h-7 text-brand-400"></i>
+                      </div>
+                      <h3 class="text-xl font-bold text-slate-100 mb-3">Unstoppable Attention</h3>
+                      <p class="text-slate-400 text-sm leading-relaxed">Menangkap perhatian dalam 3 detik pertama untuk menghentikan scroll layar ponsel.</p>
+                  </div>
+                  <div class="p-8 rounded-3xl glass-card hover:border-brand-500/30 transition-all duration-300 group">
+                      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="gem" class="w-7 h-7 text-brand-400"></i>
+                      </div>
+                      <h3 class="text-xl font-bold text-slate-100 mb-3">Perceived Premium</h3>
+                      <p class="text-slate-400 text-sm leading-relaxed">Membuat produk Anda memiliki nilai tawar jauh lebih tinggi di hadapan market.</p>
+                  </div>
+                  <div class="p-8 rounded-3xl glass-card hover:border-brand-500/30 transition-all duration-300 group sm:col-span-2 text-center flex flex-col items-center">
+                      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="sparkles" class="w-7 h-7 text-brand-400"></i>
+                      </div>
+                      <h3 class="text-xl font-bold text-slate-100 mb-3">Visual Transformation</h3>
+                      <p class="text-slate-400 text-sm leading-relaxed max-w-md">Mengubah total cara pasar melihat bisnis Anda, melompat dari sekadar "penjual biasa" menjadi "brand ikonik teratas".</p>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+    </section>
+
+    <!-- NEW INTERACTIVE FEATURE: PERCEIVED VALUE CALCULATOR -->
+    <section id="kalkulator" class="py-24 relative z-10 bg-slate-900/40 border-y border-white/5">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold mb-4">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    <span>Interactive Value Simulator</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-black font-syne text-white mb-4">Kalkulator Perceived Value</h2>
+                <p class="text-slate-400 max-w-xl mx-auto">Geser simulator di bawah untuk melihat bagaimana visual sinematik premium melipatgandakan nilai jual produk Anda.</p>
+            </div>
+
+            <!-- Kalkulator Card -->
+            <div class="glass-card p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                <div class="mb-10 text-center">
+                    <label for="price-slider" class="block text-slate-300 text-sm font-bold uppercase tracking-wider mb-4">Harga Dasar Produk Anda Saat Ini:</label>
+                    <div class="text-4xl md:text-5xl font-extrabold text-white mb-4 font-syne">
+                        Rp <span id="base-price-label">150,000</span>
+                    </div>
+                    <input type="range" id="price-slider" min="50000" max="1000000" step="50000" value="150000" 
+                           class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
+                    <div class="flex justify-between text-xs text-slate-500 mt-2">
+                        <span>Rp 50rb</span>
+                        <span>Rp 500rb</span>
+                        <span>Rp 1 Juta</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mt-10 pt-10 border-t border-white/5">
+                    <div class="p-6 rounded-2xl bg-slate-950/50 border border-white/5">
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest block mb-2">Tampilan Visual Murah / Biasa</span>
+                        <div class="text-slate-400 text-sm mb-4">Pelanggan menawar, margin tipis, kompetitor mudah menyalin produk Anda.</div>
+                        <div class="text-2xl font-bold text-slate-500">Maksimal Rp <span id="cheap-perceived-value">150,000</span></div>
+                    </div>
+                    
+                    <div class="p-6 rounded-2xl bg-brand-500/5 border border-brand-500/30 shadow-[inset_0_0_20px_rgba(245,158,11,0.05)]">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-widest block mb-2">Visual Premium Digiwork Inc.</span>
+                        <div class="text-slate-200 text-sm mb-4">Persepsi kemewahan terbangun, produk terlihat eksklusif, pelanggan bersedia membayar lebih.</div>
+                        <div class="text-3xl font-extrabold text-brand-400">Hingga Rp <span id="premium-perceived-value">375,000</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING / LEVELS SECTION -->
+    <section id="layanan" class="py-28 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-6xl font-black font-syne text-white mb-6">Paket Investasi Visual</h2>
+                <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                    Solusi terarah yang disesuaikan untuk skala pertumbuhan bisnis Anda saat ini.
                 </p>
-                <div className="p-6 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 rounded-2xl">
-                  <p className="text-xl text-amber-400 font-semibold italic">
-                    "Di Digiwork Inc., kami tidak menjual durasi waktu. Kami memberikan Impact."
-                  </p>
-                </div>
-              </div>
             </div>
-            
-            <div className="grid sm:grid-cols-2 gap-5">
-              {[
-                { icon: TrendingUp, title: "Branding Impact", desc: "Meningkatkan daya ingat & konversi penjualan." },
-                { icon: MonitorPlay, title: "Cinematic Quality", desc: "Setara produksi film komersial ratusan juta." },
-                { icon: Eye, title: "Unstoppable Attention", desc: "Membuat audiens berhenti scrolling seketika." },
-                { icon: Gem, title: "Perceived Premium", desc: "Brand terlihat lebih mahal & eksklusif." },
-                { icon: Sparkles, title: "Visual Transformation", desc: "Mengubah cara target market melihat bisnis Anda selamanya.", full: true },
-              ].map((item, idx) => (
-                <div key={idx} className={`p-8 rounded-3xl bg-slate-900/40 backdrop-blur-sm border border-white/5 hover:border-amber-500/30 hover:bg-slate-800/50 transition-all duration-300 group ${item.full ? 'sm:col-span-2 text-center flex flex-col items-center' : ''}`}>
-                  <div className={`w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${item.full ? 'mx-auto' : ''}`}>
-                    <item.icon className="w-7 h-7 text-amber-400" />
+
+            <div class="grid xl:grid-cols-3 gap-8 items-stretch">
+                
+                <!-- Level 1 -->
+                <div class="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-10 border border-white/5 flex flex-col hover:border-slate-700 transition-all duration-300 relative overflow-hidden group">
+                  <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <span class="text-9xl font-black font-syne">1</span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-100 mb-3">{item.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{item.desc}</p>
+                  <div class="mb-8 relative z-10">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-xs font-bold tracking-widest uppercase mb-6">
+                      Level 1
+                    </div>
+                    <h3 class="text-3xl font-bold font-syne text-white mb-4">Entry UMKM</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed min-h-[60px]">Pijakan awal yang solid untuk mendominasi ranah digital dan media sosial lokal.</p>
+                    <div class="mt-8 mb-2 flex items-baseline gap-1">
+                      <span class="text-2xl font-medium text-slate-500">Rp</span>
+                      <span class="text-5xl font-extrabold text-white font-syne">500k<span class="text-2xl text-slate-500 font-normal"> - 2jt</span></span>
+                    </div>
+                  </div>
+                  <div class="flex-grow relative z-10 border-t border-white/5 pt-8 mt-4">
+                    <div class="mb-8">
+                      <p class="text-sm text-brand-400 mb-2 font-semibold">Sangat Cocok Untuk:</p>
+                      <p class="text-slate-300">F&B (Sambal, Coffee), Toko Kecil, & Online Shop.</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Format 15–30 Detik (Vertical Reels)</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Cinematic Edit & Color Grading</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Trending / Premium Music</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Dynamic Text Animation</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%201%20(Entry%20UMKM).%20Bisa%20minta%20info%20lebih%20lanjut?" 
+                     target="_blank"
+                     class="w-full py-4 rounded-2xl font-bold bg-slate-800 hover:bg-slate-700 text-white transition-all flex items-center justify-center gap-2 relative z-10">
+                    Pilih Level 1 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
                 </div>
-              ))}
+
+                <!-- Level 2 (Highly Recommended) -->
+                <div class="bg-gradient-to-b from-brand-500/10 via-slate-900/80 to-slate-900/40 backdrop-blur-xl rounded-[2.5rem] p-10 border border-brand-500/30 flex flex-col transform xl:-translate-y-6 shadow-[0_0_50px_-15px_rgba(245,158,11,0.3)] relative overflow-hidden group z-20">
+                  <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity text-brand-500">
+                    <span class="text-9xl font-black font-syne">2</span>
+                  </div>
+                  <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-500 to-brand-600 text-slate-950 px-6 py-2 rounded-b-2xl text-xs font-black tracking-widest uppercase shadow-lg">
+                    Highly Recommended
+                  </div>
+                  
+                  <div class="mt-6 mb-8 relative z-10">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-brand-500/20 text-brand-400 text-xs font-bold tracking-widest uppercase mb-6 border border-brand-500/20">
+                      Level 2
+                    </div>
+                    <h3 class="text-3xl font-bold font-syne text-white mb-4">Premium Local Brand</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed min-h-[60px]">Transformasi visual mendalam untuk bisnis lokal yang siap berekspansi & memimpin pasar.</p>
+                    <div class="mt-8 mb-2 flex items-baseline gap-1">
+                      <span class="text-2xl font-medium text-slate-500">Rp</span>
+                      <span class="text-5xl font-extrabold text-brand-400 font-syne">3jt<span class="text-2xl text-slate-500 font-normal"> - 8jt</span></span>
+                    </div>
+                  </div>
+                  <div class="flex-grow relative z-10 border-t border-brand-500/20 pt-8 mt-4">
+                    <div class="mb-8">
+                      <p class="text-sm text-brand-400 mb-2 font-semibold">Sangat Cocok Untuk:</p>
+                      <p class="text-slate-200">Cafe, Clothing Brand, Skincare, Villa, Bisnis Berkembang.</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                      <li class="flex items-start gap-4 text-slate-200">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed"><strong class="text-white">Creative Direction & Cinematic Concepting</strong></span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-200">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Advanced Commercial Production</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-200">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Multiple Scenes & Angles</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-200">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Premium Sound Design & SFX</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-200">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Deep Storytelling menyentuh emosi</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%202%20(Premium%20Local%20Brand).%20Bisa%20minta%20info%20lebih%20lanjut?" 
+                     target="_blank"
+                     class="w-full py-4 rounded-2xl font-bold bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-slate-950 transition-all flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 relative z-10 btn-glow">
+                    Pilih Level 2 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-10 border border-white/5 flex flex-col hover:border-slate-700 transition-all duration-300 relative overflow-hidden group">
+                   <div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <span class="text-9xl font-black font-syne">3</span>
+                  </div>
+                  <div class="mb-8 relative z-10">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-xs font-bold tracking-widest uppercase mb-6">
+                      Level 3
+                    </div>
+                    <h3 class="text-3xl font-bold font-syne text-white mb-4">Commercial Campaign</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed min-h-[60px]">Kampanye visual ekosistem branding menyeluruh untuk dominasi pasar berskala raksasa.</p>
+                    <div class="mt-8 mb-2 flex items-baseline gap-1">
+                      <span class="text-2xl font-medium text-slate-500">Rp</span>
+                      <span class="text-5xl font-extrabold text-white font-syne">10jt<span class="text-3xl text-brand-500 font-black">+</span></span>
+                    </div>
+                  </div>
+                  <div class="flex-grow relative z-10 border-t border-white/5 pt-8 mt-4">
+                    <div class="mb-8">
+                      <p class="text-sm text-brand-400 mb-2 font-semibold">Sangat Cocok Untuk:</p>
+                      <p class="text-slate-300">Property, Hospitality, Corporate, & Brand Campaign Nasional.</p>
+                    </div>
+                    <ul class="space-y-4 mb-10">
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Bukan sekadar video, melainkan Full Campaign Visual</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Social Media Ecosystem Package (Berbagai Rasio)</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Brand Identity Video & Masterpiece Commercial</span>
+                      </li>
+                      <li class="flex items-start gap-4 text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
+                        <span class="leading-relaxed">Menjual konsep ecosystem branding secara masif</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20dengan%20layanan%20Level%203%20(Commercial%20Campaign).%20Bisa%20minta%20info%20lebih%20lanjut?" 
+                     target="_blank"
+                     class="w-full py-4 rounded-2xl font-bold bg-slate-800 hover:bg-slate-700 text-white transition-all flex items-center justify-center gap-2 relative z-10">
+                    Konsultasi Level 3 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
+                </div>
+
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      {/* Pricing / Levels Section */}
-      <section id="layanan" className="py-24 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20 relative">
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Solusi Visual Sesuai Skala Bisnis</h2>
-            <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
-              Kami membagi layanan menjadi tiga level eksklusif yang dirancang untuk memberikan ROI maksimal bagi brand Anda.
-            </p>
-          </div>
-
-          <div className="grid xl:grid-cols-3 gap-8 items-stretch">
-            
-            {/* Level 1 */}
-            <div className="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-10 border border-white/5 flex flex-col hover:border-slate-700 transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <span className="text-9xl font-black">1</span>
-              </div>
-              <div className="mb-8 relative z-10">
-                <div className="inline-block px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-xs font-bold tracking-widest uppercase mb-6">
-                  Level 1
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-4">Entry UMKM</h3>
-                <p className="text-slate-400 text-sm leading-relaxed min-h-[60px]">Pijakan awal untuk mendominasi ranah digital dan media sosial.</p>
-                <div className="mt-8 mb-2 flex items-baseline gap-1">
-                  <span className="text-2xl font-medium text-slate-500">Rp</span>
-                  <span className="text-5xl font-extrabold text-white">500k<span className="text-2xl text-slate-500 font-normal"> - 2jt</span></span>
-                </div>
-              </div>
-              <div className="flex-grow relative z-10 border-t border-white/5 pt-8 mt-4">
-                <div className="mb-8">
-                  <p className="text-sm text-amber-400 mb-2 font-semibold">Cocok untuk:</p>
-                  <p className="text-slate-300">F&B (Sambal, Coffee), Toko Kecil, & Online Shop.</p>
-                </div>
-                <ul className="space-y-4 mb-10">
-                  {[
-                    'Format 15–30 Detik (Vertical Reels)',
-                    'Cinematic Edit & Color Grading', 
-                    'Trending / Premium Music', 
-                    'Dynamic Text Animation', 
-                    'Volume awareness awal'
-                  ].map((feature, i) => (
-                    <li key={i} className="flex items-start gap-4 text-slate-300">
-                      <CheckCircle2 className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a 
-                href={`${waBaseUrl}${textLevel1}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 rounded-2xl font-bold bg-slate-800 hover:bg-slate-700 text-white transition-all flex items-center justify-center gap-2 relative z-10"
-              >
-                Pilih Level 1
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Level 2 (Highlight) */}
-            <div className="bg-gradient-to-b from-amber-500/10 via-slate-900/80 to-slate-900/40 backdrop-blur-xl rounded-[2.5rem] p-10 border border-amber-500/30 flex flex-col transform xl:-translate-y-6 shadow-[0_0_50px_-15px_rgba(245,158,11,0.3)] relative overflow-hidden group z-20">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity text-amber-500">
-                <span className="text-9xl font-black">2</span>
-              </div>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-6 py-2 rounded-b-2xl text-xs font-black tracking-widest uppercase shadow-lg">
-                Highly Recommended
-              </div>
-              
-              <div className="mt-6 mb-8 relative z-10">
-                <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold tracking-widest uppercase mb-6 border border-amber-500/20">
-                  Level 2
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-4">Premium Local Brand</h3>
-                <p className="text-slate-300 text-sm leading-relaxed min-h-[60px]">Transformasi visual untuk bisnis yang siap berekspansi & memimpin pasar lokal.</p>
-                <div className="mt-8 mb-2 flex items-baseline gap-1">
-                  <span className="text-2xl font-medium text-slate-500">Rp</span>
-                  <span className="text-5xl font-extrabold text-amber-400">3jt<span className="text-2xl text-slate-500 font-normal"> - 8jt</span></span>
-                </div>
-              </div>
-              <div className="flex-grow relative z-10 border-t border-amber-500/20 pt-8 mt-4">
-                <div className="mb-8">
-                  <p className="text-sm text-amber-400 mb-2 font-semibold">Cocok untuk:</p>
-                  <p className="text-slate-200">Cafe, Clothing, Skincare, Villa, Bisnis Berkembang.</p>
-                </div>
-                <ul className="space-y-4 mb-10">
-                  {[
-                    <strong className="text-white">Creative Direction & Concepting</strong>, 
-                    'Advanced Commercial Production', 
-                    'Multiple Scenes & Angles', 
-                    'Premium Sound Design & Audio Effects', 
-                    'Deep Storytelling menyentuh emosi'
-                  ].map((feature, i) => (
-                    <li key={i} className="flex items-start gap-4 text-slate-200">
-                      <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a 
-                href={`${waBaseUrl}${textLevel2}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 rounded-2xl font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 transition-all flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 relative z-10"
-              >
-                Pilih Level 2
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Level 3 */}
-            <div className="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-10 border border-white/5 flex flex-col hover:border-slate-700 transition-all duration-300 relative overflow-hidden group">
-               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <span className="text-9xl font-black">3</span>
-              </div>
-              <div className="mb-8 relative z-10">
-                <div className="inline-block px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-xs font-bold tracking-widest uppercase mb-6">
-                  Level 3
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-4">Commercial Campaign</h3>
-                <p className="text-slate-400 text-sm leading-relaxed min-h-[60px]">Ekosistem branding menyeluruh untuk dominasi industri skala besar.</p>
-                <div className="mt-8 mb-2 flex items-baseline gap-1">
-                  <span className="text-2xl font-medium text-slate-500">Rp</span>
-                  <span className="text-5xl font-extrabold text-white">10jt<span className="text-3xl text-amber-500 font-black">+</span></span>
-                </div>
-              </div>
-              <div className="flex-grow relative z-10 border-t border-white/5 pt-8 mt-4">
-                <div className="mb-8">
-                  <p className="text-sm text-amber-400 mb-2 font-semibold">Cocok untuk:</p>
-                  <p className="text-slate-300">Property, Hospitality, Corporate, Event Besar.</p>
-                </div>
-                <ul className="space-y-4 mb-10">
-                  {[
-                    'Full Campaign Visual Ecosystem', 
-                    'Social Media Formatting Package', 
-                    'Brand Identity Video Masterpiece', 
-                    'Produksi Skala Besar & Kompleks', 
-                    'Meningkatkan corporate value'
-                  ].map((feature, i) => (
-                    <li key={i} className="flex items-start gap-4 text-slate-300">
-                      <CheckCircle2 className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a 
-                href={`${waBaseUrl}${textLevel3}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 rounded-2xl font-bold bg-slate-800 hover:bg-slate-700 text-white transition-all flex items-center justify-center gap-2 relative z-10"
-              >
-                Konsultasi Level 3
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio / Showreel Section */}
-      <section id="portofolio" className="py-24 relative z-10 bg-slate-950/50 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+    <!-- PORTFOLIO / SHOWREEL SECTION -->
+    <section id="portofolio" class="py-28 relative z-10 bg-slate-950/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-semibold mb-6">
-                <Video className="w-4 h-4" />
-                <span>Showreel & Masterpiece</span>
+              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-sm font-semibold mb-6">
+                <i data-lucide="monitor-play" class="w-4 h-4"></i>
+                <span>Our Masterpiece Gallery</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold">Karya Tersorot Kami.</h2>
+              <h2 class="text-4xl md:text-6xl font-black font-syne text-white">Karya Tersorot Kami.</h2>
             </div>
-            <p className="text-slate-400 max-w-md md:text-right font-light">
-              Melihat langsung "Perceived Commercial Value" yang kami bangun untuk mendominasi atensi market klien kami.
+            <p class="text-slate-400 max-w-md md:text-right font-light leading-relaxed">
+              Lihat langsung penerapan nyata "Perceived Commercial Value" yang kami rancang khusus untuk membangkitkan prestise brand klien kami.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-            {portfolioItems.map((item) => (
-              <div key={item.id} className="group relative rounded-3xl overflow-hidden aspect-video cursor-pointer bg-slate-900 shadow-xl border border-white/10 hover:border-amber-500/50 transition-all duration-500">
-                {/* Image background */}
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                />
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                
-                {/* Play Button Overlay (Center) */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-amber-500/90 text-slate-950 flex items-center justify-center transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.6)] backdrop-blur-sm">
-                    <Play className="w-7 h-7 ml-1" />
+          <!-- Portofolio Grid -->
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Item 1 -->
+            <div onclick="openVideoModal('Lumina Skincare', 'Beauty Brand • Level 2', 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=1200&q=80')" 
+                 class="group relative rounded-[2rem] overflow-hidden aspect-video cursor-pointer bg-slate-900 shadow-xl border border-white/5 hover:border-brand-500/50 transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80" alt="Lumina Skincare" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-brand-500 text-slate-950 flex items-center justify-center transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.6)] backdrop-blur-sm">
+                    <i data-lucide="play" class="w-7 h-7 ml-1 text-slate-950"></i>
                   </div>
                 </div>
-
-                {/* Info Overlay (Bottom) */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-amber-400 font-bold text-sm tracking-widest uppercase mb-2">
-                    {item.category}
-                  </p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">
-                    {item.title}
-                  </h3>
+                <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p class="text-brand-400 font-bold text-xs tracking-widest uppercase mb-2">Beauty Brand • Level 2</p>
+                  <h3 class="text-2xl md:text-3xl font-bold font-syne text-white">Lumina Skincare</h3>
                 </div>
-              </div>
-            ))}
+            </div>
+
+            <!-- Item 2 -->
+            <div onclick="openVideoModal('Kopi Kenangan Senja', 'F&B Commercial • Level 1', 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=1200&q=80')"
+                 class="group relative rounded-[2rem] overflow-hidden aspect-video cursor-pointer bg-slate-900 shadow-xl border border-white/5 hover:border-brand-500/50 transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=800&q=80" alt="Kopi Kenangan Senja" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-brand-500 text-slate-950 flex items-center justify-center transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.6)] backdrop-blur-sm">
+                    <i data-lucide="play" class="w-7 h-7 ml-1 text-slate-950"></i>
+                  </div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p class="text-brand-400 font-bold text-xs tracking-widest uppercase mb-2">F&B Commercial • Level 1</p>
+                  <h3 class="text-2xl md:text-3xl font-bold font-syne text-white">Kopi Kenangan Senja</h3>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div onclick="openVideoModal('Grand Vista Resort', 'Hospitality • Level 3', 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80')"
+                 class="group relative rounded-[2rem] overflow-hidden aspect-video cursor-pointer bg-slate-900 shadow-xl border border-white/5 hover:border-brand-500/50 transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" alt="Grand Vista Resort" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-brand-500 text-slate-950 flex items-center justify-center transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.6)] backdrop-blur-sm">
+                    <i data-lucide="play" class="w-7 h-7 ml-1 text-slate-950"></i>
+                  </div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p class="text-brand-400 font-bold text-xs tracking-widest uppercase mb-2">Hospitality • Level 3</p>
+                  <h3 class="text-2xl md:text-3xl font-bold font-syne text-white">Grand Vista Resort</h3>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div onclick="openVideoModal('Urban Streetwear', 'Fashion Campaign • Level 2', 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1200&q=80')"
+                 class="group relative rounded-[2rem] overflow-hidden aspect-video cursor-pointer bg-slate-900 shadow-xl border border-white/5 hover:border-brand-500/50 transition-all duration-500">
+                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80" alt="Urban Streetwear" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-full bg-brand-500 text-slate-950 flex items-center justify-center transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.6)] backdrop-blur-sm">
+                    <i data-lucide="play" class="w-7 h-7 ml-1 text-slate-950"></i>
+                  </div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p class="text-brand-400 font-bold text-xs tracking-widest uppercase mb-2">Fashion Campaign • Level 2</p>
+                  <h3 class="text-2xl md:text-3xl font-bold font-syne text-white">Urban Streetwear</h3>
+                </div>
+            </div>
           </div>
 
-          <div className="mt-12 text-center">
-            <a 
-              href={`${waBaseUrl}${textGeneral}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold transition-colors group"
-            >
-              Lihat lebih banyak showreel kami 
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <div class="mt-16 text-center">
+            <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20tertarik%20melihat%20lebih%20banyak%20showreel%20atau%20portofolio%20eksklusif%20yang%20pernah%20dibuat." 
+               target="_blank"
+               class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 font-semibold transition-colors group text-lg">
+              Hubungi Kami untuk Akses Portofolio Lengkap 
+              <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
             </a>
           </div>
         </div>
-      </section>
+    </section>
 
-      {/* Why Us / CTA Section */}
-      <section id="tentang" className="py-32 relative z-10">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="w-20 h-20 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-amber-500/20 transform rotate-3">
-              <Briefcase className="w-10 h-10 text-amber-500" />
+    <!-- WHY US & FINAL CTA -->
+    <section id="tentang" class="py-32 relative z-10 overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6">
+          <div class="text-center mb-20">
+            <div class="w-20 h-20 bg-brand-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-brand-500/20 transform rotate-3">
+              <i data-lucide="briefcase" class="w-10 h-10 text-brand-400"></i>
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-8">Kenapa Digiwork Inc.?</h2>
-            <p className="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto font-light">
-              Kami memahami bahwa Creative Studio tradisional seringkali kelelahan berproduksi dengan margin kecil, sehingga kualitas klien dikorbankan.<br/><br/>
-              Dengan <strong className="text-white font-bold">Digiwork Inc.</strong>, efisiensi produksi kami memungkinkan tim untuk fokus pada <strong className="text-amber-400 font-bold">Konsep, Cerita, dan Strategi Commercial</strong>. Kami bukan "tukang edit", kami adalah <span className="underline decoration-amber-500 underline-offset-4">Mitra Pertumbuhan Komersial</span> Anda.
+            <h2 class="text-4xl md:text-5xl font-black font-syne text-white mb-8">Kenapa Memilih Digiwork Inc.?</h2>
+            <p class="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto font-light">
+              Kami menyadari banyak studio kreatif kelelahan karena mematok margin tipis demi kuantitas produksi. Kami memilih jalur berbeda. <br/><br/>
+              Dengan fokus total pada <strong class="text-brand-400 font-bold">Creative Direction, Storytelling yang Kuat, dan Konsep Premium</strong>, Digiwork Inc. tidak bekerja sebagai sekadar "tukang edit video" murah. Kami berkolaborasi sebagai <span class="underline decoration-brand-500 underline-offset-8">Mitra Transformasi Visual</span> yang menjamin peningkatan kualitas citra produk Anda.
             </p>
           </div>
 
-          {/* CTA Box */}
-          <div className="relative rounded-[3rem] p-10 md:p-16 overflow-hidden">
-            {/* Box Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-600 to-amber-900 opacity-90"></div>
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+          <!-- CTA Box -->
+          <div class="relative rounded-[3rem] p-8 md:p-16 overflow-hidden">
+            <!-- Background Layer -->
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-600 to-amber-950 opacity-95"></div>
             
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
-              <div className="text-left max-w-xl">
-                <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">Siap Meningkatkan "Perceived Value" Brand Anda?</h3>
-                <p className="text-amber-100/80 text-lg">Jangan biarkan kompetitor mencuri perhatian pelanggan Anda dengan visual yang lebih baik. Mari ciptakan standar baru hari ini.</p>
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+              <div class="text-left max-w-xl">
+                <h3 class="text-3xl md:text-4xl font-extrabold font-syne text-white mb-4 leading-tight">Mulai Transformasi Perceived Value Brand Anda</h3>
+                <p class="text-amber-100/80 text-lg">Jangan biarkan kompetitor mengambil market share Anda hanya karena mereka memiliki presentasi visual yang lebih baik. Mari ciptakan karya ber-impact besar bersama Digiwork Inc.</p>
               </div>
-              <div className="flex flex-col gap-4 w-full md:w-auto shrink-0">
-                <a 
-                  href={`${waBaseUrl}${textGeneral}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-5 bg-white hover:bg-slate-100 text-amber-900 rounded-full font-extrabold text-lg flex items-center justify-center gap-3 transition-all transform hover:-translate-y-1 shadow-xl"
-                >
-                  <MessageSquare className="w-6 h-6" />
-                  Hubungi via WhatsApp
+              <div class="flex flex-col gap-4 w-full sm:w-auto shrink-0">
+                <a href="https://wa.me/6287878224307?text=Halo%20Digiwork%20Inc.,%20saya%20ingin%20segera%20menjadwalkan%20diskusi%20untuk%20menaikkan%20perceived%20value%20brand%20saya." 
+                   target="_blank"
+                   class="px-8 py-5 bg-white hover:bg-slate-100 text-slate-950 rounded-full font-extrabold text-lg flex items-center justify-center gap-3 transition-all transform hover:-translate-y-1 shadow-2xl">
+                  <i data-lucide="message-square" class="w-6 h-6 text-brand-600"></i>
+                  Diskusikan via WhatsApp
                 </a>
-                <a 
-                  href={`mailto:${emailAddress}`}
-                  className="px-8 py-5 bg-amber-900/40 hover:bg-amber-900/60 text-white rounded-full font-bold text-lg flex items-center justify-center gap-3 transition-all border border-white/20 backdrop-blur-md"
-                >
-                  <Mail className="w-6 h-6" />
-                  Kirim Email
+                <a href="mailto:digiwork.inc@gmail.com" 
+                   class="px-8 py-5 bg-amber-950/40 hover:bg-amber-900/60 text-white rounded-full font-bold text-lg flex items-center justify-center gap-3 transition-all border border-white/20 backdrop-blur-md">
+                  <i data-lucide="mail" class="w-6 h-6 text-white"></i>
+                  Kirim Email Resmi
                 </a>
               </div>
             </div>
           </div>
         </div>
-      </section>
+    </section>
 
-      {/* Footer */}
-      <footer className="bg-[#020617] border-t border-white/5 pt-16 pb-8 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
-                  <Video className="w-4 h-4 text-slate-950" />
+    <!-- FOOTER -->
+    <footer class="bg-brand-950 border-t border-white/5 pt-20 pb-10 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <!-- Brand Column -->
+            <div class="lg:col-span-2">
+              <div class="flex items-center gap-2 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
+                  <i data-lucide="video" class="w-4 h-4 text-slate-950"></i>
                 </div>
-                <span className="text-2xl font-bold tracking-tight">Digiwork<span className="text-amber-500">.</span></span>
+                <span class="text-2xl font-bold tracking-tight font-syne text-white">Digiwork<span class="text-brand-500">.</span></span>
               </div>
-              <p className="text-slate-400 max-w-sm mb-6 leading-relaxed">
-                Creative Commercial Production. Merancang "Perceived Commercial Value" untuk mendominasi atensi audiens Anda.
+              <p class="text-slate-400 max-w-sm mb-6 leading-relaxed">
+                Creative Commercial Production. Kami fokus pada impact branding, nilai eksklusivitas, serta transformasi visual premium dari produk Anda.
               </p>
             </div>
             
+            <!-- Contact Column -->
             <div>
-              <h4 className="text-white font-bold mb-6">Hubungi Kami</h4>
-              <ul className="space-y-4">
+              <h4 class="text-white font-bold mb-6 font-syne">Hubungi Kami</h4>
+              <ul class="space-y-4">
                 <li>
-                  <a href={`${waBaseUrl}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors">
-                    <Phone className="w-4 h-4" />
-                    +{phoneNumber}
+                  <a href="https://wa.me/6287878224307" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-brand-400 transition-colors">
+                    <i data-lucide="phone" class="w-4 h-4 text-brand-500"></i>
+                    +62 878-7822-4307
                   </a>
                 </li>
                 <li>
-                  <a href={`mailto:${emailAddress}`} className="flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors break-all">
-                    <Mail className="w-4 h-4 shrink-0" />
-                    {emailAddress}
+                  <a href="mailto:digiwork.inc@gmail.com" class="flex items-center gap-3 text-slate-400 hover:text-brand-400 transition-colors break-all">
+                    <i data-lucide="mail" class="w-4 h-4 text-brand-500 shrink-0"></i>
+                    digiwork.inc@gmail.com
                   </a>
                 </li>
               </ul>
             </div>
             
+            <!-- Navigation Column -->
             <div>
-              <h4 className="text-white font-bold mb-6">Navigasi</h4>
-              <ul className="space-y-4">
-                <li><button onClick={() => scrollTo('solusi')} className="text-slate-400 hover:text-amber-400 transition-colors">Solusi Visual</button></li>
-                <li><button onClick={() => scrollTo('layanan')} className="text-slate-400 hover:text-amber-400 transition-colors">Pilihan Level</button></li>
-                <li><button onClick={() => scrollTo('portofolio')} className="text-slate-400 hover:text-amber-400 transition-colors">Karya Kami</button></li>
-                <li><button onClick={() => scrollTo('tentang')} className="text-slate-400 hover:text-amber-400 transition-colors">Tentang Kami</button></li>
+              <h4 class="text-white font-bold mb-6 font-syne">Menu Cepat</h4>
+              <ul class="space-y-4">
+                <li><a href="#solusi" class="text-slate-400 hover:text-brand-400 transition-colors">Solusi Kami</a></li>
+                <li><a href="#layanan" class="text-slate-400 hover:text-brand-400 transition-colors">Investasi Level</a></li>
+                <li><a href="#kalkulator" class="text-slate-400 hover:text-brand-400 transition-colors">Value Calculator</a></li>
+                <li><a href="#portofolio" class="text-slate-400 hover:text-brand-400 transition-colors">Karya Terbaik</a></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm font-medium">
+          <!-- Copyright Info -->
+          <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
             <p>© 2026 Digiwork Inc. All rights reserved.</p>
-            <p>Designed for Impact.</p>
+            <p class="flex items-center gap-1">Designed for Ultimate Brand Impact</p>
           </div>
         </div>
-      </footer>
-    </div>
-  );
-}
+    </footer>
 
+    <!-- VIDEO MODAL POPUP INTERAKTIF (Tersembunyi secara bawaan) -->
+    <div id="videoModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="relative bg-slate-900 border border-white/10 rounded-[2.5rem] max-w-4xl w-full overflow-hidden shadow-2xl transform scale-95 transition-all duration-300" id="modalCard">
+            <!-- Header Modal -->
+            <div class="absolute top-6 right-6 z-10">
+                <button onclick="closeVideoModal()" class="w-12 h-12 rounded-full bg-slate-950/80 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-slate-800 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Video Player Simulator Area -->
+            <div class="relative aspect-video bg-black flex items-center justify-center">
+                <!-- Simulasi Visualizer / Video Loop -->
+                <div class="absolute inset-0">
+                    <img id="modalVideoPoster" src="" alt="Video Poster" class="w-full h-full object-cover filter brightness-50">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                </div>
+                
+                <!-- Play Overlay -->
+                <div class="relative z-10 text-center px-6">
+                    <div class="w-20 h-20 rounded-full bg-brand-500/90 text-slate-950 flex items-center justify-center mx-auto mb-4 animate-bounce">
+                        <i data-lucide="play" class="w-10 h-10 ml-1 text-slate-950"></i>
+                    </div>
+                    <p class="text-white font-bold text-lg mb-2">Simulasi Pemutar Portofolio</p>
+                    <p class="text-slate-400 text-sm max-w-sm mx-auto">Untuk presentasi video demo utuh secara langsung, hubungi kami via WhatsApp.</p>
+                </div>
+            </div>
+
+            <!-- Detail Modal Info -->
+            <div class="p-8 md:p-10 bg-slate-950">
+                <span id="modalVideoCategory" class="text-brand-400 font-bold text-xs tracking-widest uppercase block mb-2">Category</span>
+                <h3 id="modalVideoTitle" class="text-3xl font-extrabold font-syne text-white mb-6">Title</h3>
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                    <p class="text-slate-400 text-sm max-w-md">Dapatkan kualitas visual sinematik spektakuler ini untuk meningkatkan daya tarik produk brand Anda sekarang.</p>
+                    <a id="modalCtaButton" href="#" target="_blank" class="px-6 py-3.5 bg-brand-500 hover:bg-brand-400 text-slate-950 rounded-full font-bold text-sm flex items-center gap-2 shrink-0 transition-colors">
+                        Saya Mau Iklan Seperti Ini <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: LOGIKA & INTERAKTIVITAS -->
+    <script>
+        // Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // 1. Logika Simulator / Kalkulator Perceived Value
+        const slider = document.getElementById('price-slider');
+        const basePriceLabel = document.getElementById('base-price-label');
+        const cheapPerceivedValue = document.getElementById('cheap-perceived-value');
+        const premiumPerceivedValue = document.getElementById('premium-perceived-value');
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID').format(number);
+        }
+
+        function calculateValues() {
+            const val = parseInt(slider.value);
+            basePriceLabel.innerText = formatRupiah(val);
+            
+            // Visual Murah membatasi value (paling tinggi sama dengan harga produk dasar)
+            cheapPerceivedValue.innerText = formatRupiah(val);
+            
+            // Visual Premium Digiwork melipatgandakan perceived value (sebesar 2.5 kali lipat)
+            const premiumValue = Math.round(val * 2.5);
+            premiumPerceivedValue.innerText = formatRupiah(premiumValue);
+        }
+
+        slider.addEventListener('input', calculateValues);
+        // Jalankan saat halaman pertama kali dibuka
+        calculateValues();
+
+        // 2. Logika Modal Video Player Portofolio
+        const videoModal = document.getElementById('videoModal');
+        const modalCard = document.getElementById('modalCard');
+        const modalVideoPoster = document.getElementById('modalVideoPoster');
+        const modalVideoCategory = document.getElementById('modalVideoCategory');
+        const modalVideoTitle = document.getElementById('modalVideoTitle');
+        const modalCtaButton = document.getElementById('modalCtaButton');
+
+        function openVideoModal(title, category, imageUrl) {
+            modalVideoPoster.src = imageUrl;
+            modalVideoCategory.innerText = category;
+            modalVideoTitle.innerText = title;
+            
+            // Kustomisasi pesan WhatsApp di dalam modal agar langsung relevan
+            const customMessage = encodeURIComponent(`Halo Digiwork Inc., saya sangat tertarik dengan contoh video komersial "${title}" (${category}). Bisa tolong berikan estimasi harga dan konsep untuk brand saya?`);
+            modalCtaButton.href = `https://wa.me/6287878224307?text=${customMessage}`;
+
+            // Tampilkan Modal dengan animasi halus
+            videoModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-95');
+            modalCard.classList.add('scale-100');
+            document.body.classList.add('overflow-hidden'); // Kunci scroll agar tidak bergeser di belakang modal
+        }
+
+        function closeVideoModal() {
+            // Sembunyikan Modal dengan animasi halus
+            videoModal.classList.add('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-95');
+            document.body.classList.remove('overflow-hidden'); // Buka kembali kunci scroll
+        }
+
+        // Tutup modal jika area background gelap diklik
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+    </script>
+</body>
+</html>
 
 ```
