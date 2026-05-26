@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RotanCraft - Premium Rattan Furniture & WhatsApp Ordering</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (Luxury Headers) & Inter (UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        wood: {
+                            50: '#fdfbf7',
+                            100: '#f6f0e2',
+                            200: '#eddcc4',
+                            300: '#dfc29c',
+                            400: '#cca272',
+                            500: '#b8824f',
+                            600: '#a46b3f',
+                            700: '#895433',
+                            800: '#71442c',
+                            900: '#5c3827',
+                        },
+                        forest: {
+                            50: '#f2f7f5',
+                            900: '#142c22',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fcfaf6;
+            scroll-behavior: smooth;
+        }
+        /* Hide scrollbars for beautiful drawers */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-sans text-stone-800">
+
+    <!-- NOTIFICATION SYSTEM -->
+    <div id="custom-alert" class="fixed top-5 right-5 z-50 transform translate-x-120 transition-transform duration-300 ease-out max-w-sm w-full bg-white rounded-xl shadow-2xl border-l-4 border-emerald-600 p-4 hidden">
+        <div class="flex items-start">
+            <div class="flex-shrink-0 text-emerald-600">
+                <i class="fa-solid fa-circle-check text-xl"></i>
+            </div>
+            <div class="ml-3 w-0 flex-1 pt-0.5">
+                <p id="alert-title" class="text-sm font-semibold text-stone-900">Berhasil!</p>
+                <p id="alert-msg" class="mt-1 text-xs text-stone-500">Katalog mebel diperbarui otomatis.</p>
+            </div>
+            <div class="ml-4 flex-shrink-0 flex">
+                <button onclick="closeAlert()" class="inline-flex text-stone-400 hover:text-stone-500 focus:outline-none">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-wood-800 flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-chair text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-tight text-wood-900">Rotan<span class="text-wood-600">Craft</span></span>
+                        <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-semibold">Premium Furniture Portal</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Client/Admin Toggle Header Button -->
+                    <button onclick="toggleAdminDashboard()" class="hidden md:inline-flex items-center space-x-2 px-4  py-2 rounded-xl text-xs font-semibold bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-700 transition">
+                        <i class="fa-solid fa-sliders text-wood-700 animate-pulse"></i>
+                        <span>Demo Admin Panel</span>
+                    </button>
+                    
+                    <!-- Floating Cart Indicator -->
+                    <button onclick="toggleCartDrawer(true)" class="relative p-3 rounded-full bg-wood-50 text-wood-900 border border-wood-200 hover:bg-wood-100 transition focus:outline-none focus:ring-2 focus:ring-wood-500">
+                        <i class="fa-solid fa-shopping-bag text-lg"></i>
+                        <span id="cart-count-badge" class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-[10px] font-bold text-white ring-2 ring-white">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBIL DEVICELINE FLOATING ADMIN ACCESS -->
+    <div class="md:hidden fixed bottom-6 left-6 z-40">
+        <button onclick="toggleAdminDashboard()" class="flex items-center justify-center w-12 h-12 rounded-full bg-wood-800 text-white shadow-2xl border border-wood-600 hover:bg-wood-900 transition-all active:scale-95">
+            <i class="fa-solid fa-sliders"></i>
+        </button>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header class="relative overflow-hidden bg-wood-50 border-b border-stone-200 py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-wood-100 border border-wood-200 text-wood-800">
+                        <span class="w-2 h-2 rounded-full bg-amber-600 animate-ping"></span>
+                        <span class="text-xs font-semibold tracking-wider uppercase">WhatsApp Automasi Mebel</span>
+                    </div>
+                    <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-stone-950 leading-tight">
+                        Sentuhan Alami Rotan Premium untuk <span class="italic text-wood-700">Ruang Modern</span> Anda
+                    </h1>
+                    <p class="text-stone-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+                        Katalog interaktif furnitur rotan kualitas ekspor. Pilih material, tentukan ukuran kustom, dan selesaikan transaksi dalam sekejap via WhatsApp tanpa biaya layanan komisi tambahan.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="#katalog-section" class="inline-flex items-center justify-center px-6 py-3.5 border border-transparent text-base font-semibold rounded-xl text-white bg-wood-800 hover:bg-wood-900 shadow-lg shadow-wood-800/20 transition-all transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-couch mr-2"></i> Jelajahi Koleksi Kursi
+                        </a>
+                        <button onclick="openDemoInstruction()" class="inline-flex items-center justify-center px-6 py-3.5 border border-stone-300 text-base font-semibold rounded-xl text-stone-700 bg-white hover:bg-stone-50 transition-all">
+                            <i class="fa-solid fa-play text-amber-600 mr-2"></i> Cara Kerja Sistem
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative">
+                    <!-- Elegant Rattan Collage Frame -->
+                    <div class="relative mx-auto w-full max-w-md h-[400px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-wood-200">
+                        <img id="hero-image" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="Premium Rattan Interior" class="w-full h-full object-cover transition-all duration-1000 transform hover:scale-105" onerror="this.src='https://via.placeholder.com/800x800.png?text=Rotan+Craft+Interior'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-6">
+                            <div class="text-white">
+                                <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Model Best Seller</span>
+                                <h3 id="hero-prod-title" class="font-serif text-xl font-semibold mt-1">Kursi Makan Rotan Minimalis</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-wood-100 rounded-3xl -z-10 pattern-dots text-stone-200"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- INTERACTIVE CATALOGUE & WORKSPACE -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16" id="katalog-section">
+        
+        <!-- Tab Filter & Section Title -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 border-b border-stone-200 pb-6">
+            <div>
+                <span class="text-xs uppercase font-bold tracking-wider text-wood-600">Pilihan Produk</span>
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mt-1">Katalog Furnitur Rotan Estetik</h2>
+            </div>
+            
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap gap-2" id="category-filters-container">
+                <!-- Dynamically Rendered Categories -->
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamically Rendered Products -->
+        </div>
+
+        <!-- EMPTY STATE (For Simulasi Error demo) -->
+        <div id="catalog-empty-state" class="hidden text-center py-20 bg-stone-50 border-2 border-dashed border-stone-300 rounded-2xl max-w-2xl mx-auto">
+            <div class="text-stone-400 text-5xl mb-4">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-stone-800">Katalog Mebel Kosong</h3>
+            <p class="text-stone-500 text-sm mt-2 max-w-md mx-auto px-4">
+                Semua data produk telah dihapus (Simulasi kegagalan database sistem). Buka <strong>Dashboard Admin (Ikon Slider di pojok kiri bawah)</strong> lalu klik "Restore Backup" untuk memulihkan seluruh data dalam 1 detik!
+            </p>
+            <button onclick="toggleAdminDashboard()" class="mt-6 px-4 py-2 bg-wood-800 hover:bg-wood-900 text-white rounded-xl text-xs font-semibold shadow-md transition">
+                Buka Panel Admin & Restore Data
+            </button>
+        </div>
+    </main>
+
+    <!-- PRODUCT DETAIL MODAL FOR CUSTOMIZATION -->
+    <div id="detail-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Overlay -->
+            <div onclick="closeDetailModal()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+            
+            <!-- Centered Modal Content -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full border border-stone-100">
+                <div class="absolute top-4 right-4 z-10">
+                    <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center transition focus:outline-none">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 sm:p-8">
+                    <div id="modal-product-image-container" class="w-full h-64 rounded-2xl overflow-hidden bg-wood-100 relative mb-6">
+                        <img id="modal-product-image" src="" alt="" class="w-full h-full object-cover">
+                        <span id="modal-product-category" class="absolute top-4 left-4 text-[10px] uppercase font-bold tracking-widest bg-white/90 backdrop-blur-md text-wood-900 px-3 py-1 rounded-full border border-wood-100"></span>
+                    </div>
+
+                    <h3 id="modal-product-name" class="font-serif text-2xl font-bold text-stone-950"></h3>
+                    <p id="modal-product-price" class="text-xl font-bold text-amber-700 mt-1"></p>
+                    <p id="modal-product-description" class="text-stone-500 text-sm mt-3 leading-relaxed"></p>
+
+                    <!-- Custom Options Section -->
+                    <div class="border-t border-stone-100 mt-6 pt-6 space-y-4">
+                        <h4 class="text-xs uppercase font-bold tracking-wider text-stone-700">Kustomisasi Furnitur Anda</h4>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Finishing Options -->
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">Finishing Warna Kayu</label>
+                                <select id="option-finishing" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                                    <option value="Natural Varnish (Default)">Natural Varnish (Default)</option>
+                                    <option value="Walnut Brown (Lebih Gelap)">Walnut Brown (Lebih Gelap)</option>
+                                    <option value="Dark Oak (Hitam Kayu Klasik)">Dark Oak (Hitam Kayu Klasik)</option>
+                                    <option value="Raw Unfinished (Tanpa Cat)">Raw Unfinished (Tanpa Cat)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Cushion Options -->
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">Warna Bantalan / Cushion</label>
+                                <select id="option-cushion" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                                    <option value="Tanpa Bantalan">Tanpa Bantalan</option>
+                                    <option value="Canvas Cream Estetik (+Rp 50.000)">Canvas Cream Estetik</option>
+                                    <option value="Teal Green Velvet (+Rp 65.000)">Teal Green Velvet</option>
+                                    <option value="Dark Charcoal Gray (+Rp 50.000)">Dark Charcoal Gray</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Special Notes for Furniture -->
+                        <div>
+                            <label class="block text-xs text-stone-500 mb-1">Catatan Ukuran / Kustom Lainnya</label>
+                            <textarea id="option-notes" placeholder="Contoh: 'Tinggi dudukan disesuaikan jadi 45cm' atau 'Pilih anyaman yang anyamannya rapat rapat'" rows="2" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none placeholder-stone-400"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Buy/Cart controls -->
+                    <div class="flex items-center justify-between gap-4 border-t border-stone-100 mt-6 pt-6">
+                        <div class="flex items-center border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
+                            <button onclick="adjustModalQty(-1)" class="px-3 py-2 text-stone-600 hover:bg-stone-200 text-sm transition"><i class="fa-solid fa-minus"></i></button>
+                            <span id="modal-qty" class="px-4 py-2 font-bold text-sm text-stone-800 bg-white">1</span>
+                            <button onclick="adjustModalQty(1)" class="px-3 py-2 text-stone-600 hover:bg-stone-200 text-sm transition"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        
+                        <button onclick="addToCartFromModal()" class="flex-1 px-6 py-3.5 bg-wood-800 hover:bg-wood-900 text-white rounded-xl text-sm font-semibold shadow-lg shadow-wood-800/10 transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Masukkan ke Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SIDE DRAWER (Slide over from right) -->
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out border-l border-stone-200">
+        <!-- Header Drawer -->
+        <div class="p-6 border-b border-stone-100 flex items-center justify-between bg-wood-50">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-shopping-bag text-wood-800 text-lg"></i>
+                <h3 class="font-serif text-lg font-bold text-stone-900">Keranjang Belanja Mebel</h3>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-white hover:bg-stone-100 text-stone-500 flex items-center justify-center border border-stone-200 shadow-sm transition">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable items list -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
+            <!-- Dynamically Loaded Items -->
+        </div>
+
+        <!-- Empty Cart State -->
+        <div id="cart-empty-message" class="hidden flex-col items-center justify-center text-center p-12 py-24 space-y-3">
+            <div class="w-16 h-16 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-cart-flatbed"></i>
+            </div>
+            <h4 class="font-semibold text-stone-700">Keranjang Masih Kosong</h4>
+            <p class="text-xs text-stone-400 max-w-xs leading-relaxed">Pilih beberapa model kursi rotan premium di katalog untuk mulai menghitung estimasi pemesanan.</p>
+        </div>
+
+        <!-- Form Pemesanan & Alamat -->
+        <div id="cart-form-container" class="p-6 border-t border-stone-100 bg-stone-50 space-y-4">
+            <h4 class="text-xs uppercase font-bold tracking-wider text-stone-600 border-b border-stone-200 pb-2">Informasi Pengiriman Barang Besar</h4>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Nama Penerima</label>
+                    <input type="text" id="cust-name" placeholder="Bpk. Andi Wijaya" class="w-full px-3 py-2 rounded-lg bg-white border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">No. WhatsApp Aktif</label>
+                    <input type="text" id="cust-phone" placeholder="081234xxxx" class="w-full px-3 py-2 rounded-lg bg-white border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Metode Penerimaan</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="btn-delivery-ship" onclick="setDeliveryMethod('ship')" class="px-3 py-2 text-xs font-semibold rounded-lg bg-wood-800 text-white border border-wood-800 transition">
+                        <i class="fa-solid fa-truck-ramp-box mr-1"></i> Kirim ke Alamat
+                    </button>
+                    <button id="btn-delivery-pickup" onclick="setDeliveryMethod('pickup')" class="px-3 py-2 text-xs font-semibold rounded-lg bg-white text-stone-600 border border-stone-300 hover:bg-stone-100 transition">
+                        <i class="fa-solid fa-warehouse mr-1"></i> Ambil Sendiri
+                    </button>
+                </div>
+            </div>
+
+            <!-- Shipping Destination Selector -->
+            <div id="shipping-selector-wrapper">
+                <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Tujuan Pengiriman & Kargo</label>
+                <select id="shipping-destination" onchange="calculateShippingCost()" class="w-full px-3 py-2 rounded-lg bg-white border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                    <option value="dalam-kota" data-cost="50000">Dalam Kota Jogja (Kurir Toko) - Rp50.000</option>
+                    <option value="sleman-bantul" data-cost="100000">Sleman / Bantul (Kurir Toko) - Rp100.000</option>
+                    <option value="jabodetabek-kargo" data-cost="250000">Jabodetabek (Kargo Furniture) - Rp250.000</option>
+                    <option value="surabaya-kargo" data-cost="300000">Surabaya (Kargo Furniture) - Rp300.000</option>
+                    <option value="luar-kota" data-cost="0">Luar Wilayah (Nego Ongkir via WA) - Rp0</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Alamat Lengkap Pengiriman</label>
+                <textarea id="cust-address" placeholder="Tuliskan nama jalan, kelurahan, kecamatan, kota dan provinsi..." rows="2" class="w-full px-3 py-2 rounded-lg bg-white border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none placeholder-stone-400"></textarea>
+            </div>
+
+            <!-- Calculation Summary -->
+            <div class="border-t border-stone-200 pt-3 space-y-1 text-xs">
+                <div class="flex justify-between text-stone-600">
+                    <span>Subtotal Mebel</span>
+                    <span id="summary-subtotal">Rp0</span>
+                </div>
+                <div id="summary-shipping-row" class="flex justify-between text-stone-600">
+                    <span>Estimasi Ongkos Kirim</span>
+                    <span id="summary-shipping">Rp0</span>
+                </div>
+                <div class="flex justify-between text-stone-900 font-bold text-sm pt-2 border-t border-dashed border-stone-200">
+                    <span>Total Estimasi Bayar</span>
+                    <span id="summary-grandtotal" class="text-amber-700">Rp0</span>
+                </div>
+            </div>
+
+            <!-- Submit WhatsApp Order Button -->
+            <button onclick="submitOrderViaWA()" class="w-full px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-700/10 transition flex items-center justify-center space-x-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>KIRIM PESANAN KE WHATSAPP ADMIN</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- SEMI-MANUAL LIVE ADMIN DASHBOARD PANEL (Slide up from bottom) -->
+    <div id="admin-dashboard" class="fixed inset-x-0 bottom-0 z-40 bg-white border-t-2 border-wood-400 shadow-[0_-15px_30px_rgba(0,0,0,0.1)] transform translate-y-full transition-transform duration-500 ease-out flex flex-col h-[85vh] md:h-[70vh]">
+        <!-- Header Dashboard -->
+        <div class="px-6 py-4 border-b border-stone-200 bg-stone-950 text-white flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-wood-500 flex items-center justify-center text-stone-950">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-lg font-bold">RotanCraft Live Admin Panel</h3>
+                    <p class="text-[10px] text-stone-400">Ganti harga, kelola menu, dan simulasikan backup database langsung!</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Demo Quick Instruction Badge -->
+                <span class="hidden lg:inline-block px-3 py-1 bg-amber-600/30 text-amber-400 rounded-full border border-amber-600/50 text-[10px] font-semibold animate-pulse">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Demo Skenario Presentasi Aktif
+                </span>
+                
+                <button onclick="toggleAdminDashboard()" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 text-white flex items-center justify-center transition focus:outline-none">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Grid -->
+        <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 bg-stone-50 no-scrollbar">
+            
+            <!-- Left Panel: Store Settings & Simulation Controls -->
+            <div class="lg:col-span-4 space-y-6">
+                <!-- Store General Settings Card -->
+                <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm space-y-4">
+                    <h4 class="font-serif text-sm font-bold text-stone-900 border-b border-stone-100 pb-2 flex items-center">
+                        <i class="fa-solid fa-store text-wood-600 mr-2"></i> Pengaturan Toko Mebel
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Nama Toko Mebel</label>
+                            <input type="text" id="admin-store-name" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Nomor WhatsApp Admin</label>
+                            <input type="text" id="admin-store-phone" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                            <span class="text-[9px] text-stone-400 mt-1 block">Format: Gunakan kode negara (misal: 628123456789)</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="saveStoreSettings()" class="w-full px-4 py-2.5 bg-wood-800 hover:bg-wood-900 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Simpan Pengaturan Toko</span>
+                    </button>
+                </div>
+
+                <!-- SPECIAL DEMO SIMULATOR (Great for pitching) -->
+                <div class="bg-gradient-to-br from-stone-900 to-stone-950 rounded-2xl p-5 text-white shadow-xl space-y-4 border border-stone-800">
+                    <h4 class="font-serif text-sm font-bold text-amber-400 border-b border-stone-800 pb-2 flex items-center">
+                        <i class="fa-solid fa-bug text-amber-400 mr-2"></i> Ruang Simulasi Client
+                    </h4>
+                    <p class="text-[10px] text-stone-300 leading-relaxed">
+                        Tunjukkan pada pemilik mebel betapa aman sistem ini jika terjadi kegagalan sistem database.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <!-- Simulate System Failure -->
+                        <button onclick="simulateSystemFailure()" class="px-3 py-2.5 bg-red-950/80 hover:bg-red-950 border border-red-800/50 text-red-200 text-[10px] font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1">
+                            <i class="fa-solid fa-skull-crossbones text-base"></i>
+                            <span>1. Hapus Semua Data</span>
+                        </button>
+                        
+                        <!-- Instant Restore -->
+                        <button onclick="restoreFromCloudBackup()" class="px-3 py-2.5 bg-emerald-950/80 hover:bg-emerald-950 border border-emerald-800/50 text-emerald-200 text-[10px] font-semibold rounded-xl transition flex flex-col items-center justify-center space-y-1">
+                            <i class="fa-solid fa-cloud-arrow-down text-base"></i>
+                            <span>2. Restore Backup</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Manage Catalogue Products -->
+            <div class="lg:col-span-8 space-y-6">
+                <!-- Add & Edit Product Form -->
+                <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm space-y-4">
+                    <h4 class="font-serif text-sm font-bold text-stone-900 border-b border-stone-100 pb-2 flex items-center">
+                        <i class="fa-solid fa-circle-plus text-wood-600 mr-2"></i> Tambah / Edit Produk Baru
+                    </h4>
+                    
+                    <form id="admin-product-form" onsubmit="handleProductFormSubmit(event)" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                        <input type="hidden" id="admin-prod-id" value="">
+                        
+                        <div class="md:col-span-4">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Nama Produk Mebel</label>
+                            <input type="text" id="admin-prod-name" placeholder="Contoh: Kursi Goyang Jati" required class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Kategori</label>
+                            <select id="admin-prod-category" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                                <option value="Teras / Outdoor">Teras / Outdoor</option>
+                                <option value="Ruang Makan / Indoor">Ruang Makan / Indoor</option>
+                                <option value="Santai / Vintage">Santai / Vintage</option>
+                                <option value="Statement Piece">Statement Piece</option>
+                                <option value="Ruang Tamu / Sofa">Ruang Tamu / Sofa</option>
+                                <option value="Serbaguna">Serbaguna</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Harga (IDR)</label>
+                            <input type="number" id="admin-prod-price" placeholder="Rupiah" required class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Status</label>
+                            <select id="admin-prod-stock" class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                                <option value="Tersedia">Tersedia</option>
+                                <option value="Habis">Habis</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-6">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Deskripsi & Ukuran Singkat</label>
+                            <input type="text" id="admin-prod-desc" placeholder="Rangka jati kokoh, tinggi dudukan 45cm..." required class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                        </div>
+
+                        <div class="md:col-span-6">
+                            <label class="block text-[10px] uppercase font-bold text-stone-500 mb-1">Link URL Gambar (Aesthetic)</label>
+                            <input type="text" id="admin-prod-img" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 rounded-lg bg-stone-50 border border-stone-300 text-xs focus:ring-1 focus:ring-wood-500 focus:outline-none">
+                        </div>
+
+                        <div class="md:col-span-12 flex justify-end space-x-2 pt-2 border-t border-stone-100 mt-2">
+                            <button type="button" onclick="resetProductForm()" class="px-4 py-2 rounded-xl text-xs bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-700">
+                                Batal
+                            </button>
+                            <button type="submit" id="admin-prod-submit-btn" class="px-5 py-2 rounded-xl text-xs bg-emerald-700 hover:bg-emerald-800 text-white shadow-md">
+                                Tambahkan Katalog Baru
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Catalogue Interactive Table (Real-time updates) -->
+                <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm space-y-4">
+                    <h4 class="font-serif text-sm font-bold text-stone-900 border-b border-stone-100 pb-2 flex items-center">
+                        <i class="fa-solid fa-list-check text-wood-600 mr-2"></i> Daftar Produk Mebel (Live Edit)
+                    </h4>
+                    
+                    <div class="overflow-x-auto rounded-xl border border-stone-200">
+                        <table class="min-w-full divide-y divide-stone-200 text-left text-xs">
+                            <thead class="bg-stone-50 text-stone-500 font-semibold">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3">Nama Produk</th>
+                                    <th scope="col" class="px-4 py-3">Kategori</th>
+                                    <th scope="col" class="px-4 py-3">Harga</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Stok</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-prod-table" class="divide-y divide-stone-200 bg-white">
+                                <!-- Dynamically Loaded Product Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PRESENTATION USER GUIDE MODAL -->
+    <div id="instruction-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Overlay -->
+            <div onclick="toggleInstructionModal(false)" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+            
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-stone-100">
+                <div class="p-6 sm:p-8 space-y-4">
+                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-stone-950">Panduan Demo Presentasi</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">
+                        Gunakan skenario berikut saat mendatangi / presentasi di depan pemilik usaha mebel untuk meyakinkan mereka bahwa sistem Anda sangat tangguh:
+                    </p>
+                    
+                    <ol class="space-y-3 text-xs text-stone-600 list-decimal pl-4">
+                        <li>
+                            <strong>Tunjukkan Kemudahan Order:</strong> Minta mereka menscan QR code/membuka web ini. Tambahkan mebel, tentukan kustomisasi (warna bantal & finishing kayu), dan buka Keranjang Belanja.
+                        </li>
+                        <li>
+                            <strong>Simulasi Ganti Harga (Real-time):</strong> Buka <strong>Admin Panel</strong> di HP Anda, ubah harga salah satu kursi (misal K-001 dari Rp450k menjadi Rp600k). Tunjukkan perubahan harga terjadi <strong>detik itu juga</strong> di katalog pembeli tanpa perlu cetak ulang brosur!
+                        </li>
+                        <li>
+                            <strong>Simulasi Database Rusak (Error):</strong> Klik tombol <span class="bg-red-950 text-red-200 px-1 py-0.5 rounded">Hapus Semua Data</span> di ruang simulasi. Katalog akan langsung kosong. Ini menunjukkan simulasi kegagalan server.
+                        </li>
+                        <li>
+                            <strong>Restore Backup 1-Klik:</strong> Yakinkan mereka dengan mengeklik <span class="bg-emerald-950 text-emerald-200 px-1 py-0.5 rounded">Restore Backup</span> di admin panel. Data katalog kembali normal dan aman seketika dari penyimpanan cloud!
+                        </li>
+                    </ol>
+
+                    <div class="pt-4 flex justify-end">
+                        <button onclick="toggleInstructionModal(false)" class="px-5 py-2.5 bg-wood-800 hover:bg-wood-900 text-white rounded-xl text-xs font-semibold shadow-md">
+                            Mengerti & Mulai Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT & DATABASE MANAGEMENT -->
+    <script>
+        // Initial / Default Database Products (Rotan Mebel)
+        const defaultProducts = [
+            {
+                id: 'K-001',
+                name: 'Kursi Teras Rotan Peacock (Kaki Metal)',
+                category: 'Teras / Outdoor',
+                price: 450000,
+                desc: 'Desain sandaran anyaman melingkar megah bergaya peacock dengan rangka kaki besi silang hitam kokoh. Cocok untuk bersantai outdoor.',
+                img: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            },
+            {
+                id: 'K-002',
+                name: 'Kursi Makan Rotan Minimalis Modern',
+                category: 'Ruang Makan / Indoor',
+                price: 650000,
+                desc: 'Anyaman rotan rapat dengan sandaran tinggi ergonomis yang mengikuti lekuk tubuh, dilengkapi kaki besi hitam ramping.',
+                img: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            },
+            {
+                id: 'K-003',
+                name: 'Kursi Armchair Rotan Klasik (Full Rotan)',
+                category: 'Santai / Vintage',
+                price: 750000,
+                desc: 'Material 100% rotan asli premium (rangka dan kaki) dengan detail anyaman melengkung tradisional klasik yang timeless.',
+                img: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            },
+            {
+                id: 'K-004',
+                name: 'Kursi Rotan High-Back Cradle',
+                category: 'Statement Piece',
+                price: 1350000,
+                desc: 'Kursi santai dengan sandaran punggung tinggi melengkung (cradle shape). Rangka rotan tebal solid, pas untuk area bersantai.',
+                img: 'https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            },
+            {
+                id: 'K-005',
+                name: 'Sofa Rotan 2-Seater (Include Cushion)',
+                category: 'Ruang Tamu / Sofa',
+                price: 2450000,
+                desc: 'Sofa anyaman rotan melengkung estetik untuk ruang tamu. Sudah termasuk bantal sandaran tebal empuk warna putih bersih.',
+                img: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            },
+            {
+                id: 'K-006',
+                name: 'Kursi Anyam Rapat Tradisional (Armchair)',
+                category: 'Serbaguna',
+                price: 520000,
+                desc: 'Desain armchair klasik dengan anyaman rotan solid yang super rapat di seluruh dudukan. Sangat kokoh untuk penggunaan harian.',
+                img: 'https://images.unsplash.com/photo-1501876725168-00c445821c9e?auto=format&fit=crop&w=600&q=80',
+                stock: 'Tersedia'
+            }
+        ];
+
+        // Global States
+        let products = [];
+        let cart = [];
+        let selectedCategory = 'Semua';
+        let storeSettings = {
+            name: "RotanCraft Premium Furniture",
+            phone: "6287878787878", // Ganti ke WA real target Anda
+        };
+        let deliveryMethod = 'ship'; // 'ship' atau 'pickup'
+        let currentModalProductId = null;
+        let currentModalQty = 1;
+
+        // Initialize App
+        window.onload = function() {
+            // Load custom settings/products from local storage or set default
+            if (localStorage.getItem('furniture_products')) {
+                products = JSON.parse(localStorage.getItem('furniture_products'));
+            } else {
+                products = [...defaultProducts];
+            }
+
+            if (localStorage.getItem('furniture_store_settings')) {
+                storeSettings = JSON.parse(localStorage.getItem('furniture_store_settings'));
+            }
+
+            // Populate forms
+            document.getElementById('admin-store-name').value = storeSettings.name;
+            document.getElementById('admin-store-phone').value = storeSettings.phone;
+
+            renderApp();
+            calculateShippingCost();
+        };
+
+        // Render Everything
+        function renderApp() {
+            renderFilters();
+            renderCatalog();
+            renderAdminProductsTable();
+            updateCartAndBadge();
+        }
+
+        // Render Filter Buttons
+        function renderFilters() {
+            const container = document.getElementById('category-filters-container');
+            // Extract unique categories
+            const categories = ['Semua', ...new Set(products.map(p => p.category))];
+            
+            container.innerHTML = categories.map(cat => {
+                const isActive = selectedCategory === cat;
+                return `
+                    <button onclick="setCategoryFilter('${cat}')" class="px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                        isActive 
+                        ? 'bg-wood-800 text-white shadow-md shadow-wood-800/10 border border-wood-800' 
+                        : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-50'
+                    }">
+                        ${cat}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function setCategoryFilter(category) {
+            selectedCategory = category;
+            renderFilters();
+            renderCatalog();
+        }
+
+        // Format Currency Indonsia
+        function formatIDR(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Render Product Catalog Cards
+        function renderCatalog() {
+            const grid = document.getElementById('product-grid');
+            const emptyState = document.getElementById('catalog-empty-state');
+            
+            // Filter
+            const filteredProducts = selectedCategory === 'Semua' 
+                ? products 
+                : products.filter(p => p.category === selectedCategory);
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            grid.innerHTML = filteredProducts.map(p => {
+                const isOutOfStock = p.stock === 'Habis';
+                return `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-stone-150 shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="relative h-64 bg-stone-100 overflow-hidden">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" onerror="this.src='https://via.placeholder.com/600x400.png?text=${encodeURIComponent(p.name)}'">
+                            <span class="absolute top-4 left-4 text-[9px] font-bold uppercase tracking-widest bg-white/95 backdrop-blur-sm text-wood-900 px-3 py-1 rounded-full border border-wood-100 shadow-sm">${p.category}</span>
+                            ${isOutOfStock ? `
+                                <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center">
+                                    <span class="px-4 py-2 rounded-xl bg-red-600 text-white font-bold text-xs uppercase tracking-widest">Stok Habis</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="font-serif text-lg font-bold text-stone-900 line-clamp-1">${p.name}</h3>
+                            <p class="text-xs text-stone-500 line-clamp-2 min-h-[32px]">${p.desc}</p>
+                            
+                            <div class="flex items-center justify-between pt-4 border-t border-stone-100">
+                                <div>
+                                    <span class="block text-[9px] uppercase font-bold tracking-wider text-stone-400">Harga Jual</span>
+                                    <span class="text-base font-bold text-amber-700">${formatIDR(p.price)}</span>
+                                </div>
+                                
+                                <button onclick="openProductDetail('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="px-4 py-2 rounded-xl text-xs font-bold tracking-wide transition-all ${
+                                    isOutOfStock 
+                                    ? 'bg-stone-100 text-stone-400 cursor-not-allowed' 
+                                    : 'bg-wood-50 text-wood-900 border border-wood-200 hover:bg-wood-800 hover:text-white hover:shadow-md'
+                                }">
+                                    Tambah Kustom <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open Product Customization Modal
+        function openProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            currentModalProductId = productId;
+            currentModalQty = 1;
+
+            document.getElementById('modal-product-image').src = product.img;
+            document.getElementById('modal-product-image').onerror = function() {
+                this.src = `https://via.placeholder.com/600x400.png?text=${encodeURIComponent(product.name)}`;
+            };
+            document.getElementById('modal-product-category').innerText = product.category;
+            document.getElementById('modal-product-name').innerText = product.name;
+            document.getElementById('modal-product-price').innerText = formatIDR(product.price);
+            document.getElementById('modal-product-description').innerText = product.desc;
+            
+            // Reset Options
+            document.getElementById('option-finishing').selectedIndex = 0;
+            document.getElementById('option-cushion').selectedIndex = 0;
+            document.getElementById('option-notes').value = '';
+            document.getElementById('modal-qty').innerText = currentModalQty;
+
+            // Show Modal
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeDetailModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Adjust modal quantity counter
+        function adjustModalQty(amount) {
+            currentModalQty += amount;
+            if (currentModalQty < 1) currentModalQty = 1;
+            document.getElementById('modal-qty').innerText = currentModalQty;
+        }
+
+        // Add to Cart Logic with options
+        function addToCartFromModal() {
+            const product = products.find(p => p.id === currentModalProductId);
+            if (!product) return;
+
+            const finishing = document.getElementById('option-finishing').value;
+            const cushionSelect = document.getElementById('option-cushion');
+            const cushion = cushionSelect.value;
+            const notes = document.getElementById('option-notes').value;
+
+            // Calculate extra cushion cost
+            let extraCost = 0;
+            if (cushion.includes('+Rp 50.000')) extraCost = 50000;
+            if (cushion.includes('+Rp 65.000')) extraCost = 65000;
+
+            const unitPrice = product.price + extraCost;
+
+            // Generate unique cart item id based on kustomisasi
+            const cartItemId = `${product.id}-${finishing.replace(/\s+/g, '')}-${cushion.replace(/\s+/g, '')}`;
+
+            // Check if identical custom item already exists in cart
+            const existingItemIndex = cart.findIndex(item => item.cartItemId === cartItemId);
+
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].qty += currentModalQty;
+            } else {
+                cart.push({
+                    cartItemId: cartItemId,
+                    id: product.id,
+                    name: product.name,
+                    price: unitPrice,
+                    basePrice: product.price,
+                    qty: currentModalQty,
+                    finishing: finishing,
+                    cushion: cushion,
+                    notes: notes,
+                    img: product.img
+                });
+            }
+
+            closeDetailModal();
+            updateCartAndBadge();
+            showAlert('Berhasil Ditambahkan', `${product.name} dimasukkan ke keranjang belanja.`);
+            toggleCartDrawer(true);
+        }
+
+        // Alert System
+        function showAlert(title, message) {
+            const alertBox = document.getElementById('custom-alert');
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-msg').innerText = message;
+            
+            alertBox.classList.remove('hidden');
+            alertBox.classList.remove('translate-x-120');
+            
+            setTimeout(() => {
+                closeAlert();
+            }, 3500);
+        }
+
+        function closeAlert() {
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.classList.add('translate-x-120');
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 300);
+        }
+
+        // Drawer Controls
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            if (open) {
+                drawer.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        // Update Cart UI & totals
+        function updateCartAndBadge() {
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count-badge').innerText = totalQty;
+
+            const itemsContainer = document.getElementById('cart-items-container');
+            const emptyMsg = document.getElementById('cart-empty-message');
+            const formContainer = document.getElementById('cart-form-container');
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '';
+                emptyMsg.classList.remove('hidden');
+                emptyMsg.classList.add('flex');
+                formContainer.classList.add('hidden');
+                return;
+            }
+
+            emptyMsg.classList.add('hidden');
+            emptyMsg.classList.remove('flex');
+            formContainer.classList.remove('hidden');
+
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="flex items-start space-x-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                    <img src="${item.img}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover bg-white border border-stone-200 flex-shrink-0" onerror="this.src='https://via.placeholder.com/150.png?text=Rotan'">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
+                        <div class="text-[9px] text-stone-500 mt-1 space-y-0.5">
+                            <p><span class="font-medium">Finishing:</span> ${item.finishing}</p>
+                            <p><span class="font-medium">Bantalan:</span> ${item.cushion}</p>
+                            ${item.notes ? `<p class="italic text-wood-700 font-medium truncate"><span class="font-medium text-stone-500">Note:</span> "${item.notes}"</p>` : ''}
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-xs font-bold text-amber-700">${formatIDR(item.price * item.qty)}</span>
+                            
+                            <!-- Qty adjuster in drawer -->
+                            <div class="flex items-center border border-stone-200 rounded-lg bg-white overflow-hidden">
+                                <button onclick="adjustCartItemQty('${item.cartItemId}', -1)" class="px-2 py-1 hover:bg-stone-100 text-xs text-stone-600 transition"><i class="fa-solid fa-minus"></i></button>
+                                <span class="px-3 py-1 font-semibold text-xs text-stone-800">${item.qty}</span>
+                                <button onclick="adjustCartItemQty('${item.cartItemId}', 1)" class="px-2 py-1 hover:bg-stone-100 text-xs text-stone-600 transition"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            calculateInvoiceTotals();
+        }
+
+        // Adjust Cart Quantity from Drawer
+        function adjustCartItemQty(cartItemId, amount) {
+            const index = cart.findIndex(item => item.cartItemId === cartItemId);
+            if (index > -1) {
+                cart[index].qty += amount;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+                updateCartAndBadge();
+            }
+        }
+
+        // Delivery Method Controls
+        function setDeliveryMethod(method) {
+            deliveryMethod = method;
+            
+            const btnShip = document.getElementById('btn-delivery-ship');
+            const btnPickup = document.getElementById('btn-delivery-pickup');
+            const selectorWrapper = document.getElementById('shipping-selector-wrapper');
+
+            if (method === 'ship') {
+                btnShip.className = "px-3 py-2 text-xs font-semibold rounded-lg bg-wood-800 text-white border border-wood-800 transition";
+                btnPickup.className = "px-3 py-2 text-xs font-semibold rounded-lg bg-white text-stone-600 border border-stone-300 hover:bg-stone-100 transition";
+                selectorWrapper.classList.remove('hidden');
+            } else {
+                btnPickup.className = "px-3 py-2 text-xs font-semibold rounded-lg bg-wood-800 text-white border border-wood-800 transition";
+                btnShip.className = "px-3 py-2 text-xs font-semibold rounded-lg bg-white text-stone-600 border border-stone-300 hover:bg-stone-100 transition";
+                selectorWrapper.classList.add('hidden');
+            }
+
+            calculateShippingCost();
+        }
+
+        // Calculate and Render Invoice Totals
+        let currentShippingCost = 0;
+        
+        function calculateShippingCost() {
+            if (deliveryMethod === 'pickup') {
+                currentShippingCost = 0;
+            } else {
+                const selector = document.getElementById('shipping-destination');
+                const selectedOption = selector.options[selector.selectedIndex];
+                currentShippingCost = parseInt(selectedOption.getAttribute('data-cost')) || 0;
+            }
+            calculateInvoiceTotals();
+        }
+
+        function calculateInvoiceTotals() {
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const grandTotal = subtotal + currentShippingCost;
+
+            document.getElementById('summary-subtotal').innerText = formatIDR(subtotal);
+            document.getElementById('summary-shipping').innerText = formatIDR(currentShippingCost);
+            document.getElementById('summary-grandtotal').innerText = formatIDR(grandTotal);
+        }
+
+        // SUBMIT AND FORMAT MESSAGE TO WHATSAPP
+        function submitOrderViaWA() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            if (!name || !phone) {
+                showAlert('Form Belum Lengkap', 'Mohon isi Nama dan Nomor WhatsApp Anda.');
+                return;
+            }
+
+            if (deliveryMethod === 'ship' && !address) {
+                showAlert('Alamat Harus Diisi', 'Mohon tuliskan alamat lengkap untuk pengiriman mebel.');
+                return;
+            }
+
+            // Compose Elegant Message
+            let text = `*🔥 ORDER MEBEL ROTAN BARU (${storeSettings.name})*\n`;
+            text += `-----------------------------------------------\n`;
+            text += `👤 *Penerima:* ${name}\n`;
+            text += `📞 *No. WhatsApp:* ${phone}\n`;
+            text += `📦 *Metode:* ${deliveryMethod === 'ship' ? '🚚 Kirim via Kargo/Kurir' : '🏪 Ambil Sendiri di Workshop'}\n`;
+            
+            if (deliveryMethod === 'ship') {
+                const destName = document.getElementById('shipping-destination').options[document.getElementById('shipping-destination').selectedIndex].text;
+                text += `📍 *Tujuan:* ${destName}\n`;
+                text += `🏡 *Alamat Lengkap:* ${address}\n`;
+            }
+            text += `-----------------------------------------------\n\n`;
+            text += `*DAFTAR PESANAN FURNITUR:*\n`;
+
+            cart.forEach((item, index) => {
+                text += `${index + 1}. *${item.name}* (x${item.qty})\n`;
+                text += `   - Finishing: ${item.finishing}\n`;
+                text += `   - Cushion: ${item.cushion}\n`;
+                if (item.notes) {
+                    text += `   - Request Kustom: "${item.notes}"\n`;
+                }
+                text += `   - Subtotal: ${formatIDR(item.price * item.qty)}\n\n`;
+            });
+
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const grandTotal = subtotal + currentShippingCost;
+
+            text += `-----------------------------------------------\n`;
+            text += `*Subtotal Mebel:* ${formatIDR(subtotal)}\n`;
+            if (deliveryMethod === 'ship') {
+                text += `*Ongkos Kirim:* ${formatIDR(currentShippingCost)}\n`;
+            }
+            text += `💰 *TOTAL ESTIMASI:* ${formatIDR(grandTotal)}\n`;
+            text += `-----------------------------------------------\n\n`;
+            text += `_Pesanan dibuat otomatis via katalog portal. Mohon info ketersediaan barang dan jadwal pengiriman ya Admin._ 🙏`;
+
+            // Open WhatsApp
+            const targetNumber = storeSettings.phone;
+            const waUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`;
+            
+            // Open in new window/tab
+            window.open(waUrl, '_blank');
+        }
+
+
+        // ==========================================
+        //         ADMIN PANEL LIVE DASHBOARD
+        // ==========================================
+        
+        let isAdminOpen = false;
+
+        function toggleAdminDashboard() {
+            const panel = document.getElementById('admin-dashboard');
+            if (isAdminOpen) {
+                panel.classList.add('translate-y-full');
+            } else {
+                panel.classList.remove('translate-y-full');
+            }
+            isAdminOpen = !isAdminOpen;
+        }
+
+        function saveStoreSettings() {
+            const nameInput = document.getElementById('admin-store-name').value.trim();
+            const phoneInput = document.getElementById('admin-store-phone').value.trim();
+
+            if (!nameInput || !phoneInput) {
+                showAlert('Gagal Menyimpan', 'Semua pengaturan toko wajib diisi.');
+                return;
+            }
+
+            storeSettings.name = nameInput;
+            storeSettings.phone = phoneInput;
+
+            localStorage.setItem('furniture_store_settings', JSON.stringify(storeSettings));
+            showAlert('Pengaturan Disimpan', 'Nama toko & nomor WhatsApp tujuan diperbarui.');
+            
+            // Change hero element and title in portal view dynamically
+            document.title = `${storeSettings.name} - Premium Rattan Furniture`;
+            document.querySelector('.tracking-tight.text-wood-900').innerHTML = nameInput.replace(/Craft|Rotan/g, match => `<span class="text-wood-600">${match}</span>`);
+        }
+
+        // Render live Admin Catalogue table
+        function renderAdminProductsTable() {
+            const tbody = document.getElementById('admin-prod-table');
+            tbody.innerHTML = products.map(p => `
+                <tr class="hover:bg-stone-50">
+                    <td class="px-4 py-3 font-semibold text-stone-900">${p.name}</td>
+                    <td class="px-4 py-3 text-stone-500">${p.category}</td>
+                    <td class="px-4 py-3 font-bold text-amber-800">${formatIDR(p.price)}</td>
+                    <td class="px-4 py-3 text-center">
+                        <span onclick="toggleProdStockDirectly('${p.id}')" class="cursor-pointer px-2 py-1 rounded-full text-[10px] font-bold ${
+                            p.stock === 'Tersedia' 
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-300' 
+                            : 'bg-red-50 text-red-700 border border-red-300'
+                        }">
+                            ${p.stock}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-center space-x-2 whitespace-nowrap">
+                        <button onclick="editProduct('${p.id}')" class="p-1 px-2.5 bg-wood-50 hover:bg-wood-200 text-wood-900 border border-wood-300 rounded-lg transition" title="Edit Produk">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteProduct('${p.id}')" class="p-1 px-2.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-300 rounded-lg transition" title="Hapus">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Quick toggle out of stock on click
+        function toggleProdStockDirectly(prodId) {
+            const index = products.findIndex(p => p.id === prodId);
+            if (index > -1) {
+                products[index].stock = products[index].stock === 'Tersedia' ? 'Habis' : 'Tersedia';
+                saveProductsToLocal();
+                renderApp();
+                showAlert('Stok Diperbarui', `${products[index].name} kini berstatus: ${products[index].stock}`);
+            }
+        }
+
+        // Submit form (Create / Edit)
+        function handleProductFormSubmit(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('admin-prod-id').value;
+            const name = document.getElementById('admin-prod-name').value.trim();
+            const category = document.getElementById('admin-prod-category').value;
+            const price = parseInt(document.getElementById('admin-prod-price').value) || 0;
+            const stock = document.getElementById('admin-prod-stock').value;
+            const desc = document.getElementById('admin-prod-desc').value.trim();
+            const inputImg = document.getElementById('admin-prod-img').value.trim();
+            
+            // Fallback high-quality aesthetic image if empty
+            const img = inputImg || 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=600&q=80';
+
+            if (id) {
+                // Edit existing
+                const index = products.findIndex(p => p.id === id);
+                if (index > -1) {
+                    products[index] = { id, name, category, price, stock, desc, img };
+                    showAlert('Katalog Diubah', `${name} berhasil diupdate.`);
+                }
+            } else {
+                // Create new
+                const newId = `K-${String(products.length + 1).padStart(3, '0')}`;
+                products.push({ id: newId, name, category, price, stock, desc, img });
+                showAlert('Produk Ditambahkan', `${name} dimasukkan ke katalog.`);
+            }
+
+            resetProductForm();
+            saveProductsToLocal();
+            renderApp();
+        }
+
+        // Trigger Edit Product into Form
+        function editProduct(prodId) {
+            const p = products.find(prod => prod.id === prodId);
+            if (!p) return;
+
+            document.getElementById('admin-prod-id').value = p.id;
+            document.getElementById('admin-prod-name').value = p.name;
+            document.getElementById('admin-prod-category').value = p.category;
+            document.getElementById('admin-prod-price').value = p.price;
+            document.getElementById('admin-prod-stock').value = p.stock;
+            document.getElementById('admin-prod-desc').value = p.desc;
+            document.getElementById('admin-prod-img').value = p.img;
+
+            document.getElementById('admin-prod-submit-btn').innerText = 'Simpan Perubahan';
+            showAlert('Mode Edit Aktif', `Sedang mengedit detail produk ${p.id}`);
+        }
+
+        // Delete Product
+        function deleteProduct(prodId) {
+            const index = products.findIndex(p => p.id === prodId);
+            if (index > -1) {
+                const name = products[index].name;
+                products.splice(index, 1);
+                saveProductsToLocal();
+                renderApp();
+                showAlert('Produk Terhapus', `${name} dihapus dari sistem.`);
+            }
+        }
+
+        function resetProductForm() {
+            document.getElementById('admin-product-form').reset();
+            document.getElementById('admin-prod-id').value = '';
+            document.getElementById('admin-prod-submit-btn').innerText = 'Tambahkan Katalog Baru';
+        }
+
+        function saveProductsToLocal() {
+            localStorage.setItem('furniture_products', JSON.stringify(products));
+        }
+
+        // ==========================================
+        //  DEMO PRESENTATION SCENARIO CONTROLS
+        // ==========================================
+
+        function simulateSystemFailure() {
+            products = [];
+            saveProductsToLocal();
+            renderApp();
+            showAlert('⚠️ Simulasi Error Sukses', 'Semua data produk mebel terhapus (Database Error).');
+        }
+
+        function restoreFromCloudBackup() {
+            products = [...defaultProducts];
+            saveProductsToLocal();
+            renderApp();
+            showAlert('⚡ Restore Berhasil!', 'Data dipulihkan dari Cloud Server dalam 0.3 detik.');
+        }
+
+        function toggleInstructionModal(open) {
+            const modal = document.getElementById('instruction-modal');
+            if (open) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function openDemoInstruction() {
+            toggleInstructionModal(true);
+        }
+    </script>
+</body>
+</html>
