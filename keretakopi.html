@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kereta Kopi | Street Coffee Kotabaru</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for a modern, clean look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons for elegant scalable icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Lora"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fcf9f2',
+                            100: '#f7f1e1',
+                            200: '#efdfc2',
+                            300: '#e4c69b',
+                            400: '#d7a76c',
+                            500: '#cd8d48',
+                            600: '#bf7639',
+                            700: '#9e5d31', // Main Coffee Color
+                            800: '#814c2c',
+                            900: '#683f26',
+                            950: '#381f12',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for subtle animations and utilities -->
+    <style>
+        .glass-nav {
+            background: rgba(252, 249, 242, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(228, 198, 155, 0.2);
+        }
+        
+        .transition-transform {
+            transition-property: transform, opacity;
+            transition-duration: 700ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hide-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .show-scroll {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-[#FCF9F2] text-stone-800 antialiased selection:bg-brand-300 selection:text-brand-950">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <i class="ph-fill ph-train-regional text-3xl text-brand-700"></i>
+                    <span class="font-serif font-bold text-2xl tracking-tight text-brand-900">Kereta Kopi</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#beranda" class="text-stone-600 hover:text-brand-700 font-medium transition">Beranda</a>
+                    <a href="#tentang" class="text-stone-600 hover:text-brand-700 font-medium transition">Tentang Kami</a>
+                    <a href="#menu" class="text-stone-600 hover:text-brand-700 font-medium transition">Menu</a>
+                    <a href="#lokasi" class="px-5 py-2.5 rounded-full bg-brand-700 text-white font-medium hover:bg-brand-800 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Kunjungi Kami</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-stone-600 hover:text-brand-700 focus:outline-none">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#FCF9F2] border-t border-brand-200 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-inner">
+                <a href="#beranda" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-stone-800 hover:text-brand-700 hover:bg-brand-50">Beranda</a>
+                <a href="#tentang" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-stone-800 hover:text-brand-700 hover:bg-brand-50">Tentang Kami</a>
+                <a href="#menu" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-stone-800 hover:text-brand-700 hover:bg-brand-50">Menu</a>
+                <a href="#lokasi" onclick="toggleMobileMenu()" class="block mt-4 text-center px-3 py-3 rounded-full bg-brand-700 text-white font-medium hover:bg-brand-800">Kunjungi Kami</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="relative pt-20 pb-16 md:pt-32 md:pb-24 lg:pb-32 overflow-hidden flex items-center min-h-[90vh]">
+        <!-- Background Decor -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=2047" alt="Suasana Cafe" class="w-full h-full object-cover opacity-20" />
+            <div class="absolute inset-0 bg-gradient-to-r from-[#FCF9F2] via-[#FCF9F2]/90 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-3/5 pr-0 md:pr-12 lg:pr-20 hide-scroll observer-el">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100 text-brand-800 text-sm font-semibold mb-6">
+                    <i class="ph-fill ph-map-pin"></i> Kotabaru, Yogyakarta
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-stone-900 leading-tight mb-6">
+                    Nikmati Kopi Hangat di Bawah <span class="text-brand-700 italic">Rindangnya</span> Pohon.
+                </h1>
+                <p class="text-lg text-stone-600 mb-8 leading-relaxed max-w-xl">
+                    Lebih dari sekadar kopi pinggir jalan. Bergabunglah dalam suasana yang asyik, santai, dan penuh cerita di Kotabaru bersama komunitas kami.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#menu" class="px-8 py-3.5 text-center rounded-full bg-brand-700 text-white font-semibold hover:bg-brand-800 transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        <i class="ph ph-coffee"></i> Lihat Menu Kami
+                    </a>
+                    <a href="#lokasi" class="px-8 py-3.5 text-center rounded-full bg-white text-stone-800 font-semibold hover:bg-stone-50 border border-stone-200 transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="ph ph-navigation-arrow"></i> Petunjuk Arah
+                    </a>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-2/5 mt-12 md:mt-0 hide-scroll observer-el" style="transition-delay: 200ms;">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-brand-300 rounded-[2rem] transform rotate-3 scale-105 opacity-50"></div>
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=1974" alt="Kopi Kereta" class="relative rounded-[2rem] shadow-2xl object-cover h-[400px] md:h-[500px] w-full" />
+                    <!-- Floating badge -->
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700">
+                            <i class="ph-fill ph-star text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-500 font-medium">Rating Pelanggan</p>
+                            <p class="text-lg font-bold text-stone-800">4.8/5.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tentang Kami -->
+    <section id="tentang" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 hide-scroll observer-el">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1555562865-fb172c730248?auto=format&fit=crop&q=80&w=1964" alt="Suasana Kedai" class="rounded-2xl h-64 w-full object-cover shadow-lg transform translate-y-8" />
+                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=2081" alt="Barista Menyeduh" class="rounded-2xl h-64 w-full object-cover shadow-lg" />
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 hide-scroll observer-el" style="transition-delay: 200ms;">
+                    <h2 class="text-sm font-bold tracking-widest text-brand-600 uppercase mb-3">Tentang Kami</h2>
+                    <h3 class="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-6">Pionir Street Coffee di Kotabaru</h3>
+                    <div class="space-y-4 text-stone-600 leading-relaxed text-lg">
+                        <p>
+                            Yuk, bergabunglah dalam suasananya yang asyik dan santai di pinggir jalan yang nyaman di kedai <strong>"Kereta Kopi"</strong>! Kami dengan hangat mengundang Anda untuk berbagi momen yang menggembirakan bersama komunitas kami yang penuh semangat.
+                        </p>
+                        <p>
+                            Di sini, Anda akan menemukan tempat-tempat duduk yang nyaman di bawah bayangan pohon-pohon yang sejuk, sambil menikmati aroma harum kopi segar dan aneka ragam kudapan lezat. Bersama-sama, kita akan menjalani hari yang menyenangkan, berdiskusi tentang segala hal mulai dari hobi, seni, hingga cerita perjalanan.
+                        </p>
+                        <p class="font-medium text-stone-800 border-l-4 border-brand-500 pl-4 italic">
+                            "Menyajikan cita rasa sekelas coffee shop dalam kehangatan suasana jalanan."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-[#FCF9F2]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 hide-scroll observer-el">
+                <h2 class="text-sm font-bold tracking-widest text-brand-600 uppercase mb-3">Daftar Menu</h2>
+                <h3 class="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-4">Pilihan Rasa Khas Kereta Kopi</h3>
+                <p class="text-stone-600">Disajikan sepenuh hati, tanpa bahan pengawet, dengan citarasa yang mewah dengan harga bersahabat.</p>
+            </div>
+
+            <!-- Menu Tabs -->
+            <div class="flex flex-wrap gap-3 justify-center mb-12 hide-scroll observer-el">
+                <button id="btn-kopi" onclick="switchTab('kopi')" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition bg-brand-700 text-white shadow-md">Aneka Kopi</button>
+                <button id="btn-spesial" onclick="switchTab('spesial')" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition bg-white text-stone-600 hover:bg-stone-100 border border-stone-200">Spesial & Teh</button>
+                <button id="btn-camilan" onclick="switchTab('camilan')" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition bg-white text-stone-600 hover:bg-stone-100 border border-stone-200">Roti Bakar & Snack</button>
+            </div>
+
+            <!-- Tab Content: Kopi -->
+            <div id="tab-kopi" class="tab-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Kopi Item 1 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group hide-scroll observer-el">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Kopi Hitam Sidikalang / Gayo</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">12.5K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Kopi robusta dicampur dengan sedikit arabika, menciptakan citarasa dan aroma yang mewah.</p>
+                    </div>
+                    <!-- Kopi Item 2 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group hide-scroll observer-el" style="transition-delay: 100ms;">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Kopi Susu Sidikalang / Gayo</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">15K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Kopi andalan dicampur dengan susu kental manis, membuat rasa kopinya lebih nendang.</p>
+                    </div>
+                    <!-- Kopi Item 3 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group hide-scroll observer-el" style="transition-delay: 200ms;">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Kopi Sejuk (Coldbrew)</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">15K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Kopi diseduh dengan sepenuh hati dengan teknik seduh dingin (coldbrew) menghasilkan rasa yang spesial.</p>
+                    </div>
+                     <!-- Kopi Item 4 -->
+                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group hide-scroll observer-el" style="transition-delay: 300ms;">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Kopi Butterscotch</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">18K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Perpaduan kopi pilihan dengan manisnya sirup butterscotch yang lembut (Pilihan: Sidikalang/Gayo).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Spesial & Teh -->
+            <div id="tab-spesial" class="tab-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Irish Kopi</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">22.5K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Kopi sejuk (coldbrew) ditambah dengan jamaika dark rum (halal) & susu kental manis. Sangat mewah.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Sejuk Susu</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">17.5K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Kopi seduh dingin (coldbrew) dishake dengan susu kental manis gold, menciptakan cita rasa yang segar.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Teh Tarik (Panas/Dingin)</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">12.5K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Teh hitam kuat dipadukan dengan susu, ditarik hingga berbuih lembut di atasnya.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Es Teh Susu / Teh Panas</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">Mulai 8K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Pilihan teh klasik untuk menemani waktu santai Anda di bawah pohon rindang.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Camilan -->
+            <div id="tab-camilan" class="tab-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Roti Bakar Srikaya</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">10K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Selai srikaya yang dibuat dengan semangat dan sepenuh hati. Tanpa bahan pengawet.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Roti Bakar Coklat Keju</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">10K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Roti yang dibakar dengan isian coklat lumer dan taburan keju spesial melimpah.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Roti Bakar (Coklat / Keju)</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">10K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Pilihan roti panggang klasik dengan topping coklat manis atau keju gurih.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-xl font-bold text-stone-800 group-hover:text-brand-700 transition">Telur Setengah Matang</h4>
+                            <span class="text-brand-700 font-bold bg-brand-50 px-3 py-1 rounded-full text-sm">8K</span>
+                        </div>
+                        <p class="text-sm text-stone-500 leading-relaxed">Cocok untuk menu sarapan pagi di Kotabaru, pendamping secangkir kopi hitam hangat.</p>
+                    </div>
+                </div>
+                
+                <!-- Roti Bakar Image representation -->
+                <div class="mt-8 rounded-2xl overflow-hidden shadow-md h-48 w-full relative">
+                     <img src="https://images.unsplash.com/photo-1484723091791-00188619bc30?auto=format&fit=crop&q=80&w=2070" alt="Roti Bakar" class="w-full h-full object-cover" />
+                     <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                         <p class="text-white font-serif font-bold text-2xl tracking-wide">Camilan Sempurna untuk Kopi Anda</p>
+                     </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lokasi & Footer -->
+    <section id="lokasi" class="bg-stone-900 text-stone-300 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                <div class="hide-scroll observer-el">
+                    <h3 class="text-3xl font-serif font-bold text-white mb-6">Mampir ke Kereta Kami</h3>
+                    <p class="mb-8 text-stone-400 text-lg">Temukan kami di bawah rindangnya pohon Kotabaru. Tempat terbaik untuk memulai pagi Anda.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-stone-800 p-3 rounded-full text-brand-400">
+                                <i class="ph-fill ph-map-pin text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Lokasi</h4>
+                                <p class="text-stone-400">Depan Kolese St. Ignatius-Kolsani<br>Jl. I Dewa Nyoman Oka No.3, Kotabaru, Yogyakarta.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-stone-800 p-3 rounded-full text-brand-400">
+                                <i class="ph-fill ph-clock text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Jam Buka</h4>
+                                <p class="text-stone-400">Setiap Hari<br>07:30 - 14:30 WIB</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-stone-800 p-3 rounded-full text-brand-400">
+                                <i class="ph-fill ph-instagram-logo text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1">Sosial Media</h4>
+                                <a href="#" class="text-brand-400 hover:text-brand-300 transition">@kereta_kopi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="h-80 bg-stone-800 rounded-2xl overflow-hidden shadow-2xl relative hide-scroll observer-el" style="transition-delay: 200ms;">
+                    <!-- Maps Placeholder using an image for aesthetics, normally an iframe goes here -->
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=2074" alt="Peta Kotabaru" class="w-full h-full object-cover opacity-60 mix-blend-overlay">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                        <i class="ph-fill ph-map-pin text-5xl text-brand-500 mb-4 drop-shadow-lg animate-bounce"></i>
+                        <h4 class="text-white font-bold text-xl mb-2">Jalan I Dewa Nyoman Oka</h4>
+                        <a href="https://maps.google.com/?q=Kereta+Kopi+Kotabaru" target="_blank" class="mt-4 px-6 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-full font-medium transition shadow-lg">Buka di Google Maps</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-stone-500">
+                <p>&copy; 2026 Kereta Kopi Kotabaru. Hak Cipta Dilindungi.</p>
+                <p class="mt-2 md:mt-0">Dikonsep ulang dengan <i class="ph-fill ph-heart text-brand-500"></i> untuk Street Coffee Jogja.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Reset all buttons styling
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-brand-700', 'text-white', 'shadow-md');
+                el.classList.add('bg-white', 'text-stone-600', 'hover:bg-stone-100', 'border', 'border-stone-200');
+            });
+            
+            // Show selected content
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // Active button styling
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('bg-white', 'text-stone-600', 'hover:bg-stone-100', 'border', 'border-stone-200');
+            activeBtn.classList.add('bg-brand-700', 'text-white', 'shadow-md');
+        }
+
+        // Scroll Animation Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show-scroll');
+                        entry.target.classList.remove('hide-scroll');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.observer-el').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // Navbar transparent to solid logic
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-sm');
+                    navbar.style.background = 'rgba(252, 249, 242, 0.95)';
+                } else {
+                    navbar.classList.remove('shadow-sm');
+                    navbar.style.background = 'rgba(252, 249, 242, 0.85)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
