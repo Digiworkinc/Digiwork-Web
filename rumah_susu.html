@@ -1,0 +1,1240 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { 
+  ShoppingBag, 
+  Trash2, 
+  FileSpreadsheet, 
+  MessageSquare, 
+  Settings, 
+  HelpCircle, 
+  CheckCircle2, 
+  Plus, 
+  Minus, 
+  Lock, 
+  Unlock, 
+  LogOut, 
+  TrendingUp, 
+  DollarSign, 
+  ShoppingCart, 
+  Percent,
+  X,
+  Menu,
+  Sparkles,
+  Search,
+  Filter,
+  Check,
+  Copy,
+  ChevronRight,
+  MapPin,
+  CreditCard,
+  User,
+  Phone
+} from 'lucide-react';
+
+const MENU_DATA = {
+  Spesial: [
+    { id: 's1', name: 'Darmi Plain', tiny: 14000, monster: 17000, tag: 'Klasik', desc: 'Rasa murni susu sapi segar tanpa pemanis tambahan.' },
+    { id: 's2', name: 'Darmi Moka', tiny: 15000, monster: 18000, tag: 'Favorit', desc: 'Perpaduan aroma kopi dan cokelat moka yang memikat.' },
+    { id: 's3', name: 'Darmi Anggur', tiny: 15000, monster: 18000, tag: 'Unik', desc: 'Kesegaran rasa buah anggur berpadu dengan gurihnya susu.' },
+    { id: 's4', name: 'Darmi Cokelat', tiny: 17000, monster: 20000, tag: 'Terlaris', desc: 'Cokelat premium yang kental dan sangat disukai semua kalangan.' },
+    { id: 's5', name: 'Darmi Vanilla', tiny: 17000, monster: 20000, tag: 'Rekomendasi', desc: 'Keharuman vanilla khas berpadu lembut di setiap tegukan.' },
+    { id: 's6', name: 'Darmi Taro', tiny: 19000, monster: 22000, tag: 'Populer', desc: 'Rasa taro (talas ungu) manis gurih kekinian.' },
+    { id: 's7', name: 'Darmi Greentea', tiny: 19000, monster: 22000, tag: 'Relaks', desc: 'Sensasi teh hijau Jepang asli yang menenangkan.' },
+  ],
+  Premium: [
+    { id: 'p1', name: 'Darmi ChocoOat', tiny: 16000, monster: 19000, tag: 'Sehat', desc: 'Energi ekstra dari oat melimpah berpadu cokelat lezat.' },
+    { id: 'p2', name: 'Darmi Regal', tiny: 17000, monster: 20000, tag: 'Terlaris', desc: 'Taburan biskuit Marie Regal asli yang renyah dan gurih.' },
+    { id: 'p3', name: 'Darmi Cheese', tiny: 17000, monster: 20000, tag: 'Gurih', desc: 'Cita rasa keju gurih berpadu manisnya susu spesial.' },
+    { id: 'p4', name: 'Darmi Cookies', tiny: 17000, monster: 20000, tag: 'Manis', desc: 'Remahan cookies hitam manis yang crunchy melimpah.' },
+    { id: 'p5', name: 'Darmi Cadbury', tiny: 22000, monster: 25000, tag: 'Mewah', desc: 'Kemewahan cokelat Cadbury murni yang meleleh di lidah.' },
+  ],
+  Fresh: [
+    { id: 'f1', name: 'Darmi Melon', tiny: 17000, monster: 20000, tag: 'Segar', desc: 'Manisnya buah melon segar pembawa keceriaan.' },
+    { id: 'f2', name: 'Darmi Pisang', tiny: 17000, monster: 20000, tag: 'Energi', desc: 'Kombinasi pisang matang penambah stamina harian.' },
+    { id: 'f3', name: 'Darmi Strawberry', tiny: 19000, monster: 22000, tag: 'Terlaris', desc: 'Asam manis buah strawberry asli penambah kesegaran.' },
+    { id: 'f4', name: 'Darmi Lychee', tiny: 21000, monster: 24000, tag: 'Eksotis', desc: 'Keharuman buah leci tropis berpadu susu murni dingin.' },
+    { id: 'f5', name: 'Darmi Mangga', tiny: 21000, monster: 24000, tag: 'Manis', desc: 'Rasa buah mangga harum manis kesukaan keluarga.' },
+    { id: 'f6', name: 'Darmi Almond', tiny: 22000, monster: 25000, tag: 'Premium', desc: 'Susu dengan aroma kacang almond mewah kaya gizi.' },
+  ]
+};
+
+export default function App() {
+  const [activeCategory, setActiveCategory] = useState('Spesial');
+  const [cart, setCart] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [adminTab, setAdminTab] = useState('overview');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Customizer Modal State
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [customSize, setCustomSize] = useState('Tiny');
+  const [customSugar, setCustomSugar] = useState('Normal');
+  const [customTopping, setCustomTopping] = useState(false);
+  
+  // Mobile Cart Slide-over State
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+
+  // Customer Form State
+  const [customer, setCustomer] = useState({
+    name: '',
+    phone: '',
+    tableOrAddress: '',
+    paymentMethod: 'Cash',
+  });
+
+  // Admin Settings
+  const [adminSettings, setAdminSettings] = useState({
+    whatsappNumber: '628123456789',
+    sheetsWebhookUrl: '',
+  });
+
+  // Local Logs Simulation (Disimpan di LocalStorage agar persisten saat refresh)
+  const [sheetLogs, setSheetLogs] = useState(() => {
+    const saved = localStorage.getItem('rs_sheet_logs');
+    return saved ? JSON.parse(saved) : [
+      {
+        orderId: "RS-3482",
+        timestamp: "19/06/2026 09:15",
+        name: "Ahmad Dani",
+        phone: "081234567890",
+        items: "Darmi Strawberry (Monster, Normal, Coral Jelly) x1, Darmi Regal (Tiny, Less) x1",
+        total: 44000,
+        payment: "Qris",
+        status: "Berhasil"
+      },
+      {
+        orderId: "RS-8721",
+        timestamp: "19/06/2026 10:02",
+        name: "Laras Citra",
+        phone: "085788991122",
+        items: "Darmi Cokelat (Monster, Normal, Coral Jelly) x2",
+        total: 50000,
+        payment: "Cash",
+        status: "Berhasil"
+      }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('rs_sheet_logs', JSON.stringify(sheetLogs));
+  }, [sheetLogs]);
+
+  // Notifications State
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    if (adminPasswordInput === 'admin123') {
+      setIsAdmin(true);
+      setShowLoginModal(false);
+      setAdminPasswordInput('');
+      showNotification("Selamat Datang di Panel Kontrol Admin! 🐄", "success");
+    } else {
+      showNotification("Sandi Admin salah! Silakan coba lagi.", "error");
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+    showNotification("Keluar dari Mode Admin.", "success");
+  };
+
+  const openCustomizer = (product) => {
+    setSelectedProduct(product);
+    setCustomSize('Tiny');
+    setCustomSugar('Normal');
+    setCustomTopping(false);
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedProduct) return;
+
+    const basePrice = customSize === 'Tiny' ? selectedProduct.tiny : selectedProduct.monster;
+    const toppingPrice = customTopping ? 5000 : 0;
+    const finalPrice = basePrice + toppingPrice;
+    
+    const cartItemId = `${selectedProduct.id}-${customSize}-${customSugar}-${customTopping ? 'jelly' : 'no'}`;
+    const existingIndex = cart.findIndex(item => item.cartItemId === cartItemId);
+    
+    if (existingIndex > -1) {
+      const updatedCart = [...cart];
+      updatedCart[existingIndex].quantity += 1;
+      setCart(updatedCart);
+    } else {
+      setCart([...cart, {
+        cartItemId,
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        size: customSize,
+        sugar: customSugar,
+        hasTopping: customTopping,
+        price: finalPrice,
+        quantity: 1
+      }]);
+    }
+    
+    setSelectedProduct(null);
+    showNotification(`${selectedProduct.name} telah ditambahkan ke keranjang! 🥛`, "success");
+  };
+
+  const updateQuantity = (cartItemId, amount) => {
+    const updatedCart = cart.map(item => {
+      if (item.cartItemId === cartItemId) {
+        const newQty = item.quantity + amount;
+        return newQty > 0 ? { ...item, quantity: newQty } : null;
+      }
+      return item;
+    }).filter(Boolean);
+    setCart(updatedCart);
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  };
+
+  const getCartCount = () => {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  };
+
+  const handleCheckout = async (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      showNotification("Keranjang Anda masih kosong!", "error");
+      return;
+    }
+
+    const orderId = `RS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const now = new Date();
+    const timestampStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    const itemsSummary = cart.map(item => 
+      `${item.name} (${item.size}, Gula: ${item.sugar}${item.hasTopping ? ', Coral Jelly' : ''}) x${item.quantity}`
+    ).join(', ');
+
+    const totalBayar = getCartTotal();
+
+    const newLog = {
+      orderId,
+      timestamp: timestampStr,
+      name: customer.name,
+      phone: customer.phone,
+      items: itemsSummary,
+      total: totalBayar,
+      payment: customer.paymentMethod,
+      status: "Berhasil"
+    };
+    
+    setSheetLogs([newLog, ...sheetLogs]);
+
+    if (adminSettings.sheetsWebhookUrl) {
+      try {
+        await fetch(adminSettings.sheetsWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newLog)
+        });
+        showNotification("Laporan sukses tersinkron dengan Google Sheets!");
+      } catch (err) {
+        console.error("Gagal mengirim data ke Sheets: ", err);
+      }
+    }
+
+    // WA Message formatting
+    let waMessage = `*🥛 RUMAH SUSU - INVOICE #${orderId}*\n`;
+    waMessage += `==================================\n`;
+    waMessage += `*📅 Tanggal:* ${timestampStr}\n`;
+    waMessage += `*👤 Pelanggan:* ${customer.name}\n`;
+    waMessage += `*📞 WhatsApp:* ${customer.phone}\n`;
+    waMessage += `*📍 Meja/Alamat:* ${customer.tableOrAddress}\n`;
+    waMessage += `*💳 Pembayaran:* ${customer.paymentMethod}\n`;
+    waMessage += `==================================\n\n`;
+    waMessage += `*🛍️ DETAIL ORDER:*\n`;
+
+    cart.forEach((item, idx) => {
+      waMessage += `${idx + 1}. *${item.name}* (${item.size})\n`;
+      waMessage += `   - Gula: ${item.sugar}\n`;
+      waMessage += `   - Topping: ${item.hasTopping ? 'Coral Jelly (+Rp5.000)' : 'Tanpa Topping'}\n`;
+      waMessage += `   - Qty: ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}\n`;
+      waMessage += `   - Subtotal: *Rp ${(item.price * item.quantity).toLocaleString('id-ID')}*\n\n`;
+    });
+
+    waMessage += `==================================\n`;
+    waMessage += `*💰 TOTAL AKHIR: Rp ${totalBayar.toLocaleString('id-ID')}*\n`;
+    waMessage += `==================================\n\n`;
+    waMessage += `_Terima kasih telah memesan susu segar di Rumah Susu Mbok Darmi! 🐄🥛_`;
+
+    const cleanedPhone = adminSettings.whatsappNumber.replace(/[^0-9]/g, '');
+    const waUrl = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(waMessage)}`;
+    
+    window.open(waUrl, '_blank');
+    
+    setCart([]);
+    setIsMobileCartOpen(false);
+    setCustomer({ name: '', phone: '', tableOrAddress: '', paymentMethod: 'Cash' });
+    showNotification("Pesanan dikirim! Mengarahkan ke WhatsApp...", "success");
+  };
+
+  // Dashboard Stats
+  const stats = useMemo(() => {
+    const totalRev = sheetLogs.reduce((sum, item) => sum + item.total, 0);
+    const count = sheetLogs.length;
+    const avg = count > 0 ? Math.round(totalRev / count) : 0;
+    const qris = sheetLogs.filter(log => log.payment.toLowerCase() === 'qris').length;
+    const cash = sheetLogs.filter(log => log.payment.toLowerCase() === 'cash').length;
+    return { totalRev, count, avg, qris, cash };
+  }, [sheetLogs]);
+
+  // Search filter for Logs
+  const filteredLogs = useMemo(() => {
+    if (!searchQuery) return sheetLogs;
+    const q = searchQuery.toLowerCase();
+    return sheetLogs.filter(log => 
+      log.name.toLowerCase().includes(q) || 
+      log.orderId.toLowerCase().includes(q) || 
+      log.items.toLowerCase().includes(q)
+    );
+  }, [sheetLogs, searchQuery]);
+
+  return (
+    <div className="min-h-screen bg-[#FFFDF9] flex flex-col font-sans antialiased text-slate-800">
+      
+      {/* NOTIFIKASI */}
+      {notification && (
+        <div className="fixed top-6 right-6 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className={`px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border ${
+            notification.type === 'success' 
+              ? 'bg-emerald-50 border-emerald-100 text-emerald-950' 
+              : 'bg-rose-50 border-rose-100 text-rose-950'
+          }`}>
+            <span className={`p-1.5 rounded-full ${notification.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`}>
+              <Check className="w-4 h-4" strokeWidth={3} />
+            </span>
+            <p className="font-bold text-sm tracking-wide">{notification.message}</p>
+          </div>
+        </div>
+      )}
+
+      {}
+      {/* HEADER BANNER */}
+      <header className="relative bg-gradient-to-b from-[#E0F2FE] via-[#F0F9FF] to-[#FFFDF9] pt-8 pb-12 overflow-hidden px-4">
+        {/* Desain Latar Belakang Peternakan (Minimalist Pastoral Modern) */}
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none select-none">
+          {/* Siluet Awan & Peternakan Modern */}
+          <svg className="absolute bottom-0 w-full text-[#E0F2FE]" fill="currentColor" viewBox="0 0 1440 200">
+            <path d="M0,128L120,138.7C240,149,480,171,720,165.3C960,160,1200,128,1320,112L1440,96L1440,200L1320,200C1200,200,960,200,720,200C480,200,240,200,120,200L0,200Z"></path>
+          </svg>
+          <div className="absolute right-10 bottom-6 text-[#BAE6FD]">
+            {/* Siluet Sapi / Milk can */}
+            <svg className="w-32 h-32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-2h2zm0-4h-2V7h2z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
+            <div className="bg-white p-4 rounded-3xl shadow-xl shadow-blue-100/40 border border-blue-50/50 relative group">
+              <span className="absolute -top-1 -right-1 bg-amber-400 text-blue-900 rounded-full p-1 border-2 border-white animate-bounce">
+                <Sparkles className="w-4 h-4" />
+              </span>
+              <svg className="w-16 h-16 text-blue-600 group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.5 2 2 5.5 2 10c0 2.2 1.1 4.2 3 5.7V20c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-1.5h6V20c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-4.3c1.9-1.5 3-3.5 3-5.7 0-4.5-4.5-8-10-8zm-4 9c-.8 0-1.5-.7-1.5-1.5S7.2 8 8 8s1.5.7 1.5 1.5S8.8 11 8 11zm8 0c-.8 0-1.5-.7-1.5-1.5S15.2 8 16 8s1.5.7 1.5 1.5-.7 1.5-1.5 1.5z" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
+                <span className="bg-blue-600/10 text-blue-700 text-[10px] font-extrabold tracking-wider px-3 py-1 rounded-full uppercase">
+                  ⭐ Susu Segar Premium
+                </span>
+                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold tracking-wider px-3 py-1 rounded-full uppercase">
+                  🏡 Langsung Dari Peternak
+                </span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-2.5">
+                Rumah Susu <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-sky-500">Mbok Darmi</span>
+              </h1>
+              <p className="text-slate-600 font-semibold text-sm md:text-base mt-2">
+                Murni, Segar, Bergizi tinggi tanpa campuran pengawet dan air tambahan.🥛
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {!isAdmin ? (
+              <button
+                onClick={() => setShowLoginModal(true)}
+                className="bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold px-5 py-3 rounded-2xl border border-slate-200 shadow-sm transition-all flex items-center gap-2"
+              >
+                <Lock className="w-4 h-4 text-amber-500" />
+                Masuk Dashboard Admin
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="bg-emerald-500 text-white text-[10px] font-extrabold px-3 py-2 rounded-xl flex items-center gap-1.5 shadow-sm">
+                  <Unlock className="w-3.5 h-3.5" /> ADMIN MODE
+                </span>
+                <button
+                  onClick={handleAdminLogout}
+                  className="bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* DASHBOARD NAVIGASI */}
+      {isAdmin && (
+        <nav className="bg-white border-b border-slate-200/80 sticky top-0 z-40 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 flex justify-between items-center overflow-x-auto whitespace-nowrap">
+            <div className="flex space-x-1 py-3">
+              <button 
+                onClick={() => setAdminTab('overview')}
+                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                  adminTab === 'overview' 
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <TrendingUp className="w-4 h-4" />
+                Analitik Kinerja
+              </button>
+              <button 
+                onClick={() => setAdminTab('sheets')}
+                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                  adminTab === 'sheets' 
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Simulasi Spreadsheet ({sheetLogs.length})
+              </button>
+              <button 
+                onClick={() => setAdminTab('integration')}
+                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                  adminTab === 'integration' 
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <Settings className="w-4 h-4" />
+                Integrasi Webhook
+              </button>
+            </div>
+            <button 
+              onClick={() => setIsAdmin(false)}
+              className="text-xs font-bold text-blue-600 hover:underline px-3 py-2"
+            >
+              Kembali ke Toko &rarr;
+            </button>
+          </div>
+        </nav>
+      )}
+
+      {/* CONTENT SWITCHER (ADMIN vs STOREFRONT) */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
+        
+        {isAdmin ? (
+          /* ========================================== */
+          /* DASHBOARD ADMIN MODE                       */
+          /* ========================================== */
+          <div className="space-y-8 animate-in fade-in duration-300">
+            
+            {/* TAB ADMIN 1: ANALITIK KINERJA */}
+            {adminTab === 'overview' && (
+              <div className="space-y-8">
+                
+                {/* Stats Widgets */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  
+                  <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/50 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Omset Penjualan</span>
+                      <span className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl"><DollarSign className="w-5 h-5" /></span>
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-3xl font-black text-slate-900">Rp {stats.totalRev.toLocaleString('id-ID')}</h3>
+                      <p className="text-[11px] text-emerald-600 font-bold mt-1">✓ Berhasil disinkronkan</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/50 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Total Pesanan</span>
+                      <span className="p-3 bg-blue-50 text-blue-600 rounded-2xl"><ShoppingCart className="w-5 h-5" /></span>
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-3xl font-black text-slate-900">{stats.count} Transaksi</h3>
+                      <p className="text-[11px] text-blue-600 font-bold mt-1">Dari berbagai platform toko</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/50 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Rata-rata Order</span>
+                      <span className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl"><Percent className="w-5 h-5" /></span>
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-3xl font-black text-slate-900">Rp {stats.avg.toLocaleString('id-ID')}</h3>
+                      <p className="text-[11px] text-indigo-600 font-bold mt-1">Nilai per keranjang pelanggan</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/50 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Metode Pembayaran</span>
+                      <span className="p-3 bg-amber-50 text-amber-600 rounded-2xl"><FileSpreadsheet className="w-5 h-5" /></span>
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex justify-between text-xs font-bold text-slate-600">
+                        <span>QRIS: {stats.qris}</span>
+                        <span>Cash: {stats.cash}</span>
+                      </div>
+                      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
+                        <div className="bg-blue-500 h-full" style={{ width: `${stats.count > 0 ? (stats.qris / stats.count) * 100 : 50}%` }}></div>
+                        <div className="bg-amber-400 h-full" style={{ width: `${stats.count > 0 ? (stats.cash / stats.count) * 100 : 50}%` }}></div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Tren Penjualan dengan SVG Charts */}
+                <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-100/50">
+                  <div className="mb-6">
+                    <h3 className="text-lg font-black text-slate-900">Grafik Penjualan Sederhana (Harian)</h3>
+                    <p className="text-slate-500 text-xs mt-1">Representasi omset harian berdasarkan data simulasi Anda.</p>
+                  </div>
+                  <div className="h-64 flex items-end justify-between gap-4 pt-4 border-b border-slate-100">
+                    {/* Visualisasi data bar */}
+                    {sheetLogs.map((log, index) => {
+                      const maxTotal = Math.max(...sheetLogs.map(l => l.total), 50000);
+                      const heightPercent = (log.total / maxTotal) * 100;
+                      return (
+                        <div key={index} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+                          <div className="text-[10px] font-bold text-slate-800 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white px-1.5 py-0.5 rounded shadow-lg">
+                            Rp {log.total.toLocaleString('id-ID')}
+                          </div>
+                          <div 
+                            className="w-full bg-gradient-to-t from-blue-600 to-sky-400 rounded-t-lg group-hover:from-blue-700 transition-all duration-300"
+                            style={{ height: `${heightPercent * 0.7}%` }}
+                          ></div>
+                          <span className="text-[10px] font-extrabold text-slate-500 mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px]">
+                            {log.orderId}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* TAB ADMIN 2: SPREADSHEET LOG DATABASE */}
+            {adminTab === 'sheets' && (
+              <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl shadow-slate-100/50 space-y-6">
+                
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div>
+                    <h2 className="text-lg font-black text-slate-950 flex items-center gap-2">
+                      <FileSpreadsheet className="w-5 h-5 text-emerald-600" />
+                      Arsip Data Spreadsheet Google Sheets (Live)
+                    </h2>
+                    <p className="text-slate-500 text-xs mt-1">Data terekam secara otomatis layaknya baris dokumen di lembar kerja Anda.</p>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => {
+                        setSheetLogs([]);
+                        localStorage.removeItem('rs_sheet_logs');
+                        showNotification("Semua log spreadsheet berhasil dibersihkan!", "success");
+                      }}
+                      className="text-xs font-bold text-rose-600 border border-rose-100 hover:bg-rose-50/50 px-4 py-2.5 rounded-xl transition-all"
+                    >
+                      Bersihkan Log
+                    </button>
+                  </div>
+                </div>
+
+                {/* Filter and Search Bar */}
+                <div className="flex items-center bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100">
+                  <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+                  <input 
+                    type="text" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Cari log berdasarkan ID, nama pelanggan, atau item menu..."
+                    className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+                  />
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-600">
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Spreadsheet Table */}
+                <div className="overflow-x-auto border border-slate-100 rounded-2xl">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-100 text-slate-600 font-extrabold uppercase tracking-widest text-[10px]">
+                        <th className="p-4 border-r border-slate-100">ID Pesanan</th>
+                        <th className="p-4 border-r border-slate-100">Tanggal/Waktu</th>
+                        <th className="p-4 border-r border-slate-100">Nama Pelanggan</th>
+                        <th className="p-4 border-r border-slate-100">WhatsApp</th>
+                        <th className="p-4 border-r border-slate-100">Rincian Menu</th>
+                        <th className="p-4 border-r border-slate-100">Total Biaya</th>
+                        <th className="p-4 border-r border-slate-100">Pembayaran</th>
+                        <th className="p-4 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
+                      {filteredLogs.length === 0 ? (
+                        <tr>
+                          <td colSpan="8" className="p-8 text-center text-slate-400 font-bold">
+                            Tidak ada log transaksi ditemukan.
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredLogs.map((log, index) => (
+                          <tr key={index} className="hover:bg-slate-50/50 transition-colors">
+                            <td className="p-4 font-extrabold text-blue-600 border-r border-slate-100">{log.orderId}</td>
+                            <td className="p-4 border-r border-slate-100 text-slate-500">{log.timestamp}</td>
+                            <td className="p-4 border-r border-slate-100 text-slate-900 font-extrabold">{log.name}</td>
+                            <td className="p-4 border-r border-slate-100 text-slate-600">{log.phone}</td>
+                            <td className="p-4 border-r border-slate-100 text-slate-600 max-w-xs truncate" title={log.items}>
+                              {log.items}
+                            </td>
+                            <td className="p-4 border-r border-slate-100 font-black text-slate-900">
+                              Rp {log.total.toLocaleString('id-ID')}
+                            </td>
+                            <td className="p-4 border-r border-slate-100 text-slate-600">{log.payment}</td>
+                            <td className="p-4 text-center">
+                              <span className="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-2.5 py-1 rounded-full whitespace-nowrap">
+                                {log.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            )}
+
+            {/* TAB ADMIN 3: SETTINGS & INTEGRASI WEBHOOK */}
+            {adminTab === 'integration' && (
+              <div className="space-y-6">
+                
+                {/* Form Inputs */}
+                <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl shadow-slate-100/50 space-y-6">
+                  <div>
+                    <h3 className="text-lg font-black text-slate-900">Pengaturan Kredensial</h3>
+                    <p className="text-slate-500 text-xs mt-1">Ubah endpoint API dan nomor penerima pesan WhatsApp agar sistem terhubung dengan benar.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-widest">Nomor WhatsApp Admin (CS)</label>
+                      <input 
+                        type="text" 
+                        value={adminSettings.whatsappNumber}
+                        onChange={(e) => setAdminSettings({...adminSettings, whatsappNumber: e.target.value})}
+                        placeholder="Contoh: 628123456789"
+                        className="w-full border border-slate-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-bold"
+                      />
+                      <p className="text-[11px] text-slate-400">Gunakan kode negara (misal 62) tanpa spasi atau tanda "+".</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-widest">Google Sheets Webhook URL</label>
+                      <input 
+                        type="text" 
+                        value={adminSettings.sheetsWebhookUrl}
+                        onChange={(e) => setAdminSettings({...adminSettings, sheetsWebhookUrl: e.target.value})}
+                        placeholder="https://script.google.com/macros/s/.../exec"
+                        className="w-full border border-slate-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-bold"
+                      />
+                      <p className="text-[11px] text-slate-400">Kosongkan jika Anda ingin menggunakan simulator lokal saja.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Apps Script Guide */}
+                <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl shadow-slate-100/50 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <HelpCircle className="w-5 h-5 text-blue-600" />
+                    <h3 className="text-lg font-black text-slate-900">Petunjuk Pemasangan Apps Script</h3>
+                  </div>
+
+                  <div className="text-xs text-slate-600 space-y-3 leading-relaxed">
+                    <p>Ikuti cara berikut agar data pesanan masuk ke spreadsheet asli Google Drive Anda:</p>
+                    <ol className="list-decimal list-inside space-y-2 text-slate-700 font-semibold">
+                      <li>Buka dokumen spreadsheet kosong di Google Drive Anda.</li>
+                      <li>Berikan judul kolom pada baris 1: ID Pesanan, Waktu, Nama, WhatsApp, Pesanan, Total, Pembayaran, Status.</li>
+                      <li>Pilih menu <strong>Ekstensi</strong> &gt; <strong>Apps Script</strong>.</li>
+                      <li>Hapus semua kode bawaan lalu tempel kode berikut:</li>
+                    </ol>
+
+                    <div className="relative mt-2">
+                      <div className="absolute top-2 right-2">
+                        <button 
+                          onClick={() => {
+                            const code = document.getElementById('apps-script-code').innerText;
+                            navigator.clipboard.writeText(code);
+                            showNotification("Kode berhasil disalin!");
+                          }}
+                          className="bg-slate-850 hover:bg-slate-800 text-white text-[10px] py-1.5 px-3 rounded-lg flex items-center gap-1"
+                        >
+                          <Copy className="w-3.5 h-3.5" /> Salin Kode
+                        </button>
+                      </div>
+                      <pre id="apps-script-code" className="bg-slate-900 text-emerald-400 p-4 rounded-2xl text-[10px] overflow-x-auto max-h-56 font-mono">
+{`function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    
+    sheet.appendRow([
+      data.orderId,
+      data.timestamp,
+      data.name,
+      data.phone,
+      data.items,
+      data.total,
+      data.payment,
+      data.status
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`}
+                      </pre>
+                    </div>
+
+                    <ol className="list-decimal list-inside space-y-2 text-slate-700 font-semibold pt-2" start="5">
+                      <li>Simpan lalu klik <strong>Terapkan &gt; Penerapan Baru</strong>.</li>
+                      <li>Pilih jenis <strong>Aplikasi Web</strong>, berikan akses kepada <strong>Siapa Saja (Anyone)</strong>, lalu klik Terapkan.</li>
+                      <li>Salin URL Aplikasi Web yang diberikan dan tempel pada input Google Sheets Webhook di atas.</li>
+                    </ol>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+          </div>
+        ) : (
+          /* ========================================== */
+          /* STOREFRONT PELANGGAN                       */
+          /* ========================================== */
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-in fade-in duration-300">
+            
+            {/* SISI KIRI: TAB KATEGORI & GRID PRODUK */}
+            <div className="lg:col-span-8 space-y-6">
+              
+              {/* Category Filter Pills */}
+              <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200/40 overflow-x-auto whitespace-nowrap scrollbar-none gap-1">
+                {Object.keys(MENU_DATA).map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`flex-1 py-3 px-5 rounded-xl font-bold text-xs tracking-wider transition-all uppercase flex items-center justify-center gap-2 ${
+                      activeCategory === cat
+                        ? 'bg-blue-600 text-white shadow-md shadow-blue-100/50'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    🥛 {cat} Series
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid Menu */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {MENU_DATA[activeCategory].map((product) => (
+                  <div 
+                    key={product.id} 
+                    className="bg-white border border-slate-100 rounded-3xl p-5 shadow-xl shadow-slate-100/40 hover:shadow-2xl hover:shadow-blue-50/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Badge Tag & Cup Minimalist View */}
+                      <div className="flex items-center justify-between">
+                        <span className="bg-blue-50 text-blue-700 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">
+                          {product.tag}
+                        </span>
+                        <div className="flex gap-1">
+                          <span className="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+                          <span className="w-2.5 h-3.5 bg-blue-300 rounded-full"></span>
+                        </div>
+                      </div>
+
+                      <h3 className="text-base font-black text-slate-900 tracking-tight mt-4">{product.name}</h3>
+                      <p className="text-[11px] text-slate-500 font-semibold mt-1.5 leading-relaxed min-h-[32px]">
+                        {product.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-4 border-t border-slate-50">
+                      <div className="flex justify-between items-baseline mb-4">
+                        <span className="text-[10px] font-extrabold text-slate-400">MULAI DARI</span>
+                        <span className="text-base font-black text-blue-700">Rp {product.tiny.toLocaleString('id-ID')}</span>
+                      </div>
+                      <button 
+                        onClick={() => openCustomizer(product)}
+                        className="w-full bg-slate-900 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 text-white font-extrabold text-xs py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Plus className="w-4 h-4" /> Pilih Ukuran & Gula
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+
+            {/* SISI KANAN: DESKTOP ONLY CART */}
+            <div className="hidden lg:block lg:col-span-4">
+              <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl p-6 space-y-6 sticky top-24">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                    <ShoppingBag className="w-5 h-5 text-blue-600" />
+                    Keranjang Belanja
+                  </h3>
+                  <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                    {getCartCount()} Item
+                  </span>
+                </div>
+
+                <div className="divide-y divide-slate-100 overflow-y-auto max-h-[250px] pr-1">
+                  {cart.length === 0 ? (
+                    <div className="text-center py-8 text-slate-400 space-y-2">
+                      <ShoppingBag className="w-8 h-8 mx-auto stroke-[1.5]" />
+                      <p className="text-xs font-bold">Keranjang Anda masih kosong</p>
+                    </div>
+                  ) : (
+                    cart.map((item) => (
+                      <CartListItem key={item.cartItemId} item={item} onUpdateQuantity={updateQuantity} />
+                    ))
+                  )}
+                </div>
+
+                {cart.length > 0 && (
+                  <div className="pt-4 border-t border-slate-100 space-y-5">
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Bayar</span>
+                      <span className="text-2xl font-black text-blue-700">Rp {getCartTotal().toLocaleString('id-ID')}</span>
+                    </div>
+
+                    <CheckoutForm 
+                      customer={customer} 
+                      setCustomer={setCustomer} 
+                      onSubmit={handleCheckout} 
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+        )}
+
+      </main>
+
+      {}
+      {/* MODAL KUSTOMISASI MODEREN (POP-UP) */}
+      {selectedProduct && (
+        <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 shadow-2xl border border-slate-100/50 animate-in slide-in-from-bottom-8 sm:zoom-in-95 duration-300">
+            
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <span className="bg-blue-50 text-blue-700 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Kustomisasi Susu
+                </span>
+                <h3 className="text-xl font-black text-slate-950 mt-2 tracking-tight">{selectedProduct.name}</h3>
+              </div>
+              <button 
+                onClick={() => setSelectedProduct(null)}
+                className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              
+              {/* Option 1: Ukuran Gelas */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Ukuran Gelas (Cup Size)</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button 
+                    onClick={() => setCustomSize('Tiny')}
+                    className={`p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all ${
+                      customSize === 'Tiny' 
+                        ? 'border-blue-600 bg-blue-50/50 text-blue-800' 
+                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
+                    }`}
+                  >
+                    <div>
+                      <span className="block font-extrabold text-sm">🥤 Tiny (400ml)</span>
+                      <span className="text-[10px] font-semibold text-slate-500">Porsi Santai Harian</span>
+                    </div>
+                    <span className="font-black text-xs text-blue-700">Rp {selectedProduct.tiny.toLocaleString('id-ID')}</span>
+                  </button>
+
+                  <button 
+                    onClick={() => setCustomSize('Monster')}
+                    className={`p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all ${
+                      customSize === 'Monster' 
+                        ? 'border-blue-600 bg-blue-50/50 text-blue-800' 
+                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
+                    }`}
+                  >
+                    <div>
+                      <span className="block font-extrabold text-sm">👑 Monster (700ml)</span>
+                      <span className="text-[10px] font-semibold text-slate-500">Porsi Puas & Kenyang</span>
+                    </div>
+                    <span className="font-black text-xs text-blue-700">Rp {selectedProduct.monster.toLocaleString('id-ID')}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Option 2: Tingkat Gula */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Kadar Gula (Sugar Level)</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {['No', 'Less', 'Normal', 'Extra'].map((sugar) => (
+                    <button
+                      key={sugar}
+                      onClick={() => setCustomSugar(sugar)}
+                      className={`py-2 px-1 text-xs font-extrabold rounded-xl border transition-all ${
+                        customSugar === sugar
+                          ? 'bg-slate-900 border-slate-900 text-white'
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                      }`}
+                    >
+                      {sugar}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Option 3: Tambahan Topping */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Tambahan Topping</label>
+                <button 
+                  onClick={() => setCustomTopping(!customTopping)}
+                  className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between transition-all ${
+                    customTopping 
+                      ? 'border-amber-500 bg-amber-50/40 text-amber-900' 
+                      : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🥥</span>
+                    <div>
+                      <span className="block font-extrabold text-sm">Coral Jelly</span>
+                      <span className="text-[10px] font-semibold text-slate-500">Manis kenyal berenergi</span>
+                    </div>
+                  </div>
+                  <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2.5 py-1 rounded-full">
+                    +Rp 5.000
+                  </span>
+                </button>
+              </div>
+
+              {/* Add Button & Calculated Price */}
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-extrabold text-slate-400">HARGA SUB-TOTAL</span>
+                  <p className="text-lg font-black text-slate-950">
+                    Rp {((customSize === 'Tiny' ? selectedProduct.tiny : selectedProduct.monster) + (customTopping ? 5000 : 0)).toLocaleString('id-ID')}
+                  </p>
+                </div>
+                <button 
+                  onClick={handleAddToCart}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-blue-100"
+                >
+                  Masukkan Keranjang
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {}
+      {/* MOBILE ONLY FLOATING CART BAR */}
+      {!isAdmin && cart.length > 0 && (
+        <div className="lg:hidden fixed bottom-6 left-4 right-4 z-40">
+          <button 
+            onClick={() => setIsMobileCartOpen(true)}
+            className="w-full bg-gradient-to-r from-blue-700 to-blue-600 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between hover:scale-[1.02] active:scale-[0.98] transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <span className="bg-white/20 text-white text-xs font-black w-6 h-6 rounded-lg flex items-center justify-center">
+                {getCartCount()}
+              </span>
+              <div>
+                <p className="text-xs font-bold text-blue-100 text-left">Keranjang Belanja</p>
+                <p className="text-sm font-black text-white">Rp {getCartTotal().toLocaleString('id-ID')}</p>
+              </div>
+            </div>
+            <span className="bg-white/20 hover:bg-white/30 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1 transition-all">
+              Buka Keranjang <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* MOBILE FULL-SCREEN BOTTOM SHEET CART DRAWER */}
+      {isMobileCartOpen && (
+        <div className="lg:hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-end justify-center animate-in fade-in duration-200">
+          <div className="bg-white rounded-t-3xl w-full max-h-[85vh] flex flex-col justify-between overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
+            
+            {/* Drawer Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5 text-blue-600" />
+                <h3 className="font-black text-slate-900 text-base">Detail Keranjang Anda</h3>
+              </div>
+              <button 
+                onClick={() => setIsMobileCartOpen(false)}
+                className="p-1.5 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Drawer Items */}
+            <div className="p-6 overflow-y-auto flex-1 divide-y divide-slate-100">
+              {cart.map((item) => (
+                <CartListItem key={item.cartItemId} item={item} onUpdateQuantity={updateQuantity} />
+              ))}
+            </div>
+
+            {/* Drawer Checkout */}
+            <div className="p-6 bg-slate-50 border-t border-slate-100 space-y-4">
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Tagihan</span>
+                <span className="text-xl font-black text-blue-700">Rp {getCartTotal().toLocaleString('id-ID')}</span>
+              </div>
+
+              <CheckoutForm 
+                customer={customer} 
+                setCustomer={setCustomer} 
+                onSubmit={handleCheckout} 
+              />
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ADMIN VERIFICATION MODAL */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div className="text-center space-y-2 mb-6">
+              <span className="p-3 bg-blue-50 text-blue-600 rounded-2xl inline-block"><Lock className="w-6 h-6" /></span>
+              <h3 className="font-extrabold text-lg text-slate-950">Verifikasi Dashboard</h3>
+              <p className="text-slate-500 text-xs">Akses terbatas hanya untuk administrator Rumah Susu.</p>
+            </div>
+
+            <form onSubmit={handleAdminLogin} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-widest mb-1.5">Kata Sandi Admin</label>
+                <input 
+                  type="password"
+                  required
+                  value={adminPasswordInput}
+                  onChange={(e) => setAdminPasswordInput(e.target.value)}
+                  placeholder="Masukkan kata sandi..."
+                  className="w-full border border-slate-200 rounded-xl p-3.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none font-bold text-center"
+                  autoFocus
+                />
+                <span className="text-[10px] text-slate-400 mt-2 block text-center italic">*Sandi default: admin123</span>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button 
+                  type="button" 
+                  onClick={() => setShowLoginModal(false)}
+                  className="flex-1 py-3 px-4 rounded-xl border border-slate-200 font-bold text-xs hover:bg-slate-50 text-slate-600"
+                >
+                  Batal
+                </button>
+                <button 
+                  type="submit" 
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md"
+                >
+                  Masuk Admin
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {}
+      {/* FOOTER */}
+      <footer className="bg-slate-950 text-slate-400 py-12 mt-16 border-t border-slate-900 text-xs text-center">
+        <div className="max-w-6xl mx-auto px-4 space-y-4">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-white font-black tracking-widest">🥛 RUMAH SUSU</span>
+            <span className="text-slate-800">|</span>
+            <span className="font-bold">Mbok Darmi Premium</span>
+          </div>
+          <p className="max-w-md mx-auto text-[11px] text-slate-500 leading-relaxed">
+            Menghadirkan kenikmatan susu murni dari peternakan lokal terbaik untuk gizi harian Anda yang maksimal.
+          </p>
+          <div className="pt-4 border-t border-slate-900 flex flex-wrap justify-center gap-6 text-[10px] text-slate-600">
+            <span>© 2026 Rumah Susu Mbok Darmi. All Rights Reserved.</span>
+            <span>Made with high aesthetics for Mobile & Desktop.</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+// HELPER COMPONENT: LIST ITEM KERANJANG
+function CartListItem({ item, onUpdateQuantity }) {
+  return (
+    <div className="py-4 flex justify-between items-start gap-2">
+      <div className="flex-1">
+        <h4 className="font-bold text-sm text-slate-800 tracking-tight">{item.name}</h4>
+        <div className="flex flex-wrap gap-1 mt-1">
+          <span className="bg-blue-50 text-blue-700 text-[9px] px-2 py-0.5 rounded-full font-bold">
+            {item.size}
+          </span>
+          <span className="bg-slate-50 text-slate-600 text-[9px] px-2 py-0.5 rounded-full font-bold">
+            Gula: {item.sugar}
+          </span>
+          {item.hasTopping && (
+            <span className="bg-amber-50 text-amber-700 text-[9px] px-2 py-0.5 rounded-full font-bold">
+              + Jelly
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-blue-600 font-extrabold mt-1.5">
+          Rp {item.price.toLocaleString('id-ID')} / pcs
+        </p>
+      </div>
+
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-1 bg-slate-50 rounded-lg p-0.5 border border-slate-100">
+          <button 
+            onClick={() => onUpdateQuantity(item.cartItemId, -1)}
+            className="bg-white hover:bg-slate-100 text-slate-700 p-1.5 rounded-md transition-colors shadow-sm"
+          >
+            <Minus className="w-3 h-3" />
+          </button>
+          <span className="text-xs font-extrabold px-2.5">{item.quantity}</span>
+          <button 
+            onClick={() => onUpdateQuantity(item.cartItemId, 1)}
+            className="bg-white hover:bg-slate-100 text-slate-700 p-1.5 rounded-md transition-colors shadow-sm"
+          >
+            <Plus className="w-3 h-3" />
+          </button>
+        </div>
+        <span className="text-xs font-black text-slate-800">
+          Rp {(item.price * item.quantity).toLocaleString('id-ID')}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// HELPER COMPONENT: CHECKOUT FORM
+function CheckoutForm({ customer, setCustomer, onSubmit }) {
+  return (
+    <form onSubmit={onSubmit} className="space-y-3 pt-4 border-t border-slate-100">
+      <div className="space-y-1">
+        <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+          <User className="w-3 h-3 text-blue-500" /> Nama Anda
+        </label>
+        <input 
+          type="text" 
+          required
+          value={customer.name}
+          onChange={(e) => setCustomer({...customer, name: e.target.value})}
+          placeholder="Isi nama pemesan..."
+          className="w-full text-xs border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-bold"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+          <Phone className="w-3 h-3 text-blue-500" /> WhatsApp
+        </label>
+        <input 
+          type="tel" 
+          required
+          value={customer.phone}
+          onChange={(e) => setCustomer({...customer, phone: e.target.value})}
+          placeholder="Contoh: 0812xxxxxxxx"
+          className="w-full text-xs border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-bold"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+          <MapPin className="w-3 h-3 text-blue-500" /> Nomor Meja / Alamat
+        </label>
+        <input 
+          type="text" 
+          required
+          value={customer.tableOrAddress}
+          onChange={(e) => setCustomer({...customer, tableOrAddress: e.target.value})}
+          placeholder="Meja 05 / Alamat Kirim..."
+          className="w-full text-xs border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-bold"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+          <CreditCard className="w-3 h-3 text-blue-500" /> Metode Bayar
+        </label>
+        <select
+          value={customer.paymentMethod}
+          onChange={(e) => setCustomer({...customer, paymentMethod: e.target.value})}
+          className="w-full text-xs border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white outline-none font-bold cursor-pointer"
+        >
+          <option value="Cash">Cash / Bayar di Kasir</option>
+          <option value="Qris">QRIS / E-Wallet</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 mt-4"
+      >
+        <MessageSquare className="w-4 h-4" /> Kirim Pesanan via WhatsApp
+      </button>
+    </form>
+  );
+}
