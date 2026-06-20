@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIONER - Prototype</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- TOP HEADER / CONTROL SIMULATOR -->
+    <div class="bg-slate-900 text-white px-4 py-3 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <div class="bg-teal-500 text-slate-950 p-1.5 rounded-lg font-bold flex items-center justify-center">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold tracking-wide">PIONER WORKFLOW</h1>
+                    <p class="text-xs text-teal-400">Interactive Prototype Simulator (Path B & C Only)</p>
+                </div>
+            </div>
+            
+            <!-- Simulator Control & Toggle Mode -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Mode Switcher -->
+                <div class="bg-slate-800 p-1 rounded-full border border-slate-700 flex">
+                    <button id="btn-visitor-mode" onclick="switchMode('visitor')" class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-teal-500 text-slate-950">
+                        <span class="flex items-center gap-1">
+                            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Tampilan Pengunjung (Landing Page)
+                        </span>
+                    </button>
+                    <button id="btn-admin-mode" onclick="switchMode('admin')" class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 text-slate-400 hover:text-white">
+                        <span class="flex items-center gap-1">
+                            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Dashboard Admin & Analitis
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Language Selector -->
+                <div class="flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+                    <button onclick="setLanguage('id')" id="lang-id" class="px-2.5 py-1 rounded text-xs font-bold transition bg-teal-500 text-slate-950">ID</button>
+                    <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1 rounded text-xs font-bold transition text-slate-400 hover:text-white">EN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+        
+        <!-- ==================== VISITOR LANDING PAGE ==================== -->
+        <div id="visitor-section" class="block transition-opacity duration-300">
+            <!-- Hero Banner -->
+            <section class="relative bg-gradient-to-r from-teal-900 via-slate-900 to-emerald-950 text-white py-16 px-6 overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#2dd4bf_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="max-w-6xl mx-auto relative z-10 text-center">
+                    <span class="bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase" id="hero-badge">
+                        Pendaftaran & Komunitas Kreatif
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold mt-4 leading-tight tracking-tight max-w-4xl mx-auto" id="hero-title">
+                        Bergabung & Kembangkan Bakat Digital Anda Bersama Kami
+                    </h2>
+                    <p class="text-slate-300 mt-4 text-base md:text-lg max-w-2xl mx-auto" id="hero-desc">
+                        PIONER adalah wadah kolaboratif yang mempertemukan Talenta Berbakat untuk saling berkolaborasi, mendapatkan kurasi portofolio, dan berbagi pembaruan komunitas kreatif.
+                    </p>
+                    <div class="mt-8 flex flex-wrap justify-center gap-4">
+                        <button onclick="scrollToElement('gatekeeping-form-section')" class="bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-teal-500/20 flex items-center gap-2">
+                            <span id="hero-cta-primary">Mulai Saringan Klasifikasi</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="scrollToElement('showcase-section')" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl border border-slate-700 transition flex items-center gap-2">
+                            <span id="hero-cta-secondary">Lihat Bakat Terbaik</span>
+                            <i data-lucide="users" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Info: Alur Kerja Penjelasan -->
+            <section class="max-w-6xl mx-auto px-6 py-8 -mt-8 relative z-20">
+                <div class="bg-white rounded-2xl p-6 shadow-xl border border-slate-100">
+                    <h3 class="text-center font-bold text-slate-500 uppercase tracking-widest text-xs mb-6" id="workflow-steps-title">ALUR KLASIFIKASI PENGUNJUNG KAMI</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Step B -->
+                        <div class="flex gap-4 p-4 rounded-xl hover:bg-teal-50/50 transition border border-transparent hover:border-teal-100">
+                            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="briefcase" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">1. Talent / Freelancer</h4>
+                                <p class="text-xs text-slate-500 mt-1" id="step-desc-b">Bagi yang ingin bergabung dengan tim kreatif dan memamerkan portofolio terbaik.</p>
+                                <span class="inline-block mt-2 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase" id="step-badge-b">Tindakan: Kurasi Tim Kreatif</span>
+                            </div>
+                        </div>
+                        <!-- Step C -->
+                        <div class="flex gap-4 p-4 rounded-xl hover:bg-teal-50/50 transition border border-transparent hover:border-teal-100">
+                            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="message-square-text" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm">2. Pengamat / Fans</h4>
+                                <p class="text-xs text-slate-500 mt-1" id="step-desc-c">Bagi pencinta komunitas yang ingin berlangganan newsletter dan gabung grup publik.</p>
+                                <span class="inline-block mt-2 text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full uppercase" id="step-badge-c">Tindakan: Buletin & Komunitas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GATEKEEPING FORM SECTION -->
+            <section id="gatekeeping-form-section" class="max-w-4xl mx-auto px-6 py-12">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-slate-900" id="form-title">Saringan Klasifikasi Pengunjung</h3>
+                    <p class="text-slate-500 text-sm mt-2" id="form-subtitle">Sila pilih identitas anda untuk memulakan pengisian borang pintar kami.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-lg">
+                    <!-- Progress Bar / Selector -->
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 text-center" id="form-select-label">PILIH KATEGORI ANDA</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="setFormCategory('B')" id="btn-cat-B" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-300 text-center bg-white border-teal-500 text-teal-600 ring-2 ring-teal-100">
+                                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">B</span>
+                                <span class="text-xs font-bold tracking-tight" id="cat-label-b">Talent / Freelancer</span>
+                            </button>
+                            <button onclick="setFormCategory('C')" id="btn-cat-C" class="flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-300 text-center bg-white border-slate-200 text-slate-600 hover:border-slate-300">
+                                <span class="bg-slate-100 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">C</span>
+                                <span class="text-xs font-bold tracking-tight" id="cat-label-c">Pengamat / Fans</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Forms -->
+                    <div class="p-6 sm:p-8">
+                        <form id="gatekeeper-form" onsubmit="handleFormSubmit(event)">
+
+                            <!-- Form B Fields (Talent) -->
+                            <div id="form-fields-B" class="space-y-4">
+                                <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex gap-3 mb-6">
+                                    <i data-lucide="info" class="w-5 h-5 text-blue-600 shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-blue-800 uppercase" id="form-info-title-b">ALUR PENDAFTARAN BAKAT (B)</h5>
+                                        <p class="text-xs text-blue-700 mt-1" id="form-info-desc-b">Profil Anda akan masuk ke database kurasi. Jika lolos seleksi, profil Anda akan langsung ditampilkan pada galeri bakat di bawah!</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-talent-name">Nama Penuh *</label>
+                                        <input type="text" id="talent-name" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition" placeholder="Contoh: Sarah Lestari">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-talent-role">Spesialisasi Kreatif *</label>
+                                        <select id="talent-role" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition bg-white">
+                                            <option value="UI/UX">UI/UX Designer</option>
+                                            <option value="Video Editor">Video Editor</option>
+                                            <option value="Copywriter">Copywriter</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-portfolio">Tautan Portofolio (URL) *</label>
+                                    <input type="url" id="talent-portfolio" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition" placeholder="https://behance.net/username atau https://drive.google.com/...">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-talent-skills">Keahlian Khusus (Pisahkan dengan Koma) *</label>
+                                        <input type="text" id="talent-skills" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition" placeholder="Contoh: Figma, Wireframing, Prototyping">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-talent-exp">Pengalaman Kerja *</label>
+                                        <select id="talent-exp" required class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition bg-white">
+                                            <option value="Junior (1-2 Tahun)">Junior (1-2 Tahun)</option>
+                                            <option value="Mid-Level (3-5 Tahun)">Mid-Level (3-5-Tahun)</option>
+                                            <option value="Senior (5+ Tahun)">Senior (5+ Tahun)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form C Fields (Observer / Fans) -->
+                            <div id="form-fields-C" class="hidden space-y-4">
+                                <div class="bg-purple-50 border border-purple-100 p-4 rounded-xl flex gap-3 mb-6">
+                                    <i data-lucide="info" class="w-5 h-5 text-purple-600 shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-purple-800 uppercase" id="form-info-title-c">ALUR PEMERHATI & FANS (C)</h5>
+                                        <p class="text-xs text-purple-700 mt-1" id="form-info-desc-c">Cukup masukkan email Anda untuk masuk ke daftar newsletter dan dapatkan tautan bergabung ke grup Telegram/Discord kami secara eksklusif.</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-fan-email">Alamat Email *</label>
+                                    <input type="email" id="fan-email" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-400 focus:outline-none text-sm transition" placeholder="Contoh: ryan@email.com">
+                                </div>
+                                <div class="flex items-start gap-2 pt-2">
+                                    <input type="checkbox" id="fan-agree" class="mt-1 accent-teal-600 rounded">
+                                    <label for="fan-agree" class="text-xs text-slate-500" id="lbl-newsletter-agree">Saya setuju menerima buletin berkala dan pembaruan dari Komunitas PIONER.</label>
+                                </div>
+                            </div>
+
+                            <!-- Form Footer & Submit Button -->
+                            <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-4">
+                                <p class="text-xs text-slate-400 flex items-center gap-1">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> <span id="security-note">Data Anda terlindungi dengan enkripsi aman.</span>
+                                </p>
+                                <button type="submit" class="bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition duration-150 flex items-center gap-2 shadow-lg shadow-teal-500/10">
+                                    <span id="btn-submit-text">Kirim Data Klasifikasi</span>
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SIMULATOR ACTION MODAL (POP UP NOTIFICATION BASED ON PATH) -->
+            <div id="action-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-all duration-300">
+                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div id="modal-icon-container" class="w-12 h-12 rounded-xl flex items-center justify-center text-white">
+                            <!-- Dynamic Icon via JS -->
+                        </div>
+                        <button onclick="closeActionModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100 transition">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    
+                    <h4 id="modal-title" class="text-xl font-bold text-slate-900">Judul Tindakan</h4>
+                    <span id="modal-badge" class="inline-block mt-1 text-[10px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">JALUR B</span>
+                    
+                    <div class="my-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-sm" id="modal-content">
+                        <!-- Dynamic Content -->
+                    </div>
+
+                    <div id="modal-action-box" class="mt-6 flex gap-2">
+                        <!-- Action buttons will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SHOWCASE TALENT TERBAIK SECTION -->
+            <section id="showcase-section" class="bg-slate-100/80 border-t border-b border-slate-200 py-16 px-6">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+                        <div>
+                            <span class="text-teal-600 text-xs font-bold tracking-widest uppercase" id="showcase-pretitle">KURASI TALENTA</span>
+                            <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1" id="showcase-title">Pameran Bakat Terbaik Kami</h3>
+                            <p class="text-slate-500 text-sm mt-1" id="showcase-subtitle">Berikut adalah para kreator top di komunitas yang telah tersaring dengan reputasi luar biasa.</p>
+                        </div>
+                        <!-- Filters -->
+                        <div class="flex flex-wrap gap-1.5 bg-white p-1 rounded-xl border border-slate-200 self-start md:self-center">
+                            <button onclick="filterTalent('All')" id="filter-All" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950">Semua</button>
+                            <button onclick="filterTalent('UI/UX')" id="filter-UI/UX" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-800">UI/UX</button>
+                            <button onclick="filterTalent('Video Editor')" id="filter-Video-Editor" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-800">Video Editor</button>
+                            <button onclick="filterTalent('Copywriter')" id="filter-Copywriter" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-800">Copywriter</button>
+                        </div>
+                    </div>
+
+                    <!-- Talent Cards Grid -->
+                    <div id="talent-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Talent Cards populated dynamically -->
+                    </div>
+
+                    <!-- Footer Action Buttons inside Showcase -->
+                    <div class="mt-12 flex flex-wrap justify-center gap-4 border-t border-slate-200 pt-8">
+                        <button onclick="showAllTalentAlert()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-md">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                            <span id="btn-view-all">LIHAT SEMUA BAKAT</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ==================== ADMIN DASHBOARD ==================== -->
+        <div id="admin-section" class="hidden transition-opacity duration-300 p-6 max-w-7xl mx-auto space-y-6">
+            
+            <!-- Admin Section Header -->
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-6 rounded-2xl text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold flex items-center gap-2">
+                        <span class="text-teal-400"><i data-lucide="shield-alert" class="w-7 h-7"></i></span> Panel Kendali Pengurus (B & C)
+                    </h2>
+                    <p class="text-slate-300 text-xs mt-1">Uji alur kerja pendaratan, simulasikan pelacakan UTM, dan pantau penyaringan data pengguna secara real-time.</p>
+                </div>
+                
+                <!-- Quick Reset / Simulator Help -->
+                <div class="bg-slate-800/80 border border-slate-700 p-3 rounded-xl flex items-center gap-3">
+                    <span class="text-xs text-slate-300 font-semibold">Simulasikan Lalu Lintas:</span>
+                    <div class="flex flex-wrap gap-1">
+                        <button onclick="simulateTraffic('LinkedIn')" class="bg-sky-600/30 text-sky-300 border border-sky-500/30 hover:bg-sky-600/50 px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1">
+                            <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> LinkedIn (+1)
+                        </button>
+                        <button onclick="simulateTraffic('Instagram')" class="bg-pink-600/30 text-pink-300 border border-pink-500/30 hover:bg-pink-600/50 px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1">
+                            <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Instagram (+1)
+                        </button>
+                        <button onclick="simulateTraffic('Google')" class="bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-600/50 px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1">
+                            <i data-lucide="search" class="w-3.5 h-3.5"></i> Google (+1)
+                        </button>
+                        <button onclick="simulateTraffic('Direct/Ads')" class="bg-teal-600/30 text-teal-300 border border-teal-500/30 hover:bg-teal-600/50 px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1">
+                            <i data-lucide="megaphone" class="w-3.5 h-3.5"></i> Iklan (+1)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS CARDS & CHARTS (Pantau Channel Sukses) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Traffic Sources (UTM Link Tracking) -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-sm tracking-wide uppercase flex items-center gap-1.5">
+                                <i data-lucide="link" class="text-teal-500 w-4 h-4"></i> Pelacakan UTM Sumber
+                            </h3>
+                            <span class="text-xs bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full font-bold uppercase">UTM Links</span>
+                        </div>
+                        <div class="space-y-3" id="utm-sources-list">
+                            <!-- Filled dynamically via JS -->
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span>Total Kunjungan Simulasi:</span>
+                        <span id="total-traffic-count" class="font-bold text-slate-700">0</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Conversion Metrics -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-sm tracking-wide uppercase flex items-center gap-1.5">
+                            <i data-lucide="trending-up" class="text-teal-500 w-4 h-4"></i> Saluran Konversi (Aktif)
+                        </h3>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold uppercase">Klasifikasi</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-blue-600">Jalur B: Talent / Freelancer</span>
+                                <span id="count-path-b">0 submissions</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="bar-path-b" class="bg-blue-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-purple-600">Jalur C: Pengamat / Fans</span>
+                                <span id="count-path-c">0 submissions</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="bar-path-c" class="bg-purple-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span>Pemberitahuan Sistem:</span>
+                        <span class="font-semibold text-teal-600">Alur Berfungsi Sempurna</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Quick Insights -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm tracking-wide uppercase mb-3 flex items-center gap-1.5">
+                            <i data-lucide="lightbulb" class="text-teal-500 w-4 h-4"></i> Ringkasan Alur Kerja
+                        </h3>
+                        <div class="text-xs text-slate-500 space-y-3 leading-relaxed">
+                            <div class="p-2.5 bg-blue-50 text-blue-900 rounded-lg border border-blue-100">
+                                <strong>Talenta (Path B):</strong> Mengisi info portofolio lalu langsung dikurasi ke database. Bakat baru langsung dimunculkan di halaman depan secara dinamis.
+                            </div>
+                            <div class="p-2.5 bg-purple-50 text-purple-900 rounded-lg border border-purple-100">
+                                <strong>Fans (Path C):</strong> Dimasukkan ke dalam antrean buletin berkala dan ditawarkan akses langsung ke grup Discord/Telegram.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMISSIONS DATA TABLE -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-1.5">
+                            <i data-lucide="database" class="text-teal-500 w-5 h-5"></i> Log Penyerahan Pengunjung (Klasifikasi Langsung)
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Semua data yang dimasukkan melalui formulir saringan depan akan terekam secara terperinci di sini berdasarkan kategorinya.</p>
+                    </div>
+                    <!-- Tab Category inside Admin Table -->
+                    <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                        <button onclick="setAdminTableTab('B')" id="admin-tab-B" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950">Bakat (Path B)</button>
+                        <button onclick="setAdminTableTab('C')" id="admin-tab-C" class="px-3 py-1 rounded-lg text-xs font-bold transition text-slate-500 hover:text-slate-800">Fans (Path C)</button>
+                    </div>
+                </div>
+
+                <!-- Table Content Container -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] font-bold border-b border-slate-200">
+                                <th class="py-3.5 px-6">Identitas Pengunjung</th>
+                                <th class="py-3.5 px-6">Informasi Kontak</th>
+                                <th class="py-3.5 px-6">Detail Klasifikasi</th>
+                                <th class="py-3.5 px-6">Tanggal Masuk</th>
+                                <th class="py-3.5 px-6 text-right">Status / Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissions-table-body" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Empty State -->
+                <div id="table-empty-state" class="hidden p-12 text-center text-slate-400">
+                    <i data-lucide="folder-open" class="w-12 h-12 mx-auto stroke-1 mb-2 text-slate-300"></i>
+                    <p class="font-semibold text-sm">Belum ada penyerahan data</p>
+                    <p class="text-xs mt-1">Coba isi formulir saringan di halaman utama pengunjung untuk melihat data di sini secara instan.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 px-6 text-center text-xs">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 Komunitas PIONER. Alur Kerja Interaktif berdasarkan Desain Blueprint (B & C Only).</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white transition">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-white transition">Syarat Ketentuan</a>
+                <a href="#" onclick="switchMode('admin'); scrollToElement('utm-sources-list')" class="text-teal-400 hover:text-teal-300 transition">Simulasi Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT & STATE MANAGEMENT -->
+    <script>
+        // Default Talents array (representing the 8 items from the uploaded image)
+        const initialTalents = [
+            { id: 1, name: "Andi R.", role: "UI/UX", rating: 5, avatarBg: "bg-teal-500", tag: "Premium" },
+            { id: 2, name: "Sarah L.", role: "Video Editor", rating: 5, avatarBg: "bg-sky-500", tag: "Featured" },
+            { id: 3, name: "Mark M.", role: "UI/UX", rating: 5, avatarBg: "bg-indigo-500", tag: "Top Rated" },
+            { id: 4, name: "Sarah R.", role: "Copywriter", rating: 4, avatarBg: "bg-amber-500", tag: "Verified" },
+            { id: 5, name: "Suna L.", role: "UI/UX", rating: 3, avatarBg: "bg-rose-500", tag: "" },
+            { id: 6, name: "Sarah R.", role: "Video Editor", rating: 4, avatarBg: "bg-emerald-500", tag: "Verified" },
+            { id: 7, name: "Sarah L.", role: "Copywriter", rating: 3, avatarBg: "bg-purple-500", tag: "" },
+            { id: 8, name: "Lami K.", role: "Copywriter", rating: 5, avatarBg: "bg-orange-500", tag: "Top Rated" }
+        ];
+
+        // Global State Variables (Paths B & C Only)
+        let state = {
+            lang: 'id',
+            mode: 'visitor', // visitor or admin
+            selectedCategory: 'B', // Default to B (Talent)
+            currentAdminTab: 'B', // Default to B (Talent)
+            filterCategory: 'All', // 'All', 'UI/UX', 'Video Editor', 'Copywriter'
+            traffic: {
+                LinkedIn: 10,
+                Instagram: 22,
+                Google: 8,
+                "Direct/Ads": 31
+            },
+            submissions: {
+                B: [
+                    { name: "Andi R.", contact: "https://behance.net/andir", details: "Keahlian: Figma, Wireframing, Web Design", extra: "UI/UX", extra2: "Senior (5+ Tahun)", date: "2026-06-18 10:15" },
+                    { name: "Lami K.", contact: "https://medium.com/lamik", details: "Keahlian: UX Writing, Branding, SEO Optimization", extra: "Copywriter", extra2: "Mid-Level (3-5 Tahun)", date: "2026-06-18 11:30" }
+                ],
+                C: [
+                    { name: "Fan Observer 1", contact: "fan1@gmail.com", details: "Berlangganan Newsletter & Komunitas", extra: "Joined", extra2: "", date: "2026-06-19 16:50" }
+                ]
+            }
+        };
+
+        // Text Translations for Multilingual (ID/EN) Support
+        const translations = {
+            id: {
+                heroBadge: "Pendaftaran & Komunitas Kreatif",
+                heroTitle: "Bergabung & Kembangkan Bakat Digital Anda Bersama Kami",
+                heroDesc: "PIONER adalah wadah kolaboratif yang mempertemukan Talenta Berbakat untuk saling berkolaborasi, mendapatkan kurasi portofolio, dan berbagi pembaruan komunitas kreatif.",
+                heroCtaPrimary: "Mulai Saringan Klasifikasi",
+                heroCtaSecondary: "Lihat Bakat Terbaik",
+                workflowTitle: "ALUR KLASIFIKASI PENGUNJUNG KAMI",
+                stepDescB: "Bagi yang ingin bergabung dengan tim kreatif dan memamerkan portofolio terbaik.",
+                stepBadgeB: "Tindakan: Kurasi Tim Kreatif",
+                stepDescC: "Bagi pencinta komunitas yang ingin berlangganan newsletter dan gabung grup publik.",
+                stepBadgeC: "Tindakan: Buletin & Komunitas",
+                formTitle: "Saringan Klasifikasi Pengunjung",
+                formSubtitle: "Pilih identitas Anda di bawah ini untuk memulai pengisian formulir privat kami.",
+                formSelectLabel: "PILIH KATEGORI ANDA",
+                catLabelb: "Talent / Freelancer",
+                catLabelc: "Pengamat / Fans",
+                formInfoTitleB: "ALUR PENDAFTARAN BAKAT (B)",
+                formInfoDescB: "Profil Anda akan masuk ke database kurasi. Jika lolos seleksi, profil Anda akan langsung ditampilkan pada galeri bakat di bawah!",
+                formInfoTitleC: "ALUR PEMERHATI & FANS (C)",
+                formInfoDescC: "Cukup masukkan email Anda untuk masuk ke daftar newsletter dan dapatkan tautan bergabung ke grup Telegram/Discord kami secara eksklusif.",
+                lblTalentName: "Nama Lengkap *",
+                lblTalentRole: "Spesialisasi Kreatif *",
+                lblPortfolio: "Tautan Portofolio (URL) *",
+                lblTalentSkills: "Keahlian Khusus (Pisahkan dengan Koma) *",
+                lblTalentExp: "Pengalaman Kerja *",
+                lblFanEmail: "Alamat Email *",
+                lblNewsletterAgree: "Saya setuju menerima buletin berkala dan pembaruan dari Komunitas PIONER.",
+                securityNote: "Data Anda terlindungi dengan enkripsi aman.",
+                btnSubmitText: "Kirim Data Klasifikasi",
+                showcasePretitle: "KURASI TALENTA",
+                showcaseTitle: "Pameran Bakat Terbaik Kami",
+                showcaseSubtitle: "Berikut adalah para kreator top di komunitas yang telah tersaring dengan reputasi luar biasa.",
+                btnViewAll: "LIHAT SEMUA BAKAT"
+            },
+            en: {
+                heroBadge: "Registration & Creative Community",
+                heroTitle: "Join & Grow Your Digital Talents with Our Community",
+                heroDesc: "PIONER is a collaborative hub connecting Skilled Talents to collaborate, get portfolio reviews, and receive creative community updates.",
+                heroCtaPrimary: "Start Gatekeeping Sieve",
+                heroCtaSecondary: "View Best Talents",
+                workflowTitle: "OUR VISITOR CLASSIFICATION WORKFLOW",
+                stepDescB: "For those looking to join the creative team and showcase their portfolios.",
+                stepBadgeB: "Action: Creative Team Curation",
+                stepDescC: "For community lovers looking to subscribe to newsletters & join public groups.",
+                stepBadgeC: "Action: Newsletter & Community",
+                formTitle: "Visitor Gatekeeping Form",
+                formSubtitle: "Choose your identity below to start filling out our smart classification form.",
+                formSelectLabel: "SELECT YOUR CATEGORY",
+                catLabelb: "Talent / Freelancer",
+                catLabelc: "Observer / Fans",
+                formInfoTitleB: "TALENT REGISTRATION FLOW (B)",
+                formInfoDescB: "Your profile will enter our curation database. Once curated, your profile will immediately join our showcase grid below!",
+                formInfoTitleC: "OBSERVER & FANS FLOW (C)",
+                formInfoDescC: "Just insert your email to get on our newsletter list and unlock the exclusive direct link to join our Discord/Telegram.",
+                lblTalentName: "Full Name *",
+                lblTalentRole: "Creative Specialization *",
+                lblPortfolio: "Portfolio Link (URL) *",
+                lblTalentSkills: "Special Skills (Comma Separated) *",
+                lblTalentExp: "Work Experience *",
+                lblFanEmail: "Email Address *",
+                lblNewsletterAgree: "I agree to receive newsletters and periodical updates from PIONER Community.",
+                securityNote: "Your data is secured with strong privacy encryption.",
+                btnSubmitText: "Submit Classification Form",
+                showcasePretitle: "TALENT SHOWCASE",
+                showcaseTitle: "Our Curated Top Talents",
+                showcaseSubtitle: "Meet our community's leading creators, screened and validated for supreme quality.",
+                btnViewAll: "VIEW ALL TALENTS"
+            }
+        };
+
+        // Switch Language function
+        function setLanguage(lang) {
+            state.lang = lang;
+            
+            // Toggle active classes on lang switcher buttons
+            const btnId = document.getElementById('lang-id');
+            const btnEn = document.getElementById('lang-en');
+            if (lang === 'id') {
+                btnId.className = "px-2.5 py-1 rounded text-xs font-bold transition bg-teal-500 text-slate-950";
+                btnEn.className = "px-2.5 py-1 rounded text-xs font-bold transition text-slate-400 hover:text-white";
+            } else {
+                btnEn.className = "px-2.5 py-1 rounded text-xs font-bold transition bg-teal-500 text-slate-950";
+                btnId.className = "px-2.5 py-1 rounded text-xs font-bold transition text-slate-400 hover:text-white";
+            }
+
+            // Translate Texts
+            const t = translations[lang];
+            document.getElementById('hero-badge').innerText = t.heroBadge;
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-desc').innerText = t.heroDesc;
+            document.getElementById('hero-cta-primary').innerText = t.heroCtaPrimary;
+            document.getElementById('hero-cta-secondary').innerText = t.heroCtaSecondary;
+            document.getElementById('workflow-steps-title').innerText = t.workflowTitle;
+            document.getElementById('step-desc-b').innerText = t.stepDescB;
+            document.getElementById('step-badge-b').innerText = t.stepBadgeB;
+            document.getElementById('step-desc-c').innerText = t.stepDescC;
+            document.getElementById('step-badge-c').innerText = t.stepBadgeC;
+            document.getElementById('form-title').innerText = t.formTitle;
+            document.getElementById('form-subtitle').innerText = t.formSubtitle;
+            document.getElementById('form-select-label').innerText = t.formSelectLabel;
+            
+            document.getElementById('cat-label-b').innerText = t.catLabelb;
+            document.getElementById('cat-label-c').innerText = t.catLabelc;
+
+            document.getElementById('form-info-title-b').innerText = t.formInfoTitleB;
+            document.getElementById('form-info-desc-b').innerText = t.formInfoDescB;
+            document.getElementById('form-info-title-c').innerText = t.formInfoTitleC;
+            document.getElementById('form-info-desc-c').innerText = t.formInfoDescC;
+
+            // Form Fields Labels
+            document.getElementById('lbl-talent-name').innerText = t.lblTalentName;
+            document.getElementById('lbl-talent-role').innerText = t.lblTalentRole;
+            document.getElementById('lbl-portfolio').innerText = t.lblPortfolio;
+            document.getElementById('lbl-talent-skills').innerText = t.lblTalentSkills;
+            document.getElementById('lbl-talent-exp').innerText = t.lblTalentExp;
+            document.getElementById('lbl-fan-email').innerText = t.lblFanEmail;
+            document.getElementById('lbl-newsletter-agree').innerText = t.lblNewsletterAgree;
+            document.getElementById('security-note').innerText = t.securityNote;
+            document.getElementById('btn-submit-text').innerText = t.btnSubmitText;
+
+            // Showcase
+            document.getElementById('showcase-pretitle').innerText = t.showcasePretitle;
+            document.getElementById('showcase-title').innerText = t.showcaseTitle;
+            document.getElementById('showcase-subtitle').innerText = t.showcaseSubtitle;
+            document.getElementById('btn-view-all').innerText = t.btnViewAll;
+        }
+
+        // Toggle Visitor/Admin Views
+        function switchMode(mode) {
+            state.mode = mode;
+            const visitorSec = document.getElementById('visitor-section');
+            const adminSec = document.getElementById('admin-section');
+            const btnVisitor = document.getElementById('btn-visitor-mode');
+            const btnAdmin = document.getElementById('btn-admin-mode');
+
+            if (mode === 'visitor') {
+                visitorSec.classList.remove('hidden');
+                adminSec.classList.add('hidden');
+                btnVisitor.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-teal-500 text-slate-950";
+                btnAdmin.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 text-slate-400 hover:text-white";
+            } else {
+                visitorSec.classList.add('hidden');
+                adminSec.classList.remove('hidden');
+                btnAdmin.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-teal-500 text-slate-950";
+                btnVisitor.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 text-slate-400 hover:text-white";
+                
+                // Refresh admin table and metrics
+                updateAnalyticsDashboard();
+                renderSubmissionsTable();
+            }
+        }
+
+        // Handle Active Sieve Category Selection (Paths B and C)
+        function setFormCategory(cat) {
+            state.selectedCategory = cat;
+            
+            // Reset categories buttons UI style
+            ['B', 'C'].forEach(c => {
+                const btn = document.getElementById(`btn-cat-${c}`);
+                if (c === cat) {
+                    btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-300 text-center bg-white border-teal-500 text-teal-600 ring-2 ring-teal-100";
+                } else {
+                    btn.className = "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-300 text-center bg-white border-slate-200 text-slate-600 hover:border-slate-300";
+                }
+            });
+
+            // Toggle input field displays
+            document.getElementById('form-fields-B').classList.add('hidden');
+            document.getElementById('form-fields-C').classList.add('hidden');
+            
+            document.getElementById(`form-fields-${cat}`).classList.remove('hidden');
+
+            // Set validation fields requirement depending on the active form
+            const talentInputs = ['talent-name', 'talent-portfolio', 'talent-skills'];
+            const fanInputs = ['fan-email'];
+
+            talentInputs.forEach(id => document.getElementById(id).required = (cat === 'B'));
+            fanInputs.forEach(id => document.getElementById(id).required = (cat === 'C'));
+        }
+
+        // Form Submission Logic (Paths B, C)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const now = new Date();
+            const formattedDate = now.toISOString().replace('T', ' ').substring(0, 16);
+            let actionData = {};
+
+            if (state.selectedCategory === 'B') {
+                // Talent Classification
+                const name = document.getElementById('talent-name').value;
+                const role = document.getElementById('talent-role').value;
+                const portfolio = document.getElementById('talent-portfolio').value;
+                const skills = document.getElementById('talent-skills').value;
+                const exp = document.getElementById('talent-exp').value;
+
+                actionData = {
+                    name,
+                    contact: portfolio,
+                    details: `Keahlian: ${skills}`,
+                    extra: role,
+                    extra2: exp,
+                    date: formattedDate
+                };
+
+                state.submissions.B.push(actionData);
+                
+                // Add talent dynamically to Showcase in real-time!
+                const newTalent = {
+                    id: Date.now(),
+                    name: name,
+                    role: role,
+                    rating: 5,
+                    avatarBg: "bg-teal-600",
+                    tag: "Baru / New"
+                };
+                initialTalents.unshift(newTalent); // Add to beginning of array
+                renderTalents(); // Redraw grid
+
+                showActionModal('B', actionData);
+                document.getElementById('talent-name').value = '';
+                document.getElementById('talent-portfolio').value = '';
+                document.getElementById('talent-skills').value = '';
+
+            } else {
+                // Fans Classification
+                const email = document.getElementById('fan-email').value;
+                
+                actionData = {
+                    name: "Observer",
+                    contact: email,
+                    details: "Berlangganan Newsletter & Komunitas",
+                    extra: "Active Subscriber",
+                    extra2: "",
+                    date: formattedDate
+                };
+
+                state.submissions.C.push(actionData);
+                showActionModal('C', actionData);
+                document.getElementById('fan-email').value = '';
+                document.getElementById('fan-agree').checked = false;
+            }
+
+            // Update metrics
+            updateAnalyticsDashboard();
+        }
+
+        // Open custom Modal detailing the specific follow-up actions matching diagram blueprint
+        function showActionModal(path, data) {
+            const modal = document.getElementById('action-modal');
+            const iconBox = document.getElementById('modal-icon-container');
+            const title = document.getElementById('modal-title');
+            const badge = document.getElementById('modal-badge');
+            const content = document.getElementById('modal-content');
+            const actionBox = document.getElementById('modal-action-box');
+
+            modal.classList.remove('hidden');
+
+            if (path === 'B') {
+                iconBox.className = "w-12 h-12 rounded-xl flex items-center justify-center bg-blue-500 text-white shadow-lg";
+                iconBox.innerHTML = '<i data-lucide="clipboard-check" class="w-6 h-6"></i>';
+                badge.innerText = state.lang === 'id' ? 'Jalur B - Kurasi Bakat' : 'Path B - Talent Curation';
+                badge.className = "inline-block mt-1 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full tracking-wider uppercase bg-blue-100 text-blue-800 border border-blue-200";
+
+                title.innerText = state.lang === 'id' ? 'Pendaftaran Sukses!' : 'Talent Registered!';
+                content.innerHTML = `
+                    <div class="space-y-2">
+                        <p><strong>Terima kasih, ${data.name}!</strong> Informasi portofolio Anda telah kami kirimkan ke tim kreatif.</p>
+                        <p class="text-xs text-slate-500"><strong>Spesialisasi:</strong> ${data.extra} | <strong>Pengalaman:</strong> ${data.extra2}</p>
+                        <p class="text-xs text-slate-500"><strong>Tautan Portofolio:</strong> <a href="${data.contact}" target="_blank" class="text-blue-500 hover:underline">${data.contact}</a></p>
+                        <div class="p-3 bg-blue-50 rounded-lg text-xs border border-blue-200 text-blue-800 mt-2">
+                            <strong>Aksi Sistem Selanjutnya:</strong> Profil Anda telah otomatis diposisikan dalam status antrean kurasi. Kami telah menambahkan profil simulasi Anda di daftar "Showcase Talent Terbaik" di bawah!
+                        </div>
+                    </div>
+                `;
+                actionBox.innerHTML = `
+                    <button onclick="scrollToElement('showcase-section'); closeActionModal();" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-xl text-xs transition duration-150 flex items-center justify-center gap-1">
+                        <i data-lucide="arrow-down" class="w-4 h-4"></i> Lihat Profil Saya di Galeri Bakat
+                    </button>
+                `;
+            } else {
+                iconBox.className = "w-12 h-12 rounded-xl flex items-center justify-center bg-purple-500 text-white shadow-lg";
+                iconBox.innerHTML = '<i data-lucide="mail-check" class="w-6 h-6"></i>';
+                badge.innerText = state.lang === 'id' ? 'Jalur C - Komunitas Publik' : 'Path C - Community Fan';
+                badge.className = "inline-block mt-1 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full tracking-wider uppercase bg-purple-100 text-purple-800 border border-purple-200";
+
+                title.innerText = state.lang === 'id' ? 'Pemerhati Baru Terdaftar' : 'Subscriber Added!';
+                content.innerHTML = `
+                    <div class="space-y-2">
+                        <p><strong>Selamat Datang di Komunitas!</strong> Email Anda <strong>${data.contact}</strong> telah ditambahkan ke antrean newsletter.</p>
+                        <div class="p-3 bg-purple-50 rounded-lg text-xs border border-purple-200 text-purple-800 mt-2">
+                            <strong>Aksi Sistem Selanjutnya:</strong> Kami mengirimkan buletin eksklusif tiap minggu. Gunakan tautan di bawah ini untuk langsung bergabung dengan komunitas publik kami.
+                        </div>
+                    </div>
+                `;
+                actionBox.innerHTML = `
+                    <a href="https://discord.gg" target="_blank" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-center font-bold py-2 px-4 rounded-xl text-xs transition duration-150 flex items-center justify-center gap-1">
+                        <i class="w-4 h-4" data-lucide="arrow-right-circle"></i> Gabung Discord Publik (Simulasi)
+                    </a>
+                `;
+            }
+
+            lucide.createIcons();
+        }
+
+        // Close Action Modal
+        function closeActionModal() {
+            document.getElementById('action-modal').classList.add('hidden');
+        }
+
+        // Handle Talent Sorting & Render
+        function filterTalent(category) {
+            state.filterCategory = category;
+            
+            const categories = ['All', 'UI/UX', 'Video-Editor', 'Copywriter'];
+            categories.forEach(c => {
+                const id = `filter-${c}`;
+                const btn = document.getElementById(id);
+                const actualC = c.replace('-', ' ');
+                if (actualC === category) {
+                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950 shadow-sm";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-800";
+                }
+            });
+
+            renderTalents();
+        }
+
+        // Render Talent Cards based on filter & current items
+        function renderTalents() {
+            const grid = document.getElementById('talent-grid');
+            grid.innerHTML = '';
+
+            const filtered = initialTalents.filter(t => state.filterCategory === 'All' || t.role === state.filterCategory);
+
+            filtered.forEach(talent => {
+                let stars = '';
+                for (let i = 0; i < 5; i++) {
+                    if (i < talent.rating) {
+                        stars += '★';
+                    } else {
+                        stars += '☆';
+                    }
+                }
+
+                // Initial Name Circle generator
+                const initials = talent.name.split(' ').map(n => n[0]).join('');
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 hover:border-teal-400 hover:shadow-xl transition-all duration-300 relative group flex flex-col justify-between">
+                        <div>
+                            <!-- Badge -->
+                            ${talent.tag ? `
+                                <span class="absolute top-4 right-4 bg-teal-50 text-teal-700 border border-teal-200 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                    ${talent.tag}
+                                </span>
+                            ` : ''}
+
+                            <!-- Profile Header -->
+                            <div class="flex items-center gap-3.5 mb-4">
+                                <div class="w-12 h-12 rounded-full ${talent.avatarBg} text-white font-extrabold flex items-center justify-center shadow-inner tracking-wide shrink-0">
+                                    ${initials}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm group-hover:text-teal-600 transition">${talent.name}</h4>
+                                    <p class="text-slate-400 text-xs">${talent.role}</p>
+                                </div>
+                            </div>
+
+                            <!-- Rating -->
+                            <div class="text-amber-500 font-semibold text-xs tracking-wider mb-2 flex items-center gap-1">
+                                <span class="text-sm tracking-normal">${stars}</span>
+                                <span class="text-slate-400 text-[10px]">(${talent.rating}.0)</span>
+                            </div>
+                        </div>
+
+                        <!-- Card CTA Action (Cleaned from Buyer actions) -->
+                        <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <span class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-teal-500"></i> Terverifikasi
+                            </span>
+                            <span class="text-[10px] text-slate-400 font-medium">Pioner Member</span>
+                        </div>
+                    </div>
+                `;
+
+                grid.innerHTML += cardHtml;
+            });
+
+            lucide.createIcons();
+        }
+
+        // View All Talent Alert Mock
+        function showAllTalentAlert() {
+            alert(state.lang === 'id' ? 
+                "Semua talenta terverifikasi kami telah ditampilkan di galeri utama ini secara interaktif!" : 
+                "All of our verified talents are currently listed in this main interactive showcase!");
+        }
+
+        // Simulate traffic UTM hit (Increases score)
+        function simulateTraffic(source) {
+            if (state.traffic[source] !== undefined) {
+                state.traffic[source]++;
+                updateAnalyticsDashboard();
+            }
+        }
+
+        // Refresh and Update Dashboard Metrics in real-time
+        function updateAnalyticsDashboard() {
+            // Count total
+            const total = Object.values(state.traffic).reduce((a, b) => a + b, 0);
+            document.getElementById('total-traffic-count').innerText = total;
+
+            // Render Sources List
+            const listContainer = document.getElementById('utm-sources-list');
+            listContainer.innerHTML = '';
+
+            const icons = {
+                LinkedIn: "linkedin",
+                Instagram: "instagram",
+                Google: "search",
+                "Direct/Ads": "megaphone"
+            };
+
+            const colors = {
+                LinkedIn: "text-sky-500 bg-sky-50",
+                Instagram: "text-pink-500 bg-pink-50",
+                Google: "text-emerald-500 bg-emerald-50",
+                "Direct/Ads": "text-teal-500 bg-teal-50"
+            };
+
+            for (const [source, count] of Object.entries(state.traffic)) {
+                const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+                listContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-2 rounded-xl border border-slate-100 hover:border-slate-200 transition">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg ${colors[source]} flex items-center justify-center shrink-0">
+                                <i data-lucide="${icons[source]}" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-xs">${source}</h4>
+                                <p class="text-[10px] text-slate-400">utm_source=${source.toLowerCase()}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-extrabold text-xs text-slate-700">${count}</span>
+                            <span class="text-[10px] text-slate-400 block">${percent}%</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Update Conversion Channels
+            const countB = state.submissions.B.length;
+            const countC = state.submissions.C.length;
+            const totalSub = countB + countC;
+
+            document.getElementById('count-path-b').innerText = `${countB} penyerahan / ${state.lang === 'id' ? 'Bakat Baru' : 'New Talents'}`;
+            document.getElementById('count-path-c').innerText = `${countC} penyerahan / ${state.lang === 'id' ? 'Fans' : 'Fans'}`;
+
+            // Set ProgressBar widths dynamically
+            const calcPercent = (count) => totalSub > 0 ? (count / totalSub) * 100 : 0;
+            document.getElementById('bar-path-b').style.width = `${calcPercent(countB)}%`;
+            document.getElementById('bar-path-c').style.width = `${calcPercent(countC)}%`;
+
+            lucide.createIcons();
+        }
+
+        // Change Admin Active Tab Data Table
+        function setAdminTableTab(tab) {
+            state.currentAdminTab = tab;
+            ['B', 'C'].forEach(t => {
+                const btn = document.getElementById(`admin-tab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition bg-teal-500 text-slate-950 shadow";
+                } else {
+                    btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition text-slate-500 hover:text-slate-800";
+                }
+            });
+
+            renderSubmissionsTable();
+        }
+
+        // Render Submissions Data inside Admin View
+        function renderSubmissionsTable() {
+            const tableBody = document.getElementById('submissions-table-body');
+            const emptyState = document.getElementById('table-empty-state');
+            const data = state.submissions[state.currentAdminTab];
+
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            data.forEach((item, index) => {
+                let classificationBadge = '';
+                let detailsHtml = '';
+
+                if (state.currentAdminTab === 'B') {
+                    classificationBadge = `<span class="bg-blue-100 text-blue-800 border border-blue-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">BAKAT (B)</span>`;
+                    detailsHtml = `
+                        <div>
+                            <div class="font-bold text-slate-800">Spesialisasi: ${item.extra}</div>
+                            <div class="text-[10px] text-slate-500 mt-0.5">${item.details}</div>
+                            <div class="text-[10px] text-slate-400">Pengalaman: ${item.extra2}</div>
+                        </div>
+                    `;
+                } else {
+                    classificationBadge = `<span class="bg-purple-100 text-purple-800 border border-purple-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">FANS (C)</span>`;
+                    detailsHtml = `
+                        <div>
+                            <div class="font-bold text-slate-800">Langganan Buletin</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">Status: Aktif Masuk Database</div>
+                        </div>
+                    `;
+                }
+
+                // Table Rows
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-50/50 transition duration-150">
+                        <td class="py-3.5 px-6">
+                            <div class="font-bold text-slate-800">${item.name}</div>
+                            <div class="text-slate-400 text-[10px]">${classificationBadge}</div>
+                        </td>
+                        <td class="py-3.5 px-6 font-semibold text-slate-600">
+                            ${state.currentAdminTab === 'B' ? `<a href="${item.contact}" target="_blank" class="text-blue-500 hover:underline flex items-center gap-0.5"><i data-lucide="link" class="w-3 h-3"></i> Portofolio</a>` : item.contact}
+                        </td>
+                        <td class="py-3.5 px-6">${detailsHtml}</td>
+                        <td class="py-3.5 px-6 text-slate-400 text-[11px]">${item.date}</td>
+                        <td class="py-3.5 px-6 text-right">
+                            <button onclick="simulateProcessAction(${index})" class="text-xs bg-slate-900 text-teal-400 hover:bg-slate-800 font-bold px-3 py-1.5 rounded-lg transition">
+                                Jalankan Aksi
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            lucide.createIcons();
+        }
+
+        // Simulate Action inside Admin Logs (simulates notifying sales, curation email, etc.)
+        function simulateProcessAction(index) {
+            const tab = state.currentAdminTab;
+            const item = state.submissions[tab][index];
+
+            if (tab === 'B') {
+                alert(`[SIMULASI ALUR B] Mengirim email otomatis kurasi kepada ${item.name}!\n\nTautan Portofolio: ${item.contact}\nStatus: Profil ditambahkan langsung ke database terverifikasi.`);
+            } else {
+                alert(`[SIMULASI ALUR C] Mengirimkan pesan selamat bergabung di Komunitas PIONER ke email ${item.contact}!\n\nEmail ditambahkan ke antrean Mailchimp/Sendgrid.`);
+            }
+        }
+
+        // Utility: Scroll Smoothly to Section
+        function scrollToElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            lucide.createIcons();
+            setFormCategory('B');
+            renderTalents();
+            updateAnalyticsDashboard();
+        }
+    </script>
+</body>
+</html>
