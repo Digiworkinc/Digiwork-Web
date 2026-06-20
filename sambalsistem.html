@@ -294,8 +294,14 @@
                     <button onclick="openModal('expense')" class="bg-zinc-950 hover:bg-zinc-800 border border-brand-border text-[10px] font-black uppercase text-zinc-200 px-3 py-2 rounded-xl flex items-center gap-1.5">
                         ➕ Tambah Beban
                     </button>
-                    <button onclick="exportGoogleSheetsSim()" class="bg-emerald-600 hover:bg-emerald-700 text-zinc-950 font-black text-[10px] uppercase px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
-                        💾 Sinkron Google Sheets
+                    <button onclick="downloadSpreadsheetCSV()" class="bg-zinc-950 hover:bg-zinc-850 border border-brand-border text-[10px] font-black uppercase text-blue-400 px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all" title="Unduh laporan aktif ke format Microsoft Excel / CSV">
+                        📥 Unduh CSV
+                    </button>
+                    <button onclick="openGoogleSheetsLink()" class="bg-emerald-600 hover:bg-emerald-700 text-zinc-950 font-black text-[10px] uppercase px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
+                        💚 Buka Google Sheets
+                    </button>
+                    <button onclick="openSheetsConfigModal()" class="p-2 bg-zinc-950 hover:bg-zinc-800 border border-brand-border rounded-xl text-zinc-400 hover:text-white transition-colors" title="Atur Tautan Google Spreadsheet">
+                        ⚙️
                     </button>
                 </div>
             </div>
@@ -552,6 +558,24 @@
         </div>
     </div>
 
+    <!-- MODAL 5: GOOGLE SHEETS TAUTAN CONFIGURATION -->
+    <div id="modal-sheets-config" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-zinc-900 rounded-2xl border border-brand-border p-6 w-full max-w-md flex flex-col gap-4 shadow-2xl">
+            <h3 class="font-black text-sm uppercase tracking-wider text-zinc-100">Atur Tautan Google Spreadsheet</h3>
+            <div class="flex flex-col gap-2 text-xs">
+                <label class="text-zinc-400 font-black uppercase text-[9px]">Masukkan URL Google Spreadsheet Anda</label>
+                <input type="url" id="input-sheets-url" placeholder="https://docs.google.com/spreadsheets/d/..." class="bg-zinc-950 border border-brand-border rounded-xl px-3 py-2.5 text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-orange text-xs" />
+                <p class="text-[10px] text-zinc-500 leading-relaxed">
+                    Sistem akan membuka tautan eksternal ini secara otomatis di tab baru ketika Anda menekan tombol <strong class="text-emerald-400">"Buka Google Sheets"</strong>.
+                </p>
+            </div>
+            <div class="flex justify-end gap-2 mt-2 text-xs">
+                <button type="button" onclick="closeSheetsConfigModal()" class="px-4 py-2 border border-brand-border hover:bg-zinc-800 rounded-xl text-zinc-400 font-bold">Batal</button>
+                <button type="button" onclick="saveSheetsConfig()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-zinc-950 font-bold rounded-xl">Simpan Tautan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== LOGIC ENGINE / JAVASCRIPT ==================== -->
     <script>
         
@@ -580,6 +604,9 @@
             sheetTab: 'pemasukan',
             sheetSearch: ''
         };
+
+        // Inisialisasi Tautan Google Sheets Eksternal dari LocalStorage
+        let sheetsUrl = localStorage.getItem('nampol_sheets_url') || 'https://sheets.google.com';
 
         function saveToLocalStorage() {
             localStorage.setItem('nampol_menu_clean', JSON.stringify(state.menu));
@@ -1149,6 +1176,92 @@
             document.getElementById('sheet-summary-omset').innerText = `Rp ${sumOmset.toLocaleString('id-ID')}`;
             document.getElementById('sheet-summary-beban').innerText = `Rp ${sumBeban.toLocaleString('id-ID')}`;
             document.getElementById('sheet-balance-total').innerText = `Rp ${(sumOmset - sumBeban - sumLossRetur).toLocaleString('id-ID')}`;
+        }
+
+        // FUNGSI BARU: Mengunduh Laporan Aktif rill dalam bentuk berkas CSV
+        function downloadSpreadsheetCSV() {
+            const term = state.sheetSearch.toLowerCase();
+            let filteredData = [];
+            let filename = "";
+
+            if (state.sheetTab === 'pemasukan') {
+                filteredData = state.transactions.filter(t => 
+                    t.id.toLowerCase().includes(term) ||
+                    t.pelanggan.toLowerCase().includes(term) ||
+                    t.items.some(i => i.nama.toLowerCase().includes(term))
+                );
+                filename = `laporan_pemasukan_sambal_nampol_${new Date().toISOString().split('T')[0]}.csv`;
+            } else {
+                filteredData = state.expenses.filter(e =>
+                    e.id.toLowerCase().includes(term) ||
+                    e.kategori.toLowerCase().includes(term) ||
+                    e.catatan.toLowerCase().includes(term)
+                );
+                filename = `laporan_pengeluaran_sambal_nampol_${new Date().toISOString().split('T')[0]}.csv`;
+            }
+
+            if (filteredData.length === 0) {
+                triggerToast("Tidak ada baris data laporan untuk diunduh!", "error");
+                return;
+            }
+
+            // Membangun file CSV dengan standard UTF-8 BOM agar rapi saat dibuka di Microsoft Excel
+            let csvContent = "\uFEFF"; 
+            csvContent += "Kode ID,Tanggal,Keterangan Item,Kategori/Metode Pembayaran,Entitas/Pelanggan,Nominal Rupiah\n";
+
+            filteredData.forEach(row => {
+                const dateStr = new Date(row.tanggal).toLocaleString('id-ID');
+                const itemsLabel = state.sheetTab === 'pemasukan' 
+                    ? row.items.map(i => `${i.nama} (Lvl ${i.level} x ${i.qty})`).join(' | ')
+                    : row.catatan;
+                const categoryLabel = state.sheetTab === 'pemasukan' ? row.metode : row.kategori;
+                const entitasLabel = state.sheetTab === 'pemasukan' ? row.pelanggan : "Dapur Produksi";
+                const amount = state.sheetTab === 'pemasukan' ? row.total : row.nominal;
+
+                // Membersihkan koma dari deskripsi teks untuk menjaga integritas pembagi kolom CSV
+                const safeItemsLabel = itemsLabel.replace(/,/g, ' ');
+
+                csvContent += `"${row.id}","${dateStr}","${safeItemsLabel}","${categoryLabel}","${entitasLabel}",${amount}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.setAttribute("href", url);
+            anchor.setAttribute("download", filename);
+            anchor.style.visibility = 'hidden';
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+
+            triggerToast("Laporan spreadsheet berhasil diunduh!");
+        }
+
+        // FUNGSI BARU: Manajemen Tautan Google Sheets Eksternal
+        function openSheetsConfigModal() {
+            document.getElementById('input-sheets-url').value = sheetsUrl;
+            document.getElementById('modal-sheets-config').classList.remove('hidden');
+        }
+
+        function closeSheetsConfigModal() {
+            document.getElementById('modal-sheets-config').classList.add('hidden');
+        }
+
+        function saveSheetsConfig() {
+            const inputUrl = document.getElementById('input-sheets-url').value.trim();
+            if (inputUrl) {
+                sheetsUrl = inputUrl;
+                localStorage.setItem('nampol_sheets_url', sheetsUrl);
+                triggerToast("Tautan Google Sheets berhasil diperbarui!");
+                closeSheetsConfigModal();
+            } else {
+                triggerToast("Tautan URL tidak valid!", "error");
+            }
+        }
+
+        function openGoogleSheetsLink() {
+            window.open(sheetsUrl, '_blank');
+            triggerToast("Membuka spreadsheet di tab baru...");
         }
 
         function exportGoogleSheetsSim() {
