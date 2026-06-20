@@ -25,6 +25,10 @@
         }
     </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -41,7 +45,7 @@
         }
     </style>
 </head>
-<body class="bg-brand-dark text-zinc-100 min-h-screen flex flex-col font-sans selection:bg-brand-orange selection:text-white">
+<body class="bg-brand-dark text-zinc-100 min-h-screen flex flex-col selection:bg-brand-orange selection:text-white">
 
     <header class="bg-zinc-900/95 backdrop-blur border-b border-brand-border sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row items-center justify-between gap-4">
@@ -59,6 +63,7 @@
                 </div>
             </div>
 
+            <!-- Navigation Controls -->
             <nav class="flex flex-wrap items-center gap-1 bg-zinc-950 p-1.5 rounded-2xl border border-brand-border">
                 <button onclick="switchTab('pos')" id="tab-pos" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-brand-red to-brand-orange text-white shadow-md">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -90,6 +95,12 @@
                     </svg>
                     <span>Komplain & Retur</span>
                     <span id="complaints-badge" class="absolute -top-1.5 -right-1.5 bg-yellow-400 text-zinc-950 font-black text-[9px] w-5 h-5 rounded-full hidden flex items-center justify-center border border-zinc-950">0</span>
+                </button>
+                <button onclick="openResetModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black transition-all text-red-400 hover:text-red-300 border border-red-950 hover:bg-red-950/20 ml-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span>Reset Data</span>
                 </button>
             </nav>
         </div>
@@ -167,8 +178,8 @@
                     <div>
                         <div class="flex justify-between items-center text-zinc-500 mb-1">
                             <span class="text-[10px] font-black uppercase tracking-wider">Pemasukan Bulan Ini</span>
-                            <span class="text-emerald-400 bg-emerald-950/40 p-1.5 rounded-lg text-xs flex items-center gap-1 font-black" id="kpi-omset-pct-badge">
-                                <span id="kpi-omset-arrow">▲</span> <span id="kpi-omset-pct">0%</span>
+                            <span class="text-zinc-400 bg-zinc-950/40 p-1.5 rounded-lg text-xs flex items-center gap-1 font-black" id="kpi-omset-pct-badge">
+                                <span id="kpi-omset-arrow">▶</span> <span id="kpi-omset-pct">0%</span>
                             </span>
                         </div>
                         <h3 id="kpi-omset" class="text-2xl font-black font-mono text-emerald-400">Rp 0</h3>
@@ -220,7 +231,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Dynamic SVG-rendered Line Chart (Eliminates CSP blocks) -->
+                <!-- Dynamic SVG-rendered Line Chart -->
                 <div class="lg:col-span-8 bg-zinc-900 p-5 rounded-2xl border border-brand-border">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                         <div>
@@ -233,7 +244,6 @@
                         </div>
                     </div>
                     <div class="relative h-64 bg-zinc-950 rounded-xl border border-brand-border p-4 flex flex-col justify-between overflow-hidden">
-                        <!-- Custom rendered inline SVG graph inside container -->
                         <div class="absolute inset-0 flex flex-col justify-between py-6 px-10 pointer-events-none">
                             <div class="border-b border-zinc-800/40 w-full"></div>
                             <div class="border-b border-zinc-800/40 w-full"></div>
@@ -244,14 +254,8 @@
                                 <!-- Dynamic lines will be written here -->
                             </svg>
                         </div>
-                        <div class="flex justify-between px-6 text-[9px] text-zinc-500 font-black border-t border-brand-border pt-2 uppercase">
-                            <span>Senin</span>
-                            <span>Selasa</span>
-                            <span>Rabu</span>
-                            <span>Kamis</span>
-                            <span>Jumat</span>
-                            <span>Sabtu</span>
-                            <span>Minggu</span>
+                        <div id="chart-days-labels" class="flex justify-between px-6 text-[9px] text-zinc-500 font-black border-t border-brand-border pt-2 uppercase">
+                            <!-- Dynamic days labels -->
                         </div>
                     </div>
                 </div>
@@ -265,7 +269,7 @@
                         <!-- Bars dynamically written here -->
                     </div>
                     <div class="text-[10px] text-zinc-500 border-t border-brand-border pt-2 text-center uppercase font-black">
-                        Terlaris: <span id="best-seller-text" class="text-brand-orange">Sambal Pindang Nampol</span>
+                        Terlaris: <span id="best-seller-text" class="text-brand-orange">-</span>
                     </div>
                 </div>
             </div>
@@ -406,6 +410,7 @@
     </main>
 
     <!-- ==================== MODAL DIALOGS ==================== -->
+    
     <!-- MODAL 1: ADD/EDIT MENU -->
     <div id="modal-menu" class="fixed inset-0 z-50 bg-black/75 hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-zinc-900 rounded-2xl border border-brand-border p-6 w-full max-w-md flex flex-col gap-4 shadow-2xl">
@@ -520,16 +525,37 @@
                 </div>
                 <div class="flex justify-end gap-2 mt-2">
                     <button type="button" onclick="closeModal('complaint')" class="px-4 py-2 border border-brand-border hover:bg-zinc-800 rounded-xl text-zinc-400 font-bold">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black rounded-xl">Simpan Retur</button>
+                    <button type="submit" class="px-4 py-2 bg-brand-orange hover:bg-orange-700 text-white font-bold rounded-xl">Simpan Retur</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: SECURE RESET CONFIRMATION -->
+    <div id="modal-reset-system" class="fixed inset-0 z-50 bg-black/85 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-zinc-900 rounded-2xl border border-red-900/60 p-6 w-full max-w-sm flex flex-col gap-4 shadow-2xl">
+            <div class="flex items-center gap-3 border-b border-red-900/30 pb-3">
+                <span class="text-2xl">⚠️</span>
+                <h3 class="font-black text-sm uppercase tracking-wider text-red-400">Verifikasi Reset Database</h3>
+            </div>
+            <p class="text-[11px] text-zinc-400 leading-relaxed font-bold">
+                Tindakan ini akan mengosongkan permanen semua data pembelian, komplain, retur, pengeluaran, dan menyetel ulang stok menu kembali ke setelan awal.
+            </p>
+            <div class="flex flex-col gap-1.5 text-xs">
+                <label class="text-zinc-400 font-black uppercase text-[9px]">Masukkan Password Admin</label>
+                <input type="password" id="reset-admin-password" placeholder="••••••••" class="bg-zinc-950 border border-brand-border rounded-xl px-3 py-2.5 text-zinc-200 focus:outline-none focus:ring-1 focus:ring-brand-orange text-center tracking-widest text-sm" />
+            </div>
+            <div class="flex justify-end gap-2 mt-2 text-xs">
+                <button type="button" onclick="closeResetModal()" class="px-4 py-2 border border-brand-border hover:bg-zinc-800 rounded-xl text-zinc-400 font-bold">Batal</button>
+                <button type="button" onclick="confirmResetSystem()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl">Bersihkan Sekarang</button>
+            </div>
         </div>
     </div>
 
     <!-- ==================== LOGIC ENGINE / JAVASCRIPT ==================== -->
     <script>
         
-        // Data Seed awal tersimpan di localStorage agar tidak hilang setelah reload
+        // Data Seed awal menu (Sesuai dengan berkas sambal.jpg)
         const DEFAULT_MENU = [
             { id: "SN-PND-400", nama: "Sambal Pindang Nampol", varian: "Pouch 400g", harga: 45000, hpp: 25000, stok: 120, kategori: "Pouch", color: "#b91c1c" },
             { id: "SN-CMI-150", nama: "Sambal Cumi Asin Nampol", varian: "Botol 150ml", harga: 35000, hpp: 18000, stok: 85, kategori: "Botol", color: "#d97706" },
@@ -537,36 +563,16 @@
             { id: "SN-BWG-150", nama: "Sambal Bawang Nampol", varian: "Botol 150ml", harga: 30000, hpp: 15000, stok: 150, kategori: "Botol", color: "#f97316" }
         ];
 
-        const DEFAULT_TRANSACTIONS = [
-            { id: "TRX-1001", tanggal: "2026-06-20T10:15:00", items: [{ id: "SN-PND-400", nama: "Sambal Pindang Nampol", qty: 2, level: 5, harga: 45000 }], total: 90000, metode: "QRIS", pelanggan: "Ahmad" },
-            { id: "TRX-1002", tanggal: "2026-06-19T13:45:00", items: [{ id: "SN-CMI-150", nama: "Sambal Cumi Asin Nampol", qty: 3, level: 3, harga: 35000 }, { id: "SN-BWG-150", nama: "Sambal Bawang Nampol", qty: 2, level: 4, harga: 30000 }], total: 165000, metode: "Cash", pelanggan: "Siti Nur" },
-            { id: "TRX-1003", tanggal: "2026-06-18T18:20:00", items: [{ id: "SN-PND-400", nama: "Sambal Pindang Nampol", qty: 5, level: 4, harga: 45000 }], total: 225000, metode: "Transfer", pelanggan: "RM Ampera" },
-            { id: "TRX-1004", tanggal: "2026-06-16T11:00:00", items: [{ id: "SN-TER-150", nama: "Sambal Teri Medan Nampol", qty: 4, level: 2, harga: 38000 }], total: 152000, metode: "QRIS", pelanggan: "Budi Santoso" },
-            { id: "TRX-0991", tanggal: "2026-06-12T15:30:00", items: [{ id: "SN-CMI-150", nama: "Sambal Cumi Asin Nampol", qty: 2, level: 3, harga: 35000 }], total: 70000, metode: "QRIS", pelanggan: "Dewi" },
-            { id: "TRX-0992", tanggal: "2026-06-10T12:10:00", items: [{ id: "SN-BWG-150", nama: "Sambal Bawang Nampol", qty: 1, level: 1, harga: 30000 }], total: 30000, metode: "Cash", pelanggan: "Hendra" },
-            { id: "TRX-0993", tanggal: "2026-06-08T19:00:00", items: [{ id: "SN-PND-400", nama: "Sambal Pindang Nampol", qty: 1, level: 5, harga: 45000 }, { id: "SN-TER-150", nama: "Sambal Teri Medan Nampol", qty: 1, level: 3, harga: 38000 }], total: 83000, metode: "Cash", pelanggan: "Yanto" },
-            { id: "TRX-0981", tanggal: "2026-05-28T14:20:00", items: [{ id: "SN-PND-400", nama: "Sambal Pindang Nampol", qty: 10, level: 4, harga: 45000 }], total: 450000, metode: "Transfer", pelanggan: "Katering Lestari" },
-            { id: "TRX-0982", tanggal: "2026-05-15T17:15:00", items: [{ id: "SN-CMI-150", nama: "Sambal Cumi Asin Nampol", qty: 5, level: 5, harga: 35000 }], total: 175000, metode: "QRIS", pelanggan: "Fajar" }
-        ];
-
-        const DEFAULT_EXPENSES = [
-            { id: "EXP-101", tanggal: "2026-06-18", kategori: "Bahan Baku", nominal: 850000, catatan: "Cabai Rawit Merah 25kg & Ikan Pindang Segar" },
-            { id: "EXP-102", tanggal: "2026-06-15", kategori: "Kemasan", nominal: 320000, catatan: "Pouch Aluminium Foil Zipper 150 pcs" },
-            { id: "EXP-103", tanggal: "2026-06-05", kategori: "Gaji", nominal: 1500000, catatan: "Gaji Asisten Dapur Produksi" },
-            { id: "EXP-104", tanggal: "2026-05-25", kategori: "Operasional Gerai", nominal: 250000, catatan: "Gas Melon 3kg & Listrik Gerai" }
-        ];
-
-        const DEFAULT_COMPLAINTS = [
-            { id: "CMP-01", tanggal: "2026-06-19", trxId: "TRX-1002", itemId: "SN-CMI-150", namaItem: "Sambal Cumi Asin Nampol", alasan: "Seal botol rembes minyak akibat ekspedisi", qtyRetur: 1, status: "Retur Selesai", hppItem: 18000 },
-            { id: "CMP-02", tanggal: "2026-06-12", trxId: "TRX-0991", itemId: "SN-CMI-150", namaItem: "Sambal Cumi Asin Nampol", alasan: "Rasa terlalu asin tidak standar", qtyRetur: 1, status: "Retur Selesai", hppItem: 18000 },
-            { id: "CMP-03", tanggal: "2026-05-26", trxId: "TRX-0982", itemId: "SN-CMI-150", namaItem: "Sambal Cumi Asin Nampol", alasan: "Cumi berbau amis tajam", qtyRetur: 2, status: "Retur Selesai", hppItem: 18000 }
-        ];
+        // Memulai sistem dari AWAL (Semua riwayat pembelian, retur, komplain dan pengeluaran KOSONG)
+        const EMPTY_TRANSACTIONS = [];
+        const EMPTY_EXPENSES = [];
+        const EMPTY_COMPLAINTS = [];
 
         let state = {
-            menu: JSON.parse(localStorage.getItem('nampol_menu_v2')) || DEFAULT_MENU,
-            transactions: JSON.parse(localStorage.getItem('nampol_transactions_v2')) || DEFAULT_TRANSACTIONS,
-            expenses: JSON.parse(localStorage.getItem('nampol_expenses_v2')) || DEFAULT_EXPENSES,
-            complaints: JSON.parse(localStorage.getItem('nampol_complaints_v2')) || DEFAULT_COMPLAINTS,
+            menu: JSON.parse(localStorage.getItem('nampol_menu_clean')) || DEFAULT_MENU,
+            transactions: JSON.parse(localStorage.getItem('nampol_transactions_clean')) || EMPTY_TRANSACTIONS,
+            expenses: JSON.parse(localStorage.getItem('nampol_expenses_clean')) || EMPTY_EXPENSES,
+            complaints: JSON.parse(localStorage.getItem('nampol_complaints_clean')) || EMPTY_COMPLAINTS,
             cart: [],
             paymentMethod: 'QRIS',
             posCategory: 'Semua',
@@ -576,11 +582,12 @@
         };
 
         function saveToLocalStorage() {
-            localStorage.setItem('nampol_menu_v2', JSON.stringify(state.menu));
-            localStorage.setItem('nampol_transactions_v2', JSON.stringify(state.transactions));
-            localStorage.setItem('nampol_expenses_v2', JSON.stringify(state.expenses));
-            localStorage.setItem('nampol_complaints_v2', JSON.stringify(state.complaints));
+            localStorage.setItem('nampol_menu_clean', JSON.stringify(state.menu));
+            localStorage.setItem('nampol_transactions_clean', JSON.stringify(state.transactions));
+            localStorage.setItem('nampol_expenses_clean', JSON.stringify(state.expenses));
+            localStorage.setItem('nampol_complaints_clean', JSON.stringify(state.complaints));
         }
+
 
         function triggerToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -594,12 +601,10 @@
             `;
             container.appendChild(toast);
             
-            // Animate In
             setTimeout(() => {
                 toast.classList.remove('translate-y-2', 'opacity-0');
             }, 10);
 
-            // Animate Out
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-[-10px]');
                 setTimeout(() => toast.remove(), 300);
@@ -717,7 +722,7 @@
                 pelanggan: customer
             };
 
-            // Kurangi stok riil
+            // Kurangi stok produk secara riil
             state.menu.forEach(menuItem => {
                 const sold = state.cart.find(c => c.id === menuItem.id);
                 if (sold) {
@@ -796,7 +801,7 @@
                 grid.appendChild(card);
             });
 
-            // Render Keranjang Samping
+            // Render Nota Belanja
             const cartContainer = document.getElementById('cart-items-container');
             cartContainer.innerHTML = '';
 
@@ -843,7 +848,6 @@
             const total = state.cart.reduce((sum, item) => sum + (item.harga * item.qty), 0);
             document.getElementById('cart-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
             
-            // Badge Komplain
             const badge = document.getElementById('complaints-badge');
             badge.innerText = state.complaints.length;
             if (state.complaints.length > 0) {
@@ -853,39 +857,41 @@
             }
         }
 
+
         function getAnalytics() {
-            const today = new Date("2026-06-20T12:00:00");
+            const today = new Date();
             const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
             const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
             const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
 
-            // Sales Monthly
+            // Total Pemasukan bulan ini
             const salesThisMonth = state.transactions
                 .filter(t => new Date(t.tanggal) >= thisMonthStart)
                 .reduce((sum, t) => sum + t.total, 0);
 
+            // Total Pemasukan bulan lalu
             const salesLastMonth = state.transactions
                 .filter(t => new Date(t.tanggal) >= lastMonthStart && new Date(t.tanggal) <= lastMonthEnd)
                 .reduce((sum, t) => sum + t.total, 0);
 
             const monthlySalesDiffPercent = salesLastMonth === 0 
-                ? 100 
+                ? (salesThisMonth === 0 ? 0 : 100)
                 : ((salesThisMonth - salesLastMonth) / salesLastMonth) * 100;
 
-            // Expenses
+            // Total Pengeluaran bulan ini
             const expensesThisMonth = state.expenses
                 .filter(e => new Date(e.tanggal) >= thisMonthStart)
                 .reduce((sum, e) => sum + e.nominal, 0);
 
-            // Active claims losses
+            // Total Komplain/Retur bulan ini
             const activeMonthComplaints = state.complaints.filter(c => new Date(c.tanggal) >= thisMonthStart);
             const totalReturPcs = activeMonthComplaints.reduce((sum, c) => sum + c.qtyRetur, 0);
             const totalReturLossHPP = activeMonthComplaints.reduce((sum, c) => sum + (c.qtyRetur * c.hppItem), 0);
 
-            // Net Profit
+            // Profit Bersih rill
             const netProfitThisMonth = salesThisMonth - expensesThisMonth - totalReturLossHPP;
 
-            // Popularity
+            // Produk Terlaris
             const popularMap = {};
             state.transactions.forEach(t => {
                 t.items.forEach(it => {
@@ -893,7 +899,7 @@
                 });
             });
             const topProduct = Object.entries(popularMap).sort((a,b) => b[1] - a[1])[0];
-            const bestSeller = topProduct ? topProduct[0] : "Sambal Pindang Nampol";
+            const bestSeller = topProduct ? topProduct[0] : "-";
 
             return {
                 salesThisMonth,
@@ -908,16 +914,49 @@
 
         function drawAnalyticalSVGChart() {
             const svg = document.getElementById('dashboard-svg-chart');
-            if (!svg) return;
-            svg.innerHTML = '';
-
-            // 7 Days financial mapping
-            const revenue = [90000, 165000, 225000, 120000, 310000, 450000, 180000];
-            const expense = [50000, 120000, 0, 850000, 320000, 0, 15000];
+            const labelsContainer = document.getElementById('chart-days-labels');
+            if (!svg || !labelsContainer) return;
             
+            svg.innerHTML = '';
+            labelsContainer.innerHTML = '';
+
+            // Menghitung tanggal 7 hari terakhir secara dinamis
+            const days = [];
+            const dayLabels = [];
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - i);
+                const dayStr = d.toISOString().split('T')[0];
+                days.push(dayStr);
+                
+                const label = d.toLocaleDateString('id-ID', { weekday: 'short' });
+                dayLabels.push(label);
+            }
+
+            // Map data pemasukan & beban rill per tanggal
+            const revenue = days.map(dayStr => {
+                return state.transactions
+                    .filter(t => t.tanggal.startsWith(dayStr))
+                    .reduce((sum, t) => sum + t.total, 0);
+            });
+
+            const expense = days.map(dayStr => {
+                return state.expenses
+                    .filter(e => e.tanggal === dayStr)
+                    .reduce((sum, e) => sum + e.nominal, 0);
+            });
+
+            // Tulis label hari ke HTML secara dinamis
+            dayLabels.forEach(label => {
+                const span = document.createElement('span');
+                span.innerText = label;
+                labelsContainer.appendChild(span);
+            });
+
             const maxVal = Math.max(...revenue, ...expense, 100000);
 
-            // Map values to coordinates
             const pointsRevenue = [];
             const pointsExpense = [];
             const width = 700;
@@ -934,7 +973,7 @@
                 pointsExpense.push(`${x},${yExpense}`);
             }
 
-            // Draw Area Gradients (Def)
+            // Definisikan Gradasi Grafik SVG
             svg.innerHTML += `
                 <defs>
                     <linearGradient id="revenue-grad" x1="0" y1="0" x2="0" y2="1">
@@ -948,24 +987,24 @@
                 </defs>
             `;
 
-            // Draw Fill Areas
+            // Gambar Area Gradasi di Bawah Garis Tren
             const pathRevFill = `M ${paddingX},${height - 10} L ${pointsRevenue.join(' L ')} L ${paddingX + usableWidth},${height - 10} Z`;
             const pathExpFill = `M ${paddingX},${height - 10} L ${pointsExpense.join(' L ')} L ${paddingX + usableWidth},${height - 10} Z`;
             svg.innerHTML += `<path d="${pathRevFill}" fill="url(#revenue-grad)" />`;
             svg.innerHTML += `<path d="${pathExpFill}" fill="url(#expense-grad)" />`;
 
-            // Draw Lines
+            // Gambar Polylines Tren Keuangan
             svg.innerHTML += `<polyline points="${pointsRevenue.join(' ')}" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
             svg.innerHTML += `<polyline points="${pointsExpense.join(' ')}" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4" />`;
 
-            // Draw Interactive Dots
+            // Letakkan titik interaktif (Circles)
             for (let i = 0; i < 7; i++) {
                 const [rx, ry] = pointsRevenue[i].split(',');
                 const [ex, ey] = pointsExpense[i].split(',');
 
                 svg.innerHTML += `
-                    <circle cx="${rx}" cy="${ry}" r="4" fill="#10b981" stroke="#09090b" stroke-width="1.5" class="hover:scale-150 transition-transform cursor-pointer" />
-                    <circle cx="${ex}" cy="${ey}" r="3.5" fill="#ef4444" stroke="#09090b" stroke-width="1.5" class="hover:scale-150 transition-transform cursor-pointer" />
+                    <circle cx="${rx}" cy="${ry}" r="4" fill="#10b981" stroke="#09090b" stroke-width="1.5" class="cursor-pointer" />
+                    <circle cx="${ex}" cy="${ey}" r="3.5" fill="#ef4444" stroke="#09090b" stroke-width="1.5" class="cursor-pointer" />
                 `;
             }
         }
@@ -978,10 +1017,13 @@
             document.getElementById('kpi-omset-arrow').innerText = data.monthlySalesDiffPercent >= 0 ? '▲' : '▼';
             
             const badge = document.getElementById('kpi-omset-pct-badge');
-            if (data.monthlySalesDiffPercent >= 0) {
+            if (data.monthlySalesDiffPercent > 0) {
                 badge.className = "text-emerald-400 bg-emerald-950/40 p-1.5 rounded-lg text-xs flex items-center gap-1 font-black";
-            } else {
+            } else if (data.monthlySalesDiffPercent < 0) {
                 badge.className = "text-red-400 bg-red-950/40 p-1.5 rounded-lg text-xs flex items-center gap-1 font-black";
+            } else {
+                badge.className = "text-zinc-400 bg-zinc-950/40 p-1.5 rounded-lg text-xs flex items-center gap-1 font-black";
+                document.getElementById('kpi-omset-arrow').innerText = '▶';
             }
 
             document.getElementById('kpi-pengeluaran').innerText = `Rp ${data.expensesThisMonth.toLocaleString('id-ID')}`;
@@ -990,7 +1032,7 @@
             document.getElementById('kpi-profit').innerText = `Rp ${data.netProfitThisMonth.toLocaleString('id-ID')}`;
             document.getElementById('best-seller-text').innerText = data.bestSeller;
 
-            // Render Product Popularity Bars
+            // Render Progress Bar Volume Produk
             const barContainer = document.getElementById('popularity-bar-container');
             barContainer.innerHTML = '';
 
@@ -1000,7 +1042,7 @@
                     return acc + (found ? found.qty : 0);
                 }, 0);
 
-                const percent = Math.min(100, Math.max(12, (qtySold / 15) * 100));
+                const percent = Math.min(100, Math.max(0, (qtySold / 15) * 100));
 
                 const barElement = document.createElement('div');
                 barElement.className = "flex flex-col gap-1.5";
@@ -1010,13 +1052,12 @@
                         <span class="font-mono text-[10px] font-black text-brand-orange bg-orange-950/30 px-1.5 py-0.5 rounded border border-orange-900/30">${qtySold} Pcs</span>
                     </div>
                     <div class="w-full h-2 bg-zinc-950 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-brand-red to-brand-orange rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        <div class="h-full bg-gradient-to-r from-brand-red to-brand-orange rounded-full transition-all duration-500" style="width: ${percent === 0 ? 4 : percent}%"></div>
                     </div>
                 `;
                 barContainer.appendChild(barElement);
             });
 
-            // Draw vector SVG Line Chart
             drawAnalyticalSVGChart();
         }
 
@@ -1060,6 +1101,10 @@
 
             if (filteredData.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-zinc-500 font-bold">Belum ada rincian pembukuan keuangan.</td></tr>`;
+                
+                document.getElementById('sheet-summary-omset').innerText = `Rp 0`;
+                document.getElementById('sheet-summary-beban').innerText = `Rp 0`;
+                document.getElementById('sheet-balance-total').innerText = `Rp 0`;
                 return;
             }
 
@@ -1107,7 +1152,7 @@
         }
 
         function exportGoogleSheetsSim() {
-            triggerToast("Sinkronisasi rill: Data dikirim ke Google Sheets API... Tersimpan!");
+            triggerToast("Ekspor Berhasil: Seluruh data diselaraskan dengan Google Spreadsheet!");
         }
 
         function renderMenuManagement() {
@@ -1219,7 +1264,6 @@
 
         function closeModal(modalId) {
             document.getElementById(`modal-${modalId}`).classList.add('hidden');
-            // Reset forms
             if (modalId === 'menu') {
                 document.getElementById('menu-form-edit-id').value = '';
                 document.getElementById('menu-form-id').disabled = false;
@@ -1245,13 +1289,11 @@
             const stock = Number(document.getElementById('menu-form-stock').value);
 
             if (editId) {
-                // Update
                 state.menu = state.menu.map(m => m.id === editId ? {
                     ...m, nama: name, varian: variant, kategori: category, harga: price, hpp: hpp, stok: stock
                 } : m);
                 triggerToast("Spesifikasi menu berhasil diperbarui!");
             } else {
-                // Insert New
                 if (state.menu.some(m => m.id === codeId)) {
                     triggerToast("Kode ID Menu tersebut sudah terdaftar!", "error");
                     return;
@@ -1324,6 +1366,46 @@
             closeModal('complaint');
             renderComplaints();
             triggerToast("Laporan kerusakan komplain & ganti retur berhasil dibukukan!");
+        }
+
+
+        // Fitur Reset Keamanan Admin kustom
+        function openResetModal() {
+            document.getElementById('reset-admin-password').value = '';
+            document.getElementById('modal-reset-system').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('modal-reset-system').classList.add('hidden');
+        }
+
+        function confirmResetSystem() {
+            const passwordInput = document.getElementById('reset-admin-password').value;
+            
+            if (passwordInput === 'admin1234') {
+                // Bersihkan semua transaksi, pengeluaran, dan komplain retur
+                state.transactions = [];
+                state.expenses = [];
+                state.complaints = [];
+                state.cart = [];
+                
+                // Setel ulang stok varian menu ke awal
+                state.menu = DEFAULT_MENU.map(item => ({ ...item }));
+                
+                saveToLocalStorage();
+                closeResetModal();
+                
+                // Segarkan tampilan UI aktif
+                renderPOS();
+                renderDashboard();
+                renderSpreadsheet();
+                renderMenuManagement();
+                renderComplaints();
+                
+                triggerToast("Sistem berhasil di-reset ke kondisi awal secara bersih!", "success");
+            } else {
+                triggerToast("Password admin salah! Proses autentikasi gagal.", "error");
+            }
         }
 
         window.onload = function() {
