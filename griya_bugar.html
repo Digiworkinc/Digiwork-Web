@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Griya Bugar - Modern Wellness Luxury</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400..900;1,400..900&family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBrown: '#4A3728',
+                        brandGold: '#C8A76A',
+                        brandGoldDark: '#B59356',
+                        brandCream: '#F5F1E8',
+                        brandCreamDark: '#EAE4D5',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-glow {
+            box-shadow: 0 4px 20px -2px rgba(200, 167, 106, 0.2);
+        }
+        .gold-glow-hover:hover {
+            box-shadow: 0 10px 30px -5px rgba(200, 167, 106, 0.4);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F1E8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C8A76A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4A3728;
+        }
+    </style>
+</head>
+<body class="bg-brandCream text-brandBrown font-sans antialiased min-h-screen flex flex-col selection:bg-brandGold selection:text-brandBrown">
+
+    <!-- Custom elegant Toast Notification container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 pointer-events-none flex flex-col gap-3"></div>
+
+    <!-- Smart Location Prompt -->
+    <div id="location-prompt" class="fixed bottom-6 left-6 z-50 max-w-sm bg-white border border-brandGold/30 rounded-xl p-5 shadow-2xl transition-all duration-500 transform translate-y-20 opacity-0 hidden">
+        <div class="flex items-start gap-4">
+            <div class="bg-brandGold/10 p-3 rounded-full text-brandGold">
+                <i class="fa-solid fa-map-pin text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-semibold text-brandBrown text-sm" data-i18n="loc_prompt_title">Izinkan Akses Lokasi?</h4>
+                <p class="text-xs text-brandBrown/70 mt-1" data-i18n="loc_prompt_desc">Kami akan merekomendasikan cabang Griya Bugar terdekat dari posisi Anda saat ini.</p>
+                <div class="mt-4 flex gap-3">
+                    <button onclick="handleLocationPermission(true)" class="bg-brandGold hover:bg-brandGoldDark text-white text-xs font-semibold py-2 px-4 rounded transition" data-i18n="loc_prompt_yes">Ya, Izinkan</button>
+                    <button onclick="handleLocationPermission(false)" class="border border-brandBrown/20 hover:bg-brandCream text-brandBrown text-xs font-semibold py-2 px-3 rounded transition" data-i18n="loc_prompt_no">Nanti Saja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Recommendation Alert (Post Location Approval) -->
+    <div id="location-recommendation" class="fixed bottom-6 left-6 z-50 max-w-xs bg-brandBrown text-white rounded-xl p-4 shadow-2xl transition-all duration-500 transform translate-y-20 opacity-0 hidden border border-brandGold/40">
+        <div class="flex justify-between items-start">
+            <span class="text-xs font-semibold tracking-wider text-brandGold uppercase" data-i18n="loc_rec_tag">Cabang Terdekat Terdeteksi</span>
+            <button onclick="dismissRecommendation()" class="text-white/60 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p class="font-serif text-lg mt-1 text-brandCream">Griya Bugar Yogyakarta</p>
+        <p class="text-xs text-brandCream/70 mt-1"><i class="fa-solid fa-clock mr-1 text-brandGold"></i> <span data-i18n="loc_rec_open">Buka 24 Jam • Layanan Lengkap</span></p>
+        <div class="mt-3 flex gap-2">
+            <button onclick="viewBranchDetail('yogyakarta')" class="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-semibold text-xs py-2 px-3 rounded transition w-full text-center" data-i18n="loc_rec_detail">Detail Cabang</button>
+            <button onclick="navigateToPage('booking')" class="bg-transparent border border-brandGold/50 hover:bg-brandGold/20 text-brandGold text-xs py-2 px-3 rounded transition w-full text-center">Booking</button>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Main Float Button -->
+        <button id="wa-float-btn" onclick="toggleWaWidget()" class="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 relative group">
+            <i class="fa-brands fa-whatsapp text-3xl"></i>
+            <span class="absolute right-16 bg-brandBrown text-white font-medium text-xs py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300" data-i18n="wa_float_tooltip">Hubungi Cabang Kami</span>
+        </button>
+        <!-- WhatsApp Expandable Card -->
+        <div id="wa-expandable-card" class="absolute bottom-18 right-0 mb-4 w-72 bg-white rounded-xl shadow-2xl border border-brandGold/20 overflow-hidden transform scale-95 opacity-0 pointer-events-none transition-all duration-300">
+            <div class="bg-brandBrown p-4 text-white">
+                <h4 class="font-serif text-lg text-brandGold">Griya Bugar Care</h4>
+                <p class="text-xs text-brandCream/80 mt-1" data-i18n="wa_card_desc">Silakan pilih cabang terdekat untuk langsung berkonsultasi via WhatsApp.</p>
+            </div>
+            <div class="p-3 divide-y divide-brandCream-dark/50">
+                <a href="https://wa.me/6281234567891?text=Halo%20Griya%20Bugar%20Yogyakarta" id="wa-link-jogja" target="_blank" class="flex items-center justify-between py-2.5 px-2 hover:bg-brandCream rounded transition">
+                    <div>
+                        <p class="text-xs font-semibold text-brandBrown">Griya Bugar Yogyakarta</p>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="wa_online_24">Online 24 Jam</span></p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                </a>
+                <a href="https://wa.me/6281234567892?text=Halo%20Griya%20Bugar%20Jakarta" id="wa-link-jakarta" target="_blank" class="flex items-center justify-between py-2.5 px-2 hover:bg-brandCream rounded transition">
+                    <div>
+                        <p class="text-xs font-semibold text-brandBrown">Griya Bugar Jakarta</p>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="wa_online">Online</span></p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                </a>
+                <a href="https://wa.me/6281234567893?text=Halo%20Griya%20Bugar%20Surabaya" id="wa-link-surabaya" target="_blank" class="flex items-center justify-between py-2.5 px-2 hover:bg-brandCream rounded transition">
+                    <div>
+                        <p class="text-xs font-semibold text-brandBrown">Griya Bugar Surabaya</p>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="wa_online">Online</span></p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                </a>
+                <a href="https://wa.me/6281234567894?text=Halo%20Griya%20Bugar%20Bandung" id="wa-link-bandung" target="_blank" class="flex items-center justify-between py-2.5 px-2 hover:bg-brandCream rounded transition">
+                    <div>
+                        <p class="text-xs font-semibold text-brandBrown">Griya Bugar Bandung</p>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="wa_online">Online</span></p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                </a>
+                <a href="https://wa.me/6281234567895?text=Halo%20Griya%20Bugar%20Bali" id="wa-link-bali" target="_blank" class="flex items-center justify-between py-2.5 px-2 hover:bg-brandCream rounded transition">
+                    <div>
+                        <p class="text-xs font-semibold text-brandBrown">Griya Bugar Bali</p>
+                        <p class="text-[10px] text-emerald-600"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="wa_online">Online</span></p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER & NAVBAR -->
+    <header class="sticky top-0 z-40 bg-brandBrown text-white border-b border-brandGold/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="navigateToPage('home')">
+                    <span class="font-serif text-2xl tracking-widest text-brandGold font-bold">GRIYA BUGAR</span>
+                    <span class="block text-[9px] tracking-[0.25em] text-brandCream uppercase" data-i18n="subbrand">Modern Wellness Luxury</span>
+                </div>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                    <button onclick="navigateToPage('home')" class="nav-link text-brandCream hover:text-brandGold transition py-2" data-i18n="nav_home">Home</button>
+                    <button onclick="navigateToPage('about')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_about">Tentang Kami</button>
+                    <button onclick="navigateToPage('services')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_services">Layanan</button>
+                    <button onclick="navigateToPage('branches')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_branches">Cabang</button>
+                    <button onclick="navigateToPage('promos')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_promos">Promo</button>
+                    <button onclick="navigateToPage('articles')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_articles">Artikel</button>
+                    <button onclick="navigateToPage('franchise')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_franchise">Franchise</button>
+                    <button onclick="navigateToPage('contact')" class="nav-link text-brandCream/80 hover:text-brandGold transition py-2" data-i18n="nav_contact">Kontak</button>
+                </nav>
+
+                <!-- Action Button, Language Toggle & Dashboard Toggle -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Language Switcher Button -->
+                    <div class="flex items-center bg-brandCream/10 border border-brandGold/30 rounded-lg p-0.5 text-xs">
+                        <button onclick="changeLanguage('id')" id="lang-id-btn" class="px-2.5 py-1 rounded font-bold transition duration-300 bg-brandGold text-brandBrown">ID</button>
+                        <button onclick="changeLanguage('en')" id="lang-en-btn" class="px-2.5 py-1 rounded font-bold transition duration-300 text-brandCream/80 hover:text-brandGold">EN</button>
+                    </div>
+
+                    <button onclick="navigateToPage('dashboard')" class="text-xs bg-transparent hover:bg-white/5 border border-brandGold text-brandGold py-2 px-3 rounded-lg transition flex items-center gap-1.5 font-medium">
+                        <i class="fa-solid fa-chart-line"></i> <span data-i18n="nav_demo_dashboard">Demo Dashboard</span>
+                    </button>
+                    <button onclick="navigateToPage('booking')" class="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-semibold text-xs py-2.5 px-5 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                        🟨 <span data-i18n="nav_booking_btn">Booking Sekarang</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button & Language Indicator -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <!-- Small Language Selector for Mobile -->
+                    <select onchange="changeLanguage(this.value)" id="lang-mobile-select" class="bg-brandBrown text-brandGold border border-brandGold/30 text-xs font-bold rounded p-1 focus:outline-none">
+                        <option value="id">ID</option>
+                        <option value="en">EN</option>
+                    </select>
+
+                    <button onclick="navigateToPage('dashboard')" class="text-xs bg-transparent border border-brandGold/40 text-brandGold py-1.5 px-2 rounded transition flex items-center gap-1">
+                        <i class="fa-solid fa-chart-line"></i> Demo
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="text-brandCream hover:text-brandGold transition focus:outline-none">
+                        <i id="menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu panel -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brandBrown/95 border-t border-brandGold/10">
+            <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 text-center">
+                <button onclick="navigateToPage('home')" class="block w-full py-2.5 px-3 text-brandCream hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_home">Home</button>
+                <button onclick="navigateToPage('about')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_about">Tentang Kami</button>
+                <button onclick="navigateToPage('services')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_services">Layanan</button>
+                <button onclick="navigateToPage('branches')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_branches">Cabang</button>
+                <button onclick="navigateToPage('promos')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_promos">Promo</button>
+                <button onclick="navigateToPage('articles')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_articles">Artikel Kesehatan</button>
+                <button onclick="navigateToPage('franchise')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_franchise">Franchise & Kemitraan</button>
+                <button onclick="navigateToPage('contact')" class="block w-full py-2.5 px-3 text-brandCream/80 hover:bg-brandGold/10 rounded-md transition font-medium" data-i18n="nav_contact">Kontak</button>
+                <div class="pt-4 pb-2 border-t border-brandGold/20 mt-4 px-4">
+                    <button onclick="navigateToPage('booking')" class="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold py-3 px-4 rounded-lg transition-all shadow-md">
+                        🟨 <span data-i18n="nav_booking_btn">Booking Sekarang</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main class="flex-grow">
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-home" class="page-section">
+            <!-- Hero Section with Premium Atmosphere -->
+            <div class="relative min-h-[85vh] flex items-center bg-black overflow-hidden">
+                <div class="absolute inset-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover object-center opacity-40 filter brightness-75 select-none" alt="Griya Bugar Premium Ambiance" onerror="this.src='https://placehold.co/1920x1080/4A3728/C8A76A?text=Griya+Bugar+Luxury+Wellness'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brandBrown via-transparent to-brandBrown/50"></div>
+                </div>
+
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-white">
+                    <div class="max-w-3xl">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 bg-brandGold/20 border border-brandGold/30 text-brandGold rounded-full text-xs font-semibold tracking-wider uppercase mb-6">
+                            <i class="fa-solid fa-crown text-[10px]"></i> <span data-i18n="hero_crown">Luxury Wellness Network</span>
+                        </span>
+                        <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-normal leading-tight tracking-wide mb-6" data-i18n="hero_headline">
+                            Relaksasi Profesional untuk Tubuh yang Lebih Sehat
+                        </h1>
+                        <p class="text-base sm:text-lg text-brandCream/90 font-light leading-relaxed mb-10 max-w-2xl" data-i18n="hero_subheadline">
+                            Nikmati perpaduan metode tradisional Nusantara dan teknik medis modern di bawah asuhan terapis profesional bersertifikat. Hadir di 5 kota besar Indonesia dengan standar pelayanan terbaik.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="navigateToPage('booking')" class="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold px-8 py-4 rounded-lg transition duration-300 shadow-xl flex items-center justify-center gap-2 group transform hover:-translate-y-0.5">
+                                🟨 <span data-i18n="nav_booking_btn">Booking Sekarang</span>
+                                <i class="fa-solid fa-chevron-right text-xs transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                            <button onclick="navigateToPage('branches')" class="bg-transparent hover:bg-white/10 border-2 border-brandCream/30 hover:border-brandGold text-brandCream hover:text-brandGold font-medium px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                                ⬜ <span data-i18n="hero_cta_branches">Lihat Cabang</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: STATS WITH ANIMATED COUNTER -->
+            <div class="bg-brandBrown text-brandCream py-12 border-b border-brandGold/10 relative z-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div class="p-4 border-r border-brandGold/10 last:border-0">
+                            <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-brandGold font-bold tracking-tight mb-2">5</p>
+                            <p class="text-xs sm:text-sm text-brandCream/80 uppercase tracking-widest font-medium" data-i18n="stats_branches">Cabang Nasional</p>
+                        </div>
+                        <div class="p-4 border-r border-brandGold/10 last:border-0">
+                            <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-brandGold font-bold tracking-tight mb-2">25+</p>
+                            <p class="text-xs sm:text-sm text-brandCream/80 uppercase tracking-widest font-medium" data-i18n="stats_therapists">Terapis Profesional</p>
+                        </div>
+                        <div class="p-4 border-r border-brandGold/10 last:border-0">
+                            <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-brandGold font-bold tracking-tight mb-2">5000+</p>
+                            <p class="text-xs sm:text-sm text-brandCream/80 uppercase tracking-widest font-medium" data-i18n="stats_customers">Pelanggan Puas</p>
+                        </div>
+                        <div class="p-4">
+                            <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-brandGold font-bold tracking-tight mb-2">4.9★</p>
+                            <p class="text-xs sm:text-sm text-brandCream/80 uppercase tracking-widest font-medium" data-i18n="stats_rating">Rating Pelanggan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: LAYANAN UNGGULAN (4 Columns Card Modern) -->
+            <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="home_lay_tag">Our Signature Treatments</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="home_lay_title">Layanan Unggulan Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                    <p class="text-brandBrown/70 text-sm mt-4" data-i18n="home_lay_desc">Manjakan seluruh tubuh Anda dengan ragam terapi premium yang telah dipandu secara medis demi keselarasan tubuh dan pikiran.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Massage Tradisional -->
+                    <div class="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                        <div>
+                            <div class="bg-brandCream p-4 rounded-xl w-14 h-14 flex items-center justify-center text-brandGold mb-6">
+                                <i class="fa-solid fa-spa text-2xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-brandBrown font-semibold mb-3" data-i18n="lay1_title">Massage Tradisional</h3>
+                            <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="lay1_desc_short">Terapi pemijatan seluruh tubuh dengan rempah Nusantara berkualitas tinggi untuk meningkatkan sirkulasi darah dan melepas ketegangan otot mendalam.</p>
+                        </div>
+                        <button onclick="navigateToPage('services')" class="text-brandGold hover:text-brandGoldDark font-medium text-xs mt-6 flex items-center gap-2 group self-start">
+                            <span data-i18n="learn_more">Pelajari Selengkapnya</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 2: Reflexology -->
+                    <div class="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                        <div>
+                            <div class="bg-brandCream p-4 rounded-xl w-14 h-14 flex items-center justify-center text-brandGold mb-6">
+                                <i class="fa-solid fa-shoe-prints text-2xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-brandBrown font-semibold mb-3" data-i18n="lay2_title">Reflexology</h3>
+                            <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="lay2_desc_short">Stimulasi titik-titik saraf penting pada area kaki untuk merestorasi metabolisme tubuh dan memulihkan vitalitas organ vital secara holistik.</p>
+                        </div>
+                        <button onclick="navigateToPage('services')" class="text-brandGold hover:text-brandGoldDark font-medium text-xs mt-6 flex items-center gap-2 group self-start">
+                            <span data-i18n="learn_more">Pelajari Selengkapnya</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 3: Sport Massage -->
+                    <div class="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                        <div>
+                            <div class="bg-brandCream p-4 rounded-xl w-14 h-14 flex items-center justify-center text-brandGold mb-6">
+                                <i class="fa-solid fa-person-running text-2xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-brandBrown font-semibold mb-3" data-i18n="lay3_title">Sport Massage</h3>
+                            <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="lay3_desc_short">Diformulasikan khusus untuk pemulihan cedera fisik pasca olahraga berat, melemaskan jaringan fascia, serta menstabilkan rentang gerak sendi.</p>
+                        </div>
+                        <button onclick="navigateToPage('services')" class="text-brandGold hover:text-brandGoldDark font-medium text-xs mt-6 flex items-center gap-2 group self-start">
+                            <span data-i18n="learn_more">Pelajari Selengkapnya</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 4: Corporate Wellness -->
+                    <div class="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                        <div>
+                            <div class="bg-brandCream p-4 rounded-xl w-14 h-14 flex items-center justify-center text-brandGold mb-6">
+                                <i class="fa-solid fa-building text-2xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-brandBrown font-semibold mb-3" data-i18n="lay5_title">Corporate Wellness</h3>
+                            <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="lay5_desc_short">Program relaksasi on-site eksklusif bagi korporat guna meminimalisir kepenatan staf kantor serta meningkatkan produktivitas tim secara berkala.</p>
+                        </div>
+                        <button onclick="navigateToPage('services')" class="text-brandGold hover:text-brandGoldDark font-medium text-xs mt-6 flex items-center gap-2 group self-start">
+                            <span data-i18n="learn_more">Pelajari Selengkapnya</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: TEMUKAN CABANG TERDEKAT (Interactive Cards) -->
+            <div class="bg-white py-24 border-t border-b border-brandGold/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                        <div>
+                            <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="home_branch_tag">National Branches</span>
+                            <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="home_branch_title">Hadir di 5 Kota Besar Indonesia</h2>
+                            <p class="text-brandBrown/70 text-sm mt-3 max-w-xl" data-i18n="home_branch_desc">Seluruh cabang kami telah dilengkapi dengan fasilitas standar internasional kelas premium guna menghadirkan ketenangan maksimal.</p>
+                        </div>
+                        <button onclick="navigateToPage('branches')" class="mt-4 md:mt-0 inline-flex items-center gap-2 text-brandGold hover:text-brandGoldDark border-b-2 border-brandGold pb-1 font-semibold text-sm transition">
+                            <span data-i18n="home_branch_cta">Lihat Semua Fasilitas Cabang</span> <i class="fa-solid fa-angle-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Cards Container (Akan Dirender Secara Dinamis agar Mendukung i18n) -->
+                    <div id="home-branches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Diisi secara dinamis melalui JavaScript renderHomeBranches() -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRUST PROPOSITION & REVIEWS -->
+            <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="trust_tag">Our Commitment</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 mb-6 font-normal" data-i18n="trust_title">Mengapa Memilih Standardisasi Griya Bugar?</h2>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="bg-brandGold/10 h-10 w-10 rounded-full flex items-center justify-center text-brandGold flex-shrink-0">
+                                    <i class="fa-solid fa-id-card"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-brandBrown text-base" data-i18n="trust1_title">Terapis Sertifikasi BNSP</h4>
+                                    <p class="text-xs text-brandBrown/70 mt-1" data-i18n="trust1_desc">Seluruh tim kami wajib melewati kurikulum pelatihan bersertifikasi resmi BNSP untuk menjamin aspek keamanan dan higienitas medis.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="bg-brandGold/10 h-10 w-10 rounded-full flex items-center justify-center text-brandGold flex-shrink-0">
+                                    <i class="fa-solid fa-oil-can"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-brandBrown text-base" data-i18n="trust2_title">Minyak Esensial Alami Kualitas Tinggi</h4>
+                                    <p class="text-xs text-brandBrown/70 mt-1" data-i18n="trust2_desc">Kami memproduksi sendiri aromaterapi dari ekstrak kayu gaharu, mawar, melati, serta cendana murni tanpa bahan kimia artifisial.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="bg-brandGold/10 h-10 w-10 rounded-full flex items-center justify-center text-brandGold flex-shrink-0">
+                                    <i class="fa-solid fa-snowflake"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-brandBrown text-base" data-i18n="trust3_title">Kamar Bersih, Kedap, & Steril</h4>
+                                    <p class="text-xs text-brandBrown/70 mt-1" data-i18n="trust3_desc">Sistem tata udara higienis HEPA Filter di setiap ruang treatment pribadi demi keamanan sirkulasi udara optimal pasca-layanan.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-2xl border-4 border-white object-cover w-full h-[450px]" alt="Luxury Treatment" onerror="this.src='https://placehold.co/800x600/4A3728/C8A76A?text=Premium+Atmosphere'">
+                        <div class="absolute -bottom-6 -left-6 bg-brandGold text-brandBrown p-6 rounded-2xl max-w-xs shadow-xl border border-brandGoldDark">
+                            <i class="fa-solid fa-quote-left text-brandBrown text-2xl mb-2 opacity-50"></i>
+                            <p class="text-xs italic leading-relaxed" data-i18n="testimonial_text">"Suasananya sangat menenangkan. Sangat premium, bersih, dan pijatannya sangat bertenaga sekaligus menenangkan. Recomended!"</p>
+                            <p class="text-xs font-bold mt-3 uppercase tracking-wider">- Dr. Pratama Yudha, Sp.OT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-about" class="page-section hidden py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="about_tag">Our History</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="about_title">Mengenal Lebih Dekat Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+                    <div>
+                        <p class="text-brandBrown font-serif text-2xl leading-relaxed mb-6" data-i18n="about_quote">"Menghadirkan relaksasi berstandar medis dengan sentuhan keramahan khas nusantara."</p>
+                        <p class="text-xs text-brandBrown/70 leading-relaxed mb-4" data-i18n="about_p1">Didirikan pada tahun 2018 di Yogyakarta, Griya Bugar terus berinovasi menjadi jaringan waralaba wellness modern bernuansa premium. Kami mengombinasikan warisan budaya pijat nenek moyang dengan pendekatan modern ergonomis.</p>
+                        <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="about_p2">Komitmen utama kami adalah memberikan kesempatan kerja bagi para terapis lokal berbakat melalui program akreditasi berkala serta asuransi profesi menyeluruh, agar pelayanan kepada pelanggan Anda senantiasa optimal dan ikhlas.</p>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1591343395902-1adcb454c2e4?q=80&w=1200&auto=format&fit=crop" class="rounded-3xl shadow-xl w-full h-[380px] object-cover" alt="Interior Griya Bugar" onerror="this.src='https://placehold.co/800x600/4A3728/C8A76A?text=Executive+Interior'">
+                    </div>
+                </div>
+
+                <div class="bg-brandCream rounded-3xl p-12 border border-brandGold/20">
+                    <h3 class="font-serif text-2xl text-brandBrown text-center mb-10" data-i18n="values_title">4 Nilai Dasar Layanan Kami</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="text-center">
+                            <span class="text-3xl text-brandGold font-serif font-bold">01</span>
+                            <h4 class="font-semibold text-brandBrown text-base mt-2" data-i18n="value1_title">Integritas</h4>
+                            <p class="text-xs text-brandBrown/70 mt-2" data-i18n="value1_desc">Pelayanan tulus tanpa biaya tambahan di luar kesepakatan pemesanan.</p>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-3xl text-brandGold font-serif font-bold">02</span>
+                            <h4 class="font-semibold text-brandBrown text-base mt-2" data-i18n="value2_title">Higienitas Mutlak</h4>
+                            <p class="text-xs text-brandBrown/70 mt-2" data-i18n="value2_desc">Seprai, handuk, dan celana refleksi disterilisasi UV sekali pakai.</p>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-3xl text-brandGold font-serif font-bold">03</span>
+                            <h4 class="font-semibold text-brandBrown text-base mt-2" data-i18n="value3_title">Kompetensi</h4>
+                            <p class="text-xs text-brandBrown/70 mt-2" data-i18n="value3_desc">Terapis wajib memiliki keahlian berstandar medis otot dan sendi.</p>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-3xl text-brandGold font-serif font-bold">04</span>
+                            <h4 class="font-semibold text-brandBrown text-base mt-2" data-i18n="value4_title">Aman & Terbuka</h4>
+                            <p class="text-xs text-brandBrown/70 mt-2" data-i18n="value4_desc">Menyediakan area konsultasi medis sebelum memulai proses terapi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-services" class="page-section hidden py-24 bg-brandCream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="serv_tag">Our Services Menu</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="serv_title">Katalog Terapi Premium Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                </div>
+
+                <div class="space-y-16">
+                    <!-- Layanan 1 -->
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 grid grid-cols-1 lg:grid-cols-12 border border-brandGold/10">
+                        <div class="lg:col-span-5 h-72 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="Massage Tradisional" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Traditional+Massage'">
+                        </div>
+                        <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-serif text-2xl sm:text-3xl text-brandBrown" data-i18n="lay1_title">Massage Tradisional</h3>
+                                    <span class="text-brandGold font-serif text-lg sm:text-xl font-bold">Rp 180.000<span class="text-xs text-brandBrown/60 font-sans font-light">/90 <span data-i18n="mins">Menit</span></span></span>
+                                </div>
+                                <p class="text-xs text-brandBrown/70 leading-relaxed mb-6" data-i18n="lay1_desc_full">Pijatan relaksasi menyeluruh yang efektif melancarkan sistem peredaran darah, meredakan migrain, serta mengatasi insomnia. Dipadukan dengan ramuan lulur tradisional rempah kelapa asli.</p>
+                                <div class="grid grid-cols-2 gap-4 text-xs text-brandBrown/80 mb-6">
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay1_feat1">Minyak Kelapa Hangat</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay1_feat2">Aromaterapi Cendana</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay1_feat3">Relaksasi Handuk Hangat</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay1_feat4">Teh Jahe Hangat Premium</span></span>
+                                </div>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="self-start bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-3 px-6 rounded-lg transition shadow-md" data-i18n="nav_booking_btn">Pesan Sekarang</button>
+                        </div>
+                    </div>
+
+                    <!-- Layanan 2 -->
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 grid grid-cols-1 lg:grid-cols-12 border border-brandGold/10">
+                        <div class="lg:col-span-5 h-72 lg:h-auto lg:order-last">
+                            <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="Reflexology" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Reflexology'">
+                        </div>
+                        <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-serif text-2xl sm:text-3xl text-brandBrown" data-i18n="lay2_title_full">Reflexology Modern</h3>
+                                    <span class="text-brandGold font-serif text-lg sm:text-xl font-bold">Rp 120.000<span class="text-xs text-brandBrown/60 font-sans font-light">/60 <span data-i18n="mins">Menit</span></span></span>
+                                </div>
+                                <p class="text-xs text-brandBrown/70 leading-relaxed mb-6" data-i18n="lay2_desc_full">Fokus melunakkan simpul ketegangan syaraf kaki melalui titik akupresur meridian refleksi. Sangat ideal bagi pekerja kantoran aktif maupun wisatawan yang letih setelah bepergian jauh.</p>
+                                <div class="grid grid-cols-2 gap-4 text-xs text-brandBrown/80 mb-6">
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay2_feat1">Rendaman Garam Laut</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay2_feat2">Pijat Area Kaki & Betis</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay2_feat3">Pijat Ringan Pundak</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay2_feat4">Lotion Non-Lengket</span></span>
+                                </div>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="self-start bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-3 px-6 rounded-lg transition shadow-md" data-i18n="nav_booking_btn">Pesan Sekarang</button>
+                        </div>
+                    </div>
+
+                    <!-- Layanan 3 -->
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 grid grid-cols-1 lg:grid-cols-12 border border-brandGold/10">
+                        <div class="lg:col-span-5 h-72 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="Sport Massage" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Sport+Massage'">
+                        </div>
+                        <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-serif text-2xl sm:text-3xl text-brandBrown" data-i18n="lay3_title_full">Sport Recovery Massage</h3>
+                                    <span class="text-brandGold font-serif text-lg sm:text-xl font-bold">Rp 220.000<span class="text-xs text-brandBrown/60 font-sans font-light">/120 <span data-i18n="mins">Menit</span></span></span>
+                                </div>
+                                <p class="text-xs text-brandBrown/70 leading-relaxed mb-6" data-i18n="lay3_desc_full">Terapi deep tissue dengan tekanan tinggi dan peregangan sendi terarah. Membantu mempercepat pengeluaran tumpukan asam laktat serta mempercepat proses pemulihan otot sobek mikro.</p>
+                                <div class="grid grid-cols-2 gap-4 text-xs text-brandBrown/80 mb-6">
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay3_feat1">Trigger Point Therapy</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay3_feat2">Muscle PNF Stretching</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay3_feat3">Balsem Peppermint Khusus</span></span>
+                                    <span><i class="fa-regular fa-circle-check text-brandGold mr-2"></i><span data-i18n="lay3_feat4">Kompres Es/Hangat Otot</span></span>
+                                </div>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="self-start bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-3 px-6 rounded-lg transition shadow-md" data-i18n="nav_booking_btn">Pesan Sekarang</button>
+                        </div>
+                    </div>
+
+                    <!-- Layanan 4 & 5 Mini-Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-3xl p-8 border border-brandGold/10 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-serif text-2xl text-brandBrown mb-2" data-i18n="lay4_title_full">Home Service 24 Jam</h4>
+                                <p class="text-xs text-brandBrown/70 leading-relaxed mb-6" data-i18n="lay4_desc_full">Terapis handal kami siap berkunjung langsung ke hotel, rumah, maupun apartemen Anda. Kami membawa perlengkapan kasur portabel, lilin aroma terapi, serta sprei steril sendiri demi kelancaran kenyamanan Anda.</p>
+                                <p class="text-brandGold font-serif text-lg font-bold mb-4">Rp 250.000 <span class="text-xs font-sans text-brandBrown/60">/ <span data-i18n="session">Sesi</span></span></p>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="bg-brandBrown hover:bg-brandGold hover:text-brandBrown text-white font-semibold text-xs py-3 px-6 rounded-lg transition shadow-md self-start" data-i18n="lay4_btn">Hubungi Layanan Home Service</button>
+                        </div>
+                        <div class="bg-white rounded-3xl p-8 border border-brandGold/10 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-serif text-2xl text-brandBrown mb-2" data-i18n="lay5_title_full">Corporate Wellness Program</h4>
+                                <p class="text-xs text-brandBrown/70 leading-relaxed mb-6" data-i18n="lay5_desc_full">Atasi keletihan di tempat kerja dengan mendatangkan terapis kursi ergonomis. Cocok untuk acara Employee Appreciation Day, mempererat kebersamaan tim kerja, serta menekan angka stress kerja karyawan korporasi.</p>
+                                <p class="text-brandGold font-serif text-lg font-bold mb-4" data-i18n="lay5_price">Harga Kustom Sesuai Kebutuhan</p>
+                            </div>
+                            <button onclick="navigateToPage('contact')" class="bg-brandBrown hover:bg-brandGold hover:text-brandBrown text-white font-semibold text-xs py-3 px-6 rounded-lg transition shadow-md self-start" data-i18n="lay5_btn">Kirim Penawaran Kerjasama</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-branches" class="page-section hidden py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="branches_tag">Our Exclusive Networks</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="branches_title">Pilih Cabang Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                    <p class="text-xs text-brandBrown/70 mt-4" data-i18n="branches_desc">Kunjungi halaman spesifik cabang untuk melihat tim terapis terakreditasi, fasilitas terlengkap, serta pemesanan sesi online.</p>
+                </div>
+
+                <!-- Main Branches Grid (Akan Dirender Dinamis demi mendukung i18n penuh) -->
+                <div id="branches-list-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <!-- DETAIL CABANG PAGE (DYNAMIC ELEMENT) -->
+        <section id="page-branch-detail" class="page-section hidden py-24 bg-brandCream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Back Button -->
+                <button onclick="navigateToPage('branches')" class="mb-8 inline-flex items-center gap-2 text-brandBrown hover:text-brandGold transition text-xs font-semibold">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_branches">Kembali ke Semua Cabang</span>
+                </button>
+
+                <!-- Branch Header Container -->
+                <div class="bg-brandBrown text-white rounded-3xl overflow-hidden shadow-2xl border border-brandGold/20 mb-16">
+                    <div class="grid grid-cols-1 lg:grid-cols-12">
+                        <div class="lg:col-span-5 h-64 lg:h-auto">
+                            <img id="detail-branch-img" src="" class="w-full h-full object-cover" alt="Branch Cover" onerror="this.src='https://placehold.co/800x600/4A3728/C8A76A?text=Branch+Wellness'">
+                        </div>
+                        <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+                            <div>
+                                <span id="detail-branch-tag" class="bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">Premium Branch</span>
+                                <h2 id="detail-branch-name" class="font-serif text-3xl sm:text-4xl text-brandGold mt-3">Griya Bugar Yogyakarta</h2>
+                                <p id="detail-branch-desc" class="text-xs text-brandCream/80 mt-2 leading-relaxed">Pusat relaksasi terlengkap dengan pelayanan terapis profesional berpengalaman di bidang massage.</p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 border-t border-brandCream/20 pt-6 text-xs text-brandCream/90">
+                                    <p><i class="fa-solid fa-location-dot text-brandGold mr-2"></i><span id="detail-branch-addr">📍 Alamat Lengkap</span></p>
+                                    <p><i class="fa-solid fa-phone text-brandGold mr-2"></i><span id="detail-branch-phone">📞 WhatsApp Cabang</span></p>
+                                    <p><i class="fa-solid fa-clock text-brandGold mr-2"></i><span id="detail-branch-hours">🕒 Jam Operasional</span></p>
+                                    <p><i class="fa-solid fa-star text-brandGold mr-2"></i><span id="detail-branch-rating">⭐ Rating</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keistimewaan Cabang & Therapist Team -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+                    <!-- Keistimewaan -->
+                    <div class="lg:col-span-4 bg-white rounded-3xl p-8 border border-brandGold/15 shadow-sm">
+                        <h3 class="font-serif text-xl text-brandBrown mb-6 border-b border-brandCream-dark pb-2" data-i18n="branch_features_title">Keistimewaan Cabang</h3>
+                        <ul id="detail-branch-features" class="space-y-4 text-xs text-brandBrown/80">
+                            <!-- Populated Dynamically -->
+                        </ul>
+                    </div>
+
+                    <!-- Tim Terapis -->
+                    <div class="lg:col-span-8">
+                        <h3 class="font-serif text-2xl text-brandBrown mb-6" data-i18n="branch_therapists_title">Tim Terapis Ahli Kami</h3>
+                        <div id="detail-branch-therapists" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Populated Dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOOKING FORM SECTION -->
+                <div class="bg-white rounded-3xl p-8 sm:p-12 border border-brandGold/15 shadow-xl max-w-4xl mx-auto">
+                    <div class="text-center max-w-lg mx-auto mb-10">
+                        <h3 class="font-serif text-2xl text-brandBrown" data-i18n="form_booking_title">Formulir Booking Online</h3>
+                        <p class="text-xs text-brandBrown/60 mt-2" data-i18n="form_booking_desc">Isi formulir pemesanan sesi Anda secara lengkap. Kami akan menyusun konfirmasi otomatis langsung terkirim menuju tim WhatsApp cabang.</p>
+                    </div>
+
+                    <form id="booking-form" onsubmit="handleFormBooking(event)" class="space-y-6 text-xs text-brandBrown">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_name">Nama Lengkap Anda</span> <span class="text-red-500">*</span></label>
+                                <input type="text" id="book-name" required placeholder="Contoh: Budi Santoso" data-i18n-holder="placeholder_name" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_phone">Nomor WhatsApp Aktif</span> <span class="text-red-500">*</span></label>
+                                <input type="tel" id="book-phone" required placeholder="Contoh: 081234567890" data-i18n-holder="placeholder_phone" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_date">Tanggal Pemesanan</span> <span class="text-red-500">*</span></label>
+                                <input type="date" id="book-date" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_time">Waktu / Jam Sesi</span> <span class="text-red-500">*</span></label>
+                                <input type="time" id="book-time" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_service">Pilih Jenis Layanan</span> <span class="text-red-500">*</span></label>
+                                <select id="book-service" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                                    <option value="Massage Tradisional" data-i18n="lay1_title">Massage Tradisional</option>
+                                    <option value="Reflexology Modern" data-i18n="lay2_title">Reflexology Modern</option>
+                                    <option value="Sport Recovery Massage" data-i18n="lay3_title">Sport Recovery Massage</option>
+                                    <option value="Home Service 24 Jam" data-i18n="lay4_title">Home Service 24 Jam</option>
+                                    <option value="Corporate Wellness Program" data-i18n="lay5_title">Corporate Wellness Program</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-1" data-i18n="form_notes">Catatan Tambahan (Spesifikasi Terapis / Area Otot Fokus / Kondisi Medis)</label>
+                            <textarea id="book-notes" placeholder="Tulis instruksi khusus jika ada..." data-i18n-holder="placeholder_notes" rows="3" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold"></textarea>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="submit" class="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-sm py-4 rounded-lg transition-all duration-300 shadow-lg tracking-wider uppercase flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> <span data-i18n="form_submit_btn">BOOK VIA WHATSAPP CABANG</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <!-- GENERAL BOOKING SECTION -->
+        <section id="page-booking" class="page-section hidden py-24 bg-brandCream">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-lg mx-auto mb-10">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="booking_tag">Online Booking</span>
+                    <h2 class="font-serif text-3xl text-brandBrown mt-2" data-i18n="booking_title">Pemesanan Sesi Griya Bugar</h2>
+                    <p class="text-xs text-brandBrown/60 mt-2" data-i18n="booking_desc">Silakan pilih cabang tujuan Anda terlebih dahulu untuk mengarahkan form ke terapis lokal yang sesuai.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-12 border border-brandGold/15 shadow-xl">
+                    <div class="mb-6">
+                        <label class="block font-semibold mb-2 text-xs text-brandBrown"><span data-i18n="form_branch">Pilih Cabang Griya Bugar</span> <span class="text-red-500">*</span></label>
+                        <select id="general-book-branch" onchange="syncBranchFormSelection()" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold text-xs text-brandBrown">
+                            <option value="yogyakarta">Griya Bugar Yogyakarta</option>
+                            <option value="jakarta">Griya Bugar Jakarta</option>
+                            <option value="surabaya">Griya Bugar Surabaya</option>
+                            <option value="bandung">Griya Bugar Bandung</option>
+                            <option value="bali">Griya Bugar Bali</option>
+                        </select>
+                    </div>
+
+                    <form id="general-booking-form" onsubmit="handleGeneralFormBooking(event)" class="space-y-6 text-xs text-brandBrown">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_name">Nama Lengkap Anda</span> <span class="text-red-500">*</span></label>
+                                <input type="text" id="gen-book-name" required placeholder="Contoh: Budi Santoso" data-i18n-holder="placeholder_name" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_phone">Nomor WhatsApp Aktif</span> <span class="text-red-500">*</span></label>
+                                <input type="tel" id="gen-book-phone" required placeholder="Contoh: 081234567890" data-i18n-holder="placeholder_phone" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_date">Tanggal Pemesanan</span> <span class="text-red-500">*</span></label>
+                                <input type="date" id="gen-book-date" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_time">Waktu / Jam Sesi</span> <span class="text-red-500">*</span></label>
+                                <input type="time" id="gen-book-time" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1"><span data-i18n="form_service">Pilih Jenis Layanan</span> <span class="text-red-500">*</span></label>
+                                <select id="gen-book-service" required class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold">
+                                    <option value="Massage Tradisional" data-i18n="lay1_title">Massage Tradisional</option>
+                                    <option value="Reflexology Modern" data-i18n="lay2_title">Reflexology Modern</option>
+                                    <option value="Sport Recovery Massage" data-i18n="lay3_title">Sport Recovery Massage</option>
+                                    <option value="Home Service 24 Jam" data-i18n="lay4_title">Home Service 24 Jam</option>
+                                    <option value="Corporate Wellness Program" data-i18n="lay5_title">Corporate Wellness Program</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-1" data-i18n="form_notes">Catatan Tambahan (Spesifikasi Terapis / Area Otot Fokus / Kondisi Medis)</label>
+                            <textarea id="gen-book-notes" placeholder="Tulis instruksi khusus jika ada..." data-i18n-holder="placeholder_notes" rows="3" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3.5 focus:outline-none focus:border-brandGold"></textarea>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="submit" class="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-sm py-4 rounded-lg transition-all duration-300 shadow-lg tracking-wider uppercase flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> <span data-i18n="form_submit_btn">BOOK VIA WHATSAPP CABANG</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-promos" class="page-section hidden py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="promos_tag">Active Promos</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="promos_title">Penawaran Eksklusif Bulan Ini</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <!-- Promo 1 -->
+                    <div class="border border-brandGold/25 rounded-2xl overflow-hidden shadow-md flex flex-col md:flex-row bg-brandCream">
+                        <div class="md:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
+                            <span class="text-brandGold text-xs uppercase tracking-widest font-semibold" data-i18n="promo1_badge">DISKON</span>
+                            <span class="font-serif text-5xl font-bold my-2 text-brandGold">15%</span>
+                            <span class="text-[10px] text-brandCream/80 uppercase">Happy Hours</span>
+                        </div>
+                        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-serif text-xl text-brandBrown" data-i18n="promo1_title">Happy Hour Treatment</h3>
+                                <p class="text-xs text-brandBrown/75 mt-2 leading-relaxed" data-i18n="promo1_desc">Nikmati potongan harga langsung untuk seluruh jenis menu treatment di hari Senin s/d Kamis mulai pukul 09.00 hingga 14.00 WIB.</p>
+                                <p class="text-[10px] text-brandGold font-bold mt-4"><i class="fa-solid fa-calendar mr-1"></i> <span data-i18n="promo_duration1">Berlaku s/d Akhir Bulan</span></p>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2 px-4 rounded transition self-start mt-4" data-i18n="promo_claim">Klaim Promo</button>
+                        </div>
+                    </div>
+
+                    <!-- Promo 2 -->
+                    <div class="border border-brandGold/25 rounded-2xl overflow-hidden shadow-md flex flex-col md:flex-row bg-brandCream">
+                        <div class="md:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
+                            <span class="text-brandGold text-xs uppercase tracking-widest font-semibold" data-i18n="promo2_badge">VIP</span>
+                            <span class="font-serif text-5xl font-bold my-2 text-brandGold" data-i18n="promo2_free">FREE</span>
+                            <span class="text-[10px] text-brandCream/80 uppercase">Mini Lounge</span>
+                        </div>
+                        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-serif text-xl text-brandBrown" data-i18n="promo2_title">Free Herbal Mocktail</h3>
+                                <p class="text-xs text-brandBrown/75 mt-2 leading-relaxed" data-i18n="promo2_desc">Setiap pemesanan minimal sesi treatment berdurasi 120 Menit berhak mendapatkan secangkir complimentary herbal tea eksklusif & aromatik.</p>
+                                <p class="text-[10px] text-brandGold font-bold mt-4"><i class="fa-solid fa-calendar mr-1"></i> <span data-i18n="promo_duration2">Promo Member Baru</span></p>
+                            </div>
+                            <button onclick="navigateToPage('booking')" class="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2 px-4 rounded transition self-start mt-4" data-i18n="promo_claim">Klaim Promo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-articles" class="page-section hidden py-24 bg-brandCream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="art_tag">Healthy Wellness Insights</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="art_title">Artikel Kesehatan & Gaya Hidup</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Artikel 1 -->
+                    <div class="bg-white rounded-2xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop" class="h-48 w-full object-cover" alt="Kesehatan Tubuh" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Healthy+Article'">
+                        <div class="p-6 flex-grow">
+                            <span class="text-brandGold font-semibold text-[10px] uppercase tracking-wider" data-i18n="art1_cat">Terapi Saraf</span>
+                            <h3 class="font-serif text-xl text-brandBrown mt-2" data-i18n="art1_title">Pentingnya Melemaskan Otot Fascia Secara Rutin</h3>
+                            <p class="text-xs text-brandBrown/70 mt-3 leading-relaxed" data-i18n="art1_desc">Tumpukan beban kerja harian memicu ketegangan pada jaringan fascia tubuh kita. Kenali kiat mengatasinya melalui pijat deep tissue...</p>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
+                            <span><i class="fa-regular fa-clock mr-1"></i> <span data-i18n="art_read1">5 Menit Baca</span></span>
+                            <span class="font-semibold text-brandGold cursor-pointer hover:underline" data-i18n="art_more">Selengkapnya</span>
+                        </div>
+                    </div>
+
+                    <!-- Artikel 2 -->
+                    <div class="bg-white rounded-2xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
+                        <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=800&auto=format&fit=crop" class="h-48 w-full object-cover" alt="Aromaterapi" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Aromatherapy+Article'">
+                        <div class="p-6 flex-grow">
+                            <span class="text-brandGold font-semibold text-[10px] uppercase tracking-wider" data-i18n="art2_cat">Aroma Terapi</span>
+                            <h3 class="font-serif text-xl text-brandBrown mt-2" data-i18n="art2_title">Bagaimana Minyak Cendana Mampu Atasi Insomnia</h3>
+                            <p class="text-xs text-brandBrown/70 mt-3 leading-relaxed" data-i18n="art2_desc">Penelitian medis mutakhir membuktikan bahwa menghirup uap minyak esensial murni cendana mampu menurunkan denyut nadi berlebih...</p>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
+                            <span><i class="fa-regular fa-clock mr-1"></i> <span data-i18n="art_read2">4 Menit Baca</span></span>
+                            <span class="font-semibold text-brandGold cursor-pointer hover:underline" data-i18n="art_more">Selengkapnya</span>
+                        </div>
+                    </div>
+
+                    <!-- Artikel 3 -->
+                    <div class="bg-white rounded-2xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop" class="h-48 w-full object-cover" alt="Wellness" onerror="this.src='https://placehold.co/600x400/4A3728/C8A76A?text=Corporate+Article'">
+                        <div class="p-6 flex-grow">
+                            <span class="text-brandGold font-semibold text-[10px] uppercase tracking-wider" data-i18n="art3_cat">Corporate Wellness</span>
+                            <h3 class="font-serif text-xl text-brandBrown mt-2" data-i18n="art3_title">Menjaga Produktivitas Kerja dengan Stretch Sesi</h3>
+                            <p class="text-xs text-brandBrown/70 mt-3 leading-relaxed" data-i18n="art3_desc">Duduk tegak berjam-jam didepan monitor komputer memicu ketegangan otot leher bagian atas. Sesi stretching singkat 10 menit dapat...</p>
+                        </div>
+                        <div class="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
+                            <span><i class="fa-regular fa-clock mr-1"></i> <span data-i18n="art_read3">6 Menit Baca</span></span>
+                            <span class="font-semibold text-brandGold cursor-pointer hover:underline" data-i18n="art_more">Selengkapnya</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-franchise" class="page-section hidden py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="fran_tag">Investment Opportunity</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="fran_title">Kemitraan & Waralaba Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                    <p class="text-xs text-brandBrown/70 mt-4" data-i18n="fran_desc">Bergabunglah dengan jaringan waralaba wellness modern premium dengan tingkat profitabilitas investasi (ROI) teruji berskala nasional.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                    <div class="border border-brandGold/20 rounded-2xl p-8 bg-brandCream shadow-sm text-center">
+                        <i class="fa-solid fa-chart-line text-brandGold text-3xl mb-4"></i>
+                        <h4 class="font-serif text-xl text-brandBrown mb-2" data-i18n="fran_val1_title">ROI Teruji & Cepat</h4>
+                        <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="fran_val1_desc">Rata-rata mitra waralaba kami mencapai balik modal penuh (BEP) dalam kurun waktu 18 s/d 24 bulan sejak awal peresmian cabang baru.</p>
+                    </div>
+                    <div class="border border-brandGold/20 rounded-2xl p-8 bg-brandCream shadow-sm text-center">
+                        <i class="fa-solid fa-graduation-cap text-brandGold text-3xl mb-4"></i>
+                        <h4 class="font-serif text-xl text-brandBrown mb-2" data-i18n="fran_val2_title">Suplai Terapis Tersentral</h4>
+                        <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="fran_val2_desc">Mitra tidak perlu khawatir mencari staf. Seluruh terapis kami latih di pusat pelatihan pusat Yogyakarta untuk menjamin kualitas standar merata.</p>
+                    </div>
+                    <div class="border border-brandGold/20 rounded-2xl p-8 bg-brandCream shadow-sm text-center">
+                        <i class="fa-solid fa-sliders text-brandGold text-3xl mb-4"></i>
+                        <h4 class="font-serif text-xl text-brandBrown mb-2" data-i18n="fran_val3_title">Sistem ERP Terintegrasi</h4>
+                        <p class="text-xs text-brandBrown/70 leading-relaxed" data-i18n="fran_val3_desc">Pantau perkembangan transaksi harian, absensi terapis, hingga persediaan minyak aromaterapi secara langsung (realtime) melalui aplikasi admin.</p>
+                    </div>
+                </div>
+
+                <!-- Franchise Contact Form -->
+                <div class="bg-brandCream rounded-3xl p-8 sm:p-12 border border-brandGold/20 max-w-3xl mx-auto">
+                    <h3 class="font-serif text-2xl text-brandBrown text-center mb-6" data-i18n="fran_form_title">Hubungi Tim Kemitraan Kami</h3>
+                    <form onsubmit="handleFormKemitraan(event)" class="space-y-4 text-xs text-brandBrown">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="fran_form_name">Nama Lengkap Pemohon</label>
+                                <input type="text" required placeholder="Contoh: Hermawan Wijaya" data-i18n-holder="placeholder_fran_name" class="w-full bg-white border border-brandGold/20 rounded-lg p-3">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="fran_form_city">Kota Rencana Lokasi Cabang</label>
+                                <input type="text" required placeholder="Contoh: Semarang / Solo" data-i18n-holder="placeholder_fran_city" class="w-full bg-white border border-brandGold/20 rounded-lg p-3">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="fran_form_phone">Nomor Kontak WhatsApp</label>
+                                <input type="tel" required placeholder="Contoh: 081234567890" data-i18n-holder="placeholder_phone" class="w-full bg-white border border-brandGold/20 rounded-lg p-3">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="fran_form_capital">Estimasi Alokasi Modal</label>
+                                <select class="w-full bg-white border border-brandGold/20 rounded-lg p-3">
+                                    <option>Rp 250 Juta - Rp 500 Juta</option>
+                                    <option>Rp 500 Juta - Rp 1 Miliar</option>
+                                    <option>> Rp 1 Miliar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold py-3.5 rounded-lg transition mt-4 uppercase tracking-wider" data-i18n="fran_form_btn">KIRIM PROPOSAL KEMITRAAN</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <section id="page-contact" class="page-section hidden py-24 bg-brandCream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]" data-i18n="cont_tag">Contact Us</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brandBrown mt-2 font-normal" data-i18n="cont_title">Hubungi Pusat Griya Bugar</h2>
+                    <div class="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-5xl mx-auto">
+                    <!-- Info -->
+                    <div class="lg:col-span-5 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm">
+                        <h3 class="font-serif text-2xl text-brandBrown mb-6" data-i18n="cont_hq">Kantor Pusat Kami</h3>
+                        <div class="space-y-6 text-xs text-brandBrown/80">
+                            <p class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot text-brandGold text-lg mt-0.5"></i>
+                                <span>Jl. Kyai Mojo No. 56, Tegalrejo, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55244</span>
+                            </p>
+                            <p class="flex items-start gap-3">
+                                <i class="fa-solid fa-phone text-brandGold text-lg mt-0.5"></i>
+                                <span>+62 274 1234 5678 (<span data-i18n="cont_phone_tag">Telepon Kantor</span>)</span>
+                            </p>
+                            <p class="flex items-start gap-3">
+                                <i class="fa-solid fa-envelope text-brandGold text-lg mt-0.5"></i>
+                                <span>info@griyabugarwellness.com</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-7 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm">
+                        <h3 class="font-serif text-2xl text-brandBrown mb-6" data-i18n="cont_send_title">Kirimkan Pesan Anda</h3>
+                        <form onsubmit="handleContactSubmit(event)" class="space-y-4 text-xs text-brandBrown">
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="form_name">Nama Lengkap</label>
+                                <input type="text" required placeholder="Budi Santoso" data-i18n-holder="placeholder_name" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1">Email</label>
+                                <input type="email" required placeholder="budi@email.com" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1" data-i18n="cont_msg">Pesan / Masukan</label>
+                                <textarea rows="4" required placeholder="Tuliskan pesan Anda di sini..." data-i18n-holder="placeholder_notes" class="w-full bg-brandCream border border-brandGold/20 rounded-lg p-3"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold py-3.5 rounded-lg transition uppercase tracking-wider" data-i18n="cont_send_btn">Kirim Pesan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <!-- CENTRALIZED & BRANCHED DEMO DASHBOARD -->
+        <section id="page-dashboard" class="page-section hidden py-16 bg-slate-900 text-slate-100 min-h-screen">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Dashboard Control Panel Header -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-6 mb-8">
+                    <div>
+                        <span class="text-xs font-bold text-brandGold tracking-wider uppercase"><i class="fa-solid fa-circle-nodes text-[10px] mr-1"></i> Interactive Demo System</span>
+                        <h2 class="text-2xl font-serif text-slate-100 mt-1">Griya Bugar Management Dashboard</h2>
+                    </div>
+                    
+                    <!-- View Switcher Controls -->
+                    <div class="mt-4 md:mt-0 flex gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700">
+                        <button id="db-btn-pusat" onclick="switchDashboardView('pusat')" class="bg-brandGold text-slate-900 text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-server"></i> <span data-i18n="db_sw_central">Admin Pusat (Nasional)</span>
+                        </button>
+                        <button id="db-btn-jogja" onclick="switchDashboardView('jogja')" class="text-slate-300 hover:text-white text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot"></i> <span data-i18n="db_sw_branch">Cabang Jogja (Lokal)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD: ADMIN PUSAT (NATIONAL SCALE) -->
+                <div id="dashboard-pusat-view">
+                    <!-- Cards Grid -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_nat_all">Semua Cabang Aktif</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">5 <span data-i18n="db_city">Kota</span></p>
+                            <p class="text-[10px] text-emerald-500 mt-1"><i class="fa-solid fa-angle-up"></i> Yogyakarta, Jakarta, Sby, Bdg, Bali</p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_nat_booking">Total Booking Nasional</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">1,245</p>
+                            <p class="text-[10px] text-emerald-500 mt-1"><i class="fa-solid fa-angle-up"></i> <span data-i18n="db_nat_booking_inc">+12% peningkatan minggu ini</span></p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_nat_therapist">Total Terapis Terdaftar</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">90 <span data-i18n="db_nat_experts">Ahli</span></p>
+                            <p class="text-[10px] text-emerald-500 mt-1"><i class="fa-solid fa-circle text-[6px] mr-1"></i> 100% BNSP Certified</p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_nat_revenue">Laporan Omset Bulanan</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">Rp 340M</p>
+                            <p class="text-[10px] text-emerald-500 mt-1"><i class="fa-solid fa-angle-up"></i> <span data-i18n="db_nat_target">Target nasional tercapai</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Layout Table & Lists -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Left Panel: All Branch Bookings -->
+                        <div class="lg:col-span-2 bg-slate-800 border border-slate-700/60 rounded-xl p-6 shadow-md">
+                            <div class="flex justify-between items-center border-b border-slate-700 pb-4 mb-4">
+                                <h3 class="font-serif text-lg text-slate-100" data-i18n="db_list_booking">Daftar Antrean Booking Terkini (Seluruh Cabang)</h3>
+                                <span class="bg-brandGold/20 text-brandGold text-[10px] py-1 px-2.5 rounded font-bold uppercase">Realtime Sync</span>
+                            </div>
+                            <div class="overflow-x-auto text-xs text-slate-300">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-700 text-slate-400">
+                                            <th class="py-3 px-2" data-i18n="db_th_name">Nama</th>
+                                            <th class="py-3 px-2" data-i18n="db_th_branch">Cabang</th>
+                                            <th class="py-3 px-2" data-i18n="db_th_service">Layanan</th>
+                                            <th class="py-3 px-2" data-i18n="db_th_time">Waktu</th>
+                                            <th class="py-3 px-2">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700/40">
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Aditya Nugroho</td>
+                                            <td class="py-3 px-2">Yogyakarta</td>
+                                            <td class="py-3 px-2">Sport Recovery</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_today">Hari ini</span>, 19:30</td>
+                                            <td class="py-3 px-2"><span class="bg-yellow-500/10 text-yellow-500 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_status_wait">Menunggu</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Siti Rahmawati</td>
+                                            <td class="py-3 px-2">Jakarta</td>
+                                            <td class="py-3 px-2">Reflexology</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_tomorrow">Besok</span>, 10:00</td>
+                                            <td class="py-3 px-2"><span class="bg-emerald-500/10 text-emerald-500 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_status_confirm">Terkonfirmasi</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Lukas Wijaya</td>
+                                            <td class="py-3 px-2">Surabaya</td>
+                                            <td class="py-3 px-2">Massage Tradisional</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_tomorrow">Besok</span>, 14:00</td>
+                                            <td class="py-3 px-2"><span class="bg-emerald-500/10 text-emerald-500 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_status_confirm">Terkonfirmasi</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Dewi Lestari</td>
+                                            <td class="py-3 px-2">Bandung</td>
+                                            <td class="py-3 px-2">Home Service</td>
+                                            <td class="py-3 px-2 text-slate-400">25 June, 09:00</td>
+                                            <td class="py-3 px-2"><span class="bg-yellow-500/10 text-yellow-500 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_status_wait">Menunggu</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: National Reports & Promos -->
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-6 shadow-md flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-serif text-lg text-slate-100 mb-4 border-b border-slate-700 pb-3" data-i18n="db_title_rev">Statistik Pendapatan Cabang</h3>
+                                <div class="space-y-4 text-xs">
+                                    <div>
+                                        <div class="flex justify-between text-slate-400 mb-1">
+                                            <span>Yogyakarta</span>
+                                            <span class="text-white font-semibold">Rp 120 Juta</span>
+                                        </div>
+                                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-brandGold h-full rounded-full" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-slate-400 mb-1">
+                                            <span>Jakarta</span>
+                                            <span class="text-white font-semibold">Rp 140 Juta</span>
+                                        </div>
+                                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-brandGold h-full rounded-full" style="width: 95%;"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-slate-400 mb-1">
+                                            <span>Surabaya</span>
+                                            <span class="text-white font-semibold">Rp 90 Juta</span>
+                                        </div>
+                                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-brandGold h-full rounded-full" style="width: 65%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 border-t border-slate-700 pt-6">
+                                <h4 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest" data-i18n="db_authority_title">Keterangan Otoritas Pusat</h4>
+                                <p class="text-[11px] text-slate-300 leading-relaxed" data-i18n="db_authority_desc">Administrator Pusat mengendalikan konfigurasi tarif nasional, pembuatan template promosi serentak, rotasi mutasi terapis antarkota, dan pengkajian sirkulasi laba bersih kemitraan waralaba.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD: CABANG JOGJA ONLY (LOCAL SCALE) -->
+                <div id="dashboard-jogja-view" class="hidden">
+                    <!-- Cards Grid -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_loc_status">Status Cabang Jogja</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-emerald-500" data-i18n="db_loc_open">Buka 24 Jam</p>
+                            <p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-signal"></i> <span data-i18n="db_loc_connected">Sistem Online Terhubung</span></p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_loc_bookings">Booking Terjadwal Jogja</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">34 <span data-i18n="db_loc_session">Sesi</span></p>
+                            <p class="text-[10px] text-slate-400 mt-1" data-i18n="db_loc_assigned">Khusus penugasan area Yogyakarta</p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_loc_standby">Terapis Standby</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">15 <span data-i18n="db_loc_therapists">Terapis</span></p>
+                            <p class="text-[10px] text-emerald-500 mt-1"><i class="fa-solid fa-circle text-[6px] mr-1"></i> <span data-i18n="db_loc_standby_desc">11 bertugas, 4 bersiap</span></p>
+                        </div>
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-5 shadow-md">
+                            <p class="text-xs text-slate-400 font-medium" data-i18n="db_loc_revenue">Omset Lokal Jogja</p>
+                            <p class="text-3xl font-serif font-semibold mt-2 text-brandGold">Rp 120M</p>
+                            <p class="text-[10px] text-slate-400 mt-1" data-i18n="db_loc_target">Melebihi target bulanan</p>
+                        </div>
+                    </div>
+
+                    <!-- Layout Table & Lists -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Left Panel: Filtered Jogja Bookings -->
+                        <div class="lg:col-span-2 bg-slate-800 border border-slate-700/60 rounded-xl p-6 shadow-md">
+                            <div class="flex justify-between items-center border-b border-slate-700 pb-4 mb-4">
+                                <h3 class="font-serif text-lg text-slate-100" data-i18n="db_loc_list_title">Jadwal Penugasan Terapis (Yogyakarta)</h3>
+                                <span class="bg-brandGold/20 text-brandGold text-[10px] py-1 px-2.5 rounded font-bold uppercase">Jogja Filtered</span>
+                            </div>
+                            <div class="overflow-x-auto text-xs text-slate-300">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-700 text-slate-400">
+                                            <th class="py-3 px-2" data-i18n="db_loc_th_customer">Nama Pelanggan</th>
+                                            <th class="py-3 px-2" data-i18n="db_loc_th_service">Layanan</th>
+                                            <th class="py-3 px-2" data-i18n="db_loc_th_time">Jam Sesi</th>
+                                            <th class="py-3 px-2" data-i18n="db_loc_th_assigned">Terapis Ditugaskan</th>
+                                            <th class="py-3 px-2" data-i18n="db_loc_th_method">Metode Sesi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700/40">
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Aditya Nugroho</td>
+                                            <td class="py-3 px-2">Sport Recovery</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_today">Hari ini</span>, 19:30</td>
+                                            <td class="py-3 px-2 text-brandGold font-medium">Budi Santoso</td>
+                                            <td class="py-3 px-2"><span class="bg-indigo-500/10 text-indigo-400 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_loc_branch">Di Cabang</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Rina Herawati</td>
+                                            <td class="py-3 px-2">Reflexology Modern</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_today">Hari ini</span>, 21:00</td>
+                                            <td class="py-3 px-2 text-brandGold font-medium">Ratih Pratiwi</td>
+                                            <td class="py-3 px-2"><span class="bg-indigo-500/10 text-indigo-400 py-0.5 px-2 rounded-full text-[10px]" data-i18n="db_loc_branch">Di Cabang</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-2 font-semibold text-white">Aris Budiman</td>
+                                            <td class="py-3 px-2">Home Service 24 Jam</td>
+                                            <td class="py-3 px-2 text-slate-400"><span data-i18n="db_tomorrow">Besok</span>, 01:00</td>
+                                            <td class="py-3 px-2 text-brandGold font-medium">Budi Santoso</td>
+                                            <td class="py-3 px-2"><span class="bg-emerald-500/10 text-emerald-400 py-0.5 px-2 rounded-full text-[10px]">Home Service</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Jogja Local Promos & Rules -->
+                        <div class="bg-slate-800 border border-slate-700/60 rounded-xl p-6 shadow-md flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-serif text-lg text-slate-100 mb-4 border-b border-slate-700 pb-3" data-i18n="db_loc_promos">Daftar Promo Lokal Jogja</h3>
+                                <ul class="space-y-3 text-xs text-slate-300">
+                                    <li class="p-3 bg-slate-700/40 rounded-lg flex justify-between items-center">
+                                        <div>
+                                            <p class="font-semibold text-brandGold">Midnight Spa Relief</p>
+                                            <p class="text-[10px] text-slate-400" data-i18n="db_loc_promo1_desc">Potongan 20% bagi sesi jam 23.00 - 04.00</p>
+                                        </div>
+                                        <span class="text-emerald-500 font-bold" data-i18n="db_loc_promo_active">Aktif</span>
+                                    </li>
+                                    <li class="p-3 bg-slate-700/40 rounded-lg flex justify-between items-center">
+                                        <div>
+                                            <p class="font-semibold text-brandGold">Borobudur Guest Special</p>
+                                            <p class="text-[10px] text-slate-400" data-i18n="db_loc_promo2_desc">Diskon khusus menginap turis mancanegara</p>
+                                        </div>
+                                        <span class="text-emerald-500 font-bold" data-i18n="db_loc_promo_active">Aktif</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="mt-8 border-t border-slate-700 pt-6">
+                                <h4 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-widest" data-i18n="db_loc_auth_title">Aksesibilitas Operator Cabang</h4>
+                                <p class="text-[11px] text-slate-300 leading-relaxed" data-i18n="db_loc_auth_desc">Operator Cabang Yogyakarta hanya dapat melihat, mengelola, serta menetapkan jadwal pemesanan, tim terapis, dan promo lokal area Yogyakarta demi mengedepankan efektivitas penanganan harian.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brandBrown text-brandCream pt-20 pb-12 border-t border-brandGold/20 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 border-b border-brandCream/10 pb-16 mb-12">
+            
+            <!-- Logo & Brand Vision -->
+            <div class="lg:col-span-4 space-y-4">
+                <span class="font-serif text-2xl tracking-widest text-brandGold font-bold">GRIYA BUGAR</span>
+                <p class="text-xs text-brandCream/80 leading-relaxed max-w-sm" data-i18n="footer_vision">Jaringan nasional wellness premium dengan standarisasi profesional tinggi, menghadirkan keselarasan tubuh dan ketenangan batin murni.</p>
+                <div class="flex space-x-4 text-brandGold text-lg">
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Sitemap Quick Links -->
+            <div class="lg:col-span-3 space-y-4">
+                <h4 class="font-serif text-brandGold text-base" data-i18n="footer_links">Tautan Navigasi</h4>
+                <ul class="space-y-2.5 text-xs text-brandCream/80">
+                    <li><button onclick="navigateToPage('about')" class="hover:text-brandGold transition" data-i18n="footer_link_about">Tentang Griya Bugar</button></li>
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="footer_link_services">Katalog Layanan</button></li>
+                    <li><button onclick="navigateToPage('branches')" class="hover:text-brandGold transition" data-i18n="footer_link_branches">Lokasi Cabang</button></li>
+                    <li><button onclick="navigateToPage('promos')" class="hover:text-brandGold transition" data-i18n="footer_link_promos">Promo Bulanan</button></li>
+                    <li><button onclick="navigateToPage('articles')" class="hover:text-brandGold transition" data-i18n="footer_link_articles">Artikel Kesehatan</button></li>
+                </ul>
+            </div>
+
+            <!-- Exclusive Treatment Sitemap -->
+            <div class="lg:col-span-3 space-y-4">
+                <h4 class="font-serif text-brandGold text-base">Menu Treatment</h4>
+                <ul class="space-y-2.5 text-xs text-brandCream/80">
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="lay1_title">Massage Tradisional</button></li>
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="lay2_title">Reflexology Modern</button></li>
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="lay3_title">Sport Recovery Massage</button></li>
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="lay4_title">Home Service 24 Jam</button></li>
+                    <li><button onclick="navigateToPage('services')" class="hover:text-brandGold transition" data-i18n="lay5_title">Corporate Wellness</button></li>
+                </ul>
+            </div>
+
+            <!-- Investment Link -->
+            <div class="lg:col-span-2 space-y-4">
+                <h4 class="font-serif text-brandGold text-base" data-i18n="footer_investors">Investor & Mitra</h4>
+                <ul class="space-y-2.5 text-xs text-brandCream/80">
+                    <li><button onclick="navigateToPage('franchise')" class="hover:text-brandGold transition" data-i18n="footer_link_fran">Waralaba Franchise</button></li>
+                    <li><button onclick="navigateToPage('franchise')" class="hover:text-brandGold transition" data-i18n="footer_link_part">Sistem Kemitraan</button></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Copyright -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brandCream/60">
+            <p>&copy; 2026 Griya Bugar Wellness Group. <span data-i18n="footer_copy">Hak Cipta Dilindungi Undang-Undang.</span></p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="#" class="hover:text-brandGold transition" data-i18n="footer_terms">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-brandGold transition" data-i18n="footer_privacy">Kebijakan Privasi</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- APP LOGIC & ROUTER SCRIPT -->
+    <script>
+        // Global Language State
+        let currentLang = 'id';
+
+        // Dual Language (i18n) Dictionary
+        const i18n = {
+            id: {
+                subbrand: "Modern Wellness Luxury",
+                nav_home: "Home",
+                nav_about: "Tentang Kami",
+                nav_services: "Layanan",
+                nav_branches: "Cabang",
+                nav_promos: "Promo",
+                nav_articles: "Artikel",
+                nav_franchise: "Franchise",
+                nav_contact: "Kontak",
+                nav_demo_dashboard: "Demo Dashboard",
+                nav_booking_btn: "Booking Sekarang",
+                
+                loc_prompt_title: "Izinkan Akses Lokasi?",
+                loc_prompt_desc: "Kami akan merekomendasikan cabang Griya Bugar terdekat dari posisi Anda saat ini.",
+                loc_prompt_yes: "Ya, Izinkan",
+                loc_prompt_no: "Nanti Saja",
+                
+                loc_rec_tag: "Cabang Terdekat Terdeteksi",
+                loc_rec_open: "Buka 24 Jam • Layanan Lengkap",
+                loc_rec_detail: "Detail Cabang",
+                
+                wa_float_tooltip: "Hubungi Cabang Kami",
+                wa_card_desc: "Silakan pilih cabang terdekat untuk langsung berkonsultasi via WhatsApp.",
+                wa_online_24: "Online 24 Jam",
+                wa_online: "Online",
+                
+                hero_crown: "Jaringan Wellness Mewah",
+                hero_headline: "Relaksasi Profesional untuk Tubuh yang Lebih Sehat",
+                hero_subheadline: "Nikmati perpaduan metode tradisional Nusantara dan teknik medis modern di bawah asuhan terapis profesional bersertifikat. Hadir di 5 kota besar Indonesia dengan standar pelayanan terbaik.",
+                hero_cta_branches: "Lihat Cabang",
+                
+                stats_branches: "Cabang Nasional",
+                stats_therapists: "Terapis Profesional",
+                stats_customers: "Pelanggan Puas",
+                stats_rating: "Rating Pelanggan",
+                
+                home_lay_tag: "Layanan Istimewa Kami",
+                home_lay_title: "Layanan Unggulan Griya Bugar",
+                home_lay_desc: "Manjakan seluruh tubuh Anda dengan ragam terapi premium yang telah dipandu secara medis demi keselarasan tubuh dan pikiran.",
+                learn_more: "Pelajari Selengkapnya",
+                
+                lay1_title: "Massage Tradisional",
+                lay1_desc_short: "Terapi pemijatan seluruh tubuh dengan rempah Nusantara berkualitas tinggi untuk meningkatkan sirkulasi darah dan melepas ketegangan otot mendalam.",
+                lay2_title: "Reflexology",
+                lay2_desc_short: "Stimulasi titik-titik saraf penting pada area kaki untuk merestorasi metabolisme tubuh dan memulihkan vitalitas organ vital secara holistik.",
+                lay3_title: "Sport Massage",
+                lay3_desc_short: "Diformulasikan khusus untuk pemulihan cedera fisik pasca olahraga berat, melemaskan jaringan fascia, serta menstabilkan rentang gerak sendi.",
+                lay5_title: "Corporate Wellness",
+                lay5_desc_short: "Program relaksasi on-site eksklusif bagi korporat guna meminimalisir kepenatan staf kantor serta meningkatkan produktivitas tim secara berkala.",
+                
+                home_branch_tag: "Jejaring Cabang Nasional",
+                home_branch_title: "Hadir di 5 Kota Besar Indonesia",
+                home_branch_desc: "Seluruh cabang kami telah dilengkapi dengan fasilitas standar internasional kelas premium guna menghadirkan ketenangan maksimal.",
+                home_branch_cta: "Lihat Semua Fasilitas Cabang",
+                visit_branch: "Kunjungi Cabang",
+                
+                trust_tag: "Komitmen Kami",
+                trust_title: "Mengapa Memilih Standardisasi Griya Bugar?",
+                trust1_title: "Terapis Sertifikasi BNSP",
+                trust1_desc: "Seluruh tim kami wajib melewati kurikulum pelatihan bersertifikasi resmi BNSP untuk menjamin aspek keamanan dan higienitas medis.",
+                trust2_title: "Minyak Esensial Alami Kualitas Tinggi",
+                trust2_desc: "Kami memproduksi sendiri aromaterapi dari ekstrak kayu gaharu, mawar, melati, serta cendana murni tanpa bahan kimia artifisial.",
+                trust3_title: "Kamar Bersih, Kedap, & Steril",
+                trust3_desc: "Sistem tata udara higienis HEPA Filter di setiap ruang treatment pribadi demi keamanan sirkulasi udara optimal pasca-layanan.",
+                testimonial_text: "\"Suasananya sangat menenangkan. Sangat premium, bersih, dan pijatannya sangat bertenaga sekaligus menenangkan. Sangat kami rekomendasikan!\"",
+                
+                about_tag: "Sejarah Kami",
+                about_title: "Mengenal Lebih Dekat Griya Bugar",
+                about_quote: "\"Menghadirkan relaksasi berstandar medis dengan sentuhan keramahan khas nusantara.\"",
+                about_p1: "Didirikan pada tahun 2018 di Yogyakarta, Griya Bugar terus berinovasi menjadi jaringan waralaba wellness modern bernuansa premium. Kami mengombinasikan warisan budaya pijat nenek moyang dengan pendekatan modern ergonomis.",
+                about_p2: "Komitmen utama kami adalah memberikan kesempatan kerja bagi para terapis lokal berbakat melalui program akreditasi berkala serta asuransi profesi menyeluruh, agar pelayanan kepada pelanggan Anda senantiasa optimal dan ikhlas.",
+                
+                values_title: "4 Nilai Dasar Layanan Kami",
+                value1_title: "Integritas",
+                value1_desc: "Pelayanan tulus tanpa biaya tambahan di luar kesepakatan pemesanan.",
+                value2_title: "Higienitas Mutlak",
+                value2_desc: "Seprai, handuk, dan celana refleksi disterilisasi UV sekali pakai.",
+                value3_title: "Kompetensi",
+                value3_desc: "Terapis wajib memiliki keahlian berstandar medis otot dan sendi.",
+                value4_title: "Aman & Terbuka",
+                value4_desc: "Menyediakan area konsultasi medis sebelum memulai proses terapi.",
+                
+                serv_tag: "Menu Layanan Kami",
+                serv_title: "Katalog Terapi Premium Griya Bugar",
+                mins: "Menit",
+                session: "Sesi",
+                lay1_desc_full: "Pijatan relaksasi menyeluruh yang efektif melancarkan sistem peredaran darah, meredakan migrain, serta mengatasi insomnia. Dipadukan dengan ramuan lulur tradisional rempah kelapa asli.",
+                lay1_feat1: "Minyak Kelapa Hangat",
+                lay1_feat2: "Aromaterapi Cendana",
+                lay1_feat3: "Relaksasi Handuk Hangat",
+                lay1_feat4: "Teh Jahe Hangat Premium",
+                
+                lay2_title_full: "Reflexology Modern",
+                lay2_desc_full: "Fokus melunakkan simpul ketegangan syaraf kaki melalui titik akupresur meridian refleksi. Sangat ideal bagi pekerja kantoran aktif maupun wisatawan yang letih setelah bepergian jauh.",
+                lay2_feat1: "Rendaman Garam Laut",
+                lay2_feat2: "Pijat Area Kaki & Betis",
+                lay2_feat3: "Pijat Ringan Pundak",
+                lay2_feat4: "Lotion Non-Lengket",
+                
+                lay3_title_full: "Sport Recovery Massage",
+                lay3_desc_full: "Terapi deep tissue dengan tekanan tinggi dan peregangan sendi terarah. Membantu mempercepat pengeluaran tumpukan asam laktat serta mempercepat proses pemulihan otot sobek mikro.",
+                lay3_feat1: "Trigger Point Therapy",
+                lay3_feat2: "Muscle PNF Stretching",
+                lay3_feat3: "Balsem Peppermint Khusus",
+                lay3_feat4: "Kompres Es/Hangat Otot",
+                
+                lay4_title_full: "Home Service 24 Jam",
+                lay4_desc_full: "Terapis handal kami siap berkunjung langsung ke hotel, rumah, maupun apartemen Anda. Kami membawa perlengkapan kasur portabel, lilin aroma terapi, serta sprei steril sendiri demi kelancaran kenyamanan Anda.",
+                lay4_btn: "Hubungi Layanan Home Service",
+                
+                lay5_title_full: "Corporate Wellness Program",
+                lay5_desc_full: "Atasi keletihan di tempat kerja dengan mendatangkan terapis kursi ergonomis. Cocok untuk acara Employee Appreciation Day, mempererat kebersamaan tim kerja, serta menekan angka stress kerja karyawan korporasi.",
+                lay5_price: "Harga Kustom Sesuai Kebutuhan",
+                lay5_btn: "Kirim Penawaran Kerjasama",
+                
+                branches_tag: "Jejaring Eksklusif Kami",
+                branches_title: "Pilih Cabang Griya Bugar",
+                branches_desc: "Kunjungi halaman spesifik cabang untuk melihat tim terapis terakreditasi, fasilitas terlengkap, serta pemesanan sesi online.",
+                back_to_branches: "Kembali ke Semua Cabang",
+                branch_features_title: "Keistimewaan Cabang",
+                branch_therapists_title: "Tim Terapis Ahli Kami",
+                
+                form_booking_title: "Formulir Booking Online",
+                form_booking_desc: "Isi formulir pemesanan sesi Anda secara lengkap. Kami akan menyusun konfirmasi otomatis langsung terkirim menuju tim WhatsApp cabang.",
+                form_name: "Nama Lengkap Anda",
+                form_phone: "Nomor WhatsApp Aktif",
+                form_date: "Tanggal Pemesanan",
+                form_time: "Waktu / Jam Sesi",
+                form_service: "Pilih Jenis Layanan",
+                form_notes: "Catatan Tambahan (Spesifikasi Terapis / Area Otot Fokus / Kondisi Medis)",
+                form_submit_btn: "BOOK VIA WHATSAPP CABANG",
+                form_branch: "Pilih Cabang Griya Bugar",
+                
+                placeholder_name: "Contoh: Budi Santoso",
+                placeholder_phone: "Contoh: 081234567890",
+                placeholder_notes: "Tulis instruksi khusus jika ada...",
+                placeholder_fran_name: "Contoh: Hermawan Wijaya",
+                placeholder_fran_city: "Contoh: Semarang / Solo",
+                
+                booking_tag: "Pemesanan Online",
+                booking_title: "Pemesanan Sesi Griya Bugar",
+                booking_desc: "Silakan pilih cabang tujuan Anda terlebih dahulu untuk mengarahkan form ke terapis lokal yang sesuai.",
+                
+                promos_tag: "Promo Aktif",
+                promos_title: "Penawaran Eksklusif Bulan Ini",
+                promo1_badge: "DISKON",
+                promo1_title: "Happy Hour Treatment",
+                promo1_desc: "Nikmati potongan harga langsung untuk seluruh jenis menu treatment di hari Senin s/d Kamis mulai pukul 09.00 hingga 14.00 WIB.",
+                promo_duration1: "Berlaku s/d Akhir Bulan",
+                promo_claim: "Klaim Promo",
+                promo2_badge: "VIP",
+                promo2_free: "GRATIS",
+                promo2_title: "Free Herbal Mocktail",
+                promo2_desc: "Setiap pemesanan minimal sesi treatment berdurasi 120 Menit berhak mendapatkan secangkir complimentary herbal tea eksklusif & aromatik.",
+                promo_duration2: "Promo Member Baru",
+                
+                art_tag: "Wawasan Kesehatan Sehat",
+                art_title: "Artikel Kesehatan & Gaya Hidup",
+                art1_cat: "Terapi Saraf",
+                art1_title: "Pentingnya Melemaskan Otot Fascia Secara Rutin",
+                art1_desc: "Tumpukan beban kerja harian memicu ketegangan pada jaringan fascia tubuh kita. Kenali kiat mengatasinya melalui pijat deep tissue...",
+                art_read1: "5 Menit Baca",
+                art2_cat: "Aroma Terapi",
+                art2_title: "Bagaimana Minyak Cendana Mampu Atasi Insomnia",
+                art2_desc: "Penelitian medis mutakhir membuktikan bahwa menghirup uap minyak esensial murni cendana mampu menurunkan denyut nadi berlebih...",
+                art_read2: "4 Menit Baca",
+                art3_cat: "Corporate Wellness",
+                art3_title: "Menjaga Produktivitas Kerja dengan Sesi Peregangan",
+                art3_desc: "Duduk tegak berjam-jam di depan monitor komputer memicu ketegangan otot leher bagian atas. Sesi stretching singkat 10 menit dapat...",
+                art_read3: "6 Menit Baca",
+                art_more: "Selengkapnya",
+                
+                fran_tag: "Peluang Investasi",
+                fran_title: "Kemitraan & Waralaba Griya Bugar",
+                fran_desc: "Bergabunglah dengan jaringan waralaba wellness modern premium dengan tingkat profitabilitas investasi (ROI) teruji berskala nasional.",
+                fran_val1_title: "ROI Teruji & Cepat",
+                fran_val1_desc: "Rata-rata mitra waralaba kami mencapai balik modal penuh (BEP) dalam kurun waktu 18 s/d 24 bulan sejak awal peresmian cabang baru.",
+                fran_val2_title: "Suplai Terapis Tersentral",
+                fran_val2_desc: "Mitra tidak perlu khawatir mencari staf. Seluruh terapis kami latih di pusat pelatihan pusat Yogyakarta untuk menjamin kualitas standar merata.",
+                fran_val3_title: "Sistem ERP Terintegrasi",
+                fran_val3_desc: "Pantau perkembangan transaksi harian, absensi terapis, hingga persediaan minyak aromaterapi secara langsung (realtime) melalui aplikasi admin.",
+                fran_form_title: "Hubungi Tim Kemitraan Kami",
+                fran_form_name: "Nama Lengkap Pemohon",
+                fran_form_city: "Kota Rencana Lokasi Cabang",
+                fran_form_phone: "Nomor Kontak WhatsApp",
+                fran_form_capital: "Estimasi Alokasi Modal",
+                fran_form_btn: "KIRIM PROPOSAL KEMITRAAN",
+                
+                cont_tag: "Kontak Kami",
+                cont_title: "Hubungi Pusat Griya Bugar",
+                cont_hq: "Kantor Pusat Kami",
+                cont_phone_tag: "Telepon Kantor",
+                cont_send_title: "Kirimkan Pesan Anda",
+                cont_msg: "Pesan / Masukan",
+                cont_send_btn: "Kirim Pesan",
+                
+                db_sw_central: "Admin Pusat (Nasional)",
+                db_sw_branch: "Cabang Jogja (Lokal)",
+                db_nat_all: "Semua Cabang Aktif",
+                db_city: "Kota",
+                db_nat_booking: "Total Booking Nasional",
+                db_nat_booking_inc: "+12% peningkatan minggu ini",
+                db_nat_therapist: "Total Terapis Terdaftar",
+                db_nat_experts: "Ahli",
+                db_nat_revenue: "Laporan Omset Bulanan",
+                db_nat_target: "Target nasional tercapai",
+                db_list_booking: "Daftar Antrean Booking Terkini (Seluruh Cabang)",
+                db_th_name: "Nama",
+                db_th_branch: "Cabang",
+                db_th_service: "Layanan",
+                db_th_time: "Waktu",
+                db_status_wait: "Menunggu",
+                db_status_confirm: "Terkonfirmasi",
+                db_today: "Hari ini",
+                db_tomorrow: "Besok",
+                db_title_rev: "Statistik Pendapatan Cabang",
+                db_authority_title: "Keterangan Otoritas Pusat",
+                db_authority_desc: "Administrator Pusat mengendalikan konfigurasi tarif nasional, pembuatan template promosi serentak, rotasi mutasi terapis antarkota, dan pengkajian sirkulasi laba bersih kemitraan waralaba.",
+                db_loc_status: "Status Cabang Jogja",
+                db_loc_open: "Buka 24 Jam",
+                db_loc_connected: "Sistem Online Terhubung",
+                db_loc_bookings: "Booking Terjadwal Jogja",
+                db_loc_session: "Sesi",
+                db_loc_assigned: "Khusus penugasan area Yogyakarta",
+                db_loc_standby: "Terapis Standby",
+                db_loc_standby_desc: "11 bertugas, 4 bersiap",
+                db_loc_revenue: "Omset Lokal Jogja",
+                db_loc_target: "Melebihi target bulanan",
+                db_loc_list_title: "Jadwal Penugasan Terapis (Yogyakarta)",
+                db_loc_th_customer: "Nama Pelanggan",
+                db_loc_th_service: "Layanan",
+                db_loc_th_time: "Jam Sesi",
+                db_loc_th_assigned: "Terapis Ditugaskan",
+                db_loc_th_method: "Metode Sesi",
+                db_loc_branch: "Di Cabang",
+                db_loc_promos: "Daftar Promo Lokal Jogja",
+                db_loc_promo1_desc: "Potongan 20% bagi sesi jam 23.00 - 04.00",
+                db_loc_promo2_desc: "Diskon khusus menginap turis mancanegara",
+                db_loc_promo_active: "Aktif",
+                db_loc_auth_title: "Aksesibilitas Operator Cabang",
+                db_loc_auth_desc: "Operator Cabang Yogyakarta hanya dapat melihat, mengelola, serta menetapkan jadwal pemesanan, tim terapis, dan promo lokal area Yogyakarta demi mengedepankan efektivitas penanganan harian.",
+                
+                footer_vision: "Jaringan nasional wellness premium dengan standarisasi profesional tinggi, menghadirkan keselarasan tubuh dan ketenangan batin murni.",
+                footer_links: "Tautan Navigasi",
+                footer_link_about: "Tentang Griya Bugar",
+                footer_link_services: "Katalog Layanan",
+                footer_link_branches: "Lokasi Cabang",
+                footer_link_promos: "Promo Bulanan",
+                footer_link_articles: "Artikel Kesehatan",
+                footer_investors: "Investor & Mitra",
+                footer_link_fran: "Waralaba Franchise",
+                footer_link_part: "Sistem Kemitraan",
+                footer_copy: "Hak Cipta Dilindungi Undang-Undang.",
+                footer_terms: "Syarat & Ketentuan",
+                footer_privacy: "Kebijakan Privasi"
+            },
+            en: {
+                subbrand: "Modern Wellness Luxury",
+                nav_home: "Home",
+                nav_about: "About Us",
+                nav_services: "Services",
+                nav_branches: "Branches",
+                nav_promos: "Promos",
+                nav_articles: "Articles",
+                nav_franchise: "Franchise",
+                nav_contact: "Contact",
+                nav_demo_dashboard: "Demo Dashboard",
+                nav_booking_btn: "Book Now",
+                
+                loc_prompt_title: "Allow Location Access?",
+                loc_prompt_desc: "We will recommend the nearest Griya Bugar branch relative to your current location.",
+                loc_prompt_yes: "Yes, Allow",
+                loc_prompt_no: "Later",
+                
+                loc_rec_tag: "Nearest Branch Detected",
+                loc_rec_open: "Open 24 Hours • Full Services",
+                loc_rec_detail: "Branch Details",
+                
+                wa_float_tooltip: "Contact Our Branches",
+                wa_card_desc: "Please choose the nearest branch to consult directly via WhatsApp.",
+                wa_online_24: "Online 24 Hours",
+                wa_online: "Online",
+                
+                hero_crown: "Luxury Wellness Network",
+                hero_headline: "Professional Relaxation for a Healthier Body",
+                hero_subheadline: "Indulge in a blend of traditional Indonesian methods and modern medical approach supervised by certified professional therapists. Present in 5 major Indonesian cities with top luxury service standards.",
+                hero_cta_branches: "View Branches",
+                
+                stats_branches: "National Branches",
+                stats_therapists: "Professional Therapists",
+                stats_customers: "Satisfied Customers",
+                stats_rating: "Customer Rating",
+                
+                home_lay_tag: "Our Signature Treatments",
+                home_lay_title: "Griya Bugar Signature Services",
+                home_lay_desc: "Pamper your whole body with a selection of premium, medically guided therapeutic treatments to achieve perfect body and mind alignment.",
+                learn_more: "Learn More",
+                
+                lay1_title: "Traditional Massage",
+                lay1_desc_short: "Whole-body therapeutic massage using premium Indonesian herbs to improve circulation and relieve deep muscular tension.",
+                lay2_title: "Reflexology",
+                lay2_desc_short: "Stimulation of key nerve pressure points on the feet to restore body metabolism and overall organ vitality holistically.",
+                lay3_title: "Sport Massage",
+                lay3_desc_short: "Tailored specifically for post-exercise recovery, easing myofascial tightness and stabilizing dynamic joint range of motion.",
+                lay5_title: "Corporate Wellness",
+                lay5_desc_short: "On-site corporate relaxation programs to minimize employee fatigue and boost corporate productivity consistently.",
+                
+                home_branch_tag: "National Branch Networks",
+                home_branch_title: "Present in 5 Major Indonesian Cities",
+                home_branch_desc: "All our luxury branches are equipped with premium international standard facilities for your absolute tranquility.",
+                home_branch_cta: "View All Branch Amenities",
+                visit_branch: "Visit Branch",
+                
+                trust_tag: "Our Commitment",
+                trust_title: "Why Choose Griya Bugar Standards?",
+                trust1_title: "BNSP Certified Therapists",
+                trust1_desc: "Every team member must pass the rigorous official BNSP curriculum to guarantee optimal safety and medical hygiene.",
+                trust2_title: "Premium Grade Natural Essential Oils",
+                trust2_desc: "We formulate our own aromatherapy from pure extracts of agarwood, rose, jasmine, and sandalwood with zero artificial chemicals.",
+                trust3_title: "Clean, Quiet & Sterile Treatment Rooms",
+                trust3_desc: "Hygienic HEPA air purification system in every private treatment room ensures clean air circulation after every session.",
+                testimonial_text: "\"The ambiance is incredibly calming. Extremely premium, clean, and the massage technique was both powerful and soothing. Highly recommended!\"",
+                
+                about_tag: "Our History",
+                about_title: "Getting Closer to Griya Bugar",
+                about_quote: "\"Delivering medically-guided relaxation wrapped in signature Indonesian hospitality.\"",
+                about_p1: "Established in 2018 in Yogyakarta, Griya Bugar has continuously innovated to become a premier national luxury wellness franchise. We blend ancestral healing massage traditions with modern ergonomic principles.",
+                about_p2: "Our core pledge is empowering talented local therapists through continuous training and professional insurance, ensuring your experience is always treated with the utmost care and sincerity.",
+                
+                values_title: "Our 4 Core Pillars of Service",
+                value1_title: "Integrity",
+                value1_desc: "Honest and transparent billing with zero surprise surcharges.",
+                value2_title: "Absolute Hygiene",
+                value2_desc: "Bed sheets, towels, and reflexology pants are UV sterilized and single-use.",
+                value3_title: "Competence",
+                value3_desc: "Therapists must excel in medical muscle-anatomy and joint stretching.",
+                value4_title: "Safe & Transparent",
+                value4_desc: "Complimentary medical consultation prior to commencing any therapy.",
+                
+                serv_tag: "Our Premium Treatments",
+                serv_title: "Griya Bugar Premium Menu",
+                mins: "Minutes",
+                session: "Session",
+                lay1_desc_full: "A comprehensive traditional full-body massage designed to stimulate blood flow, ease chronic migraines, and combat insomnia. Paired with our organic coconut body scrub.",
+                lay1_feat1: "Warm Coconut Oil Base",
+                lay1_feat2: "Pure Sandalwood Aromatherapy",
+                lay1_feat3: "Warm Towel Compression Relief",
+                lay1_feat4: "Premium Fresh Ginger Tea",
+                
+                lay2_title_full: "Modern Reflexology",
+                lay2_desc_full: "Focused acupressure along feet meridian channels to unlock stagnant body tension. Perfect for active office professionals or weary travelers after long flights.",
+                lay2_feat1: "Purifying Sea Salt Foot Bath",
+                lay2_feat2: "Deep Foot & Calf Massage",
+                lay2_feat3: "Light Shoulder & Neck Release",
+                lay2_feat4: "Non-Greasy Conditioning Lotion",
+                
+                lay3_title_full: "Sport Recovery Massage",
+                lay3_desc_full: "Intense deep-tissue massage paired with targeted passive stretching. Expels built-up lactic acid and speeds up muscle micro-tear recovery.",
+                lay3_feat1: "Myofascial Trigger Point Therapy",
+                lay3_feat2: "PNF Muscle Stretching",
+                lay3_feat3: "Soothing Peppermint Balm",
+                lay3_feat4: "Ice/Warm Contrast Treatment",
+                
+                lay4_title_full: "24-Hour Home Service",
+                lay4_desc_full: "Our expert therapists can travel directly to your hotel, home, or apartment. We bring portable massage beds, candles, and sterile linens for a worry-free premium spa experience.",
+                lay4_btn: "Request Home Service Now",
+                
+                lay5_title_full: "Corporate Wellness Program",
+                lay5_desc_full: "Combat workplace burnout by deploying on-site ergonomic chair therapists. Perfect for Employee Appreciation events, increasing morale, and cutting down workplace fatigue.",
+                lay5_price: "Custom Tailored Corporate Quotes",
+                lay5_btn: "Request Corporate Partnership",
+                
+                branches_tag: "Our Exclusive Network",
+                branches_title: "Select Your Branch",
+                branches_desc: "Visit specific branch pages to discover accredited local therapist rosters, premium amenities, and online session booking.",
+                back_to_branches: "Back to All Branches",
+                branch_features_title: "Branch Highlights",
+                branch_therapists_title: "Meet Our Specialists",
+                
+                form_booking_title: "Online Session Booking",
+                form_booking_desc: "Complete your session booking details. We will compile a custom automated message directly to the branch WhatsApp dispatch team.",
+                form_name: "Your Full Name",
+                form_phone: "Active WhatsApp Number",
+                form_date: "Desired Date",
+                form_time: "Desired Time Block",
+                form_service: "Choose Therapy Treatment",
+                form_notes: "Additional Notes (Therapist Preference / Muscle Focus Areas / Medical Conditions)",
+                form_submit_btn: "BOOK VIA BRANCH WHATSAPP",
+                form_branch: "Choose Griya Bugar Branch",
+                
+                placeholder_name: "Example: John Doe",
+                placeholder_phone: "Example: +62 812 3456 7890",
+                placeholder_notes: "Write any special instructions here...",
+                placeholder_fran_name: "Example: Christopher Miller",
+                placeholder_fran_city: "Example: Jakarta / Bali",
+                
+                booking_tag: "Online Booking System",
+                booking_title: "Griya Bugar Session Booking",
+                booking_desc: "Please select your target branch to match you with available local certified therapists.",
+                
+                promos_tag: "Active Promotions",
+                promos_title: "This Month's Exclusive Deals",
+                promo1_badge: "DISCOUNT",
+                promo1_title: "Happy Hour Treatment",
+                promo1_desc: "Enjoy flat-rate discounts for any treatment sessions booked Mondays through Thursdays, from 09:00 AM to 02:00 PM.",
+                promo_duration1: "Valid till end of month",
+                promo_claim: "Claim Voucher",
+                promo2_badge: "VIP SPECIAL",
+                promo2_free: "FREE",
+                promo2_title: "Free Herbal Mocktail",
+                promo2_desc: "Any premium treatment booking of 120 minutes or longer receives a complimentary, refreshing fresh herbal tea mocktail.",
+                promo_duration2: "For new members",
+                
+                art_tag: "Healthy Insights",
+                art_title: "Health & Wellness Lifestyle Blog",
+                art1_cat: "Fascial Release",
+                art1_title: "The Critical Role of Regular Fascial Stretching",
+                art1_desc: "Accumulated daily stress locks up our myofascial grid. Learn how to address it through progressive deep tissue therapies...",
+                art_read1: "5 Min Read",
+                art2_cat: "Aromatherapy",
+                art2_title: "Sandalwood Oil's Proven Benefits Against Insomnia",
+                art2_desc: "Modern clinical studies reveal that inhaling pure organic sandalwood essences can safely calm heart rate and encourage sleep...",
+                art_read2: "4 Min Read",
+                art3_cat: "Office Health",
+                art3_title: "Maintaining Desk Productivity via Micro-stretches",
+                art3_desc: "Sitting long hours directly strains cervical spine structures. A light 10-minute targeted stretching routine can alleviate...",
+                art_read3: "6 Min Read",
+                art_more: "Read More",
+                
+                fran_tag: "Franchising Opportunity",
+                fran_title: "Griya Bugar Partnership & Franchising",
+                fran_desc: "Join our expanding luxury national network with proven investment return rates (ROI) and full headquarters-led operational backings.",
+                fran_val1_title: "Proven & Fast Return on Investment",
+                fran_val1_desc: "Our franchise partners achieve complete break-even (BEP) metrics within 18 to 24 months from grand opening launch cycles.",
+                fran_val2_title: "Centralized Talent Pipelines",
+                fran_val2_desc: "Worry-free staffing. All therapists are recruited and rigorously trained at our central academy in Yogyakarta to ensure equal high standard.",
+                fran_val3_title: "Integrated ERP Architecture",
+                fran_val3_desc: "Monitor live transactions, track therapist shift rosters, and oversee aromatherapy inventory levels anytime via our advanced admin app.",
+                fran_form_title: "Reach Our Partnership Committee",
+                fran_form_name: "Applicant's Full Name",
+                fran_form_city: "Intended Expansion City",
+                fran_form_phone: "WhatsApp Contact Details",
+                fran_form_capital: "Estimated Capital Allocation",
+                fran_form_btn: "SUBMIT PARTNERSHIP PROPOSAL",
+                
+                cont_tag: "Contact Us Today",
+                cont_title: "Reach Griya Bugar HQ",
+                cont_hq: "Our Headquarters Office",
+                cont_phone_tag: "HQ Direct Line",
+                cont_send_title: "Send Us a Message",
+                cont_msg: "Message / Feedback",
+                cont_send_btn: "Send Inquiry",
+                
+                db_sw_central: "National Headquarters Admin",
+                db_sw_branch: "Yogyakarta Local Operator",
+                db_nat_all: "Total Operating Branches",
+                db_city: "Cities",
+                db_nat_booking: "Total National Bookings",
+                db_nat_booking_inc: "+12% increase this week",
+                db_nat_therapist: "Registered Therapists",
+                db_nat_experts: "Specialists",
+                db_nat_revenue: "Monthly Consolidated Revenue",
+                db_nat_target: "Consolidated targets achieved",
+                db_list_booking: "Recent Booking Dispatch Roster (All Cities)",
+                db_th_name: "Name",
+                db_th_branch: "Branch Location",
+                db_th_service: "Treatment Type",
+                db_th_time: "Time Block",
+                db_status_wait: "Pending",
+                db_status_confirm: "Confirmed",
+                db_today: "Today",
+                db_tomorrow: "Tomorrow",
+                db_title_rev: "Consolidated Sales Breakdown",
+                db_authority_title: "Central HQ Authority Clearance",
+                db_authority_desc: "HQ Admin manages national base price configurations, global promotional campaigns, interstate therapist rotations, and reviews consolidated franchise royalties.",
+                db_loc_status: "Yogyakarta Branch Status",
+                db_loc_open: "Open 24/7",
+                db_loc_connected: "Local Client Server Connected",
+                db_loc_bookings: "Yogyakarta Booked Sessions",
+                db_loc_session: "Sessions",
+                db_loc_assigned: "Dedicated local therapist deployments",
+                db_loc_standby: "Standby Roster",
+                db_loc_standby_desc: "11 active, 4 on reserves",
+                db_loc_revenue: "Yogyakarta Sales Revenue",
+                db_loc_target: "Surpassed regional quotas",
+                db_loc_list_title: "Therapist Dispatch Schedule (Yogyakarta)",
+                db_loc_th_customer: "Client Name",
+                db_loc_th_service: "Treatment",
+                db_loc_th_time: "Time Slot",
+                db_loc_th_assigned: "Assigned Therapist",
+                db_loc_th_method: "Treatment Type",
+                db_loc_branch: "In-Clinic",
+                db_loc_promos: "Yogyakarta Local Promos",
+                db_loc_promo1_desc: "20% Off early hours midnight (23:00 - 04:00)",
+                db_loc_promo2_desc: "Special discount for tourists & hotel guests",
+                db_loc_promo_active: "Active",
+                db_loc_auth_title: "Regional Branch Limitations",
+                db_loc_auth_desc: "Yogyakarta Regional Operators can only modify and assign bookings, therapists, and regional-specific pricing within the Yogyakarta scope for daily operational flexibility.",
+                
+                footer_vision: "A premier national wellness network committed to the highest medical-grade therapist training, bringing ultimate sensory relaxation.",
+                footer_links: "Sitemap Links",
+                footer_link_about: "About Griya Bugar",
+                footer_link_services: "Treatment Menus",
+                footer_link_branches: "Our Locations",
+                footer_link_promos: "Active Promos",
+                footer_link_articles: "Healthy Insights",
+                footer_investors: "Partners & Investors",
+                footer_link_fran: "Franchising Program",
+                footer_link_part: "Mitra Partnerships",
+                footer_copy: "All Rights Reserved.",
+                footer_terms: "Terms of Use",
+                footer_privacy: "Privacy Policy"
+            }
+        };
+
+        // Dynamic Branch Database with Complete i18n
+        const branchesData = {
+            yogyakarta: {
+                id: {
+                    name: "Griya Bugar Yogyakarta",
+                    tag: "BUKA 24 JAM",
+                    desc: "Cabang utama Griya Bugar yang berlokasi strategis di pusat kota Yogyakarta. Menawarkan layanan spa komprehensif, terapis bersertifikasi BNSP tingkat senior, serta jangkauan Home Service siap panggil 24 jam penuh.",
+                    address: "Jalan Malioboro No. 24, Daerah Istimewa Yogyakarta",
+                    phone: "0812-3456-7891",
+                    hours: "Buka 24 Jam Nonstop",
+                    rating: "4.9 ★ (1,245 ulasan terverifikasi)",
+                    features: [
+                        "✓ Layanan Home Service 24 Jam",
+                        "✓ Seluruh Terapis Senior Terakreditasi",
+                        "✓ Area Parkir Luas & Keamanan Aman",
+                        "✓ Ruang Bersantai Keluarga Nyaman",
+                        "✓ Complimentary Wedang Jahe Alami"
+                    ],
+                    therapists: [
+                        { name: "Budi Santoso", spec: "Sport Recovery & Deep Tissue", exp: "8 Tahun Pengalaman", avatar: "👨‍⚕️" },
+                        { name: "Ratih Pratiwi", spec: "Aromatherapy & Traditional Massage", exp: "6 Tahun Pengalaman", avatar: "👩‍⚕️" },
+                        { name: "Siti Handayani", spec: "Modern Reflexology", exp: "5 Tahun Pengalaman", avatar: "👩‍⚕️" }
+                    ]
+                },
+                en: {
+                    name: "Griya Bugar Yogyakarta",
+                    tag: "OPEN 24 HOURS",
+                    desc: "Our flagship branch located in the heart of Yogyakarta. Offering complete spa suites, senior BNSP certified therapists, and round-the-clock 24-hour Home Service.",
+                    address: "Jalan Malioboro No. 24, Special Region of Yogyakarta",
+                    phone: "+62 812-3456-7891",
+                    hours: "Open 24 Hours Nonstop",
+                    rating: "4.9 ★ (1,245 verified reviews)",
+                    features: [
+                        "✓ 24-Hour Premium Home Service",
+                        "✓ All Senior Accredited Therapists",
+                        "✓ Vast Valet Parking & Tight Security",
+                        "✓ Cozy Family Waiting Lounge",
+                        "✓ Complimentary Traditional Ginger Tea"
+                    ],
+                    therapists: [
+                        { name: "Budi Santoso", spec: "Sport Recovery & Deep Tissue", exp: "8 Years Experience", avatar: "👨‍⚕️" },
+                        { name: "Ratih Pratiwi", spec: "Aromatherapy & Traditional Massage", exp: "6 Years Experience", avatar: "👩‍⚕️" },
+                        { name: "Siti Handayani", spec: "Modern Reflexology", exp: "5 Years Experience", avatar: "👩‍⚕️" }
+                    ]
+                },
+                image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?q=80&w=1200&auto=format&fit=crop"
+            },
+            jakarta: {
+                id: {
+                    name: "Griya Bugar Jakarta",
+                    tag: "PREMIUM LOUNGE",
+                    desc: "Hadir menyajikan ketenangan di tengah hiruk-pikuk ibukota. Didesain secara mewah dengan ketersediaan ruang VIP khusus, sistem pembersih udara HEPA, serta ragam jamu tradisional seduh segar.",
+                    address: "Jl. Senopati Raya No. 12, Kebayoran Baru, Jakarta Selatan",
+                    phone: "0812-3456-7892",
+                    hours: "09:00 - 23:00 WIB",
+                    rating: "4.8 ★ (980 ulasan terverifikasi)",
+                    features: [
+                        "✓ Premium VIP Executive Lounge",
+                        "✓ HEPA Filter Air Purifier System",
+                        "✓ Private Couple Treatment Rooms",
+                        "✓ Gratis Handuk & Jubah Spa Steril",
+                        "✓ Minuman Kesehatan Herbal Alami"
+                    ],
+                    therapists: [
+                        { name: "Agus Wijaya", spec: "Traditional Deep Tissue", exp: "10 Tahun Pengalaman", avatar: "👨‍⚕️" },
+                        { name: "Dewi Lestari", spec: "Aromatherapy & Stress Relief", exp: "7 Tahun Pengalaman", avatar: "👩‍⚕️" }
+                    ]
+                },
+                en: {
+                    name: "Griya Bugar Jakarta",
+                    tag: "PREMIUM LOUNGE",
+                    desc: "An urban wellness sanctuary amid the bustling capital. Designed luxuriously with private VIP treatment suites, HEPA air filtration system, and premium botanical remedies.",
+                    address: "Jl. Senopati Raya No. 12, Kebayoran Baru, South Jakarta",
+                    phone: "+62 812-3456-7892",
+                    hours: "09:00 AM - 11:00 PM WIB",
+                    rating: "4.8 ★ (980 verified reviews)",
+                    features: [
+                        "✓ Premium VIP Executive Lounge",
+                        "✓ HEPA Filter Clean Air Purifier System",
+                        "✓ Private Couples Treatment Suites",
+                        "✓ Sterile Warm Towels & Silk Spa Robes",
+                        "✓ Organic Complimentary Herbal Mocktails"
+                    ],
+                    therapists: [
+                        { name: "Agus Wijaya", spec: "Traditional Deep Tissue", exp: "10 Years Experience", avatar: "👨‍⚕️" },
+                        { name: "Dewi Lestari", spec: "Aromatherapy & Stress Relief", exp: "7 Years Experience", avatar: "👩‍⚕️" }
+                    ]
+                },
+                image: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1200&auto=format&fit=crop"
+            },
+            surabaya: {
+                id: {
+                    name: "Griya Bugar Surabaya",
+                    tag: "CORPORATE SPECIALIST",
+                    desc: "Spesialis pemulihan kepenatan tubuh bagi kalangan eksekutif dan pekerja aktif kota Surabaya. Memiliki fasilitas area mandi uap (steam room) eksklusif pasca treatment.",
+                    address: "Jl. Raya Darmo No. 89, Kota Surabaya",
+                    phone: "0812-3456-7893",
+                    hours: "09:00 - 22:00 WIB",
+                    rating: "4.9 ★ (850 ulasan terverifikasi)",
+                    features: [
+                        "✓ Layanan Mandi Uap Pasca Treatment",
+                        "✓ Spesialis Program Corporate Wellness",
+                        "✓ Kamar Pijat Kedap Suara Nyaman",
+                        "✓ Terapis Ahli Otot dan Sendi",
+                        "✓ Premium Ginger Tea Complimentary"
+                    ],
+                    therapists: [
+                        { name: "Hendra Putera", spec: "Sport Massage Specialist", exp: "9 Tahun Pengalaman", avatar: "👨‍⚕️" },
+                        { name: "Rika Rahma", spec: "Metabolism Reflexology", exp: "6 Tahun Pengalaman", avatar: "👩‍⚕️" }
+                    ]
+                },
+                en: {
+                    name: "Griya Bugar Surabaya",
+                    tag: "CORPORATE SPECIALIST",
+                    desc: "Specialized in physical recovery for active professionals and corporate executives in Surabaya. Featuring custom private steam rooms for post-treatment luxury relaxation.",
+                    address: "Jl. Raya Darmo No. 89, Surabaya City",
+                    phone: "+62 812-3456-7893",
+                    hours: "09:00 AM - 10:00 PM WIB",
+                    rating: "4.9 ★ (850 verified reviews)",
+                    features: [
+                        "✓ Post-Treatment Luxury Steam Rooms",
+                        "✓ Specialized Corporate Wellness Hub",
+                        "✓ Perfectly Soundproof Therapy Rooms",
+                        "✓ Senior Muscle & Joint Therapists",
+                        "✓ Premium Hot Ginger Wellness Elixir"
+                    ],
+                    therapists: [
+                        { name: "Hendra Putera", spec: "Sport Massage Specialist", exp: "9 Years Experience", avatar: "👨‍⚕️" },
+                        { name: "Rika Rahma", spec: "Metabolism Reflexology", exp: "6 Years Experience", avatar: "👩‍⚕️" }
+                    ]
+                },
+                image: "https://images.unsplash.com/photo-1519813538030-f5a917522615?q=80&w=1200&auto=format&fit=crop"
+            },
+            bandung: {
+                id: {
+                    name: "Griya Bugar Bandung",
+                    tag: "FAMILY WELLNESS",
+                    desc: "Dirancang khusus dengan konsep kenyamanan spa bagi seluruh anggota keluarga. Menyajikan perpaduan hawa sejuk dataran tinggi dengan metode massage kebugaran tubuh.",
+                    address: "Jl. Dago Elit No. 42, Kota Bandung",
+                    phone: "0812-3456-7894",
+                    hours: "09:00 - 22:00 WIB",
+                    rating: "4.8 ★ (720 ulasan terverifikasi)",
+                    features: [
+                        "✓ Family Wellness Rooms",
+                        "✓ Kamar Anak & Istirahat Khusus",
+                        "✓ Suasana Alam Hijau Menenangkan",
+                        "✓ Essential Aromaterapi Premium",
+                        "✓ Complimentary Secangkir Bandrek Kehangatan"
+                    ],
+                    therapists: [
+                        { name: "Toni Kusuma", spec: "Traditional Javanese Massage", exp: "7 Tahun Pengalaman", avatar: "👨‍⚕️" },
+                        { name: "Wulan Anggraini", spec: "Swedish Wellness Spa", exp: "5 Tahun Pengalaman", avatar: "👩‍⚕️" }
+                    ]
+                },
+                en: {
+                    name: "Griya Bugar Bandung",
+                    tag: "FAMILY WELLNESS",
+                    desc: "Crafted specifically to offer comfortable therapeutic treatment rooms for the entire family. Harmonizes highland cool breezes with professional wellness therapies.",
+                    address: "Jl. Dago Elit No. 42, Bandung City",
+                    phone: "+62 812-3456-7894",
+                    hours: "09:00 AM - 10:00 PM WIB",
+                    rating: "4.8 ★ (720 verified reviews)",
+                    features: [
+                        "✓ Multi-bed Family Wellness Suites",
+                        "✓ Quiet Kids Playground & Resting Area",
+                        "✓ Calming Garden Ambiance Decor",
+                        "✓ Choice of Premium Essential Oils",
+                        "✓ Complimentary Cup of Hot Traditional Bandrek"
+                    ],
+                    therapists: [
+                        { name: "Toni Kusuma", spec: "Traditional Javanese Massage", exp: "7 Years Experience", avatar: "👨‍⚕️" },
+                        { name: "Wulan Anggraini", spec: "Swedish Wellness Spa", exp: "5 Years Experience", avatar: "👩‍⚕️" }
+                    ]
+                },
+                image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop"
+            },
+            bali: {
+                id: {
+                    name: "Griya Bugar Bali",
+                    tag: "TOURIST WELLNESS",
+                    desc: "Hadir membawa harmoni keselarasan batin murni berlatar pemandangan indah di pulau dewata Seminyak Bali. Menyuguhkan pijat tradisional khas kerajaan Bali.",
+                    address: "Jl. Sunset Road No. 101, Seminyak, Kuta, Bali",
+                    phone: "0812-3456-7895",
+                    hours: "08:00 - 00:00 WITA",
+                    rating: "4.9 ★ (1,100 ulasan terverifikasi)",
+                    features: [
+                        "✓ Pemandangan Pantai Asri",
+                        "✓ Pijat Tradisional Bali Kerajaan",
+                        "✓ Terapi Minyak Kelapa Alami Hangat",
+                        "✓ Area Gazebo Spa Semi-Terbuka",
+                        "✓ Complimentary Teh Serai Dingin"
+                    ],
+                    therapists: [
+                        { name: "I Wayan Suarta", spec: "Balinese Royal Specialist", exp: "12 Tahun Pengalaman", avatar: "👨‍⚕️" },
+                        { name: "Ni Putu Lestari", spec: "Aroma Healing & Shiatsu Touch", exp: "8 Tahun Pengalaman", avatar: "👩‍⚕️" }
+                    ]
+                },
+                en: {
+                    name: "Griya Bugar Bali",
+                    tag: "TOURIST WELLNESS",
+                    desc: "Bringing absolute spiritual and physical harmony overlooking beautiful Seminyak, Bali. Offering signature Balinese royal court massage ceremonies.",
+                    address: "Jl. Sunset Road No. 101, Seminyak, Kuta, Bali",
+                    phone: "+62 812-3456-7895",
+                    hours: "08:00 AM - 12:00 AM WITA",
+                    rating: "4.9 ★ (1,100 verified reviews)",
+                    features: [
+                        "✓ Breezy Oceanfront Healing Sights",
+                        "✓ Authentic Royal Balinese Rituals",
+                        "✓ Locally Sourced Warm Coconut Oils",
+                        "✓ Covered Semi-Outdoor Tropical Gazebos",
+                        "✓ Complimentary Chilled Lemongrass Infusion"
+                    ],
+                    therapists: [
+                        { name: "I Wayan Suarta", spec: "Balinese Royal Specialist", exp: "12 Years Experience", avatar: "👨‍⚕️" },
+                        { name: "Ni Putu Lestari", spec: "Aroma Healing & Shiatsu Touch", exp: "8 Years Experience", avatar: "👩‍⚕️" }
+                    ]
+                },
+                image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200&auto=format&fit=crop"
+            }
+        };
+
+        // Simulated selected branch
+        let selectedBranchKey = 'yogyakarta';
+
+        // Set Language & Apply Translations Instantly
+        function changeLanguage(langCode) {
+            currentLang = langCode;
+            
+            // Highlight Button States (Desktop UI)
+            const idBtn = document.getElementById('lang-id-btn');
+            const enBtn = document.getElementById('lang-en-btn');
+            if (langCode === 'id') {
+                idBtn.className = "px-2.5 py-1 rounded font-bold transition duration-300 bg-brandGold text-brandBrown";
+                enBtn.className = "px-2.5 py-1 rounded font-bold transition duration-300 text-brandCream/80 hover:text-brandGold";
+            } else {
+                enBtn.className = "px-2.5 py-1 rounded font-bold transition duration-300 bg-brandGold text-brandBrown";
+                idBtn.className = "px-2.5 py-1 rounded font-bold transition duration-300 text-brandCream/80 hover:text-brandGold";
+            }
+            
+            // Sync Mobile Selector
+            document.getElementById('lang-mobile-select').value = langCode;
+
+            // Translate static elements marked with [data-i18n]
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[langCode][key]) {
+                    el.innerText = i18n[langCode][key];
+                }
+            });
+
+            // Translate placeholder elements marked with [data-i18n-placeholder]
+            const inputs = document.querySelectorAll('[data-i18n-holder]');
+            inputs.forEach(input => {
+                const key = input.getAttribute('data-i18n-holder');
+                if (i18n[langCode][key]) {
+                    input.setAttribute('placeholder', i18n[langCode][key]);
+                }
+            });
+
+            // Re-render Dynamic Sections
+            renderHomeBranches();
+            renderBranchesList();
+            
+            // Update branch detail if currently open
+            if (!document.getElementById('page-branch-detail').classList.contains('hidden')) {
+                viewBranchDetail(selectedBranchKey);
+            }
+        }
+
+        // Custom Elegant Toast Notification Helper
+        function showNotification(titleId, msgId, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            // Dynamic translation for toast messages
+            const titleText = i18n[currentLang][titleId] || titleId;
+            const msgText = i18n[currentLang][msgId] || msgId;
+
+            toast.className = `bg-brandBrown text-white border-l-4 ${type === 'success' ? 'border-brandGold' : 'border-red-500'} p-4 rounded-lg shadow-2xl flex items-start gap-3 pointer-events-auto transition-all duration-300 transform translate-y-5 opacity-0 w-80`;
+            toast.innerHTML = `
+                <div class="${type === 'success' ? 'text-brandGold' : 'text-red-500'} mt-0.5"><i class="fa-solid fa-bell"></i></div>
+                <div>
+                    <h5 class="font-bold text-xs">${titleText}</h5>
+                    <p class="text-[10px] text-brandCream/80 mt-1">${msgText}</p>
+                </div>
+            `;
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 50);
+
+            // Auto Remove
+            setTimeout(() => {
+                toast.classList.add('translate-y-5', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // On window fully loaded
+        window.onload = function() {
+            // Apply Initial Language Translations
+            changeLanguage('id');
+
+            // Initiate Smart Location Picker prompt
+            setTimeout(() => {
+                const prompt = document.getElementById('location-prompt');
+                prompt.classList.remove('hidden');
+                setTimeout(() => {
+                    prompt.classList.remove('translate-y-20', 'opacity-0');
+                }, 100);
+            }, 3000);
+        };
+
+        // Geolocation Decision Handler
+        function handleLocationPermission(approved) {
+            const prompt = document.getElementById('location-prompt');
+            prompt.classList.add('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                prompt.classList.add('hidden');
+                if (approved) {
+                    showNotification("Lokasi Diizinkan", "Mendeteksi cabang Griya Bugar terdekat...", "success");
+                    // Show detected nearby alert
+                    setTimeout(() => {
+                        const rec = document.getElementById('location-recommendation');
+                        rec.classList.remove('hidden');
+                        setTimeout(() => {
+                            rec.classList.remove('translate-y-20', 'opacity-0');
+                        }, 100);
+                    }, 1500);
+                } else {
+                    showNotification("Akses Lokasi Ditolak", "Anda dapat memilih lokasi cabang secara manual.", "error");
+                }
+            }, 300);
+        }
+
+        function dismissRecommendation() {
+            const rec = document.getElementById('location-recommendation');
+            rec.classList.add('translate-y-20', 'opacity-0');
+            setTimeout(() => rec.classList.add('hidden'), 300);
+        }
+
+        // Floating WhatsApp Widget Action Toggle
+        function toggleWaWidget() {
+            const card = document.getElementById('wa-expandable-card');
+            if (card.classList.contains('pointer-events-none')) {
+                card.classList.remove('pointer-events-none', 'scale-95', 'opacity-0');
+            } else {
+                card.classList.add('pointer-events-none', 'scale-95', 'opacity-0');
+            }
+        }
+
+        // Toggle Responsive Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-2xl";
+            } else {
+                menu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-2xl";
+            }
+        }
+
+        // SPA Router Engine
+        function navigateToPage(pageId) {
+            // Close mobile menu if active
+            document.getElementById('mobile-menu').classList.add('hidden');
+            document.getElementById('menu-icon').className = "fa-solid fa-bars text-2xl";
+
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            // Show active page
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Render Branches dynamically for the Home Page
+        function renderHomeBranches() {
+            const grid = document.getElementById('home-branches-grid');
+            grid.innerHTML = '';
+            
+            // Only take first 3 branches for home preview
+            const limit = ['yogyakarta', 'jakarta', 'surabaya'];
+            
+            limit.forEach(key => {
+                const b = branchesData[key];
+                const bLocal = b[currentLang];
+                
+                const card = document.createElement('div');
+                card.className = "bg-brandCream border border-brandGold/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="relative h-56">
+                        <img src="${b.image}" class="w-full h-full object-cover" alt="${bLocal.name}">
+                        <span class="absolute top-4 left-4 bg-emerald-600 text-white text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">${bLocal.tag}</span>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="font-serif text-2xl text-brandBrown font-medium mb-1">${bLocal.name}</h3>
+                        <div class="flex items-center gap-1 text-xs text-brandGold mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            <span class="text-brandBrown/60 ml-1">(${bLocal.rating.split(' ')[0]})</span>
+                        </div>
+                        <ul class="space-y-2 text-xs text-brandBrown/80 mb-6">
+                            ${bLocal.features.slice(0, 3).map(f => `<li><i class="fa-solid fa-circle-check text-brandGold mr-2 text-[10px]"></i>${f.substring(2)}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="viewBranchDetail('${key}')" class="w-full text-center bg-brandBrown hover:bg-brandGold hover:text-brandBrown text-white font-medium text-xs py-3 rounded-lg transition-all duration-300 uppercase tracking-wider">${i18n[currentLang].visit_branch}</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Render Full Branches List for Branches Page
+        function renderBranchesList() {
+            const grid = document.getElementById('branches-list-grid');
+            grid.innerHTML = '';
+            
+            Object.keys(branchesData).forEach(key => {
+                const b = branchesData[key];
+                const bLocal = b[currentLang];
+                
+                const card = document.createElement('div');
+                card.className = "border border-brandGold/10 rounded-2xl overflow-hidden bg-brandCream shadow-md flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="relative h-48">
+                        <img src="${b.image}" class="w-full h-full object-cover" alt="${bLocal.name}">
+                        <span class="absolute top-4 left-4 bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">${bLocal.tag}</span>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="font-serif text-2xl text-brandBrown">${bLocal.name}</h3>
+                        <p class="text-xs text-brandBrown/60 mt-1"><i class="fa-solid fa-location-dot mr-1"></i> ${bLocal.address}</p>
+                        <p class="text-xs text-brandBrown/70 mt-4">${bLocal.desc}</p>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="viewBranchDetail('${key}')" class="w-full bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown py-2.5 rounded-lg text-xs font-semibold transition uppercase tracking-wider">${i18n[currentLang].visit_branch}</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Branch Detail Template Generator
+        function viewBranchDetail(branchKey) {
+            selectedBranchKey = branchKey;
+            const b = branchesData[branchKey];
+            if (!b) return;
+
+            const bLocal = b[currentLang];
+
+            // Apply branch values
+            document.getElementById('detail-branch-img').src = b.image;
+            document.getElementById('detail-branch-name').innerText = bLocal.name;
+            document.getElementById('detail-branch-desc').innerText = bLocal.desc;
+            document.getElementById('detail-branch-tag').innerText = bLocal.tag;
+            document.getElementById('detail-branch-addr').innerText = bLocal.address;
+            document.getElementById('detail-branch-phone').innerText = bLocal.phone;
+            document.getElementById('detail-branch-hours').innerText = bLocal.hours;
+            document.getElementById('detail-branch-rating').innerText = bLocal.rating;
+
+            // Populate Keistimewaan List
+            const listContainer = document.getElementById('detail-branch-features');
+            listContainer.innerHTML = '';
+            bLocal.features.forEach(f => {
+                const li = document.createElement('li');
+                li.className = "flex items-center gap-2 font-medium";
+                li.innerText = f;
+                listContainer.appendChild(li);
+            });
+
+            // Populate Therapist Team List
+            const therapistsContainer = document.getElementById('detail-branch-therapists');
+            therapistsContainer.innerHTML = '';
+            bLocal.therapists.forEach(t => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-brandGold/15 rounded-2xl p-4 flex gap-4 items-center shadow-sm";
+                card.innerHTML = `
+                    <div class="text-3xl bg-brandCream p-3 rounded-full">${t.avatar}</div>
+                    <div>
+                        <h4 class="font-serif font-bold text-brandBrown text-sm">${t.name}</h4>
+                        <p class="text-[10px] text-brandGold font-medium">${t.spec}</p>
+                        <p class="text-[10px] text-brandBrown/60 mt-0.5">${t.exp}</p>
+                    </div>
+                `;
+                therapistsContainer.appendChild(card);
+            });
+
+            // Set default booking sync
+            document.getElementById('general-book-branch').value = branchKey;
+
+            // Navigate to dynamic branch detail view
+            navigateToPage('branch-detail');
+        }
+
+        // WhatsApp dispatch helper (executes window location transfer)
+        function formatWhatsappBookingText(name, phone, date, time, service, notes, branchName, branchPhoneNum) {
+            const sanitizedPhone = branchPhoneNum.replace(/[^0-9]/g, '');
+            
+            // Bilingual auto messages
+            const intro = currentLang === 'id' 
+                ? `Halo ${branchName}, saya tertarik melakukan pemesanan sesi di Griya Bugar.` 
+                : `Hello ${branchName}, I would like to book a therapy session at Griya Bugar.`;
+                
+            const header = currentLang === 'id' ? `*Detail Pemesanan Sesi:*` : `*Session Booking Details:*`;
+            const labelName = currentLang === 'id' ? `• Nama Lengkap:` : `• Full Name:`;
+            const labelPhone = currentLang === 'id' ? `• WhatsApp:` : `• WhatsApp:`;
+            const labelDate = currentLang === 'id' ? `• Tanggal Sesi:` : `• Session Date:`;
+            const labelTime = currentLang === 'id' ? `• Jam Sesi:` : `• Session Time:`;
+            const labelService = currentLang === 'id' ? `• Menu Layanan:` : `• Treatment Chosen:`;
+            const labelNotes = currentLang === 'id' ? `• Catatan:` : `• Notes:`;
+            const footerText = currentLang === 'id' 
+                ? `Mohon kesediaannya untuk mengonfirmasi ketersediaan slot. Terima Kasih.`
+                : `Please confirm the availability of this time slot. Thank you.`;
+
+            const message = `${intro}\n\n` +
+                            `${header}\n` +
+                            `${labelName} ${name}\n` +
+                            `${labelPhone} ${phone}\n` +
+                            `${labelDate} ${date}\n` +
+                            `${labelTime} ${time}\n` +
+                            `${labelService} ${service}\n` +
+                            `${labelNotes} ${notes || '-'}\n\n` +
+                            `${footerText}`;
+            
+            const waUrl = `https://wa.me/62${sanitizedPhone.substring(1)}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        // Handle Branch Specific Booking Submission
+        function handleFormBooking(event) {
+            event.preventDefault();
+            const b = branchesData[selectedBranchKey];
+            if (!b) return;
+
+            const name = document.getElementById('book-name').value;
+            const phone = document.getElementById('book-phone').value;
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const service = document.getElementById('book-service').value;
+            const notes = document.getElementById('book-notes').value;
+
+            formatWhatsappBookingText(name, phone, date, time, service, notes, b[currentLang].name, b[currentLang].phone);
+            
+            if (currentLang === 'id') {
+                showNotification("Konfirmasi Terkirim", "Data sedang diteruskan menuju WhatsApp cabang tujuan...", "success");
+            } else {
+                showNotification("Confirmation Sent", "Redirecting your booking request to our local branch WhatsApp...", "success");
+            }
+        }
+
+        // Sync general selector back to selected state
+        function syncBranchFormSelection() {
+            const selectedVal = document.getElementById('general-book-branch').value;
+            selectedBranchKey = selectedVal;
+        }
+
+        // Handle General Form Booking Submission
+        function handleGeneralFormBooking(event) {
+            event.preventDefault();
+            const b = branchesData[selectedBranchKey];
+            if (!b) return;
+
+            const name = document.getElementById('gen-book-name').value;
+            const phone = document.getElementById('gen-book-phone').value;
+            const date = document.getElementById('gen-book-date').value;
+            const time = document.getElementById('gen-book-time').value;
+            const service = document.getElementById('gen-book-service').value;
+            const notes = document.getElementById('gen-book-notes').value;
+
+            formatWhatsappBookingText(name, phone, date, time, service, notes, b[currentLang].name, b[currentLang].phone);
+            
+            if (currentLang === 'id') {
+                showNotification("Konfirmasi Terkirim", "Data sedang diteruskan menuju WhatsApp cabang tujuan...", "success");
+            } else {
+                showNotification("Confirmation Sent", "Redirecting your booking request to our local branch WhatsApp...", "success");
+            }
+        }
+
+        // Contact Form Submission Handler
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            if (currentLang === 'id') {
+                showNotification("Pesan Terkirim", "Masukan atau pertanyaan Anda berhasil terekam di sistem kami.", "success");
+            } else {
+                showNotification("Message Sent", "Thank you. Your message has been successfully logged on our systems.", "success");
+            }
+            event.target.reset();
+        }
+
+        // Kemitraan Form Submission Handler
+        function handleFormKemitraan(event) {
+            event.preventDefault();
+            if (currentLang === 'id') {
+                showNotification("Proposal Dikirim", "Terima kasih atas minat investasi Anda. Tim bisnis kami segera menghubungi Anda via WhatsApp.", "success");
+            } else {
+                showNotification("Proposal Submitted", "Thank you for your investment interest. Our corporate team will contact you via WhatsApp shortly.", "success");
+            }
+            event.target.reset();
+        }
+
+        // Switch Dashboard Views Demo
+        function switchDashboardView(viewMode) {
+            const btnPusat = document.getElementById('db-btn-pusat');
+            const btnJogja = document.getElementById('db-btn-jogja');
+            const viewPusat = document.getElementById('dashboard-pusat-view');
+            const viewJogja = document.getElementById('dashboard-jogja-view');
+
+            if (viewMode === 'pusat') {
+                btnPusat.className = "bg-brandGold text-slate-900 text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5 shadow-sm";
+                btnJogja.className = "text-slate-300 hover:text-white text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5";
+                viewPusat.classList.remove('hidden');
+                viewJogja.classList.add('hidden');
+            } else {
+                btnPusat.className = "text-slate-300 hover:text-white text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5";
+                btnJogja.className = "bg-brandGold text-slate-900 text-xs font-semibold py-2 px-4 rounded-lg transition flex items-center gap-1.5 shadow-sm";
+                viewPusat.classList.add('hidden');
+                viewJogja.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
