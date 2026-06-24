@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body {
@@ -112,8 +113,8 @@
                                 <span class="text-sm font-bold text-slate-700">JNE</span>
                             </label>
                             <label class="flex-1 flex items-center gap-2.5 p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-all select-none">
-                                <input type="checkbox" id="shipPaxel" value="Paxel" class="w-4 h-4 text-red-600 focus:ring-red-500 border-slate-300 rounded" onchange="selectShipping('Paxel')">
-                                <span class="text-sm font-bold text-slate-700">Paxel (Paksel)</span>
+                                <input type="checkbox" id="shipPaxel" value="PAXEL" class="w-4 h-4 text-red-600 focus:ring-red-500 border-slate-300 rounded" onchange="selectShipping('PAXEL')">
+                                <span class="text-sm font-bold text-slate-700">PAXEL</span>
                             </label>
                         </div>
                     </div>
@@ -360,7 +361,7 @@
                 if (document.getElementById('shipJNE').checked) {
                     document.getElementById('shipPaxel').checked = false;
                 }
-            } else if (carrier === 'Paxel') {
+            } else if (carrier === 'PAXEL') {
                 if (document.getElementById('shipPaxel').checked) {
                     document.getElementById('shipJNE').checked = false;
                 }
@@ -405,7 +406,7 @@
             const isPaxel = document.getElementById('shipPaxel').checked;
             let ekspedisi = "";
             if (isJNE) ekspedisi = "JNE";
-            else if (isPaxel) ekspedisi = "Paxel";
+            else if (isPaxel) ekspedisi = "PAXEL";
 
             // Hitung Subtotal & Total
             const pSubtotal = qtyPouch * POUCH_PRICE;
@@ -528,7 +529,7 @@
             const isPaxel = document.getElementById('shipPaxel').checked;
             let ekspedisi = "";
             if (isJNE) ekspedisi = "JNE";
-            else if (isPaxel) ekspedisi = "Paxel";
+            else if (isPaxel) ekspedisi = "PAXEL";
 
             const pSubtotal = qtyPouch * POUCH_PRICE;
             const bSubtotal = qtyBotol * BOTOL_PRICE;
