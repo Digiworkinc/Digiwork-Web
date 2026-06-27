@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Griya Bugar Massage Profesional - Layanan pijat dan terapi kebugaran profesional sejak 1998. Melayani cabang di Yogyakarta, Solo, Malang, Semarang, dan Bali. Pijat Benar-Benar Pijat.">
+    <meta name="keywords" content="Pijat Profesional, Massage Spa, Griya Bugar Massage, Pijat Yogyakarta, Pijat Solo, Pijat Malang, Pijat Semarang, Pijat Bali, Reflexology, Traditional Massage">
+    <meta name="author" content="Griya Bugar Massage Profesional">
+    <title>Griya Bugar Massage Profesional | Pijat Benar-Benar Pijat</title>
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Griya Bugar Massage Profesional">
+    <meta property="og:description" content="Layanan pijat dan terapi kebugaran profesional yang telah dipercaya sejak tahun 1998. Pijat Benar-Benar Pijat.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            white: '#FFFFFF',
+                            cream: '#FDFBF7',
+                            beige: '#F5EEDB',
+                            gold: '#C5A059',
+                            goldlight: '#E2C275',
+                            brown: '#4A3B32',
+                            darkbrown: '#2C221B'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Poppins', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Animations & Masonry */
+        body {
+            background-color: #FDFBF7; /* brand-cream */
+            color: #2C221B; /* brand-darkbrown */
+        }
+        
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(44, 34, 27, 0.05);
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Masonry Gallery */
+        .masonry {
+            column-count: 1;
+            column-gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .masonry { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .masonry { column-count: 3; }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+        }
+
+        /* Testimonial Slider hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Custom Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #C5A059, #8C6A35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+
+    <!-- Structured Data (LocalBusiness) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Griya Bugar Massage Profesional",
+      "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80",
+      "@id": "",
+      "url": "https://griyabugar.co.id",
+      "telephone": "+628123456789",
+      "email": "griyabugarofficiall98@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Yogyakarta",
+        "addressCountry": "ID"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "22:00"
+      },
+      "slogan": "Pijat Benar-Benar Pijat"
+    }
+    </script>
+</head>
+<body class="font-sans antialiased selection:bg-brand-gold selection:text-white relative">
+
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <i class="ph ph-flower-lotus text-3xl text-brand-gold"></i>
+                    <div class="flex flex-col">
+                        <span class="font-serif font-bold text-xl leading-none text-brand-darkbrown tracking-wide">GRIYA BUGAR</span>
+                        <span class="text-[0.65rem] uppercase tracking-[0.2em] text-brand-gold">Sejak 1998</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">Home</a>
+                    <a href="#tentang" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">Tentang</a>
+                    <a href="#layanan" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">Layanan</a>
+                    <a href="#cabang" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">Cabang</a>
+                    <a href="#galeri" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">Galeri</a>
+                    <a href="#faq" class="text-brand-darkbrown hover:text-brand-gold transition-colors text-sm font-medium">FAQ</a>
+                </div>
+
+                <!-- CTA & Mobile Toggle -->
+                <div class="flex items-center gap-4">
+                    <a href="#layanan" class="hidden md:inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-gold hover:bg-brand-brown transition-all duration-300 shadow-md hover:shadow-lg">
+                        Booking Sekarang
+                    </a>
+                    <button id="mobile-menu-btn" class="lg:hidden text-brand-darkbrown hover:text-brand-gold transition">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-cream border-b border-brand-beige absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 shadow-xl">
+                <a href="#home" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">Home</a>
+                <a href="#tentang" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">Tentang</a>
+                <a href="#layanan" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">Layanan</a>
+                <a href="#cabang" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">Cabang</a>
+                <a href="#galeri" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">Galeri</a>
+                <a href="#faq" class="block px-3 py-2 text-brand-darkbrown hover:bg-brand-beige rounded-md text-base font-medium">FAQ</a>
+                <a href="#layanan" class="block w-full text-center mt-4 px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-brand-gold hover:bg-brand-brown">
+                    Booking Sekarang
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Spa Background" class="w-full h-full object-cover object-center" loading="eager" />
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-darkbrown/90 via-brand-darkbrown/70 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+            <div class="max-w-2xl reveal">
+                <span class="text-brand-gold uppercase tracking-[0.3em] text-sm font-semibold mb-4 block">Sejak 1998</span>
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-serif text-white font-bold leading-tight mb-6">
+                    GRIYA BUGAR <br>
+                    <span class="text-brand-beige text-3xl md:text-5xl lg:text-6xl italic font-normal">Massage Profesional</span>
+                </h1>
+                <p class="text-lg md:text-xl text-brand-beige mb-10 font-light max-w-xl">
+                    "Pijat Benar-Benar Pijat." Temukan relaksasi tubuh dan pikiran dengan standar pelayanan profesional untuk kesehatan Anda.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#layanan" class="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-brand-darkbrown bg-brand-beige hover:bg-white transition-all shadow-lg hover:shadow-xl group">
+                        Booking Sekarang
+                        <i class="ph ph-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#cabang" class="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white border border-brand-gold hover:bg-brand-gold/20 transition-all backdrop-blur-sm">
+                        Lihat Cabang
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tentang" class="py-20 md:py-32 relative bg-brand-cream overflow-hidden">
+        <!-- Decorative element -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-beige/50 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 relative reveal">
+                    <div class="relative rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1600334089648-b5d9d0685e94?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Terapi Pijat" class="w-full h-full object-cover" loading="lazy">
+                        <div class="absolute inset-0 bg-brand-brown/20 mix-blend-multiply"></div>
+                    </div>
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -right-6 lg:-right-12 glass-card p-6 rounded-2xl animate-float">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-full bg-brand-gold flex items-center justify-center text-white text-2xl">
+                                <i class="ph ph-star-fill"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif font-bold text-brand-darkbrown text-2xl">25+</h4>
+                                <p class="text-sm text-brand-brown font-medium">Tahun Pengalaman</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2 reveal">
+                    <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Profil Perusahaan</h2>
+                    <h3 class="font-serif text-3xl md:text-4xl text-brand-darkbrown font-bold mb-6">Dedikasi Untuk Kesehatan & Relaksasi Anda Sejak 1998</h3>
+                    <p class="text-brand-brown/80 mb-6 leading-relaxed">
+                        Griya Bugar Massage Profesional merupakan layanan pijat dan terapi kebugaran profesional yang telah dipercaya sejak tahun 1998. Kami menghadirkan layanan relaksasi tubuh yang dilakukan oleh terapis berpengalaman dengan standar pelayanan profesional.
+                    </p>
+                    <p class="text-brand-brown/80 mb-8 leading-relaxed">
+                        Saat ini Griya Bugar telah melayani pelanggan di Yogyakarta, Solo, Malang, Semarang, dan Bali dengan komitmen memberikan kenyamanan, kesehatan, dan kepuasan terbaik kepada setiap pelanggan.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-beige">
+                            <h4 class="font-serif text-xl text-brand-darkbrown font-bold mb-2 flex items-center gap-2">
+                                <i class="ph ph-eye text-brand-gold text-2xl"></i> Visi Kami
+                            </h4>
+                            <p class="text-sm text-brand-brown/80">Menjadi penyedia layanan pijat dan terapi kebugaran profesional terpercaya di Indonesia yang menghadirkan manfaat kesehatan, relaksasi, dan kenyamanan bagi setiap pelanggan.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-beige">
+                            <h4 class="font-serif text-xl text-brand-darkbrown font-bold mb-2 flex items-center gap-2">
+                                <i class="ph ph-target text-brand-gold text-2xl"></i> Misi Kami
+                            </h4>
+                            <ul class="text-sm text-brand-brown/80 space-y-2">
+                                <li class="flex items-start gap-2"><i class="ph ph-check-circle text-brand-gold mt-1"></i> Memberikan layanan pijat dengan standar profesional.</li>
+                                <li class="flex items-start gap-2"><i class="ph ph-check-circle text-brand-gold mt-1"></i> Mengutamakan kepuasan pelanggan.</li>
+                                <li class="flex items-start gap-2"><i class="ph ph-check-circle text-brand-gold mt-1"></i> Mengembangkan SDM yang kompeten.</li>
+                                <li class="flex items-start gap-2"><i class="ph ph-check-circle text-brand-gold mt-1"></i> Menjaga kualitas pelayanan di seluruh cabang.</li>
+                                <li class="flex items-start gap-2"><i class="ph ph-check-circle text-brand-gold mt-1"></i> Mendukung gaya hidup sehat masyarakat.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-brand-darkbrown text-brand-cream relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Kenapa Memilih Kami</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-white font-bold mb-4">Keunggulan Griya Bugar</h3>
+                <p class="text-brand-beige/70">Kami memastikan setiap detik pengalaman Anda bernilai tinggi dengan standar premium.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Feature Items -->
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-certificate text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Terapis Profesional</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-medal text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Terapis Berpengalaman</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-users text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Pelayanan Ramah</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-sparkle text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Ruangan Bersih</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-armchair text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Ruangan Nyaman</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-wallet text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Harga Terjangkau</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-house-line text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Family & Couple Room</h4>
+                </div>
+                <div class="reveal p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center group">
+                    <i class="ph ph-coffee text-4xl text-brand-gold mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <h4 class="font-medium text-lg text-white">Gratis Jahe & Snack</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="layanan" class="py-20 md:py-32 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Menu Relaksasi</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-brand-darkbrown font-bold mb-4">Layanan Premium Kami</h3>
+                <p class="text-brand-brown/70">Pilih perawatan yang sesuai dengan kebutuhan tubuh Anda. Dilakukan oleh terapis ahli untuk pemulihan maksimal.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80" alt="Traditional Massage" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-brand-darkbrown">Populer</div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Traditional Massage</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Pijat tradisional seluruh tubuh menggunakan minyak pijat esensial untuk melancarkan peredaran darah dan meredakan otot kaku.</p>
+                        <a href="#kontak" class="block w-full text-center bg-brand-gold hover:bg-brand-brown text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80" alt="Body Massage" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Body Massage</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Perawatan pijat intensif untuk mengembalikan kesegaran tubuh, fokus pada titik-titik kelelahan utama.</p>
+                        <a href="#kontak" class="block w-full text-center bg-brand-gold hover:bg-brand-brown text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80" alt="Reflexology" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Reflexology</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Terapi pijat pada titik refleksi di telapak kaki yang terhubung langsung dengan organ tubuh untuk kesehatan holistik.</p>
+                        <a href="#kontak" class="block w-full text-center bg-brand-gold hover:bg-brand-brown text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600334089648-b5d9d0685e94?auto=format&fit=crop&w=600&q=80" alt="Aromatherapy Massage" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Aromatherapy Massage</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Kombinasi pijat relaksasi dengan minyak esensial aromaterapi murni untuk menenangkan pikiran dan raga.</p>
+                        <a href="#kontak" class="block w-full text-center border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Body Scrub" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Body Scrub</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Eksfoliasi kulit menggunakan lulur alami untuk mengangkat sel kulit mati, menjadikan kulit lebih cerah, halus dan bersinar.</p>
+                        <a href="#kontak" class="block w-full text-center border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-beige group reveal hover:-translate-y-2 transition-transform duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1565507850849-c9a7ea77d13b?auto=format&fit=crop&w=600&q=80" alt="Couple/Family Massage" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-serif text-xl font-bold text-brand-darkbrown mb-2">Couple / Family Massage</h4>
+                        <p class="text-brand-brown/70 text-sm mb-4 line-clamp-2">Pengalaman relaksasi bersama pasangan atau keluarga dalam satu ruangan privat yang nyaman dan luas.</p>
+                        <a href="#kontak" class="block w-full text-center border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white py-3 rounded-xl font-medium transition-colors">Booking Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cabang" class="py-20 bg-brand-cream relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Jaringan Kami</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-brand-darkbrown font-bold mb-4">Cabang Griya Bugar</h3>
+                <p class="text-brand-brown/70">Kunjungi cabang terdekat kami di berbagai kota besar di Indonesia.</p>
+            </div>
+
+            <!-- City Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10 reveal">
+                <button class="city-tab active px-6 py-2 rounded-full font-medium transition-all bg-brand-darkbrown text-white shadow-md" data-target="jogja">Yogyakarta</button>
+                <button class="city-tab px-6 py-2 rounded-full font-medium transition-all bg-white text-brand-darkbrown border border-brand-beige hover:bg-brand-beige" data-target="solo">Solo</button>
+                <button class="city-tab px-6 py-2 rounded-full font-medium transition-all bg-white text-brand-darkbrown border border-brand-beige hover:bg-brand-beige" data-target="malang">Malang</button>
+                <button class="city-tab px-6 py-2 rounded-full font-medium transition-all bg-white text-brand-darkbrown border border-brand-beige hover:bg-brand-beige" data-target="semarang">Semarang</button>
+                <button class="city-tab px-6 py-2 rounded-full font-medium transition-all bg-white text-brand-darkbrown border border-brand-beige hover:bg-brand-beige" data-target="bali">Bali</button>
+            </div>
+
+            <!-- Branch Contents -->
+            <div class="bg-white rounded-3xl p-6 md:p-10 shadow-xl border border-brand-beige reveal">
+                <!-- Yogyakarta -->
+                <div id="jogja" class="city-content grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Pakuningratan</h4>
+                        <p class="text-sm text-brand-brown mb-4">Jl. Pakuningratan, Cokrodiningratan, Jetis, Kota Yogyakarta</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Maguwo</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area Maguwoharjo, Depok, Kabupaten Sleman, Yogyakarta</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Seturan</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area Seturan, Caturtunggal, Depok, Sleman, Yogyakarta</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                </div>
+
+                <!-- Solo -->
+                <div id="solo" class="city-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Solo Baru</h4>
+                        <p class="text-sm text-brand-brown mb-4">Kawasan Solo Baru, Grogol, Kabupaten Sukoharjo</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Pasar Gede</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area Pasar Gede, Jebres, Kota Surakarta</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                </div>
+
+                <!-- Malang -->
+                <div id="malang" class="city-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang ISDI</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area ISDI, Malang, Jawa Timur</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Soekarno Hatta</h4>
+                        <p class="text-sm text-brand-brown mb-4">Jl. Soekarno Hatta, Lowokwaru, Kota Malang</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                </div>
+
+                <!-- Semarang -->
+                <div id="semarang" class="city-content hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Pattimura</h4>
+                        <p class="text-sm text-brand-brown mb-4">Jl. Pattimura, Kota Semarang, Jawa Tengah</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Siliwangi</h4>
+                        <p class="text-sm text-brand-brown mb-4">Jl. Siliwangi, Semarang Barat, Kota Semarang</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Mataram</h4>
+                        <p class="text-sm text-brand-brown mb-4">Jl. MT Haryono (Mataram), Kota Semarang</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                </div>
+
+                <!-- Bali -->
+                <div id="bali" class="city-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Bali 1</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area Pusat Pariwisata, Bali</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-brand-cream border border-brand-beige">
+                        <i class="ph ph-map-pin text-3xl text-brand-gold mb-3"></i>
+                        <h4 class="font-serif font-bold text-xl text-brand-darkbrown mb-2">Cabang Bali 2</h4>
+                        <p class="text-sm text-brand-brown mb-4">Area Ekspansi, Bali</p>
+                        <a href="https://maps.google.com" target="_blank" class="text-sm font-semibold text-brand-gold hover:text-brand-darkbrown flex items-center gap-1"><i class="ph ph-map-trifold"></i> Lihat Peta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeri" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Galeri Kami</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-brand-darkbrown font-bold mb-4">Suasana & Fasilitas</h3>
+                <p class="text-brand-brown/70">Intip suasana nyaman dan fasilitas premium yang kami sediakan di setiap cabang.</p>
+            </div>
+
+            <div class="masonry reveal">
+                <!-- Lobby -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1574689211272-bc1550fc1822?auto=format&fit=crop&w=600&q=80" alt="Lobby Griya Bugar" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Area Lobby</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ruang Treatment -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Ruang Treatment" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Ruang Treatment Nyaman</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Family Room -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80" alt="Family Room" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Family Room</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Massage Activity -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1600334129128-685054110de4?auto=format&fit=crop&w=600&q=80" alt="Aktivitas Massage" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Terapis Profesional</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Couple Room -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=600&q=80" alt="Couple Room" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Couple Room</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Gedung / Exterior -->
+                <div class="masonry-item relative group overflow-hidden rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1583417311756-78b12275b225?auto=format&fit=crop&w=600&q=80" alt="Fasad Gedung" class="w-full h-auto group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div class="p-6 w-full">
+                            <p class="text-white font-serif font-bold text-lg">Tampak Depan Cabang</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center reveal">
+                <a href="#kontak" class="inline-flex items-center gap-2 text-brand-darkbrown font-semibold hover:text-brand-gold transition-colors">
+                    Lihat Lebih Banyak <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimoni" class="py-24 bg-brand-darkbrown relative overflow-hidden">
+        <!-- Decorative element -->
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-brand-gold/10 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Testimoni Pelanggan</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-white font-bold mb-4">Apa Kata Mereka?</h3>
+            </div>
+
+            <!-- Slider Container -->
+            <div class="relative max-w-4xl mx-auto reveal">
+                <div class="overflow-hidden rounded-2xl glass-card border-none bg-white/5 p-8 md:p-12 relative">
+                    <div class="text-brand-gold/20 absolute top-4 left-8 text-6xl font-serif">"</div>
+                    
+                    <!-- Slider Track -->
+                    <div id="testimonial-track" class="flex transition-transform duration-500 ease-in-out">
+                        <!-- Slide 1 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="text-center">
+                                <p class="text-lg md:text-xl text-brand-cream/90 italic font-light leading-relaxed mb-8">
+                                    "Udah sering banget kesini sejak kuliah, tempatnya nyaman, bersih, staffnya ramah, pilihan massage lengkap, setelah selesai diberikan wedang jahe dan snack."
+                                </p>
+                                <div class="flex items-center justify-center gap-1 text-brand-gold mb-4">
+                                    <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+                                </div>
+                                <h5 class="font-medium text-white">- Pelanggan Setia Yogyakarta</h5>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="text-center">
+                                <p class="text-lg md:text-xl text-brand-cream/90 italic font-light leading-relaxed mb-8">
+                                    "Pelayanan sangat baik dari awal hingga akhir. Terapis profesional, ruangan nyaman, bisa mandi air hangat setelah treatment dan diberikan minuman jahe."
+                                </p>
+                                <div class="flex items-center justify-center gap-1 text-brand-gold mb-4">
+                                    <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+                                </div>
+                                <h5 class="font-medium text-white">- Pelanggan Cabang Semarang</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="flex justify-center gap-4 mt-8">
+                    <button id="prev-slide" class="w-10 h-10 rounded-full border border-brand-gold text-brand-gold flex items-center justify-center hover:bg-brand-gold hover:text-white transition-colors">
+                        <i class="ph ph-arrow-left"></i>
+                    </button>
+                    <button id="next-slide" class="w-10 h-10 rounded-full border border-brand-gold text-brand-gold flex items-center justify-center hover:bg-brand-gold hover:text-white transition-colors">
+                        <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-20 bg-brand-cream">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-brand-gold font-semibold tracking-widest text-sm uppercase mb-2">Bantuan</h2>
+                <h3 class="font-serif text-3xl md:text-4xl text-brand-darkbrown font-bold mb-4">Pertanyaan Populer (FAQ)</h3>
+            </div>
+
+            <div class="space-y-4 reveal">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Apa saja layanan yang tersedia?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Kami menyediakan Traditional Massage, Body Massage, Reflexology, Aromatherapy Massage, Body Scrub, Couple Massage, dan Family Room Massage.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Apakah terapis profesional?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Ya, seluruh terapis kami telah melalui pelatihan ketat, tersertifikasi, dan berpengalaman untuk memberikan layanan standar profesional.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Apakah harus reservasi?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Kami sangat menyarankan Anda melakukan reservasi (booking online) terlebih dahulu untuk memastikan ketersediaan ruangan dan terapis di jam yang Anda inginkan.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Berapa jam operasional?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Semua cabang Griya Bugar Massage Profesional beroperasi setiap hari mulai pukul 09.00 hingga 22.00 WIB / WITA.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Apakah tersedia Family Room?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Tentu, kami menyediakan Family Room dan Couple Room yang luas dan privat bagi Anda yang ingin melakukan treatment bersama keluarga atau pasangan.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Apakah menerima booking online?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Ya, Anda bisa melakukan booking online dengan mudah melalui tombol WhatsApp di pojok kanan bawah layar ini atau klik tombol Booking.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 7 -->
+                <div class="bg-white border border-brand-beige rounded-2xl overflow-hidden transition-all duration-300">
+                    <button class="faq-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-medium text-brand-darkbrown">Metode pembayaran apa saja?</span>
+                        <i class="ph ph-caret-down text-brand-gold transition-transform duration-300 transform"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-brand-cream/50">
+                        <div class="px-6 pb-4 text-sm text-brand-brown/80">
+                            Kami menerima pembayaran secara tunai, transfer bank, kartu kredit/debit, serta dompet digital (QRIS, GoPay, OVO, Dana).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak" class="py-16 bg-brand-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <h2 class="font-serif text-3xl md:text-4xl text-white font-bold mb-6">Siap Merasakan Relaksasi Terbaik?</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://wa.me/628123456789" class="px-8 py-4 rounded-full bg-brand-darkbrown text-white font-medium hover:bg-white hover:text-brand-darkbrown transition-colors shadow-lg flex items-center gap-2">
+                    <i class="ph ph-whatsapp-logo text-xl"></i> Reservasi via WhatsApp
+                </a>
+                <a href="mailto:griyabugarofficiall98@gmail.com" class="px-8 py-4 rounded-full bg-white text-brand-darkbrown font-medium hover:bg-brand-beige transition-colors shadow-lg flex items-center gap-2">
+                    Konsultasi Gratis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-brand-darkbrown text-brand-cream/80 pt-20 pb-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand Info -->
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <i class="ph ph-flower-lotus text-3xl text-brand-gold"></i>
+                        <span class="font-serif font-bold text-xl text-white tracking-wide">GRIYA BUGAR</span>
+                    </div>
+                    <p class="text-sm mb-6 leading-relaxed">"Pijat Benar-Benar Pijat." Layanan pijat dan terapi kebugaran profesional yang telah dipercaya sejak tahun 1998.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-gold hover:text-white transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-gold hover:text-white transition-colors"><i class="ph ph-facebook-logo text-xl"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-gold hover:text-white transition-colors"><i class="ph ph-tiktok-logo text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Menu Cepat</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#tentang" class="hover:text-brand-gold transition-colors">Tentang Kami</a></li>
+                        <li><a href="#layanan" class="hover:text-brand-gold transition-colors">Layanan Spa & Pijat</a></li>
+                        <li><a href="#galeri" class="hover:text-brand-gold transition-colors">Galeri Fasilitas</a></li>
+                        <li><a href="#testimoni" class="hover:text-brand-gold transition-colors">Testimoni Pelanggan</a></li>
+                        <li><a href="#faq" class="hover:text-brand-gold transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Branches -->
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Semua Cabang</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li>Yogyakarta (Pakuningratan, Maguwo, Seturan)</li>
+                        <li>Solo (Solo Baru, Pasar Gede)</li>
+                        <li>Malang (ISDI, Soekarno Hatta)</li>
+                        <li>Semarang (Pattimura, Siliwangi, Mataram)</li>
+                        <li>Bali (Bali 1, Bali 2)</li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Hubungi Kami</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-envelope-simple text-brand-gold text-lg mt-0.5"></i>
+                            <span>griyabugarofficiall98@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-clock text-brand-gold text-lg mt-0.5"></i>
+                            <span>Buka Setiap Hari<br>09.00 - 22.00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center text-sm text-brand-cream/50 pt-8 border-t border-white/10">
+                &copy; <span id="year"></span> Griya Bugar Massage Profesional. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/628123456789" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 z-50 animate-bounce group">
+        <i class="ph ph-whatsapp-logo text-3xl"></i>
+        <!-- Tooltip -->
+        <span class="absolute right-full mr-4 bg-white text-brand-darkbrown text-sm px-3 py-1.5 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-medium pointer-events-none">
+            Hubungi Kami
+        </span>
+    </a>
+
+    <script>
+        // Update Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Tab Branches Logic
+        const tabs = document.querySelectorAll('.city-tab');
+        const contents = document.querySelectorAll('.city-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active styling from all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('bg-brand-darkbrown', 'text-white', 'shadow-md');
+                    t.classList.add('bg-white', 'text-brand-darkbrown', 'border', 'border-brand-beige');
+                });
+                
+                // Add active styling to clicked tab
+                tab.classList.remove('bg-white', 'text-brand-darkbrown', 'border', 'border-brand-beige');
+                tab.classList.add('bg-brand-darkbrown', 'text-white', 'shadow-md');
+
+                // Hide all contents
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                // Show target content
+                const targetId = tab.getAttribute('data-target');
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+
+        // Testimonial Slider Logic
+        const track = document.getElementById('testimonial-track');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        let currentSlide = 0;
+        const totalSlides = 2;
+
+        function updateSlider() {
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        });
+
+        // Auto slide
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }, 5000);
+
+        // FAQ Accordion Logic
+        const faqBtns = document.querySelectorAll('.faq-btn');
+
+        faqBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                // Close all other accordions
+                faqBtns.forEach(otherBtn => {
+                    if (otherBtn !== this) {
+                        otherBtn.nextElementSibling.style.maxHeight = null;
+                        otherBtn.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+
+                // Toggle current accordion
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.classList.remove('rotate-180');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
