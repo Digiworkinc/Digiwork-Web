@@ -1,1616 +1,317 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
-    <title>Griya Bugar - Pijat Benar Benar Pijat (Since 1998)</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400..900;1,400..900&family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome & Lucide support -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandBrown: '#4A3728',
-                        brandGold: '#C8A76A',
-                        brandGoldDark: '#B59356',
-                        brandCream: '#F5F1E8',
-                        brandCreamDark: '#EAE4D5',
-                    },
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Poppins', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        .gold-glow {
-            box-shadow: 0 4px 20px -2px rgba(200, 167, 106, 0.2);
-        }
-        .gold-glow-hover:hover {
-            box-shadow: 0 10px 30px -5px rgba(200, 167, 106, 0.4);
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F5F1E8;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #C8A76A;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4A3728;
-        }
-        @media screen and (max-width: 768px) {
-            input, select, textarea {
-                font-size: 16px !important;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Griya Bugar - Pijat Sehat Keluarga & Refleksologi</title>
+  
+  <!-- Tailwind CSS (Styling) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & Babel (Aplikasi React Tanpa Install) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body class="bg-brandCream text-brandBrown font-sans antialiased min-h-screen selection:bg-brandGold selection:text-brandBrown">
+<body class="bg-stone-50 text-stone-800 font-sans">
 
-    <!-- Target Div for React Mount -->
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <!-- React and Babel Dependencies for Single File Compilation -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Script Aplikasi React + Firebase Real-time -->
+  <script type="babel" data-type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      onSnapshot, 
+      doc, 
+      setDoc 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <!-- Lucide Icons Library Integration -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    // =========================================================
+    // 1. ISI DENGAN KONFIGURASI FIREBASE ANDA SENDIRI
+    // (Dapatkan gratis dari https://console.firebase.google.com)
+    // =========================================================
+    const firebaseConfig = {
+      apiKey: "PASTE_API_KEY_FIREBASE_ANDA",
+      authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
+      projectId: "PASTE_PROJECT_ID",
+      storageBucket: "PASTE_PROJECT_ID.appspot.com",
+      messagingSenderId: "PASTE_SENDER_ID",
+      appId: "PASTE_APP_ID"
+    };
 
-    <!-- React App Script (Transpiled by Babel in iframe runtime) -->
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        
-        // Custom Lucide integration for React without complex ESM structures
-        const MapPin = ({ className, size = 20 }) => <i className={`fa-solid fa-map-pin ${className}`} style={{ fontSize: size }}></i>;
-        const Calendar = ({ className, size = 20 }) => <i className={`fa-solid fa-calendar ${className}`} style={{ fontSize: size }}></i>;
-        const Clock = ({ className, size = 20 }) => <i className={`fa-solid fa-clock ${className}`} style={{ fontSize: size }}></i>;
-        const User = ({ className, size = 20 }) => <i className={`fa-solid fa-user ${className}`} style={{ fontSize: size }}></i>;
-        const Phone = ({ className, size = 20 }) => <i className={`fa-solid fa-phone ${className}`} style={{ fontSize: size }}></i>;
-        const Settings = ({ className, size = 20 }) => <i className={`fa-solid fa-gears ${className}`} style={{ fontSize: size }}></i>;
-        const BookOpen = ({ className, size = 20 }) => <i className={`fa-solid fa-book-open ${className}`} style={{ fontSize: size }}></i>;
-        const Plus = ({ className, size = 16 }) => <i className={`fa-solid fa-plus ${className}`} style={{ fontSize: size }}></i>;
-        const Trash2 = ({ className, size = 16 }) => <i className={`fa-solid fa-trash-can ${className}`} style={{ fontSize: size }}></i>;
-        const Edit2 = ({ className, size = 16 }) => <i className={`fa-solid fa-pen-to-square ${className}`} style={{ fontSize: size }}></i>;
-        const Save = ({ className, size = 16 }) => <i className={`fa-solid fa-floppy-disk ${className}`} style={{ fontSize: size }}></i>;
-        const CheckCircle2 = ({ className, size = 24 }) => <i className={`fa-solid fa-circle-check ${className}`} style={{ fontSize: size }}></i>;
-        const ExternalLink = ({ className, size = 16 }) => <i className={`fa-solid fa-arrow-up-right-from-square ${className}`} style={{ fontSize: size }}></i>;
-        const MessageSquare = ({ className, size = 18 }) => <i className={`fa-solid fa-comment-dots ${className}`} style={{ fontSize: size }}></i>;
-        const AlertCircle = ({ className, size = 18 }) => <i className={`fa-solid fa-triangle-exclamation ${className}`} style={{ fontSize: size }}></i>;
-        const HelpCircle = ({ className, size = 18 }) => <i className={`fa-solid fa-circle-question ${className}`} style={{ fontSize: size }}></i>;
-        const TrendingUp = ({ className, size = 16 }) => <i className={`fa-solid fa-chart-line ${className}`} style={{ fontSize: size }}></i>;
-        const X = ({ className, size = 18 }) => <i className={`fa-solid fa-xmark ${className}`} style={{ fontSize: size }}></i>;
-        const Lock = ({ className, size = 18 }) => <i className={`fa-solid fa-lock ${className}`} style={{ fontSize: size }}></i>;
-        const ShieldCheck = ({ className, size = 20 }) => <i className={`fa-solid fa-shield-halved ${className}`} style={{ fontSize: size }}></i>;
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        const INITIAL_BRANCHES = [
-            { id: 'jogja-pakuningratan', name: 'Pakuningratan', region: 'Yogyakarta', price: 127500, address: 'Jl. Pakuningratan No.3, Kec. Jetis', phone: '082124499924', rating: '4.9 ★', hours: '09:00 - 22:00' },
-            { id: 'jogja-maguwo', name: 'Maguwo', region: 'Yogyakarta', price: 127500, address: 'Jl. Ring Road Utara No. Kav. 27, Maguwoharjo', phone: '082124499924', rating: '4.8 ★', hours: '09:00 - 22:00' },
-            { id: 'jogja-seturan', name: 'Seturan', region: 'Yogyakarta', price: 127500, address: 'Jl. Seturan Raya No. Kav. 99 B Lt.1', phone: '082124499924', rating: '4.9 ★', hours: '09:00 - 22:00' },
-            { id: 'solo-baru', name: 'Solo Baru', region: 'Solo', price: 110000, address: 'Jl. Ir. Soekarno, Ruko Solo Baru Blok HH 36', phone: '082124499924', rating: '4.8 ★', hours: '09:00 - 22:00' },
-            { id: 'solo-gede', name: 'Pasar Gede', region: 'Solo', price: 110000, address: 'Jl. Urip Sumoharjo No.62 B (Utara Pasar Gede)', phone: '082124499924', rating: '4.7 ★', hours: '09:00 - 22:00' },
-            { id: 'malang-suhat', name: 'Soekarno Hatta (Suhat)', region: 'Malang', price: 115000, address: 'Jl. Soekarno Hatta, Ruko Taman Niaga Blok B 32-33', phone: '082124499924', rating: '4.8 ★', hours: '09:00 - 22:00' },
-            { id: 'bali-1', name: 'Bali 1', region: 'Bali', price: 140000, address: 'Jl. Bypass Ngurah Rai, Tuban, Kuta', phone: '082124499924', rating: '4.9 ★', hours: '09:00 - 22:00' }
-        ];
+    const { useState, useEffect } = React;
 
-        const DEFAULT_SETTINGS = {
-            whatsapp: '6282124499924',
-            template: 'Halo Griya Bugar [CABANG], saya ingin konfirmasi booking sesi kebugaran melalui Website.\n\n*Detail Pesanan:*\n- Nama: [NAMA]\n- No. WA: [TELEPON]\n- Tanggal: [TANGGAL]\n- Jam: [JAM]\n- Layanan: [LAYANAN]\n- Total Bayar: [HARGA]\n\nCatatan: [CATATAN]\n\nMohon diproses, terima kasih.'
-        };
+    function App() {
+      const [services, setServices] = useState([]);
+      const [bookings, setBookings] = useState([]);
+      const [announcement, setAnnouncement] = useState('');
+      
+      // State Form Reservasi
+      const [nama, setNama] = useState('');
+      const [layananPilihan, setLayananPilihan] = useState('');
+      const [jam, setJam] = useState('');
+      const [nomorWA, setNomorWA] = useState('');
 
-        const TRANSLATIONS = {
-            id: {
-                tagline: "PIJAT BENAR BENAR PIJAT • SINCE 1998",
-                nav_home: "Home",
-                nav_about: "Tentang Kami",
-                nav_services: "Layanan",
-                nav_branches: "Cabang",
-                nav_booking: "Booking Online",
-                nav_promos: "Promo",
-                nav_articles: "Artikel",
-                nav_franchise: "Kemitraan",
-                nav_contact: "Kontak",
-                nav_admin: "Admin",
-                hero_sub: "Hadir di 5 Kota Besar Indonesia dengan Standar Pelayanan Terbaik. Didukung terapis berpengalaman tinggi untuk kebugaran maksimal Anda.",
-                hero_cta_book: "Booking Sekarang",
-                hero_cta_branches: "Lihat Cabang",
-                stat_branches: "Cabang Nasional",
-                stat_therapists: "Terapis Profesional",
-                stat_customers: "Pelanggan Puas",
-                stat_rating: "Rating Pelanggan",
-                loc_prompt_title: "Izinkan Akses Lokasi?",
-                loc_prompt_desc: "Kami akan merekomendasikan cabang Griya Bugar terdekat dari posisi Anda saat ini.",
-                loc_prompt_yes: "Ya, Izinkan",
-                loc_prompt_no: "Nanti Saja",
-                loc_rec_tag: "Cabang Terdekat Terdeteksi",
-                loc_rec_open: "Buka 09:00 - 22:00 • Layanan Profesional",
-                loc_rec_detail: "Detail Cabang",
-                wa_online: "Online",
-                wa_card_desc: "Pilih cabang terdekat untuk langsung berkonsultasi via WhatsApp.",
-                learn_more: "Pelajari Selengkapnya",
-                mins: "Menit",
-                visit_branch: "Kunjungi Cabang",
-                back_to_branches: "Kembali ke Semua Cabang",
-                branch_highlights: "Keistimewaan Cabang",
-                meet_specialists: "Tim Terapis Ahli Kami",
-                form_booking_title: "Formulir Booking Online",
-                form_booking_desc: "Isi detail sesi pemesanan Anda untuk diteruskan secara cepat via WhatsApp."
-            },
-            en: {
-                tagline: "PURE AUTHENTIC MASSAGE • SINCE 1998",
-                nav_home: "Home",
-                nav_about: "About Us",
-                nav_services: "Services",
-                nav_branches: "Branches",
-                nav_booking: "Online Booking",
-                nav_promos: "Promos",
-                nav_articles: "Articles",
-                nav_franchise: "Franchise",
-                nav_contact: "Contact",
-                nav_admin: "Admin",
-                hero_sub: "Present in 5 Major Indonesian Cities with top luxury service standards. Supported by highly experienced therapists for your ultimate wellness.",
-                hero_cta_book: "Book Now",
-                hero_cta_branches: "View Branches",
-                stat_branches: "National Branches",
-                stat_therapists: "Professional Therapists",
-                stat_customers: "Satisfied Customers",
-                stat_rating: "Customer Rating",
-                loc_prompt_title: "Allow Location Access?",
-                loc_prompt_desc: "We will recommend the nearest Griya Bugar branch relative to your current location.",
-                loc_prompt_yes: "Yes, Allow",
-                loc_prompt_no: "Later",
-                loc_rec_tag: "Nearest Branch Detected",
-                loc_rec_open: "Open 09:00 - 22:00 • Professional Services",
-                loc_rec_detail: "Branch Details",
-                wa_online: "Online",
-                wa_card_desc: "Choose the nearest branch to consult directly via WhatsApp.",
-                learn_more: "Learn More",
-                mins: "Minutes",
-                visit_branch: "Visit Branch",
-                back_to_branches: "Back to All Branches",
-                branch_highlights: "Branch Highlights",
-                meet_specialists: "Meet Our Specialists",
-                form_booking_title: "Online Session Booking",
-                form_booking_desc: "Fill in your session details to compile a quick reservation dispatch message via WhatsApp."
+      // Toast Notifikasi
+      const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+      const showToast = (message, type = 'success') => {
+        setToast({ show: true, message, type });
+        setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 4000);
+      };
+
+      // Login Anonim & Listener Real-time
+      useEffect(() => {
+        signInAnonymously(auth).catch(err => console.error("Firebase Auth Error:", err));
+
+        // Listener Real-time Layanan
+        const unsubServices = onSnapshot(collection(db, "services"), (snapshot) => {
+          const list = [];
+          snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+          
+          if (list.length === 0) {
+            // Default jika database masih kosong
+            setServices([
+              { id: '1', nama: 'Massage Tradisional Jawa', durasi: '60 Menit', harga: 120000, deskripsi: 'Pijat urut tradisional merelaksasi otot kaku.' },
+              { id: '2', nama: 'Refleksologi Kaki Kerajaan', durasi: '45 Menit', harga: 80000, deskripsi: 'Penekanan titik syaraf kaki mengurangi kelelahan.' },
+              { id: '3', nama: 'Shiatsu Healing Massage', durasi: '90 Menit', harga: 180000, deskripsi: 'Terapi pemijatan tanpa minyak gaya Jepang.' }
+            ]);
+          } else {
+            setServices(list);
+          }
+        });
+
+        // Listener Real-time Antrean
+        const unsubBookings = onSnapshot(collection(db, "bookings"), (snapshot) => {
+          const list = [];
+          snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+          setBookings(list);
+        });
+
+        // Listener Real-time Pengumuman
+        const unsubAnn = onSnapshot(collection(db, "announcements"), (snapshot) => {
+          snapshot.forEach(doc => {
+            if (doc.id === 'broadcast_utama') {
+              setAnnouncement(doc.data().teks || '');
             }
+          });
+        });
+
+        return () => {
+          unsubServices();
+          unsubBookings();
+          unsubAnn();
         };
-
-        function App() {
-            const [currentPage, setCurrentPage] = useState('home');
-            const [currentLang, setCurrentLang] = useState('id');
-            const [branches, setBranches] = useState([]);
-            const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-            const [loading, setLoading] = useState(true);
-            const [isFirebaseConnected, setIsFirebaseConnected] = useState(false);
-            const [dbStatusMsg, setDbStatusMsg] = useState('Inisialisasi sistem...');
-            
-            // UI States
-            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-            const [isWaWidgetOpen, setIsWaWidgetOpen] = useState(false);
-            const [isLocationPromptOpen, setIsLocationPromptOpen] = useState(false);
-            const [isLocationRecommended, setIsLocationRecommended] = useState(false);
-            const [selectedBranchId, setSelectedBranchId] = useState('jogja-pakuningratan');
-            
-            // Custom dialog modal states
-            const [dialogConfig, setDialogConfig] = useState(null); // { title, message, onConfirm, showCancel }
-            const [toast, setToast] = useState(null); // { title, message, type }
-
-            // Booking Engine Form State
-            const [formData, setFormData] = useState({
-                name: '',
-                phone: '',
-                branchId: 'jogja-pakuningratan',
-                date: '',
-                time: '',
-                service: 'Pijat Tradisional Sehat',
-                notes: ''
-            });
-            const [successBooking, setSuccessBooking] = useState(null);
-
-            // Admin Panel Authentication
-            const [adminAuthenticated, setAdminAuthenticated] = useState(false);
-            const [adminPassword, setAdminPassword] = useState('');
-            const [adminError, setAdminError] = useState('');
-
-            // Admin Dashboard fields
-            const [newBranch, setNewBranch] = useState({ name: '', region: 'Yogyakarta', price: '', address: '', phone: '082124499924' });
-            const [editingBranchId, setEditingBranchId] = useState(null);
-            const [editingBranchData, setEditingBranchData] = useState({ name: '', region: '', price: '', address: '', phone: '' });
-            const [tempSettings, setTempSettings] = useState({ whatsapp: '', template: '' });
-
-            const showToast = (title, message, type = 'success') => {
-                setToast({ title, message, type });
-                setTimeout(() => setToast(null), 4000);
-            };
-
-            const triggerConfirm = (title, message, onConfirm) => {
-                setDialogConfig({
-                    title,
-                    message,
-                    showCancel: true,
-                    onConfirm: () => {
-                        onConfirm();
-                        setDialogConfig(null);
-                    }
-                });
-            };
-
-            const triggerAlert = (title, message) => {
-                setDialogConfig({
-                    title,
-                    message,
-                    showCancel: false,
-                    onConfirm: () => setDialogConfig(null)
-                });
-            };
-
-            useEffect(() => {
-                const initApp = async () => {
-                    // We run a robust local/state environment for the user, integrating standard local storage
-                    setIsFirebaseConnected(false);
-                    setDbStatusMsg("Menggunakan database lokal terintegrasi (Demo & Launch Mode).");
-                    
-                    const localBranches = localStorage.getItem('gb_branches_v2');
-                    const localSettings = localStorage.getItem('gb_settings_v2');
-                    
-                    if (localBranches) {
-                        setBranches(JSON.parse(localBranches));
-                    } else {
-                        setBranches(INITIAL_BRANCHES);
-                        localStorage.setItem('gb_branches_v2', JSON.stringify(INITIAL_BRANCHES));
-                    }
-
-                    if (localSettings) {
-                        setSettings(JSON.parse(localSettings));
-                        setTempSettings(JSON.parse(localSettings));
-                    } else {
-                        setSettings(DEFAULT_SETTINGS);
-                        setTempSettings(DEFAULT_SETTINGS);
-                        localStorage.setItem('gb_settings_v2', JSON.stringify(DEFAULT_SETTINGS));
-                    }
-                    
-                    setLoading(false);
-
-                    // Open geolocation prompt after 3 seconds
-                    setTimeout(() => {
-                        setIsLocationPromptOpen(true);
-                    }, 3000);
-                };
-
-                initApp();
-            }, []);
-
-            const handleInputChange = (e) => {
-                const { name, value } = e.target;
-                setFormData(prev => ({ ...prev, [name]: value }));
-            };
-
-            const formatIDR = (num) => {
-                return new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0
-                }).format(num);
-            };
-
-            const getSelectedBranch = () => {
-                return branches.find(b => b.id === formData.branchId) || branches[0];
-            };
-
-            const currentBranchObj = getSelectedBranch();
-            const currentPrice = currentBranchObj ? currentBranchObj.price : 127500;
-
-            const handleBookingSubmit = (e) => {
-                e.preventDefault();
-                if (!formData.branchId) {
-                    triggerAlert("Data Tidak Lengkap", "Silakan pilih cabang terlebih dahulu.");
-                    return;
-                }
-
-                const formattedPrice = formatIDR(currentPrice);
-                const dateObj = new Date(formData.date);
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = isNaN(dateObj.getTime()) ? formData.date : dateObj.toLocaleDateString(currentLang === 'id' ? 'id-ID' : 'en-US', options);
-
-                // Compile WhatsApp redirect template string
-                let message = settings.template;
-                message = message.replace(/\[NAMA\]/g, formData.name);
-                message = message.replace(/\[TELEPON\]/g, formData.phone);
-                message = message.replace(/\[CABANG\]/g, currentBranchObj.name + ` (${currentBranchObj.region})`);
-                message = message.replace(/\[TANGGAL\]/g, formattedDate);
-                message = message.replace(/\[JAM\]/g, formData.time + ' WIB');
-                message = message.replace(/\[LAYANAN\]/g, formData.service);
-                message = message.replace(/\[HARGA\]/g, formattedPrice);
-                message = message.replace(/\[CATATAN\]/g, formData.notes || '-');
-
-                // Route message to branch's phone if configured, fallback to global settings
-                const branchPhoneNum = currentBranchObj.phone || settings.whatsapp;
-                const sanitizedPhone = branchPhoneNum.replace(/[^0-9]/g, '');
-                const finalPhone = sanitizedPhone.startsWith('0') ? '62' + sanitizedPhone.substring(1) : sanitizedPhone;
-
-                const waLink = `https://api.whatsapp.com/send?phone=${finalPhone}&text=${encodeURIComponent(message)}`;
-                
-                setSuccessBooking({
-                    link: waLink,
-                    messagePreview: message,
-                    whatsappNum: finalPhone
-                });
-            };
-
-            const handleAdminLogin = (e) => {
-                e.preventDefault();
-                if (adminPassword === 'griyabugar' || adminPassword === 'admin') {
-                    setAdminAuthenticated(true);
-                    setAdminError('');
-                    showToast("Login Berhasil", "Selamat datang di halaman administrasi terpusat.", "success");
-                } else {
-                    setAdminError(currentLang === 'id' ? 'Sandi salah. Coba: "griyabugar"' : 'Incorrect Password. Try: "griyabugar"');
-                }
-            };
-
-            const handleSaveSettings = (e) => {
-                e.preventDefault();
-                setSettings(tempSettings);
-                localStorage.setItem('gb_settings_v2', JSON.stringify(tempSettings));
-                showToast("Pengaturan Disimpan", "Template WhatsApp dan nomor utama berhasil diperbarui.", "success");
-            };
-
-            const handleAddBranch = (e) => {
-                e.preventDefault();
-                if (!newBranch.name || !newBranch.price) {
-                    triggerAlert("Gagal Menambahkan", "Harap isi semua kolom untuk menambahkan cabang baru.");
-                    return;
-                }
-
-                const priceNum = Number(newBranch.price);
-                if (isNaN(priceNum) || priceNum <= 0) {
-                    triggerAlert("Input Salah", "Harga harus berupa angka positif.");
-                    return;
-                }
-
-                const randomId = 'branch-' + Date.now();
-                const branchPayload = {
-                    id: randomId,
-                    name: newBranch.name,
-                    region: newBranch.region,
-                    price: priceNum,
-                    address: newBranch.address || 'Alamat Cabang Baru',
-                    phone: newBranch.phone || '082124499924',
-                    rating: '4.8 ★',
-                    hours: '09:00 - 22:00'
-                };
-
-                const updated = [...branches, branchPayload];
-                setBranches(updated);
-                localStorage.setItem('gb_branches_v2', JSON.stringify(updated));
-
-                setNewBranch({ name: '', region: 'Yogyakarta', price: '', address: '', phone: '082124499924' });
-                showToast("Cabang Ditambahkan", "Cabang baru berhasil disimpan ke database.", "success");
-            };
-
-            const handleDeleteBranch = (id, name) => {
-                triggerConfirm(
-                    "Konfirmasi Hapus",
-                    `Apakah Anda yakin ingin menghapus cabang ${name}?`,
-                    () => {
-                        const updated = branches.filter(b => b.id !== id);
-                        setBranches(updated);
-                        localStorage.setItem('gb_branches_v2', JSON.stringify(updated));
-                        showToast("Cabang Dihapus", `Cabang ${name} telah berhasil dihapus dari sistem.`, "success");
-                    }
-                );
-            };
-
-            const startEditBranch = (branch) => {
-                setEditingBranchId(branch.id);
-                setEditingBranchData({
-                    name: branch.name,
-                    region: branch.region,
-                    price: branch.price,
-                    address: branch.address,
-                    phone: branch.phone
-                });
-            };
-
-            const handleSaveEditBranch = (id) => {
-                const priceNum = Number(editingBranchData.price);
-                if (isNaN(priceNum) || priceNum <= 0) {
-                    triggerAlert("Input Salah", "Harga harus berupa angka positif.");
-                    return;
-                }
-
-                const updated = branches.map(b => b.id === id ? { id, ...editingBranchData, price: priceNum } : b);
-                setBranches(updated);
-                localStorage.setItem('gb_branches_v2', JSON.stringify(updated));
-                setEditingBranchId(null);
-                showToast("Cabang Diperbarui", "Data perubahan cabang berhasil disimpan.", "success");
-            };
-
-            return (
-                <div className="flex flex-col min-h-screen">
-                    
-                    {/* TOAST NOTIFICATION */}
-                    {toast && (
-                        <div className="fixed top-4 right-4 left-4 sm:left-auto sm:right-6 z-50 pointer-events-none flex flex-col max-w-sm mx-auto sm:mx-0">
-                            <div className={`bg-brandBrown text-white border-l-4 ${toast.type === 'success' ? 'border-brandGold' : 'border-rose-500'} p-4 rounded-2xl shadow-2xl flex items-start gap-3 pointer-events-auto transition-all`}>
-                                <div className="text-brandGold mt-0.5"><i className="fa-solid fa-bell"></i></div>
-                                <div>
-                                    <h5 className="font-bold text-xs">{toast.title}</h5>
-                                    <p className="text-[10px] text-brandCream/80 mt-1">{toast.message}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* CUSTOM POPUP DIALOG MODAL (Replaces alert/confirm) */}
-                    {dialogConfig && (
-                        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex justify-center items-center p-4">
-                            <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-brandGold/20 shadow-2xl text-center">
-                                <div className="w-12 h-12 bg-brandCream text-brandGold rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <AlertCircle size={24} className="text-brandGold" />
-                                </div>
-                                <h4 className="font-serif text-lg font-bold text-brandBrown mb-2">{dialogConfig.title}</h4>
-                                <p className="text-xs text-brandBrown/70 leading-relaxed mb-6">{dialogConfig.message}</p>
-                                <div className="flex gap-3 justify-center">
-                                    {dialogConfig.showCancel && (
-                                        <button 
-                                            onClick={() => setDialogConfig(null)}
-                                            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition"
-                                        >
-                                            {currentLang === 'id' ? 'Batal' : 'Cancel'}
-                                        </button>
-                                    )}
-                                    <button 
-                                        onClick={dialogConfig.onConfirm}
-                                        className="px-5 py-2 bg-brandGold hover:bg-brandGoldDark text-white font-bold text-xs rounded-xl transition"
-                                    >
-                                        OK
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* GEOLOCATION NOTIFIER */}
-                    {isLocationPromptOpen && (
-                        <div className="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto z-40 max-w-sm bg-white border border-brandGold/30 rounded-2xl p-5 shadow-2xl transition-all">
-                            <div className="flex items-start gap-4">
-                                <div className="bg-brandGold/10 p-3 rounded-full text-brandGold flex-shrink-0">
-                                    <MapPin size={22} className="text-brandGold" />
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-brandBrown text-sm">{TRANSLATIONS[currentLang].loc_prompt_title}</h4>
-                                    <p class="text-xs text-brandBrown/70 mt-1">{TRANSLATIONS[currentLang].loc_prompt_desc}</p>
-                                    <div className="mt-4 flex gap-3">
-                                        <button 
-                                            onClick={() => {
-                                                setIsLocationPromptOpen(false);
-                                                showToast("Lokasi Diizinkan", "Mencari cabang Griya Bugar terdekat...", "success");
-                                                setTimeout(() => setIsLocationRecommended(true), 1500);
-                                            }} 
-                                            className="bg-brandGold hover:bg-brandGoldDark text-white text-xs font-semibold py-2 px-4 rounded-xl transition min-h-[44px]"
-                                        >
-                                            {TRANSLATIONS[currentLang].loc_prompt_yes}
-                                        </button>
-                                        <button 
-                                            onClick={() => setIsLocationPromptOpen(false)} 
-                                            className="border border-brandBrown/20 hover:bg-brandCream text-brandBrown text-xs font-semibold py-2 px-3.5 rounded-xl transition min-h-[44px]"
-                                        >
-                                            {TRANSLATIONS[currentLang].loc_prompt_no}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* SUGGESTED LOCAL BRANCH DRAWER */}
-                    {isLocationRecommended && (
-                        <div className="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto z-45 max-w-xs bg-brandBrown text-white rounded-2xl p-4 shadow-2xl border border-brandGold/40 mx-auto sm:mx-0">
-                            <div className="flex justify-between items-start">
-                                <span className="text-[10px] font-semibold tracking-wider text-brandGold uppercase">{TRANSLATIONS[currentLang].loc_rec_tag}</span>
-                                <button onClick={() => setIsLocationRecommended(false)} className="text-white/60 hover:text-white p-1" aria-label="Tutup rekomendasi"><X size={14} /></button>
-                            </div>
-                            <p className="font-serif text-lg mt-1 text-brandCream">Griya Bugar Yogyakarta</p>
-                            <p className="text-[11px] text-brandCream/70 mt-1"><i class="fa-solid fa-clock mr-1 text-brandGold"></i> <span>{TRANSLATIONS[currentLang].loc_rec_open}</span></p>
-                            <div className="mt-3 flex gap-2">
-                                <button 
-                                    onClick={() => {
-                                        setSelectedBranchId('jogja-pakuningratan');
-                                        setCurrentPage('branch-detail');
-                                        setIsLocationRecommended(false);
-                                    }} 
-                                    className="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-semibold text-xs py-2 px-3 rounded-lg transition w-full text-center"
-                                >
-                                    {TRANSLATIONS[currentLang].loc_rec_detail}
-                                </button>
-                                <button 
-                                    onClick={() => {
-                                        setFormData(prev => ({ ...prev, branchId: 'jogja-pakuningratan' }));
-                                        setCurrentPage('booking');
-                                        setIsLocationRecommended(false);
-                                    }} 
-                                    className="bg-transparent border border-brandGold/50 hover:bg-brandGold/20 text-brandGold text-xs py-2 px-3 rounded-lg transition w-full text-center"
-                                >
-                                    Booking
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* FLOATING WHATSAPP ROSTERS */}
-                    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
-                        <button 
-                            onClick={() => setIsWaWidgetOpen(!isWaWidgetOpen)} 
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition relative group focus:outline-none"
-                        >
-                            <i className="fa-brands fa-whatsapp text-3xl"></i>
-                        </button>
-                        
-                        {isWaWidgetOpen && (
-                            <div className="absolute bottom-16 right-0 mb-4 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-brandGold/20 overflow-hidden transition-all">
-                                <div className="bg-brandBrown p-4 text-white">
-                                    <h4 className="font-serif text-lg text-brandGold">Griya Bugar Care</h4>
-                                    <p className="text-xs text-brandCream/80 mt-1">{TRANSLATIONS[currentLang].wa_card_desc}</p>
-                                </div>
-                                <div className="p-2 divide-y divide-brandCream-dark/50 max-h-80 overflow-y-auto">
-                                    {branches.map(b => (
-                                        <a 
-                                            key={b.id} 
-                                            href={`https://wa.me/${(b.phone || settings.whatsapp).replace(/[^0-9]/g, '')}?text=Halo%20Griya%20Bugar%20${encodeURIComponent(b.name)}`} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer" 
-                                            className="flex items-center justify-between py-3 px-3 hover:bg-brandCream rounded-xl transition"
-                                        >
-                                            <div>
-                                                <p className="text-xs font-semibold text-brandBrown">Griya Bugar {b.name}</p>
-                                                <p className="text-[10px] text-emerald-600 flex items-center gap-1 mt-0.5"><i className="fa-solid fa-circle text-[6px]"></i> <span>{TRANSLATIONS[currentLang].wa_online}</span></p>
-                                            </div>
-                                            <i className="fa-brands fa-whatsapp text-emerald-500 text-xl"></i>
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* HEADER NAVIGATION */}
-                    <header className="sticky top-0 z-30 bg-brandBrown text-white border-b border-brandGold/20 shadow-lg">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex items-center justify-between h-20">
-                                
-                                <div className="flex-shrink-0 cursor-pointer py-2 focus:outline-none" onClick={() => setCurrentPage('home')}>
-                                    <span className="font-serif text-xl sm:text-2xl tracking-widest text-brandGold font-bold block">GRIYA BUGAR</span>
-                                    <span className="block text-[7px] sm:text-[8px] tracking-[0.2em] text-brandCream uppercase">{TRANSLATIONS[currentLang].tagline}</span>
-                                </div>
-
-                                <nav className="hidden lg:flex items-center space-x-5 xl:space-x-6 text-sm font-medium">
-                                    {['home', 'about', 'services', 'branches', 'promos', 'articles', 'franchise', 'contact'].map(page => (
-                                        <button 
-                                            key={page} 
-                                            onClick={() => setCurrentPage(page)} 
-                                            className={`transition py-2 ${currentPage === page ? 'text-brandGold border-b-2 border-brandGold' : 'text-brandCream/80 hover:text-brandGold'}`}
-                                        >
-                                            {TRANSLATIONS[currentLang][`nav_${page}`]}
-                                        </button>
-                                    ))}
-                                </nav>
-
-                                <div className="hidden lg:flex items-center space-x-3">
-                                    <div className="flex items-center bg-brandCream/10 border border-brandGold/30 rounded-xl p-0.5 text-xs mr-2">
-                                        <button onClick={() => setCurrentLang('id')} className={`px-3 py-1.5 rounded-lg font-bold transition ${currentLang === 'id' ? 'bg-brandGold text-brandBrown' : 'text-brandCream/80 hover:text-brandGold'}`}>ID</button>
-                                        <button onClick={() => setCurrentLang('en')} className={`px-3 py-1.5 rounded-lg font-bold transition ${currentLang === 'en' ? 'bg-brandGold text-brandBrown' : 'text-brandCream/80 hover:text-brandGold'}`}>EN</button>
-                                    </div>
-                                    <button onClick={() => setCurrentPage('admin')} className="text-xs bg-transparent border border-brandGold text-brandGold hover:bg-white/5 py-2 px-3 rounded-lg transition font-medium flex items-center gap-1.5">
-                                        <Settings size={14} /> Admin Dashboard
-                                    </button>
-                                    <button onClick={() => setCurrentPage('booking')} className="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-2.5 px-4 rounded-lg transition-all shadow-md">
-                                        {TRANSLATIONS[currentLang].nav_booking}
-                                    </button>
-                                </div>
-
-                                <div className="lg:hidden flex items-center gap-2">
-                                    <select value={currentLang} onChange={(e) => setCurrentLang(e.target.value)} className="bg-brandBrown text-brandGold border border-brandGold/30 text-xs font-bold rounded-lg p-2 focus:outline-none min-h-[40px]">
-                                        <option value="id">ID</option>
-                                        <option value="en">EN</option>
-                                    </select>
-                                    <button onClick={() => setCurrentPage('admin')} className="text-xs border border-brandGold/40 text-brandGold py-2 px-2.5 rounded-lg flex items-center gap-1"><Settings size={14} /> Panel</button>
-                                    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-brandCream hover:text-brandGold p-2 transition focus:outline-none">
-                                        <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-xl`}></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        {isMobileMenuOpen && (
-                            <div className="lg:hidden bg-brandBrown/95 border-t border-brandGold/10 max-h-[calc(100vh-5rem)] overflow-y-auto text-center px-4 py-6 space-y-2">
-                                {['home', 'about', 'services', 'branches', 'promos', 'articles', 'franchise', 'contact'].map(page => (
-                                    <button 
-                                        key={page} 
-                                        onClick={() => { setCurrentPage(page); setIsMobileMenuOpen(false); }} 
-                                        className="block w-full py-3 text-brandCream hover:bg-brandGold/10 rounded-xl font-medium text-sm"
-                                    >
-                                        {TRANSLATIONS[currentLang][`nav_${page}`]}
-                                    </button>
-                                ))}
-                                <div className="pt-4 border-t border-brandGold/20">
-                                    <button onClick={() => { setCurrentPage('booking'); setIsMobileMenuOpen(false); }} className="w-full bg-brandGold text-brandBrown font-bold py-3 px-4 rounded-xl shadow-md">
-                                        {TRANSLATIONS[currentLang].nav_booking}
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </header>
-
-                    {/* CONNECTION STATUS BANNER */}
-                    <div className="bg-brandCreamDark/50 border-b border-brandGold/10 py-1.5 px-4">
-                        <div className="max-w-7xl mx-auto flex justify-between items-center text-[10px] sm:text-xs text-brandBrown/70">
-                            <div className="flex items-center gap-1.5 font-medium">
-                                <span className="w-2 h-2 rounded-full bg-brandGold animate-pulse"></span>
-                                <span>{dbStatusMsg}</span>
-                            </div>
-                            <span className="bg-brandGold/20 text-brandBrown font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider text-[9px]">Standard Premium 1998</span>
-                        </div>
-                    </div>
-
-                    <main className="flex-grow">
-                        
-                        {/* ==================================== */}
-                        {/* HOME PAGE                            */}
-                        {/* ==================================== */}
-                        {currentPage === 'home' && (
-                            <div>
-                                <div className="relative min-h-[70vh] flex items-center bg-black overflow-hidden">
-                                    <div className="absolute inset-0 z-0">
-                                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070" className="w-full h-full object-cover opacity-40 filter brightness-75 select-none" alt="Griya Bugar Banner" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-brandBrown via-transparent to-brandBrown/50"></div>
-                                    </div>
-                                    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-white">
-                                        <div className="max-w-3xl">
-                                            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brandGold/20 border border-brandGold/30 text-brandGold rounded-full text-xs font-semibold tracking-wider uppercase mb-6">
-                                                <i className="fa-solid fa-crown text-[10px]"></i> <span>Pure Authentic Massage Standard</span>
-                                            </span>
-                                            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal leading-tight tracking-wide mb-6">
-                                                {currentLang === 'id' ? 'Relaksasi Profesional untuk Tubuh Lebih Sehat' : 'Professional Relaxation for a Healthier Body'}
-                                            </h1>
-                                            <p className="text-sm sm:text-lg text-brandCream/90 font-light mb-10 max-w-2xl">{TRANSLATIONS[currentLang].hero_sub}</p>
-                                            <div className="flex flex-col sm:flex-row gap-4">
-                                                <button onClick={() => setCurrentPage('booking')} className="bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold px-8 py-4 rounded-xl transition duration-300 shadow-xl flex items-center justify-center gap-2">
-                                                    {TRANSLATIONS[currentLang].hero_cta_book} <i className="fa-solid fa-chevron-right text-xs"></i>
-                                                </button>
-                                                <button onClick={() => setCurrentPage('branches')} className="bg-transparent border-2 border-brandCream/30 hover:border-brandGold text-brandCream hover:text-brandGold font-medium px-8 py-4 rounded-xl transition duration-300">
-                                                    {TRANSLATIONS[currentLang].hero_cta_branches}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* COUNTER STATISTICS */}
-                                <div className="bg-brandBrown text-brandCream py-10 border-b border-brandGold/15">
-                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                                            <div>
-                                                <p className="font-serif text-2xl sm:text-4xl text-brandGold font-bold">5</p>
-                                                <p className="text-[10px] sm:text-xs text-brandCream/80 uppercase tracking-widest font-medium mt-1">{TRANSLATIONS[currentLang].stat_branches}</p>
-                                            </div>
-                                            <div>
-                                                <p className="font-serif text-2xl sm:text-4xl text-brandGold font-bold">25+</p>
-                                                <p className="text-[10px] sm:text-xs text-brandCream/80 uppercase tracking-widest font-medium mt-1">{TRANSLATIONS[currentLang].stat_therapists}</p>
-                                            </div>
-                                            <div>
-                                                <p className="font-serif text-2xl sm:text-4xl text-brandGold font-bold">5000+</p>
-                                                <p className="text-[10px] sm:text-xs text-brandCream/80 uppercase tracking-widest font-medium mt-1">{TRANSLATIONS[currentLang].stat_customers}</p>
-                                            </div>
-                                            <div>
-                                                <p className="font-serif text-2xl sm:text-4xl text-brandGold font-bold">4.9★</p>
-                                                <p className="text-[10px] sm:text-xs text-brandCream/80 uppercase tracking-widest font-medium mt-1">{TRANSLATIONS[currentLang].stat_rating}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* SIGNATURE TREATMENTS GRID */}
-                                <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'LAYANAN TERBAIK KAMI' : 'OUR BEST TREATMENTS'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Layanan Unggulan Griya Bugar' : 'Griya Bugar Signature Services'}</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                        {[
-                                            { icon: 'fa-spa', title_id: 'Pijat Tradisional Sehat', title_en: 'Healthy Traditional Massage', desc_id: 'Terapi pemijatan seluruh tubuh dengan teknik tradisional legendaris. Menghilangkan pegal otot secara efektif.', desc_en: 'Whole-body therapeutic massage using legendary traditional massage protocols.' },
-                                            { icon: 'fa-shoe-prints', title_id: 'Reflexology & Acupressure', title_en: 'Reflexology & Acupressure', desc_id: 'Stimulasi akupresur pada titik syaraf kaki guna memperlancar peredaran darah.', desc_en: 'Acupressure therapy on crucial foot meridian lines to boost circulation.' },
-                                            { icon: 'fa-person-running', title_id: 'Sport Recovery Massage', title_en: 'Sport Recovery Massage', desc_id: 'Terapi deep tissue bertekanan khusus mempercepat pemulihan otot pasca olahraga.', desc_en: 'Deep tissue therapy formulated for lactic acid release post workout.' },
-                                            { icon: 'fa-building', title_id: 'Corporate Wellness', title_en: 'Corporate Wellness', desc_id: 'Paket kebugaran kantor untuk meningkatkan kebugaran tim kerja mencegah kejenuhan.', desc_en: 'On-site package to improve employee health and reduce burnout.' }
-                                        ].map((lay, idx) => (
-                                            <div key={idx} className="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between min-h-[300px]">
-                                                <div>
-                                                    <div className="bg-brandCream p-4 rounded-xl w-14 h-14 flex items-center justify-center text-brandGold mb-6"><i className={`fa-solid ${lay.icon} text-2xl`}></i></div>
-                                                    <h3 className="font-serif text-lg sm:text-xl text-brandBrown font-semibold mb-3">{currentLang === 'id' ? lay.title_id : lay.title_en}</h3>
-                                                    <p className="text-xs text-brandBrown/70 leading-relaxed">{currentLang === 'id' ? lay.desc_id : lay.desc_en}</p>
-                                                </div>
-                                                <button onClick={() => setCurrentPage('services')} className="text-brandGold hover:text-brandGoldDark font-medium text-xs mt-6 flex items-center gap-2 focus:outline-none">
-                                                    <span>{TRANSLATIONS[currentLang].learn_more}</span> <i className="fa-solid fa-arrow-right"></i>
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* PREMIUM PDF CAMSCANNER VISUAL LOOKBOOK GALLERY */}
-                                <div className="bg-brandBrown text-white py-16 sm:py-24">
-                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                        <div className="text-center max-w-3xl mx-auto mb-16">
-                                            <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'GALERI RESMI VISUAL' : 'OFFICIAL LOOKBOOK GALLERY'}</span>
-                                            <h2 className="font-serif text-2xl sm:text-4xl text-brandCream mt-2 font-normal">{currentLang === 'id' ? 'Galeri Suasana & Layanan Premium' : 'Premium Ambiance & Treatment Gallery'}</h2>
-                                            <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                        </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                            {[
-                                                { img: 'https://images.unsplash.com/photo-1564507592333-c60657eea523', page: 'Page 1', title_id: 'Arsitektur Kolonial Klasik', desc_id: 'Gedung putih pilar klasik megah melambangkan kestabilan dan kemewahan layanan terpercaya.' },
-                                                { img: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26', page: 'Page 2', title_id: 'Lounge Menunggu Gaya Zen', desc_id: 'Nuansa interior shoji kayu hangat dengan sofa kulit kontras, menghadirkan relaksasi batin.' },
-                                                { img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874', page: 'Page 3-4', title_id: 'Pijat Tradisional Nusantara', desc_id: 'Terapis profesional berseragam melakukan pijatan standar pada kain batik dengan minyak aromaterapi murni.' },
-                                                { img: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e', page: 'Page 5-7', title_id: 'Kebugaran Holistik & Jahe Hangat', desc_id: 'Terapi menyeluruh disusul sajian wedang jahe seduh asli dengan kimono bersih steril.' }
-                                            ].map((gal, idx) => (
-                                                <div key={idx} className="bg-white/5 rounded-2xl overflow-hidden border border-brandGold/20 flex flex-col justify-between group hover:border-brandGold transition duration-300">
-                                                    <div className="relative h-56 overflow-hidden">
-                                                        <img src={gal.img} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Gallery item" />
-                                                        <span className="absolute top-4 right-4 bg-brandGold text-brandBrown font-bold text-[10px] px-2.5 py-1 rounded-full uppercase">{gal.page}</span>
-                                                    </div>
-                                                    <div className="p-5">
-                                                        <h4 className="font-serif text-brandGold text-lg mb-1">{gal.title_id}</h4>
-                                                        <p className="text-[11px] text-brandCream/75 leading-relaxed">{gal.desc_id}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* ACTIVE BRAND BRANCH PREVIEW DIRECTORY */}
-                                <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-                                        <div>
-                                            <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">NATIONAL BRANCH NETWORKS</span>
-                                            <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Hadir di 5 Kota Besar Indonesia' : 'Present in 5 Major Indonesian Cities'}</h2>
-                                        </div>
-                                        <button onClick={() => setCurrentPage('branches')} className="mt-4 md:mt-0 text-brandGold border-b-2 border-brandGold pb-1 font-semibold text-sm transition">
-                                            {currentLang === 'id' ? 'Lihat Seluruh Cabang' : 'View All Branches'} <i className="fa-solid fa-angle-right ml-1"></i>
-                                        </button>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                        {branches.slice(0, 3).map(b => (
-                                            <div key={b.id} className="bg-white border border-brandGold/10 rounded-3xl overflow-hidden shadow-sm hover:gold-glow hover:-translate-y-1 transition duration-300 flex flex-col justify-between min-h-[420px]">
-                                                <div className="relative h-48">
-                                                    <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2" className="w-full h-full object-cover" alt="Branch" />
-                                                    <span className="absolute top-4 left-4 bg-emerald-600 text-white text-[9px] font-bold py-1 px-3 rounded-full uppercase">{b.region}</span>
-                                                </div>
-                                                <div className="p-6 flex-grow">
-                                                    <h3 className="font-serif text-xl sm:text-2xl text-brandBrown font-medium mb-1">Griya Bugar {b.name}</h3>
-                                                    <div className="text-xs text-brandGold mb-4"><i className="fa-solid fa-star"></i> {b.rating || '4.9 ★'} <span className="text-slate-400">({b.region})</span></div>
-                                                    <p className="text-xs text-brandBrown/75 line-clamp-3 leading-relaxed mb-4">{b.address}</p>
-                                                    <p className="text-sm font-bold text-brandGold">{formatIDR(b.price)} <span className="text-xs text-slate-400 font-normal">/ 90 {TRANSLATIONS[currentLang].mins}</span></p>
-                                                </div>
-                                                <div className="p-6 pt-0">
-                                                    <button 
-                                                        onClick={() => {
-                                                            setSelectedBranchId(b.id);
-                                                            setCurrentPage('branch-detail');
-                                                        }} 
-                                                        className="w-full bg-brandBrown hover:bg-brandGold hover:text-brandBrown text-white font-medium text-xs py-3 rounded-xl transition uppercase tracking-wider"
-                                                    >
-                                                        {TRANSLATIONS[currentLang].visit_branch}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* ABOUT US PAGE                        */}
-                        {/* ==================================== */}
-                        {currentPage === 'about' && (
-                            <div className="py-16 sm:py-24 bg-white">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'SEJARAH KAMI' : 'OUR HISTORY'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Mengenal Lebih Dekat Griya Bugar' : 'Getting Closer to Griya Bugar'}</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-                                        <div>
-                                            <p className="text-brandBrown font-serif text-xl sm:text-2xl leading-relaxed mb-6 italic">"PIJAT BENAR BENAR PIJAT • Menghadirkan kesehatan relaksasi optimal sejak 1998."</p>
-                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed mb-4">Griya Bugar Massage Profesional merupakan layanan pijat dan terapi kebugaran profesional yang hadir untuk membantu menjaga kesehatan dan relaksasi tubuh. Didukung oleh terapis berpengalaman dan pelayanan berkualitas, Griya Bugar telah melayani pelanggan di Bali, Yogyakarta, Solo, Semarang, dan Malang, dengan komitmen memberikan kenyamanan dan kepuasan terbaik bagi setiap pelanggan.</p>
-                                            <div className="mt-6 border-l-4 border-brandGold pl-4">
-                                                <h4 className="font-bold text-brandBrown text-xs sm:text-sm uppercase">{currentLang === 'id' ? 'Visi Kami' : 'Our Vision'}</h4>
-                                                <p className="text-xs sm:text-sm text-brandBrown/75 italic mt-1">Menjadi penyedia layanan pijat dan terapi kebugaran professional terpercaya di Indonesia yang menghadirkan manfaat kesehatan, relaksasi, dan kenyamanan bagi setiap pelanggan.</p>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <img src="https://images.unsplash.com/photo-1591343395902-1adcb454c2e4" className="rounded-3xl shadow-xl w-full h-[380px] object-cover" alt="Interior lounge" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* DETAILED SERVICES CATALOG PAGE       */}
-                        {/* ==================================== */}
-                        {currentPage === 'services' && (
-                            <div className="py-16 sm:py-24 bg-brandCream">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'MENU LAYANAN KAMI' : 'OUR SERVICE MENU'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Katalog Terapi Kebugaran Griya Bugar' : 'Griya Bugar Treatment Catalog'}</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="space-y-16">
-                                        {[
-                                            { name: 'Pijat Tradisional Sehat (Signature)', price: 'Rp 127.500', duration: '90 Menit', desc_id: 'Paket andalan legendaris kami yang mencakup pijatan seluruh tubuh, termasuk pijat wajah, kepala, dan pundak yang cukup lama. Pelanggan dapat meminta terapi pijat injak (back-stepping) dengan pilihan kekuatan tekanan (low, medium, super power) dari terapis ahli kami.', features: ['Minyak Kelapa Hangat Base', 'Pijat Kepala & Wajah Lama', 'Opsi Pijat Injak Punggung', 'Wedang Jahe Hangat & Cemilan'] },
-                                            { name: 'Reflexology & Acupressure', price: 'Rp 95.000', duration: '60 Menit', desc_id: 'Terapi refleksi terfokus pada kaki dan tungkai bawah untuk mengaktifkan kembali simpul syaraf meridian yang letih. Dipadukan dengan usapan handuk hangat bersih dan teh jahe penyegar tubuh.', features: ['Rendaman Handuk Hangat', 'Akupresur Titik Refleksi', 'Melancarkan Sirkulasi Darah', 'Lotion Pijat Lembut'] },
-                                            { name: 'Sport Recovery & Deep Tissue', price: 'Rp 185.000', duration: '120 Menit', desc_id: 'Didesain khusus untuk Anda yang aktif bergerak atau berolahraga berat. Pemijatan bertekanan pas menyasar otot dalam yang kaku, merelaksasi simpul fascia, dan mengembalikan kelenturan sendi.', features: ['Tekanan Dalam (Deep Tissue)', 'Pelemasan Otot Kaku', 'Fasilitas Mandi Air Panas', 'Wedang Jahe & Snack Enak'] }
-                                        ].map((lay, idx) => (
-                                            <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 grid grid-cols-1 lg:grid-cols-12 border border-brandGold/10">
-                                                <div className="lg:col-span-5 h-64 lg:h-auto relative">
-                                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874" className="w-full h-full object-cover" alt="Treatment image" />
-                                                </div>
-                                                <div className="lg:col-span-7 p-6 sm:p-12 flex flex-col justify-between">
-                                                    <div>
-                                                        <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-4">
-                                                            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-brandBrown">{lay.name}</h3>
-                                                            <span className="text-brandGold font-serif text-lg sm:text-2xl font-bold whitespace-nowrap">{lay.price} <span className="text-xs text-slate-400 font-sans">/ {lay.duration}</span></span>
-                                                        </div>
-                                                        <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed mb-6">{lay.desc_id}</p>
-                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-brandBrown/80 mb-6">
-                                                            {lay.features.map((f, fIdx) => (
-                                                                <span key={fIdx} className="flex items-center"><i className="fa-regular fa-circle-check text-brandGold mr-2 text-sm"></i>{f}</span>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                    <button 
-                                                        onClick={() => {
-                                                            setFormData(prev => ({ ...prev, service: lay.name }));
-                                                            setCurrentPage('booking');
-                                                        }} 
-                                                        className="self-start bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-3 px-6 rounded-xl transition min-h-[42px]"
-                                                    >
-                                                        {currentLang === 'id' ? 'Pesan Sekarang' : 'Order Now'}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* REGIONAL BRANCHES DIRECTORY          */}
-                        {/* ==================================== */}
-                        {currentPage === 'branches' && (
-                            <div className="py-16 sm:py-24 bg-white">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{TRANSLATIONS[currentLang].branches_tag}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Pilih Cabang Resmi Griya Bugar' : 'Select Official Griya Bugar Branch'}</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                        <p className="text-xs sm:text-sm text-brandBrown/70 mt-4">Seluruh cabang kami telah dilengkapi dengan fasilitas standar tinggi serta terapis berpengalaman mumpuni.</p>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                        {branches.map(b => (
-                                            <div key={b.id} className="border border-brandGold/10 rounded-3xl overflow-hidden bg-brandCream shadow-md flex flex-col justify-between min-h-[420px]">
-                                                <div className="relative h-44">
-                                                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" className="w-full h-full object-cover" alt="Branch Cover" />
-                                                    <span className="absolute top-4 left-4 bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">{b.region}</span>
-                                                </div>
-                                                <div className="p-6 flex-grow">
-                                                    <h3 className="font-serif text-xl sm:text-2xl text-brandBrown font-semibold">Griya Bugar {b.name}</h3>
-                                                    <p className="text-[11px] text-brandBrown/60 mt-2 flex items-start gap-1"><MapPin size={12} className="mt-0.5 shrink-0" /> <span>{b.address}</span></p>
-                                                    <p className="text-xs text-brandBrown/70 mt-4 leading-relaxed">Jam Operasional: {b.hours || '09:00 - 22:00'}</p>
-                                                    <p className="text-sm font-bold text-brandGold mt-3">{formatIDR(b.price)}</p>
-                                                </div>
-                                                <div className="p-6 pt-0">
-                                                    <button 
-                                                        onClick={() => {
-                                                            setSelectedBranchId(b.id);
-                                                            setCurrentPage('branch-detail');
-                                                        }} 
-                                                        className="w-full bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown py-3 rounded-xl text-xs sm:text-sm font-semibold transition uppercase tracking-wider min-h-[44px]"
-                                                    >
-                                                        {TRANSLATIONS[currentLang].visit_branch}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* DYNAMIC BRANCH DETAIL VIEW           */}
-                        {/* ==================================== */}
-                        {currentPage === 'branch-detail' && (() => {
-                            const activeBranch = branches.find(b => b.id === selectedBranchId) || branches[0];
-                            if (!activeBranch) return null;
-                            return (
-                                <div className="py-12 sm:py-24 bg-brandCream">
-                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                        
-                                        <button onClick={() => setCurrentPage('branches')} className="mb-8 inline-flex items-center gap-2 text-brandBrown hover:text-brandGold transition text-xs sm:text-sm font-semibold min-h-[44px]">
-                                            <i className="fa-solid fa-arrow-left"></i> <span>{TRANSLATIONS[currentLang].back_to_branches}</span>
-                                        </button>
-
-                                        <div className="bg-brandBrown text-white rounded-3xl overflow-hidden shadow-2xl border border-brandGold/20 mb-16">
-                                            <div className="grid grid-cols-1 lg:grid-cols-12">
-                                                <div className="lg:col-span-5 h-64 lg:h-auto relative">
-                                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874" className="w-full h-full object-cover" alt="Branch cover" />
-                                                </div>
-                                                <div className="lg:col-span-7 p-6 sm:p-12 flex flex-col justify-between">
-                                                    <div>
-                                                        <span className="inline-block bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">Premium Branch</span>
-                                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandGold mt-3">Griya Bugar {activeBranch.name}</h2>
-                                                        <p className="text-xs sm:text-sm text-brandCream/80 mt-2 leading-relaxed">Pusat terapi kebugaran profesional berpengalaman dengan standar higienitas dan kenyamanan tinggi.</p>
-                                                        
-                                                        <div className="grid grid-cols-1 gap-3 mt-8 border-t border-brandCream/20 pt-6 text-xs sm:text-sm text-brandCream/90">
-                                                            <p className="flex items-start gap-2"><MapPin size={16} className="text-brandGold shrink-0" /><span>{activeBranch.address}</span></p>
-                                                            <p className="flex items-center gap-2"><Phone size={16} className="text-brandGold shrink-0" /><span>WhatsApp: {activeBranch.phone}</span></p>
-                                                            <p className="flex items-center gap-2"><Clock size={16} className="text-brandGold shrink-0" /><span>Jam Operasional: {activeBranch.hours || '09:00 - 22:00'}</span></p>
-                                                            <p className="flex items-center gap-2"><i className="fa-solid fa-star text-brandGold shrink-0"></i><span>Rating: {activeBranch.rating || '4.9 ★'}</span></p>
-                                                            <p className="flex items-center gap-2"><i className="fa-solid fa-wallet text-brandGold shrink-0"></i><span className="font-bold text-brandGold text-sm">Harga Khusus Booking Web: {formatIDR(activeBranch.price)}</span></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-                                            <div className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-8 border border-brandGold/15 shadow-sm">
-                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mb-6 border-b border-brandCream-dark pb-2">{TRANSLATIONS[currentLang].branch_highlights}</h3>
-                                                <ul className="space-y-4 text-xs sm:text-sm text-brandBrown/80 font-medium">
-                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Terapis Senior Terlatih</span></li>
-                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Kebersihan & Higienitas Terjamin</span></li>
-                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Kamar Mandi Air Hangat & Kimono</span></li>
-                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Free Wedang Jahe Racikan Asli & Snack</span></li>
-                                                </ul>
-                                            </div>
-                                            <div className="lg:col-span-8">
-                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6">{TRANSLATIONS[currentLang].meet_specialists}</h3>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                                    {[
-                                                        { name: 'Pak Budi', spec: 'Traditional & Back-Stepping Therapy', exp: '15+ Tahun Pengalaman', avatar: '👨‍⚕️' },
-                                                        { name: 'Ibu Ratih', spec: 'Head, Face Acupressure & Aromatherapy', exp: '10+ Tahun Pengalaman', avatar: '👩‍⚕️' }
-                                                    ].map((t, tIdx) => (
-                                                        <div key={tIdx} className="bg-white border border-brandGold/15 rounded-2xl p-4 flex gap-4 items-center shadow-sm">
-                                                            <div className="text-3xl bg-brandCream p-3 rounded-full shrink-0">{t.avatar}</div>
-                                                            <div>
-                                                                <h4 className="font-serif font-bold text-brandBrown text-sm sm:text-base">{t.name}</h4>
-                                                                <p className="text-[10px] sm:text-xs text-brandGold font-semibold mt-0.5">{t.spec}</p>
-                                                                <p className="text-[10px] sm:text-xs text-brandBrown/60 mt-1">{t.exp}</p>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Direct Booking Drawer for selected branch */}
-                                        <div className="bg-white rounded-3xl p-6 sm:p-12 border border-brandGold/15 shadow-xl max-w-4xl mx-auto">
-                                            <div className="text-center max-w-lg mx-auto mb-10">
-                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown">{TRANSLATIONS[currentLang].form_booking_title}</h3>
-                                                <p className="text-xs text-brandBrown/60 mt-2">{TRANSLATIONS[currentLang].form_booking_desc}</p>
-                                            </div>
-                                            <form onSubmit={(e) => {
-                                                setFormData(prev => ({ ...prev, branchId: activeBranch.id }));
-                                                handleBookingSubmit(e);
-                                            }} className="space-y-6 text-xs sm:text-sm text-brandBrown">
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                                    <div className="space-y-1.5">
-                                                        <label className="font-semibold block">Nama Lengkap Anda <span className="text-rose-500">*</span></label>
-                                                        <input type="text" name="name" required placeholder="Contoh: Budi Santoso" value={formData.name} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="font-semibold block">Nomor WhatsApp Aktif <span className="text-rose-500">*</span></label>
-                                                        <input type="tel" name="phone" required placeholder="Contoh: 081234567890" value={formData.phone} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
-                                                    </div>
-                                                </div>
-                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                                    <div className="space-y-1.5">
-                                                        <label className="font-semibold block">Tanggal Pemesanan <span className="text-rose-500">*</span></label>
-                                                        <input type="date" name="date" required min={new Date().toISOString().split('T')[0]} value={formData.date} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="font-semibold block">Waktu / Jam Sesi <span className="text-rose-500">*</span></label>
-                                                        <input type="time" name="time" required value={formData.time} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="font-semibold block">Pilih Jenis Layanan <span className="text-rose-500">*</span></label>
-                                                        <select name="service" required value={formData.service} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]">
-                                                            <option value="Pijat Tradisional Sehat">Pijat Tradisional Sehat</option>
-                                                            <option value="Reflexology & Acupressure">Reflexology & Acupressure</option>
-                                                            <option value="Sport Recovery & Deep Tissue">Sport Recovery & Deep Tissue</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="font-semibold block">Catatan Tambahan (Kekuatan Pijat: Low / Medium / Super Power, atau Keluhan Sendi)</label>
-                                                    <textarea name="notes" placeholder="Tulis instruksi khusus jika ada..." value={formData.notes} onChange={handleInputChange} rows="3" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
-                                                </div>
-                                                <div className="p-4 bg-brandCream border border-brandGold/10 rounded-2xl flex justify-between items-center">
-                                                    <div>
-                                                        <p className="font-semibold text-xs text-brandBrown uppercase tracking-wider">Total Booking Sesi Web:</p>
-                                                        <p className="text-[10px] text-brandBrown/60">Pembayaran langsung di tempat.</p>
-                                                    </div>
-                                                    <span className="text-2xl font-bold text-brandGold">{formatIDR(activeBranch.price)}</span>
-                                                </div>
-                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-sm py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-2 min-h-[50px] uppercase">
-                                                    <i className="fa-brands fa-whatsapp text-lg"></i> BOOK VIA WHATSAPP CABANG
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            );
-                        })()}
-
-                        {/* ==================================== */}
-                        {/* MAIN BOOKING ENGINE PAGE (STANDALONE)*/}
-                        {/* ==================================== */}
-                        {currentPage === 'booking' && (
-                            <div className="py-16 sm:py-24 bg-brandCream">
-                                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-lg mx-auto mb-10">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">FAST ONLINE BOOKING</span>
-                                        <h2 className="font-serif text-2xl sm:text-3xl text-brandBrown mt-2">Reservasi Sesi Griya Bugar</h2>
-                                        <p className="text-xs text-brandBrown/60 mt-2">Lengkapi detail pemesanan di bawah ini untuk mengarahkan pesan konfirmasi instan ke WhatsApp cabang terpilih.</p>
-                                    </div>
-                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                                        
-                                        <div className="lg:col-span-5 bg-brandBrown text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-brandGold/20 relative overflow-hidden flex flex-col justify-between min-h-[400px]">
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-brandGold/5 rounded-full blur-2xl pointer-events-none"></div>
-                                            <div>
-                                                <span className="inline-block bg-brandGold/20 border border-brandGold/30 text-brandGold text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider">Promo Khusus Website</span>
-                                                <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-4">Pijat Tradisional <br /><span className="text-brandGold">Durasi 1 Jam</span></h3>
-                                                <p className="text-xs text-brandCream/80 leading-relaxed mb-6">Rasakan kebugaran optimal bersama terapis andalan bersertifikat. Dapatkan harga khusus booking via web yang otomatis terintegrasi dengan WhatsApp cabang tujuan.</p>
-                                            </div>
-                                            <div className="bg-white/5 border border-brandGold/20 p-4 rounded-2xl">
-                                                <h4 className="text-xs font-bold text-brandGold uppercase tracking-widest mb-2 flex items-center gap-1.5"><TrendingUp size={14} /> Daftar Harga Sesi (1 Jam)</h4>
-                                                <div className="space-y-2 text-xs">
-                                                    {branches.map(b => (
-                                                        <div key={b.id} className="flex justify-between items-center py-1 border-b border-white/5 last:border-0">
-                                                            <span className="text-brandCream/85">Griya Bugar {b.name}</span>
-                                                            <span className="font-bold text-brandGold">{formatIDR(b.price)}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-brandGold/15 shadow-md">
-                                            <form onSubmit={handleBookingSubmit} className="space-y-6 text-xs sm:text-sm text-brandBrown">
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-bold text-brandBrown/80 uppercase block">Nama Lengkap Anda</label>
-                                                    <div className="relative">
-                                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brandGold"><User size={18} /></div>
-                                                        <input type="text" name="name" required placeholder="Contoh: Budi Santoso" value={formData.name} onChange={handleInputChange} className="w-full pl-10 pr-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm" />
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-bold text-brandBrown/80 uppercase block">Nomor WhatsApp Aktif</label>
-                                                    <div className="relative">
-                                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brandGold"><Phone size={18} /></div>
-                                                        <input type="tel" name="phone" required placeholder="Contoh: 081234567890" value={formData.phone} onChange={handleInputChange} className="w-full pl-10 pr-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm" />
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-bold text-brandBrown/80 uppercase block">Pilih Cabang Tujuan</label>
-                                                    <div className="relative">
-                                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brandGold"><MapPin size={18} /></div>
-                                                        <select name="branchId" required value={formData.branchId} onChange={handleInputChange} className="w-full pl-10 pr-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm appearance-none">
-                                                            <option value="">-- Silakan Pilih Lokasi Cabang --</option>
-                                                            {['Yogyakarta', 'Solo', 'Malang', 'Semarang', 'Bali'].map(region => (
-                                                                <optgroup key={region} label={`Wilayah ${region}`}>
-                                                                    {branches.filter(b => b.region === region).map(b => (
-                                                                        <option key={b.id} value={b.id}>Griya Bugar {b.name} ({formatIDR(b.price)})</option>
-                                                                    ))}
-                                                                </optgroup>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-xs font-bold text-brandBrown/80 uppercase block">Tanggal Pemesanan</label>
-                                                        <div className="relative">
-                                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brandGold"><Calendar size={18} /></div>
-                                                            <input type="date" name="date" required min={new Date().toISOString().split('T')[0]} value={formData.date} onChange={handleInputChange} className="w-full pl-10 pr-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-xs font-bold text-brandBrown/80 uppercase block">Jam Kedatangan</label>
-                                                        <div className="relative">
-                                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-brandGold"><Clock size={18} /></div>
-                                                            <input type="time" name="time" required value={formData.time} onChange={handleInputChange} className="w-full pl-10 pr-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-bold text-brandBrown/80 uppercase block">Jenis Layanan</label>
-                                                    <select name="service" required value={formData.service} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm">
-                                                        <option value="Pijat Tradisional Sehat">Pijat Tradisional Sehat</option>
-                                                        <option value="Reflexology & Acupressure">Reflexology & Acupressure</option>
-                                                        <option value="Sport Recovery & Deep Tissue">Sport Recovery & Deep Tissue</option>
-                                                    </select>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-xs font-bold text-brandBrown/80 uppercase block">Catatan Tambahan</label>
-                                                    <textarea name="notes" placeholder="Tulis keluhan atau request khusus terapis..." value={formData.notes} onChange={handleInputChange} rows="3" className="w-full px-4 py-3 rounded-xl border border-brandGold/20 focus:ring-2 focus:ring-brandGold/20 bg-brandCream focus:bg-white text-sm" />
-                                                </div>
-
-                                                <div className="p-4 bg-brandCream border border-brandGold/15 rounded-2xl flex justify-between items-center">
-                                                    <div>
-                                                        <p className="font-semibold text-xs text-brandBrown uppercase tracking-wider">Total Bayar (Di Tempat):</p>
-                                                        <p className="text-[10px] text-brandBrown/50">Sudah termasuk diskon promo website.</p>
-                                                    </div>
-                                                    <span className="text-2xl font-bold text-brandGold">{formatIDR(currentPrice)}</span>
-                                                </div>
-
-                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-white font-bold py-4 rounded-xl shadow-lg flex justify-center items-center gap-2 text-base">
-                                                    <MessageSquare size={18} /> Kirim Pemesanan ke WhatsApp Cabang
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* PROMOS VIEW                          */}
-                        {/* ==================================== */}
-                        {currentPage === 'promos' && (
-                            <div className="py-16 sm:py-24 bg-white">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'PROMO AKTIF' : 'ACTIVE PROMOS'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Penawaran & Fasilitas Eksklusif' : 'Exclusive Offers & Promos'}</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                                        
-                                        <div className="border border-brandGold/25 rounded-3xl overflow-hidden shadow-md flex flex-col sm:flex-row bg-brandCream">
-                                            <div className="sm:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
-                                                <span className="text-brandGold text-xs uppercase tracking-widest font-semibold">UPGRADE</span>
-                                                <span className="font-serif text-3xl font-bold my-2 text-brandGold">Rp 25rb</span>
-                                                <span className="text-[10px] text-brandCream/80 uppercase">Couple Room</span>
-                                            </div>
-                                            <div className="sm:w-2/3 p-6 flex flex-col justify-between">
-                                                <div>
-                                                    <h3 className="font-serif text-lg sm:text-xl text-brandBrown font-semibold">Couple & Family Suite Upgrade</h3>
-                                                    <p className="text-xs text-brandBrown/75 mt-2 leading-relaxed">Nikmati privasi berpasangan atau dengan keluarga di kamar khusus berpintu rapat lengkap dengan kamar mandi air panas pribadi di dalam hanya dengan menambah biaya charge Rp 25.000 saja.</p>
-                                                </div>
-                                                <button onClick={() => setCurrentPage('booking')} className="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2.5 px-4 rounded-xl transition self-start mt-4">Klaim Promo</button>
-                                            </div>
-                                        </div>
-
-                                        <div className="border border-brandGold/25 rounded-3xl overflow-hidden shadow-md flex flex-col sm:flex-row bg-brandCream">
-                                            <div className="sm:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
-                                                <span className="text-brandGold text-xs uppercase tracking-widest font-semibold">VIP</span>
-                                                <span className="font-serif text-3xl font-bold my-2 text-brandGold">FREE</span>
-                                                <span className="text-[10px] text-brandCream/80 uppercase">Complimentary</span>
-                                            </div>
-                                            <div className="sm:w-2/3 p-6 flex flex-col justify-between">
-                                                <div>
-                                                    <h3 className="font-serif text-lg sm:text-xl text-brandBrown font-semibold">Wedang Jahe Asli & Snack</h3>
-                                                    <p className="text-xs text-brandBrown/75 mt-2 leading-relaxed">Setiap selesai sesi pemijatan kebugaran jenis apa pun, kami memanjakan tubuh Anda dengan menyuguhkan secangkir wedang jahe panas asli buatan dapur kami beserta camilan gurih secara gratis.</p>
-                                                </div>
-                                                <button onClick={() => setCurrentPage('booking')} className="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2.5 px-4 rounded-xl transition self-start mt-4">Klaim Promo</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* HEALTHY BLOG ARTICLES VIEW           */}
-                        {/* ==================================== */}
-                        {currentPage === 'articles' && (
-                            <div className="py-16 sm:py-24 bg-brandCream">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'INFORMASI KESEHATAN' : 'HEALTHY NEWS'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Artikel Kesehatan & Gaya Hidup</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                        
-                                        <div className="bg-white rounded-3xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
-                                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" className="h-48 w-full object-cover" alt="Article image" />
-                                            <div className="p-6 flex-grow">
-                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">Terapi Saraf</span>
-                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mt-2 font-semibold">Pentingnya Melemaskan Otot Fascia Secara Rutin</h3>
-                                                <p className="text-xs text-brandBrown/70 mt-3 leading-relaxed">Tumpukan beban kerja harian memicu ketegangan pada jaringan fascia tubuh kita. Kenali kiat mengatasinya melalui pijat deep tissue...</p>
-                                            </div>
-                                            <div className="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
-                                                <span><i className="fa-regular fa-clock mr-1"></i> 5 Menit Baca</span>
-                                                <span className="font-semibold text-brandGold cursor-pointer hover:underline">Selengkapnya</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="bg-white rounded-3xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
-                                            <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e" className="h-48 w-full object-cover" alt="Article image" />
-                                            <div className="p-6 flex-grow">
-                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">Aroma Terapi</span>
-                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mt-2 font-semibold">Bagaimana Minyak Cendana Mampu Atasi Insomnia</h3>
-                                                <p className="text-xs text-brandBrown/70 mt-3 leading-relaxed">Penelitian medis mutakhir membuktikan bahwa menghirup uap minyak esensial murni cendana mampu menurunkan denyut nadi berlebih...</p>
-                                            </div>
-                                            <div className="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
-                                                <span><i className="fa-regular fa-clock mr-1"></i> 4 Menit Baca</span>
-                                                <span className="font-semibold text-brandGold cursor-pointer hover:underline">Selengkapnya</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="bg-white rounded-3xl border border-brandGold/10 p-6 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1">
-                                            <div className="mb-4">
-                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">FAQ</span>
-                                                <h3 className="font-serif text-xl text-brandBrown mt-2 font-semibold mb-4">Pertanyaan Sering Diajukan</h3>
-                                                <div className="space-y-4 text-xs sm:text-sm text-brandBrown/85">
-                                                    <div className="border-b border-brandCream-dark pb-3">
-                                                        <p className="font-semibold">Apa saja layanan yang tersedia di Griya Bugar?</p>
-                                                        <p className="text-[11px] sm:text-xs text-brandBrown/70 mt-1">Griya bugar menyediakan berbagai layanan pijat dan terapi kebugaran yang di lakukan oleh teraspis profensional untuk membantu relaksasi, mengurangi pegal, dan menjaga kesehatan tubuh.</p>
-                                                    </div>
-                                                    <div className="pt-1">
-                                                        <p className="font-semibold">Apakah terapisnya profesional?</p>
-                                                        <p className="text-[11px] sm:text-xs text-brandBrown/70 mt-1">Ya, seluruh terapis griya bugar telah mendapatkan pelatihan dan bekerja sesuai standar pelayanan yang berlaku.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* FRANCHISE & PARTNERSHIPS VIEW        */}
-                        {/* ==================================== */}
-                        {currentPage === 'franchise' && (
-                            <div className="py-16 sm:py-24 bg-white">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'INVESTASI WARALABA' : 'INVESTMENT OPPORTUNITY'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Kemitraan & Waralaba Griya Bugar</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                        <p className="text-xs sm:text-sm text-brandBrown/70 mt-4">Bergabunglah dengan jaringan waralaba kebugaran modern nasional yang tepercaya, mapan sejak tahun 1998.</p>
-                                    </div>
-                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
-                                            <i className="fa-solid fa-chart-line text-brandGold text-3xl mb-4"></i>
-                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">ROI Teruji & Cepat</h4>
-                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Rata-rata mitra waralaba kami mencapai balik modal penuh (BEP) dalam kurun waktu 18 s/d 24 bulan sejak awal peresmian cabang baru.</p>
-                                        </div>
-                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
-                                            <i className="fa-solid fa-graduation-cap text-brandGold text-3xl mb-4"></i>
-                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">Suplai Terapis Tersentral</h4>
-                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Mitra tidak perlu khawatir mencari staf. Seluruh terapis kami latih di pusat pelatihan terakreditasi Yogyakarta untuk menjaga kualitas standar pelayanan.</p>
-                                        </div>
-                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
-                                            <i className="fa-solid fa-sliders text-brandGold text-3xl mb-4"></i>
-                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">Sistem ERP Terintegrasi</h4>
-                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Pantau perkembangan transaksi harian, absensi terapis, hingga persediaan minyak aromaterapi secara langsung (realtime) melalui aplikasi admin.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* HEADQUARTERS CONTACTS VIEW           */}
-                        {/* ==================================== */}
-                        {currentPage === 'contact' && (
-                            <div className="py-16 sm:py-24 bg-brandCream">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    <div className="text-center max-w-3xl mx-auto mb-16">
-                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'HUBUNGI KAMI' : 'CONTACT US'}</span>
-                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Hubungi Pusat Griya Bugar</h2>
-                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
-                                    </div>
-                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-5xl mx-auto">
-                                        <div className="lg:col-span-5 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm flex flex-col justify-between">
-                                            <div>
-                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6 font-medium">Kantor Pusat Kami</h3>
-                                                <div className="space-y-6 text-xs sm:text-sm text-brandBrown/80">
-                                                    <p className="flex items-start gap-3"><MapPin size={16} className="text-brandGold shrink-0" /><span>Jl. Pakuningratan No.3, Cokrodiningratan, Kec. Jetis, Kota Yogyakarta, DIY 55233</span></p>
-                                                    <p className="flex items-start gap-3"><i className="fa-solid fa-envelope text-brandGold text-lg shrink-0 mt-0.5"></i><span>Griyabugarofficiall98@gmail.com</span></p>
-                                                    <p className="flex items-start gap-3"><Clock size={16} className="text-brandGold shrink-0" /><span>09:00 - 22:00 (WIB)</span></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="lg:col-span-7 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm">
-                                            <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6 font-medium">Kirimkan Pesan Anda</h3>
-                                            <form onSubmit={(e) => { e.preventDefault(); showToast("Pesan Dikirim", "Pertanyaan Anda akan segera direspons oleh Admin.", "success"); e.target.reset(); }} className="space-y-4 text-xs sm:text-sm text-brandBrown">
-                                                <input type="text" required placeholder="Nama Lengkap" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
-                                                <input type="email" required placeholder="Email" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
-                                                <textarea rows="4" required placeholder="Tuliskan pesan Anda di sini..." className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
-                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-white font-bold py-3.5 rounded-xl transition uppercase tracking-wider">Kirim Pesan</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ==================================== */}
-                        {/* ADMIN DASHBOARD VIEW (PROTECTED)     */}
-                        {/* ==================================== */}
-                        {currentPage === 'admin' && (
-                            <div className="py-16 sm:py-24 bg-slate-900 text-slate-100 min-h-screen">
-                                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                                    
-                                    {!adminAuthenticated ? (
-                                        <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 shadow-2xl max-w-md mx-auto text-center">
-                                            <div className="w-12 h-12 bg-brandGold/10 text-brandGold rounded-full flex items-center justify-center mx-auto mb-4">
-                                                <Lock size={22} className="text-brandGold" />
-                                            </div>
-                                            <h3 className="font-serif text-2xl font-bold text-slate-100 mb-2">Akses Terbatas Admin</h3>
-                                            <p className="text-xs text-slate-400 mb-6">Masukkan kata sandi admin untuk mengelola harga, cabang, dan pengaturan template pesan WhatsApp.</p>
-                                            
-                                            <form onSubmit={handleAdminLogin} className="space-y-4">
-                                                <input 
-                                                    type="password" 
-                                                    required 
-                                                    value={adminPassword} 
-                                                    onChange={(e) => setAdminPassword(e.target.value)} 
-                                                    placeholder="Kata sandi (Ketik: griyabugar)" 
-                                                    className="w-full px-4 py-3 rounded-xl border border-slate-700 text-slate-900 focus:ring-2 focus:ring-brandGold transition-all text-center text-sm font-semibold" 
-                                                />
-                                                {adminError && <p className="text-xs text-rose-500 font-semibold">{adminError}</p>}
-                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-slate-950 font-bold py-3 rounded-xl transition-all uppercase tracking-wider text-xs">Buka Dashboard</button>
-                                            </form>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-8">
-                                            
-                                            <div className="bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider text-[9px]"><ShieldCheck size={10} className="inline mr-1" /> Authorized Session</span>
-                                                        <span className="text-xs text-slate-400">ID: Admin Pusat Griya Bugar</span>
-                                                    </div>
-                                                    <h3 className="font-serif text-2xl font-bold text-slate-100 mt-2">Dashboard Pengaturan & Sesi Booking</h3>
-                                                </div>
-                                                <button onClick={() => { setAdminAuthenticated(false); setAdminPassword(''); }} className="bg-slate-700 hover:bg-rose-950 hover:text-rose-400 text-slate-300 text-xs font-bold px-4 py-2 rounded-xl transition">Keluar / Kunci Sesi</button>
-                                            </div>
-
-                                            {/* CONFIG SECTION 1: GLOBAL SETTINGS */}
-                                            <div className="bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-md space-y-6">
-                                                <div className="border-b border-slate-700 pb-4">
-                                                    <h4 className="font-serif text-lg font-bold text-brandGold flex items-center gap-2"><Settings size={18} /> 1. Konfigurasi WhatsApp Center</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">Ganti nomor WhatsApp dan format draf pesan pemesanan otomatis.</p>
-                                                </div>
-                                                <form onSubmit={handleSaveSettings} className="space-y-4 text-slate-300">
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Nomor WhatsApp Center (Gunakan kode negara, tanpa '+' atau '0')</label>
-                                                        <input type="text" required value={tempSettings.whatsapp} onChange={(e) => setTempSettings({ ...tempSettings, whatsapp: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 focus:ring-2 focus:ring-brandGold text-sm font-semibold" placeholder="Contoh: 628123456789" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Template Draf Pesan</label>
-                                                        <textarea rows={6} required value={tempSettings.template} onChange={(e) => setTempSettings({ ...tempSettings, template: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 focus:ring-2 focus:ring-brandGold text-xs font-mono" />
-                                                    </div>
-                                                    <button type="submit" className="bg-brandGold hover:bg-brandGoldDark text-slate-950 font-bold px-6 py-3 rounded-xl text-xs transition uppercase flex items-center gap-1.5"><Save size={14} /> Simpan Konfigurasi</button>
-                                                </form>
-                                            </div>
-
-                                            {/* CONFIG SECTION 2: REGIONAL BRANCHES MANAGER */}
-                                            <div className="bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-md space-y-6">
-                                                <div className="border-b border-slate-700 pb-4">
-                                                    <h4 className="font-serif text-lg font-bold text-brandGold flex items-center gap-2"><MapPin size={18} /> 2. Pengelolaan Cabang & Harga Khusus Web</h4>
-                                                    <p className="text-xs text-slate-400 mt-1">Tambah, perbarui, dan hapus harga regional cabang.</p>
-                                                </div>
-
-                                                <form onSubmit={handleAddBranch} className="bg-slate-900 p-4 rounded-2xl border border-slate-700 grid grid-cols-1 md:grid-cols-5 gap-4 items-end text-xs">
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-slate-400 font-bold uppercase">Nama Cabang</label>
-                                                        <input type="text" required value={newBranch.name} onChange={(e) => setNewBranch({ ...newBranch, name: e.target.value })} placeholder="Contoh: Seturan" className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:ring-1 focus:ring-brandGold" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-slate-400 font-bold uppercase">Wilayah</label>
-                                                        <select value={newBranch.region} onChange={(e) => setNewBranch({ ...newBranch, region: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:ring-1 focus:ring-brandGold">
-                                                            <option value="Yogyakarta">Yogyakarta</option>
-                                                            <option value="Solo">Solo</option>
-                                                            <option value="Malang">Malang</option>
-                                                            <option value="Semarang">Semarang</option>
-                                                            <option value="Bali">Bali</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-slate-400 font-bold uppercase">Alamat Lengkap</label>
-                                                        <input type="text" required value={newBranch.address} onChange={(e) => setNewBranch({ ...newBranch, address: e.target.value })} placeholder="Alamat cabang" className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:ring-1 focus:ring-brandGold" />
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className="text-slate-400 font-bold uppercase">Nomor WA Khusus</label>
-                                                        <input type="text" required value={newBranch.phone} onChange={(e) => setNewBranch({ ...newBranch, phone: e.target.value })} placeholder="Nomor WA Cabang" className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:ring-1 focus:ring-brandGold" />
-                                                    </div>
-                                                    <div className="space-y-1.5 flex gap-2">
-                                                        <div className="w-full">
-                                                            <label className="text-slate-400 font-bold uppercase">Harga (Rupiah)</label>
-                                                            <input type="number" required value={newBranch.price} onChange={(e) => setNewBranch({ ...newBranch, price: e.target.value })} placeholder="127500" className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:ring-1 focus:ring-brandGold" />
-                                                        </div>
-                                                        <button type="submit" className="bg-brandGold hover:bg-brandGoldDark text-slate-950 font-bold px-3 py-2 rounded-lg shrink-0 flex items-center justify-center"><Plus size={16} /></button>
-                                                    </div>
-                                                </form>
-
-                                                <div className="overflow-x-auto border border-slate-700 rounded-2xl text-xs">
-                                                    <table className="w-full text-left">
-                                                        <thead className="bg-slate-900 text-slate-300 font-bold uppercase tracking-wider">
-                                                            <tr>
-                                                                <th className="px-4 py-3">Cabang</th>
-                                                                <th className="px-4 py-3">Wilayah</th>
-                                                                <th className="px-4 py-3">Alamat</th>
-                                                                <th className="px-4 py-3">Harga Web (1 Jam)</th>
-                                                                <th className="px-4 py-3 text-right">Aksi</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody className="divide-y divide-slate-800">
-                                                            {branches.map(b => {
-                                                                const isEditing = editingBranchId === b.id;
-                                                                return (
-                                                                    <tr key={b.id} className="hover:bg-slate-800/40 transition">
-                                                                        <td className="px-4 py-3 font-semibold text-brandGold">
-                                                                            {isEditing ? <input type="text" value={editingBranchData.name} onChange={(e) => setEditingBranchData({ ...editingBranchData, name: e.target.value })} className="px-2 py-1 rounded bg-slate-700 text-white w-full" /> : b.name}
-                                                                        </td>
-                                                                        <td className="px-4 py-3">
-                                                                            {isEditing ? (
-                                                                                <select value={editingBranchData.region} onChange={(e) => setEditingBranchData({ ...editingBranchData, region: e.target.value })} className="px-2 py-1 rounded bg-slate-700 text-white">
-                                                                                    <option value="Yogyakarta">Yogyakarta</option>
-                                                                                    <option value="Solo">Solo</option>
-                                                                                    <option value="Malang">Malang</option>
-                                                                                    <option value="Semarang">Semarang</option>
-                                                                                    <option value="Bali">Bali</option>
-                                                                                </select>
-                                                                            ) : b.region}
-                                                                        </td>
-                                                                        <td className="px-4 py-3 text-slate-400">
-                                                                            {isEditing ? <input type="text" value={editingBranchData.address} onChange={(e) => setEditingBranchData({ ...editingBranchData, address: e.target.value })} className="px-2 py-1 rounded bg-slate-700 text-white w-full" /> : b.address}
-                                                                        </td>
-                                                                        <td className="px-4 py-3 font-mono font-bold text-brandGold">
-                                                                            {isEditing ? <input type="number" value={editingBranchData.price} onChange={(e) => setEditingBranchData({ ...editingBranchData, price: e.target.value })} className="px-2 py-1 rounded bg-slate-700 text-white w-24" /> : formatIDR(b.price)}
-                                                                        </td>
-                                                                        <td className="px-4 py-3 text-right">
-                                                                            <div className="flex justify-end gap-2">
-                                                                                {isEditing ? (
-                                                                                    <>
-                                                                                        <button onClick={() => handleSaveEditBranch(b.id)} className="p-1 text-emerald-400 hover:bg-slate-700 rounded"><Save size={14} /></button>
-                                                                                        <button onClick={() => setEditingBranchId(null)} className="p-1 text-slate-400 hover:bg-slate-700 rounded"><X size={14} /></button>
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <>
-                                                                                        <button onClick={() => startEditBranch(b)} className="p-1 text-blue-400 hover:bg-slate-700 rounded"><Edit2 size={14} /></button>
-                                                                                        <button onClick={() => handleDeleteBranch(b.id, b.name)} className="p-1 text-rose-400 hover:bg-slate-700 rounded"><Trash2 size={14} /></button>
-                                                                                    </>
-                                                                                )}
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                );
-                                                            })}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    )}
-
-                                </div>
-                            </div>
-                        )}
-
-                    </main>
-
-                    {/* FOOTER */}
-                    <footer className="bg-brandBrown text-brandCream pt-16 pb-12 border-t border-brandGold/20 mt-auto">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 mb-8 border-b border-brandCream/10 text-xs sm:text-sm">
-                            <div className="space-y-4">
-                                <span className="font-serif text-2xl tracking-widest text-brandGold font-bold">GRIYA BUGAR</span>
-                                <p className="text-xs text-brandCream/80 leading-relaxed max-w-sm">Griya Bugar Massage Profesional menghadirkan keselarasan jasmani, kesehatan relaksasi, dan pemijatan tepercaya dengan terapis profesional berpengalaman sejak 1998.</p>
-                            </div>
-                            <div className="space-y-4">
-                                <h4 className="font-serif text-brandGold text-base font-semibold">Tautan Navigasi</h4>
-                                <ul className="space-y-3 text-xs text-brandCream/80">
-                                    <li><button onClick={() => setCurrentPage('about')} className="hover:text-brandGold transition">Tentang Griya Bugar</button></li>
-                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition">Katalog Layanan</button></li>
-                                    <li><button onClick={() => setCurrentPage('branches')} className="hover:text-brandGold transition">Lokasi Cabang</button></li>
-                                    <li><button onClick={() => setCurrentPage('promos')} className="hover:text-brandGold transition">Promo Bulanan</button></li>
-                                    <li><button onClick={() => setCurrentPage('articles')} className="hover:text-brandGold transition">Artikel Kesehatan</button></li>
-                                </ul>
-                            </div>
-                            <div className="space-y-4">
-                                <h4 className="font-serif text-brandGold text-base font-semibold font-serif">Menu Treatment</h4>
-                                <ul className="space-y-3 text-xs text-brandCream/80">
-                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition">Pijat Tradisional Sehat</button></li>
-                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition">Reflexology & Acupressure</button></li>
-                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition">Sport Recovery & Deep Tissue</button></li>
-                                </ul>
-                            </div>
-                            <div className="space-y-4">
-                                <h4 className="font-serif text-brandGold text-base font-semibold">Investor & Kemitraan</h4>
-                                <ul className="space-y-3 text-xs text-brandCream/80">
-                                    <li><button onClick={() => setCurrentPage('franchise')} className="hover:text-brandGold transition text-left">Waralaba Franchise</button></li>
-                                    <li><button onClick={() => setCurrentPage('franchise')} className="hover:text-brandGold transition text-left">Sistem Kemitraan</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brandCream/60 gap-4">
-                            <p>&copy; 2026 Griya Bugar Massage Profesional. Hak Cipta Dilindungi Undang-Undang.</p>
-                            <div className="flex space-x-6">
-                                <a href="#" className="hover:text-brandGold transition">Syarat & Ketentuan</a>
-                                <a href="#" className="hover:text-brandGold transition">Kebijakan Privasi</a>
-                            </div>
-                        </div>
-                    </footer>
-
-                    {/* MODAL SUCCESS BOOKING DISPATCH DETAIL */}
-                    {successBooking && (
-                        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex justify-center items-center p-4">
-                            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-brandGold/20 shadow-2xl relative">
-                                <button onClick={() => setSuccessBooking(null)} className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all"><X size={18} /></button>
-                                <div className="text-center mb-6">
-                                    <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-md shadow-emerald-100"><CheckCircle2 size={28} className="text-emerald-600" /></div>
-                                    <h3 className="font-serif text-2xl font-bold text-slate-800">Draf Pesan Telah Siap!</h3>
-                                    <p className="text-xs text-slate-500 mt-1">Satu langkah lagi untuk melakukan konfirmasi pemesanan ke cabang Griya Bugar.</p>
-                                </div>
-                                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 mb-6 text-left">
-                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">Isi Pesan WhatsApp:</p>
-                                    <div className="text-xs font-mono text-slate-700 bg-white p-3 rounded-xl border border-slate-100 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">{successBooking.messagePreview}</div>
-                                </div>
-                                <div className="space-y-3">
-                                    <a href={successBooking.link} target="_blank" rel="noopener noreferrer" onClick={() => setSuccessBooking(null)} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl transition shadow-lg flex justify-center items-center gap-2 text-sm">
-                                        Hubungkan ke WhatsApp Sekarang <ExternalLink size={14} />
-                                    </a>
-                                    <button onClick={() => setSuccessBooking(null)} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-2xl text-xs transition">Kembali, Ubah Data Booking</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                </div>
-            );
+      }, []);
+
+      // Kirim Reservasi Baru ke Cloud Database
+      const handleSubmitBooking = async (e) => {
+        e.preventDefault();
+        if (!nama || !layananPilihan || !jam || !nomorWA) {
+          showToast("Mohon lengkapi seluruh formulir!", "error");
+          return;
         }
 
-        // Mount App to browser DOM
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+        try {
+          await addDoc(collection(db, "bookings"), {
+            namaPelanggan: nama,
+            layanan: layananPilihan,
+            jam: jam,
+            nomorWA: nomorWA,
+            status: 'Antre',
+            createdAt: Date.now()
+          });
+
+          showToast(`Terima kasih ${nama}, reservasi Anda berhasil terkirim ke Dashboard Admin!`);
+          setNama('');
+          setJam('');
+          setNomorWA('');
+          setLayananPilihan('');
+        } catch (err) {
+          console.error(err);
+          showToast("Gagal mengirim reservasi.", "error");
+        }
+      };
+
+      const formatRupiah = (angka) => {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          
+          {/* BAR PENGUMUMAN REAL-TIME */}
+          {announcement && (
+            <div className="bg-amber-400 text-stone-950 font-bold py-2 px-4 text-xs md:text-sm text-center shadow-inner">
+              📢 <span className="uppercase tracking-wider font-extrabold mr-1">INFO LIVE:</span> {announcement}
+            </div>
+          )}
+
+          {/* HEADER / NAVBAR */}
+          <header className="bg-emerald-900 text-white shadow-md sticky top-0 z-40">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <img 
+                  src="logo griya bugar.png" 
+                  alt="Logo Griya Bugar" 
+                  className="w-10 h-10 object-contain rounded-full bg-white/10 p-1"
+                  onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                <div>
+                  <h1 className="text-xl font-bold tracking-tight">Griya Bugar</h1>
+                  <p className="text-[10px] text-emerald-300 uppercase font-medium">Pijat Sehat Keluarga</p>
+                </div>
+              </div>
+
+              <a 
+                href="#reservasi" 
+                className="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-4 py-2 rounded-xl text-xs md:text-sm transition"
+              >
+                Pesan Sekarang
+              </a>
+            </div>
+          </header>
+
+          {/* TOAST NOTIFIKASI */}
+          {toast.show && (
+            <div className={`fixed top-16 right-4 z-50 p-4 rounded-xl shadow-xl border ${
+              toast.type === 'error' ? 'bg-red-50 text-red-800' : 'bg-emerald-50 text-emerald-900'
+            }`}>
+              <span className="text-sm font-semibold">{toast.message}</span>
+            </div>
+          )}
+
+          {/* HERO SECTION */}
+          <section className="bg-emerald-900 text-white py-16 px-6">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+              <div>
+                <span className="bg-emerald-800 text-emerald-300 text-xs font-bold px-3 py-1.5 rounded-full inline-block mb-4">
+                  🌿 Rileksasi & Refleksologi Terbaik
+                </span>
+                <h2 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
+                  Kembalikan Kebugaran Tubuh Anda Bersama Terapis Ahli
+                </h2>
+                <p className="text-emerald-200 text-sm mb-8">
+                  Nikmati pijat kesehatan dan perawatan tubuh menyeluruh dengan suasana nyaman dan higienis.
+                </p>
+                <a 
+                  href="#reservasi" 
+                  className="bg-amber-400 text-emerald-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-lg inline-block"
+                >
+                  Reservasi Online Sekarang
+                </a>
+              </div>
+
+              {/* WIDGET MONITOR ANTREAN REALTIME */}
+              <div className="bg-emerald-950/80 border border-emerald-800 p-6 rounded-3xl shadow-xl">
+                <div className="flex justify-between items-center mb-4 border-b border-emerald-800 pb-3">
+                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    Status Antrean Saat Ini (Live Sync)
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center bg-emerald-900/50 p-3 rounded-xl">
+                    <span className="text-xs text-emerald-200">Sedang Dalam Terapi:</span>
+                    <span className="text-sm font-bold text-amber-300">
+                      {bookings.filter(b => b.status === 'Diproses').length} Ruang Aktif
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center bg-emerald-900/50 p-3 rounded-xl">
+                    <span className="text-xs text-emerald-200">Dalam Antrean Menunggu:</span>
+                    <span className="text-sm font-bold text-emerald-100">
+                      {bookings.filter(b => b.status === 'Antre').length} Orang
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* DAFTAR LAYANAN */}
+          <section className="py-16 px-6 max-w-7xl mx-auto w-full">
+            <h2 className="text-2xl font-extrabold text-center mb-8">Daftar Layanan & Harga</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {services.map((item) => (
+                <div key={item.id} className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-1 rounded mb-2 inline-block">
+                      ⏱️ {item.durasi || '60m'}
+                    </span>
+                    <h3 className="font-bold text-stone-900 text-lg mb-2">{item.nama}</h3>
+                    <p className="text-stone-500 text-xs mb-4">{item.deskripsi}</p>
+                  </div>
+                  <div className="border-t pt-4 flex items-center justify-between">
+                    <span className="text-base font-extrabold text-emerald-800">{formatRupiah(item.harga)}</span>
+                    <a href="#reservasi" onClick={() => setLayananPilihan(item.nama)} className="bg-stone-900 text-white text-xs font-bold px-3 py-2 rounded-lg">Pilih</a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FORM RESERVASI */}
+          <section id="reservasi" className="py-16 px-6 bg-emerald-950 text-white">
+            <div className="max-w-2xl mx-auto bg-stone-900 p-8 rounded-3xl border border-emerald-800">
+              <h2 className="text-2xl font-bold mb-6 text-center">Formulir Reservasi Online</h2>
+              <form onSubmit={handleSubmitBooking} className="space-y-4">
+                <input 
+                  type="text" 
+                  placeholder="Nama Lengkap"
+                  value={nama}
+                  onChange={(e) => setNama(e.target.value)}
+                  className="w-full bg-stone-800 border border-stone-700 p-3 rounded-xl text-sm text-white outline-none"
+                />
+                <input 
+                  type="text" 
+                  placeholder="Nomor WhatsApp"
+                  value={nomorWA}
+                  onChange={(e) => setNomorWA(e.target.value)}
+                  className="w-full bg-stone-800 border border-stone-700 p-3 rounded-xl text-sm text-white outline-none"
+                />
+                <select 
+                  value={layananPilihan}
+                  onChange={(e) => setLayananPilihan(e.target.value)}
+                  className="w-full bg-stone-800 border border-stone-700 p-3 rounded-xl text-sm text-white outline-none"
+                >
+                  <option value="">-- Pilih Layanan --</option>
+                  {services.map((s) => (
+                    <option key={s.id} value={s.nama}>{s.nama} ({formatRupiah(s.harga)})</option>
+                  ))}
+                </select>
+                <input 
+                  type="text" 
+                  placeholder="Rencana Jam Kedatangan (misal: 15:00 WIB)"
+                  value={jam}
+                  onChange={(e) => setJam(e.target.value)}
+                  className="w-full bg-stone-800 border border-stone-700 p-3 rounded-xl text-sm text-white outline-none"
+                />
+                <button type="submit" className="w-full bg-amber-400 text-emerald-950 font-black py-3 rounded-xl text-sm">
+                  Kirim Reservasi Sekarang
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <footer className="bg-stone-900 text-stone-500 py-6 text-center text-xs">
+            Griya Bugar © Real-time Cloud Application
+          </footer>
+
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
 </body>
 </html>
