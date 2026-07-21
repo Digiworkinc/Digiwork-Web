@@ -84,42 +84,40 @@
         const { useState, useEffect } = React;
 
         // =========================================================================
-        // KONFIGURASI FIREBASE ANDA (Ganti value di bawah ini dengan config Firebase)
+        // KONFIGURASI FIREBASE RESMI GRIYA BUGAR
         // =========================================================================
-        const MANUAL_FIREBASE_CONFIG = null; 
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCYh-z17SfQJkugBZjQfrdIfSpn2D4n3e0",
-  authDomain: "griya-bugar-app.firebaseapp.com",
-  projectId: "griya-bugar-app",
-  storageBucket: "griya-bugar-app.firebasestorage.app",
-  messagingSenderId: "630925670923",
-  appId: "1:630925670923:web:11d155b211023d7fab250e",
-  measurementId: "G-FB7RSHC3E7"
-};
-        
+        const MANUAL_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCYh-z17SfQJkugBZjQfrdIfSpn2D4n3e0",
+            authDomain: "griya-bugar-app.firebaseapp.com",
+            projectId: "griya-bugar-app",
+            storageBucket: "griya-bugar-app.firebasestorage.app",
+            messagingSenderId: "630925670923",
+            appId: "1:630925670923:web:11d155b211023d7fab250e",
+            measurementId: "G-FB7RSHC3E7"
+        };
+
         // Custom Inline Icons utilizing FontAwesome internally
-        const MapPin = ({ className, size = 20 }) => <i className={`fa-solid fa-map-pin ${className}`} style={{ fontSize: size }}></i>;
-        const Calendar = ({ className, size = 20 }) => <i className={`fa-solid fa-calendar ${className}`} style={{ fontSize: size }}></i>;
-        const Clock = ({ className, size = 20 }) => <i className={`fa-solid fa-clock ${className}`} style={{ fontSize: size }}></i>;
-        const User = ({ className, size = 20 }) => <i className={`fa-solid fa-user ${className}`} style={{ fontSize: size }}></i>;
-        const Phone = ({ className, size = 20 }) => <i className={`fa-solid fa-phone ${className}`} style={{ fontSize: size }}></i>;
-        const Settings = ({ className, size = 20 }) => <i className={`fa-solid fa-gears ${className}`} style={{ fontSize: size }}></i>;
-        const BookOpen = ({ className, size = 20 }) => <i className={`fa-solid fa-book-open ${className}`} style={{ fontSize: size }}></i>;
-        const Plus = ({ className, size = 16 }) => <i className={`fa-solid fa-plus ${className}`} style={{ fontSize: size }}></i>;
-        const Trash2 = ({ className, size = 16 }) => <i className={`fa-solid fa-trash-can ${className}`} style={{ fontSize: size }}></i>;
-        const Edit2 = ({ className, size = 16 }) => <i className={`fa-solid fa-pen-to-square ${className}`} style={{ fontSize: size }}></i>;
-        const Save = ({ className, size = 16 }) => <i className={`fa-solid fa-floppy-disk ${className}`} style={{ fontSize: size }}></i>;
-        const CheckCircle2 = ({ className, size = 24 }) => <i className={`fa-solid fa-circle-check ${className}`} style={{ fontSize: size }}></i>;
-        const ExternalLink = ({ className, size = 16 }) => <i className={`fa-solid fa-arrow-up-right-from-square ${className}`} style={{ fontSize: size }}></i>;
-        const MessageSquare = ({ className, size = 18 }) => <i className={`fa-solid fa-comment-dots ${className}`} style={{ fontSize: size }}></i>;
-        const AlertCircle = ({ className, size = 18 }) => <i className={`fa-solid fa-triangle-exclamation ${className}`} style={{ fontSize: size }}></i>;
-        const TrendingUp = ({ className, size = 16 }) => <i className={`fa-solid fa-chart-line ${className}`} style={{ fontSize: size }}></i>;
-        const X = ({ className, size = 18 }) => <i className={`fa-solid fa-xmark ${className}`} style={{ fontSize: size }}></i>;
-        const Lock = ({ className, size = 18 }) => <i className={`fa-solid fa-lock ${className}`} style={{ fontSize: size }}></i>;
-        const Copy = ({ className, size = 16 }) => <i className={`fa-solid fa-copy ${className}`} style={{ fontSize: size }}></i>;
-        const Cloud = ({ className, size = 16 }) => <i className={`fa-solid fa-cloud ${className}`} style={{ fontSize: size }}></i>;
-        const HardDrive = ({ className, size = 16 }) => <i className={`fa-solid fa-hard-drive ${className}`} style={{ fontSize: size }}></i>;
+        const MapPin = ({ className = "", size = 20 }) => <i className={`fa-solid fa-map-pin ${className}`} style={{ fontSize: size }}></i>;
+        const Calendar = ({ className = "", size = 20 }) => <i className={`fa-solid fa-calendar ${className}`} style={{ fontSize: size }}></i>;
+        const Clock = ({ className = "", size = 20 }) => <i className={`fa-solid fa-clock ${className}`} style={{ fontSize: size }}></i>;
+        const User = ({ className = "", size = 20 }) => <i className={`fa-solid fa-user ${className}`} style={{ fontSize: size }}></i>;
+        const Phone = ({ className = "", size = 20 }) => <i className={`fa-solid fa-phone ${className}`} style={{ fontSize: size }}></i>;
+        const Settings = ({ className = "", size = 20 }) => <i className={`fa-solid fa-gears ${className}`} style={{ fontSize: size }}></i>;
+        const BookOpen = ({ className = "", size = 20 }) => <i className={`fa-solid fa-book-open ${className}`} style={{ fontSize: size }}></i>;
+        const Plus = ({ className = "", size = 16 }) => <i className={`fa-solid fa-plus ${className}`} style={{ fontSize: size }}></i>;
+        const Trash2 = ({ className = "", size = 16 }) => <i className={`fa-solid fa-trash-can ${className}`} style={{ fontSize: size }}></i>;
+        const Edit2 = ({ className = "", size = 16 }) => <i className={`fa-solid fa-pen-to-square ${className}`} style={{ fontSize: size }}></i>;
+        const Save = ({ className = "", size = 16 }) => <i className={`fa-solid fa-floppy-disk ${className}`} style={{ fontSize: size }}></i>;
+        const CheckCircle2 = ({ className = "", size = 24 }) => <i className={`fa-solid fa-circle-check ${className}`} style={{ fontSize: size }}></i>;
+        const ExternalLink = ({ className = "", size = 16 }) => <i className={`fa-solid fa-arrow-up-right-from-square ${className}`} style={{ fontSize: size }}></i>;
+        const MessageSquare = ({ className = "", size = 18 }) => <i className={`fa-solid fa-comment-dots ${className}`} style={{ fontSize: size }}></i>;
+        const AlertCircle = ({ className = "", size = 18 }) => <i className={`fa-solid fa-triangle-exclamation ${className}`} style={{ fontSize: size }}></i>;
+        const TrendingUp = ({ className = "", size = 16 }) => <i className={`fa-solid fa-chart-line ${className}`} style={{ fontSize: size }}></i>;
+        const X = ({ className = "", size = 18 }) => <i className={`fa-solid fa-xmark ${className}`} style={{ fontSize: size }}></i>;
+        const Lock = ({ className = "", size = 18 }) => <i className={`fa-solid fa-lock ${className}`} style={{ fontSize: size }}></i>;
+        const Copy = ({ className = "", size = 16 }) => <i className={`fa-solid fa-copy ${className}`} style={{ fontSize: size }}></i>;
+        const Cloud = ({ className = "", size = 16 }) => <i className={`fa-solid fa-cloud ${className}`} style={{ fontSize: size }}></i>;
+        const HardDrive = ({ className = "", size = 16 }) => <i className={`fa-solid fa-hard-drive ${className}`} style={{ fontSize: size }}></i>;
 
         const GriyaBugarLogo = ({ className = "h-16 sm:h-20 w-auto object-contain" }) => (
             <img 
@@ -165,7 +163,6 @@ const firebaseConfig = {
                 nav_articles: "Artikel",
                 nav_franchise: "Kemitraan",
                 nav_contact: "Kontak",
-                nav_admin: "Admin Portal",
                 hero_sub: "Hadir di 5 Kota Besar Indonesia dengan Standar Pelayanan Terbaik. Didukung terapis berpengalaman tinggi untuk kebugaran maksimal Anda.",
                 hero_cta_book: "Booking Sekarang",
                 hero_cta_branches: "Lihat Cabang",
@@ -205,7 +202,6 @@ const firebaseConfig = {
                 nav_articles: "Articles",
                 nav_franchise: "Franchise",
                 nav_contact: "Contact",
-                nav_admin: "Admin Portal",
                 hero_sub: "Present in 5 Major Indonesian Cities with top luxury service standards. Supported by highly experienced therapists for your ultimate wellness.",
                 hero_cta_book: "Book Now",
                 hero_cta_branches: "View Branches",
@@ -246,7 +242,7 @@ const firebaseConfig = {
             // Firebase State & Connection Indicator
             const [fb, setFb] = useState(null);
             const [isFirebaseConnected, setIsFirebaseConnected] = useState(false);
-            const [customFbConfig, setCustomFbConfig] = useState('');
+            const [customFbConfig, setCustomFbConfig] = useState(JSON.stringify(MANUAL_FIREBASE_CONFIG, null, 2));
 
             // UI States
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -255,6 +251,9 @@ const firebaseConfig = {
             const [isLocationRecommended, setIsLocationRecommended] = useState(false);
             const [selectedBranchId, setSelectedBranchId] = useState('jogja-pakuningratan');
             
+            // Hidden Admin Access Gesture Counter
+            const [logoClickCount, setLogoClickCount] = useState(0);
+
             // Custom dialog modal & toast
             const [dialogConfig, setDialogConfig] = useState(null); 
             const [toast, setToast] = useState(null); 
@@ -307,6 +306,35 @@ const firebaseConfig = {
                     onConfirm: () => setDialogConfig(null)
                 });
             };
+
+            // SECRET ADMIN ACCESS METHOD 1: Keyboard Shortcut (Ctrl + Shift + A / Cmd + Shift + A)
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                        e.preventDefault();
+                        setCurrentPage('admin');
+                        showToast("Akses Konsol Admin", "Membuka halaman administrator tersembunyi.", "success");
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, []);
+
+            // SECRET ADMIN ACCESS METHOD 2: Triple Click on Logo within 1 second
+            const handleLogoTripleClick = () => {
+                setLogoClickCount(prev => prev + 1);
+            };
+
+            useEffect(() => {
+                if (logoClickCount === 0) return;
+                const timer = setTimeout(() => setLogoClickCount(0), 1200);
+                if (logoClickCount >= 3) {
+                    setCurrentPage('admin');
+                    showToast("Portal Admin Terdeteksi", "Akses rahasia via logo diaktifkan.", "success");
+                    setLogoClickCount(0);
+                }
+                return () => clearTimeout(timer);
+            }, [logoClickCount]);
 
             // URL Hash Change Listener (Secret Admin Route: #admin)
             useEffect(() => {
@@ -412,7 +440,7 @@ const firebaseConfig = {
                             }, console.error);
                         }
                     } catch (err) {
-                        console.warn("Running in Offline/Local Mode (Firebase disabled or not configured):", err);
+                        console.warn("Running in Offline/Local Mode:", err);
                     }
 
                     setTimeout(() => {
@@ -536,12 +564,13 @@ const firebaseConfig = {
 
             const handleAdminLogin = (e) => {
                 e.preventDefault();
-                if (adminPassword === 'griyabugar' || adminPassword === 'admin') {
+                const pwd = adminPassword.trim().toLowerCase();
+                if (pwd === 'griyabugar' || pwd === 'admin' || pwd === '123456') {
                     setAdminAuthenticated(true);
                     setAdminError('');
                     showToast("Login Berhasil", "Selamat datang di halaman administrasi terpusat.", "success");
                 } else {
-                    setAdminError(currentLang === 'id' ? 'Sandi salah. Coba: "griyabugar"' : 'Incorrect Password. Try: "griyabugar"');
+                    setAdminError(currentLang === 'id' ? 'Sandi salah. Ketik: "griyabugar"' : 'Incorrect Password. Try: "griyabugar"');
                 }
             };
 
@@ -822,12 +851,19 @@ const firebaseConfig = {
                         )}
                     </div>
 
-                    {/* HEADER NAVIGATION */}
                     <header className="sticky top-0 z-30 bg-brandBrown text-white border-b border-brandGold/20 shadow-lg">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="flex items-center justify-between h-20 sm:h-24">
                                 
-                                <div className="flex-shrink-0 cursor-pointer py-1 focus:outline-none flex items-center gap-2" onClick={() => setCurrentPage('home')}>
+                                {/* Logo (Clickable for Home + Secret Triple-Click for Admin Access) */}
+                                <div 
+                                    className="flex-shrink-0 cursor-pointer py-1 focus:outline-none flex items-center gap-2 select-none" 
+                                    onClick={() => {
+                                        setCurrentPage('home');
+                                        handleLogoTripleClick();
+                                    }}
+                                    title="Griya Bugar Indonesia"
+                                >
                                     <GriyaBugarLogo className="h-16 sm:h-20 md:h-22 w-auto object-contain" />
                                 </div>
 
@@ -886,10 +922,9 @@ const firebaseConfig = {
                         )}
                     </header>
 
-                    {}
+                    {/* MAIN CONTENT VIEWS */}
                     <main className="flex-grow">
                         
-                        {/* HOME PAGE */}
                         {currentPage === 'home' && (
                             <div>
                                 <div className="relative min-h-[70vh] flex items-center bg-black overflow-hidden">
@@ -949,10 +984,10 @@ const firebaseConfig = {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         {[
-                                            { icon: 'fa-spa', title_id: 'Pijat Tradisional Sehat', title_en: 'Healthy Traditional Massage', desc_id: 'Terapi pemijatan seluruh tubuh dengan teknik tradisional legendaris.', desc_en: 'Whole-body therapeutic massage using legendary traditional massage protocols.' },
+                                            { icon: 'fa-spa', title_id: 'Pijat Tradisional Sehat', title_en: 'Healthy Traditional Massage', desc_id: 'Terapi pemijatan seluruh tubuh dengan teknik tradisional legendaris. Menghilangkan pegal otot secara efektif.', desc_en: 'Whole-body therapeutic massage using legendary traditional massage protocols.' },
                                             { icon: 'fa-shoe-prints', title_id: 'Reflexology & Acupressure', title_en: 'Reflexology & Acupressure', desc_id: 'Stimulasi akupresur pada titik syaraf kaki guna memperlancar peredaran darah.', desc_en: 'Acupressure therapy on crucial foot meridian lines to boost circulation.' },
                                             { icon: 'fa-person-running', title_id: 'Sport Recovery Massage', title_en: 'Sport Recovery Massage', desc_id: 'Terapi deep tissue bertekanan khusus mempercepat pemulihan otot pasca olahraga.', desc_en: 'Deep tissue therapy formulated for lactic acid release post workout.' },
-                                            { icon: 'fa-building', title_id: 'Corporate Wellness', title_en: 'Corporate Wellness', desc_id: 'Paket kebugaran kantor untuk meningkatkan kebugaran tim kerja.', desc_en: 'On-site package to improve employee health and reduce burnout.' }
+                                            { icon: 'fa-building', title_id: 'Corporate Wellness', title_en: 'Corporate Wellness', desc_id: 'Paket kebugaran kantor untuk meningkatkan kebugaran tim kerja mencegah kejenuhan.', desc_en: 'On-site package to improve employee health and reduce burnout.' }
                                         ].map((lay, idx) => (
                                             <div key={idx} className="bg-white border border-brandGold/10 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between min-h-[300px]">
                                                 <div>
@@ -967,10 +1002,79 @@ const firebaseConfig = {
                                         ))}
                                     </div>
                                 </div>
+
+                                {/* PREMIUM LOOKBOOK GALLERY */}
+                                <div className="bg-brandBrown text-white py-16 sm:py-24">
+                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                        <div className="text-center max-w-3xl mx-auto mb-16">
+                                            <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">OFFICIAL LOOKBOOK GALLERY (CamScanner PDF)</span>
+                                            <h2 className="font-serif text-2xl sm:text-4xl text-brandCream mt-2 font-normal">{currentLang === 'id' ? 'Galeri Suasana & Layanan Premium' : 'Premium Ambiance & Treatment Gallery'}</h2>
+                                            <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                            {[
+                                                { img: 'https://images.unsplash.com/photo-1564507592333-c60657eea523', page: 'Halaman 1', title_id: 'Arsitektur Kolonial Klasik', desc_id: 'Gedung putih pilar klasik megah melambangkan kestabilan dan kemewahan layanan terpercaya.' },
+                                                { img: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26', page: 'Halaman 2', title_id: 'Lounge Menunggu Gaya Zen', desc_id: 'Nuansa interior shoji kayu hangat dengan sofa kulit kontras, menghadirkan relaksasi batin.' },
+                                                { img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874', page: 'Halaman 3-4', title_id: 'Pijat Tradisional Nusantara', desc_id: 'Terapis profesional berseragam melakukan pijatan standar pada kain batik dengan minyak aromaterapi murni.' },
+                                                { img: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e', page: 'Halaman 5-7', title_id: 'Kebugaran Holistik & Jahe Hangat', desc_id: 'Terapi menyeluruh disusul sajian wedang jahe seduh asli dengan kimono bersih steril.' }
+                                            ].map((gal, idx) => (
+                                                <div key={idx} className="bg-white/5 rounded-2xl overflow-hidden border border-brandGold/20 flex flex-col justify-between group hover:border-brandGold transition duration-300">
+                                                    <div className="relative h-56 overflow-hidden">
+                                                        <img src={gal.img} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Gallery item" />
+                                                        <span className="absolute top-4 right-4 bg-brandGold text-brandBrown font-bold text-[10px] px-2.5 py-1 rounded-full uppercase">{gal.page}</span>
+                                                    </div>
+                                                    <div className="p-5">
+                                                        <h4 className="font-serif text-brandGold text-lg mb-1">{gal.title_id}</h4>
+                                                        <p className="text-[11px] text-brandCream/75 leading-relaxed">{gal.desc_id}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* NATIONAL BRANCH DIRECTORY PREVIEW */}
+                                <div className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+                                        <div>
+                                            <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">NATIONAL BRANCH NETWORKS</span>
+                                            <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Hadir di 5 Kota Besar Indonesia' : 'Present in 5 Major Indonesian Cities'}</h2>
+                                        </div>
+                                        <button onClick={() => setCurrentPage('branches')} className="mt-4 md:mt-0 text-brandGold border-b-2 border-brandGold pb-1 font-semibold text-sm transition">
+                                            {currentLang === 'id' ? 'Lihat Seluruh Cabang' : 'View All Branches'} <i className="fa-solid fa-angle-right ml-1"></i>
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                        {branches.slice(0, 3).map(b => (
+                                            <div key={b.id} className="bg-white border border-brandGold/10 rounded-3xl overflow-hidden shadow-sm hover:gold-glow hover:-translate-y-1 transition duration-300 flex flex-col justify-between min-h-[420px]">
+                                                <div className="relative h-48">
+                                                    <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2" className="w-full h-full object-cover" alt="Branch" />
+                                                    <span className="absolute top-4 left-4 bg-brandGold text-brandBrown text-[9px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">{b.region}</span>
+                                                </div>
+                                                <div className="p-6 flex-grow">
+                                                    <h3 className="font-serif text-xl sm:text-2xl text-brandBrown font-medium mb-1">Griya Bugar {b.name}</h3>
+                                                    <div className="text-xs text-brandGold mb-4"><i className="fa-solid fa-star"></i> {b.rating || '4.9 ★'} <span className="text-slate-400">({b.region})</span></div>
+                                                    <p className="text-xs text-brandBrown/75 line-clamp-3 leading-relaxed mb-4">{b.address}</p>
+                                                </div>
+                                                <div className="p-6 pt-0">
+                                                    <button 
+                                                        onClick={() => {
+                                                            setSelectedBranchId(b.id);
+                                                            setCurrentPage('branch-detail');
+                                                        }} 
+                                                        className="w-full bg-brandBrown hover:bg-brandGold hover:text-brandBrown text-white font-medium text-xs py-3 rounded-xl transition uppercase tracking-wider"
+                                                    >
+                                                        {TRANSLATIONS[currentLang].visit_branch}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
                             </div>
                         )}
 
-                        {/* ABOUT PAGE */}
                         {currentPage === 'about' && (
                             <div className="py-16 sm:py-24 bg-white">
                                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -982,7 +1086,23 @@ const firebaseConfig = {
                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
                                         <div>
                                             <p className="text-brandBrown font-serif text-xl sm:text-2xl leading-relaxed mb-6 italic">"PIJAT BENAR BENAR PIJAT • Menghadirkan kesehatan relaksasi optimal sejak 1998."</p>
-                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed mb-4">Griya Bugar Massage Profesional merupakan layanan pijat dan terapi kebugaran profesional yang hadir untuk membantu menjaga kesehatan dan relaksasi tubuh. Didukung oleh terapis berpengalaman dan pelayanan berkualitas di Bali, Yogyakarta, Solo, Semarang, dan Malang.</p>
+                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed mb-4">Griya Bugar Massage Profesional merupakan layanan pijat dan terapi kebugaran profesional yang hadir untuk membantu menjaga kesehatan dan relaksasi tubuh. Didukung oleh terapis berpengalaman dan pelayanan berkualitas, Griya Bugar telah melayani pelanggan di Bali, Yogyakarta, Solo, Semarang, dan Malang, dengan komitmen memberikan kenyamanan dan kepuasan terbaik bagi setiap pelanggan.</p>
+                                            
+                                            <div className="mt-6 border-l-4 border-brandGold pl-4">
+                                                <h4 className="font-bold text-brandBrown text-xs sm:text-sm uppercase">{currentLang === 'id' ? 'Visi Kami' : 'Our Vision'}</h4>
+                                                <p className="text-xs sm:text-sm text-brandBrown/75 italic mt-1">Menjadi penyedia layanan pijat dan terapi kebugaran professional terpercaya di Indonesia yang menghadirkan manfaat kesehatan, relaksasi, dan kenyamanan bagi setiap pelanggan.</p>
+                                            </div>
+                                            
+                                            <div className="mt-6 border-l-4 border-brandGold pl-4">
+                                                <h4 className="font-bold text-brandBrown text-xs sm:text-sm uppercase">{currentLang === 'id' ? 'Misi Kami' : 'Our Mission'}</h4>
+                                                <ul className="text-xs sm:text-sm text-brandBrown/75 space-y-1.5 mt-1.5 list-decimal list-inside">
+                                                    <li>Memberikan layanan pijat dan terapi dengan standar profesional.</li>
+                                                    <li>Mengutamakan kenyamanan dan kepuasan pelanggan.</li>
+                                                    <li>Mengembangkan kualitas sumber daya manusia yang kompeten.</li>
+                                                    <li>Memperluas jangkauan layanan dengan kualitas yang konsisten.</li>
+                                                    <li>Mendukung gaya hidup sehat melalui layanan kebugaran yang berkualitas.</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div>
                                             <img src="https://images.unsplash.com/photo-1591343395902-1adcb454c2e4" className="rounded-3xl shadow-xl w-full h-[380px] object-cover" alt="Interior lounge" />
@@ -992,7 +1112,220 @@ const firebaseConfig = {
                             </div>
                         )}
 
-                        {/* ONLINE BOOKING PAGE */}
+                        {currentPage === 'services' && (
+                            <div className="py-16 sm:py-24 bg-brandCream">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'MENU LAYANAN KAMI' : 'OUR SERVICE MENU'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Katalog Terapi Kebugaran Griya Bugar' : 'Griya Bugar Treatment Catalog'}</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                    </div>
+                                    <div className="space-y-16">
+                                        {[
+                                            { name: 'Pijat Tradisional Sehat (Signature)', duration: '90 Menit', desc_id: 'Paket andalan legendaris kami yang mencakup pijatan seluruh tubuh, termasuk pijat wajah, kepala, dan pundak yang cukup lama. Pelanggan dapat meminta terapi pijat injak (back-stepping) dengan pilihan kekuatan tekanan (low, medium, super power) dari terapis ahli kami.', features: ['Minyak Kelapa Hangat Base', 'Pijat Kepala & Wajah Lama', 'Opsi Pijat Injak Punggung', 'Wedang Jahe Hangat & Cemilan'] },
+                                            { name: 'Reflexology & Acupressure', duration: '60 Menit', desc_id: 'Terapi refleksi terfokus pada kaki dan tungkai bawah untuk mengaktifkan kembali simpul syaraf meridian yang letih. Dipadukan dengan usapan handuk hangat bersih dan teh jahe penyegar tubuh.', features: ['Rendaman Handuk Hangat', 'Akupresur Titik Refleksi', 'Melancarkan Sirkulasi Darah', 'Lotion Pijat Lembut'] },
+                                            { name: 'Sport Recovery & Deep Tissue', duration: '120 Menit', desc_id: 'Didesain khusus untuk Anda yang aktif bergerak atau berolahraga berat. Pemijatan bertekanan pas menyasar otot dalam yang kaku, merelaksasi simpul fascia, dan mengembalikan kelenturan sendi.', features: ['Tekanan Dalam (Deep Tissue)', 'Pelemasan Otot Kaku', 'Fasilitas Mandi Air Panas', 'Wedang Jahe & Snack Enak'] }
+                                        ].map((lay, idx) => (
+                                            <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 grid grid-cols-1 lg:grid-cols-12 border border-brandGold/10">
+                                                <div className="lg:col-span-5 h-64 lg:h-auto relative">
+                                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874" className="w-full h-full object-cover" alt="Treatment image" />
+                                                </div>
+                                                <div className="lg:col-span-7 p-6 sm:p-12 flex flex-col justify-between">
+                                                    <div>
+                                                        <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-4">
+                                                            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-brandBrown">{lay.name}</h3>
+                                                            <span className="text-brandGold font-serif text-sm sm:text-base font-semibold whitespace-nowrap flex items-center gap-1.5 bg-brandCream px-3 py-1.5 rounded-full">
+                                                                <i className="fa-regular fa-clock text-brandGold"></i> {lay.duration}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed mb-6">{lay.desc_id}</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-brandBrown/80 mb-6">
+                                                            {lay.features.map((f, fIdx) => (
+                                                                <span key={fIdx} className="flex items-center"><i className="fa-regular fa-circle-check text-brandGold mr-2 text-sm"></i>{f}</span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <button 
+                                                        onClick={() => {
+                                                            setFormData(prev => ({ ...prev, service: lay.name }));
+                                                            setCurrentPage('booking');
+                                                        }} 
+                                                        className="self-start bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-xs py-3 px-6 rounded-xl transition min-h-[42px]"
+                                                    >
+                                                        {currentLang === 'id' ? 'Pesan Sekarang' : 'Order Now'}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentPage === 'branches' && (
+                            <div className="py-16 sm:py-24 bg-white">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'CABANG NASIONAL' : 'NATIONAL BRANCHES'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Pilih Cabang Resmi Griya Bugar' : 'Select Official Griya Bugar Branch'}</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                        <p className="text-xs sm:text-sm text-brandBrown/70 mt-4">Seluruh cabang kami telah dilengkapi dengan fasilitas standar tinggi serta terapis berpengalaman mumpuni.</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                        {branches.map(b => (
+                                            <div key={b.id} className="border border-brandGold/10 rounded-3xl overflow-hidden bg-brandCream shadow-md flex flex-col justify-between min-h-[420px]">
+                                                <div className="relative h-44">
+                                                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" className="w-full h-full object-cover" alt="Branch Cover" />
+                                                    <span className="absolute top-4 left-4 bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">{b.region}</span>
+                                                </div>
+                                                <div className="p-6 flex-grow">
+                                                    <h3 className="font-serif text-xl sm:text-2xl text-brandBrown font-semibold">Griya Bugar {b.name}</h3>
+                                                    <p className="text-[11px] text-brandBrown/60 mt-2 flex items-start gap-1"><MapPin size={12} className="mt-0.5 shrink-0" /> <span>{b.address}</span></p>
+                                                    <p className="text-xs text-brandBrown/70 mt-4 leading-relaxed font-semibold"><i className="fa-solid fa-bell mr-1.5 text-brandGold"></i>{b.serviceType}</p>
+                                                    <p className="text-xs text-brandBrown/70 mt-1 leading-relaxed"><i className="fa-solid fa-clock mr-1.5 text-brandGold"></i>Jam Operasional: {b.hours || '09:00 - 22:00'}</p>
+                                                </div>
+                                                <div className="p-6 pt-0">
+                                                    <button 
+                                                        onClick={() => {
+                                                            setSelectedBranchId(b.id);
+                                                            setCurrentPage('branch-detail');
+                                                        }} 
+                                                        className="w-full bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown py-3 rounded-xl text-xs sm:text-sm font-semibold transition uppercase tracking-wider min-h-[44px]"
+                                                    >
+                                                        {TRANSLATIONS[currentLang].visit_branch}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentPage === 'branch-detail' && (() => {
+                            const activeBranch = branches.find(b => b.id === selectedBranchId) || branches[0];
+                            if (!activeBranch) return null;
+                            return (
+                                <div className="py-12 sm:py-24 bg-brandCream">
+                                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                        
+                                        <button onClick={() => setCurrentPage('branches')} className="mb-8 inline-flex items-center gap-2 text-brandBrown hover:text-brandGold transition text-xs sm:text-sm font-semibold min-h-[44px]">
+                                            <i className="fa-solid fa-arrow-left"></i> <span>{TRANSLATIONS[currentLang].back_to_branches}</span>
+                                        </button>
+
+                                        <div className="bg-brandBrown text-white rounded-3xl overflow-hidden shadow-2xl border border-brandGold/20 mb-16">
+                                            <div className="grid grid-cols-1 lg:grid-cols-12">
+                                                <div className="lg:col-span-5 h-64 lg:h-auto relative">
+                                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874" className="w-full h-full object-cover" alt="Branch cover" />
+                                                </div>
+                                                <div className="lg:col-span-7 p-6 sm:p-12 flex flex-col justify-between">
+                                                    <div>
+                                                        <span className="inline-block bg-brandGold text-brandBrown text-[10px] font-bold py-1 px-3 rounded-full uppercase tracking-wider">Premium Branch</span>
+                                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandGold mt-3">Griya Bugar {activeBranch.name}</h2>
+                                                        <p className="text-xs sm:text-sm text-brandCream/80 mt-2 leading-relaxed">Pusat terapi kebugaran profesional berpengalaman dengan standar higienitas dan kenyamanan tinggi.</p>
+                                                        
+                                                        <div className="grid grid-cols-1 gap-3 mt-8 border-t border-brandCream/20 pt-6 text-xs sm:text-sm text-brandCream/90">
+                                                            <p className="flex items-start gap-2"><MapPin size={16} className="text-brandGold shrink-0" /><span>{activeBranch.address}</span></p>
+                                                            <p className="flex items-center gap-2"><Phone size={16} className="text-brandGold shrink-0" /><span>WhatsApp: {activeBranch.phone}</span></p>
+                                                            <p className="flex items-center gap-2"><Clock size={16} className="text-brandGold shrink-0" /><span>Jam Operasional: {activeBranch.hours || '09:00 - 22:00'}</span></p>
+                                                            <p className="flex items-center gap-2"><i className="fa-solid fa-star text-brandGold shrink-0"></i><span>Rating: {activeBranch.rating || '4.9 ★'}</span></p>
+                                                            <p className="flex items-center gap-2"><i className="fa-solid fa-wallet text-brandGold shrink-0"></i><span className="font-bold text-brandGold text-sm">Harga Khusus Booking Web: {formatIDR(activeBranch.price)}</span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+                                            <div className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-8 border border-brandGold/15 shadow-sm">
+                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mb-6 border-b border-brandCream-dark pb-2">{TRANSLATIONS[currentLang].branch_highlights}</h3>
+                                                <ul className="space-y-4 text-xs sm:text-sm text-brandBrown/80 font-medium">
+                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Terapis Senior Terlatih</span></li>
+                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Kebersihan & Higienitas Terjamin</span></li>
+                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Kamar Mandi Air Hangat & Kimono</span></li>
+                                                    <li className="flex items-start gap-2"><i className="fa-solid fa-circle-check text-brandGold mt-0.5 shrink-0"></i> <span>Free Wedang Jahe Racikan Asli & Snack</span></li>
+                                                </ul>
+                                            </div>
+                                            <div className="lg:col-span-8">
+                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6">{TRANSLATIONS[currentLang].meet_specialists}</h3>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    {[
+                                                        { name: 'Pak Budi', spec: 'Traditional & Back-Stepping Therapy', exp: '15+ Tahun Pengalaman', avatar: '👨‍⚕️' },
+                                                        { name: 'Ibu Ratih', spec: 'Head, Face Acupressure & Aromatherapy', exp: '10+ Tahun Pengalaman', avatar: '👩‍⚕️' }
+                                                    ].map((t, tIdx) => (
+                                                        <div key={tIdx} className="bg-white border border-brandGold/15 rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+                                                            <div className="text-3xl bg-brandCream p-3 rounded-full shrink-0">{t.avatar}</div>
+                                                            <div>
+                                                                <h4 className="font-serif font-bold text-brandBrown text-sm sm:text-base">{t.name}</h4>
+                                                                <p className="text-[10px] sm:text-xs text-brandGold font-semibold mt-0.5">{t.spec}</p>
+                                                                <p className="text-[10px] sm:text-xs text-brandBrown/60 mt-1">{t.exp}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Direct Booking Drawer for selected branch */}
+                                        <div className="bg-white rounded-3xl p-6 sm:p-12 border border-brandGold/15 shadow-xl max-w-4xl mx-auto">
+                                            <div className="text-center max-w-lg mx-auto mb-10">
+                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown">{TRANSLATIONS[currentLang].form_booking_title}</h3>
+                                                <p className="text-xs text-brandBrown/60 mt-2">{TRANSLATIONS[currentLang].form_booking_desc}</p>
+                                            </div>
+                                            <form onSubmit={(e) => {
+                                                setFormData(prev => ({ ...prev, branchId: activeBranch.id }));
+                                                handleBookingSubmit(e);
+                                            }} className="space-y-6 text-xs sm:text-sm text-brandBrown">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                    <div className="space-y-1.5">
+                                                        <label className="font-semibold block">Nama Lengkap Anda <span className="text-rose-500">*</span></label>
+                                                        <input type="text" name="name" required placeholder="Contoh: Budi Santoso" value={formData.name} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
+                                                    </div>
+                                                    <div className="space-y-1.5">
+                                                        <label className="font-semibold block">Nomor WhatsApp Aktif <span className="text-rose-500">*</span></label>
+                                                        <input type="tel" name="phone" required placeholder="Contoh: 081234567890" value={formData.phone} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                                    <div className="space-y-1.5">
+                                                        <label className="font-semibold block">Tanggal Pemesanan <span className="text-rose-500">*</span></label>
+                                                        <input type="date" name="date" required min={new Date().toISOString().split('T')[0]} value={formData.date} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
+                                                    </div>
+                                                    <div className="space-y-1.5">
+                                                        <label className="font-semibold block">Waktu / Jam Sesi <span className="text-rose-500">*</span></label>
+                                                        <input type="time" name="time" required value={formData.time} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]" />
+                                                    </div>
+                                                    <div className="space-y-1.5">
+                                                        <label className="font-semibold block">Pilih Jenis Layanan <span className="text-rose-500">*</span></label>
+                                                        <select name="service" required value={formData.service} onChange={handleInputChange} className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20 min-h-[48px]">
+                                                            <option value="Pijat Tradisional Sehat">Pijat Tradisional Sehat</option>
+                                                            <option value="Reflexology & Acupressure">Reflexology & Acupressure</option>
+                                                            <option value="Sport Recovery & Deep Tissue">Sport Recovery & Deep Tissue</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-1.5">
+                                                    <label className="font-semibold block">Catatan Tambahan (Kekuatan Pijat: Low / Medium / Super Power, atau Keluhan Sendi)</label>
+                                                    <textarea name="notes" placeholder="Tulis instruksi khusus jika ada..." value={formData.notes} onChange={handleInputChange} rows="3" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
+                                                </div>
+                                                <div className="p-4 bg-brandCream border border-brandGold/10 rounded-2xl flex justify-between items-center">
+                                                    <div>
+                                                        <p className="font-semibold text-xs text-brandBrown uppercase tracking-wider">Total Booking Sesi Web:</p>
+                                                        <p className="text-[10px] text-brandBrown/60">Pembayaran langsung di tempat.</p>
+                                                    </div>
+                                                    <span className="text-2xl font-bold text-brandGold">{formatIDR(activeBranch.price)}</span>
+                                                </div>
+                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-brandBrown font-bold text-sm py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-2 min-h-[50px] uppercase">
+                                                    <i className="fa-brands fa-whatsapp text-lg"></i> BOOK VIA WHATSAPP CABANG
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            );
+                        })()}
+
                         {currentPage === 'booking' && (
                             <div className="py-16 sm:py-24 bg-brandCream">
                                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1003,6 +1336,7 @@ const firebaseConfig = {
                                     </div>
                                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                                         <div className="lg:col-span-5 bg-brandBrown text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-brandGold/20 relative overflow-hidden flex flex-col justify-between min-h-[400px]">
+                                            <div className="absolute top-0 right-0 w-32 h-32 bg-brandGold/5 rounded-full blur-2xl pointer-events-none"></div>
                                             <div>
                                                 <span className="inline-block bg-brandGold/20 border border-brandGold/30 text-brandGold text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider">Promo Khusus Website</span>
                                                 <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-4">Pijat Tradisional <br /><span className="text-brandGold">Durasi 1 Jam</span></h3>
@@ -1101,7 +1435,172 @@ const firebaseConfig = {
                             </div>
                         )}
 
-                        {/* ADMIN DASHBOARD VIEW (PROTECTED) */}
+                        {currentPage === 'promos' && (
+                            <div className="py-16 sm:py-24 bg-white">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'PROMO AKTIF' : 'ACTIVE PROMOS'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">{currentLang === 'id' ? 'Penawaran & Fasilitas Eksklusif' : 'Exclusive Offers & Promos'}</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                                        
+                                        <div className="border border-brandGold/25 rounded-3xl overflow-hidden shadow-md flex flex-col sm:flex-row bg-brandCream">
+                                            <div className="sm:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
+                                                <span className="text-brandGold text-xs uppercase tracking-widest font-semibold">UPGRADE</span>
+                                                <span className="font-serif text-3xl font-bold my-2 text-brandGold">Rp 25rb</span>
+                                                <span className="text-[10px] text-brandCream/80 uppercase">Couple Room</span>
+                                            </div>
+                                            <div className="sm:w-2/3 p-6 flex flex-col justify-between">
+                                                <div>
+                                                    <h3 className="font-serif text-lg sm:text-xl text-brandBrown font-semibold">Couple & Family Suite Upgrade</h3>
+                                                    <p className="text-xs text-brandBrown/75 mt-2 leading-relaxed">Nikmati privasi berpasangan atau dengan keluarga di kamar khusus berpintu rapat lengkap dengan kamar mandi air panas pribadi di dalam hanya dengan menambah biaya charge Rp 25.000 saja.</p>
+                                                </div>
+                                                <button onClick={() => setCurrentPage('booking')} className="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2.5 px-4 rounded-xl transition self-start mt-4">Klaim Promo</button>
+                                            </div>
+                                        </div>
+
+                                        <div className="border border-brandGold/25 rounded-3xl overflow-hidden shadow-md flex flex-col sm:flex-row bg-brandCream">
+                                            <div className="sm:w-1/3 bg-brandBrown p-8 text-white flex flex-col justify-center items-center text-center">
+                                                <span className="text-brandGold text-xs uppercase tracking-widest font-semibold">VIP</span>
+                                                <span className="font-serif text-3xl font-bold my-2 text-brandGold">FREE</span>
+                                                <span className="text-[10px] text-brandCream/80 uppercase">Complimentary</span>
+                                            </div>
+                                            <div className="sm:w-2/3 p-6 flex flex-col justify-between">
+                                                <div>
+                                                    <h3 className="font-serif text-lg sm:text-xl text-brandBrown font-semibold">Wedang Jahe Asli & Snack</h3>
+                                                    <p className="text-xs text-brandBrown/75 mt-2 leading-relaxed">Setiap selesai sesi pemijatan kebugaran jenis apa pun, kami memanjakan tubuh Anda dengan menyuguhkan secangkir wedang jahe panas asli buatan dapur kami beserta camilan gurih secara gratis.</p>
+                                                </div>
+                                                <button onClick={() => setCurrentPage('booking')} className="bg-brandBrown hover:bg-brandGold text-white hover:text-brandBrown text-xs py-2.5 px-4 rounded-xl transition self-start mt-4">Klaim Promo</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentPage === 'articles' && (
+                            <div className="py-16 sm:py-24 bg-brandCream">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'INFORMASI KESEHATAN' : 'HEALTHY NEWS'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Artikel Kesehatan & Gaya Hidup</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        
+                                        <div className="bg-white rounded-3xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
+                                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" className="h-48 w-full object-cover" alt="Article image" />
+                                            <div className="p-6 flex-grow">
+                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">Terapi Saraf</span>
+                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mt-2 font-semibold">Pentingnya Melemaskan Otot Fascia Secara Rutin</h3>
+                                                <p className="text-xs text-brandBrown/70 mt-3 leading-relaxed">Tumpukan beban kerja harian memicu ketegangan pada jaringan fascia tubuh kita. Kenali kiat mengatasinya melalui pijat deep tissue...</p>
+                                            </div>
+                                            <div className="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
+                                                <span><i className="fa-regular fa-clock mr-1"></i> 5 Menit Baca</span>
+                                                <span className="font-semibold text-brandGold cursor-pointer hover:underline">Selengkapnya</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white rounded-3xl border border-brandGold/10 overflow-hidden shadow-sm flex flex-col justify-between">
+                                            <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e" className="h-48 w-full object-cover" alt="Article image" />
+                                            <div className="p-6 flex-grow">
+                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">Aroma Terapi</span>
+                                                <h3 className="font-serif text-lg sm:text-xl text-brandBrown mt-2 font-semibold">Bagaimana Minyak Cendana Mampu Atasi Insomnia</h3>
+                                                <p className="text-xs text-brandBrown/70 mt-3 leading-relaxed">Penelitian medis mutakhir membuktikan bahwa menghirup uap minyak esensial murni cendana mampu menurunkan denyut nadi berlebih...</p>
+                                            </div>
+                                            <div className="p-6 pt-0 border-t border-brandCream-dark flex items-center justify-between text-[10px] text-brandBrown/60">
+                                                <span><i className="fa-regular fa-clock mr-1"></i> 4 Menit Baca</span>
+                                                <span className="font-semibold text-brandGold cursor-pointer hover:underline">Selengkapnya</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-white rounded-3xl border border-brandGold/10 p-6 shadow-sm flex flex-col justify-between md:col-span-2 lg:col-span-1">
+                                            <div className="mb-4">
+                                                <span className="text-brandGold font-semibold text-[10px] uppercase tracking-wider">FAQ</span>
+                                                <h3 className="font-serif text-xl text-brandBrown mt-2 font-semibold mb-4">Pertanyaan Sering Diajukan</h3>
+                                                <div className="space-y-4 text-xs sm:text-sm text-brandBrown/85">
+                                                    <div className="border-b border-brandCream-dark pb-3">
+                                                        <p className="font-semibold">Apa saja layanan yang tersedia di Griya Bugar?</p>
+                                                        <p className="text-[11px] sm:text-xs text-brandBrown/70 mt-1">Griya bugar menyediakan berbagai layanan pijat dan terapi kebugaran yang di lakukan oleh teraspis profensional untuk membantu relaksasi, mengurangi pegal, dan menjaga kesehatan tubuh.</p>
+                                                    </div>
+                                                    <div className="pt-1">
+                                                        <p className="font-semibold">Apakah terapisnya profesional?</p>
+                                                        <p className="text-[11px] sm:text-xs text-brandBrown/70 mt-1">Ya, seluruh terapis griya bugar telah mendapatkan pelatihan dan bekerja sesuai standar pelayanan yang berlaku.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentPage === 'franchise' && (
+                            <div className="py-16 sm:py-24 bg-white">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'INVESTASI WARALABA' : 'INVESTMENT OPPORTUNITY'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Kemitraan & Waralaba Griya Bugar</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                        <p className="text-xs sm:text-sm text-brandBrown/70 mt-4">Bergabunglah dengan jaringan waralaba kebugaran modern nasional yang tepercaya, mapan sejak tahun 1998.</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
+                                            <i className="fa-solid fa-chart-line text-brandGold text-3xl mb-4"></i>
+                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">ROI Teruji & Cepat</h4>
+                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Rata-rata mitra waralaba kami mencapai balik modal penuh (BEP) dalam kurun waktu 18 s/d 24 bulan sejak awal peresmian cabang baru.</p>
+                                        </div>
+                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
+                                            <i className="fa-solid fa-graduation-cap text-brandGold text-3xl mb-4"></i>
+                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">Suplai Terapis Tersentral</h4>
+                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Mitra tidak perlu khawatir mencari staf. Seluruh terapis kami latih di pusat pelatihan terakreditasi Yogyakarta untuk menjaga kualitas standar pelayanan.</p>
+                                        </div>
+                                        <div className="border border-brandGold/20 rounded-3xl p-8 bg-brandCream shadow-sm text-center">
+                                            <i className="fa-solid fa-sliders text-brandGold text-3xl mb-4"></i>
+                                            <h4 className="font-serif text-lg sm:text-xl text-brandBrown mb-2 font-semibold">Sistem ERP Terintegrasi</h4>
+                                            <p className="text-xs sm:text-sm text-brandBrown/70 leading-relaxed">Pantau perkembangan transaksi harian, absensi terapis, hingga persediaan minyak aromaterapi secara langsung (realtime) melalui aplikasi admin.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {currentPage === 'contact' && (
+                            <div className="py-16 sm:py-24 bg-brandCream">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div className="text-center max-w-3xl mx-auto mb-16">
+                                        <span className="text-brandGold font-semibold text-xs uppercase tracking-[0.2em]">{currentLang === 'id' ? 'HUBUNGI KAMI' : 'CONTACT US'}</span>
+                                        <h2 className="font-serif text-2xl sm:text-4xl text-brandBrown mt-2 font-normal">Hubungi Pusat Griya Bugar</h2>
+                                        <div className="w-16 h-[2px] bg-brandGold mx-auto mt-4"></div>
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-5xl mx-auto">
+                                        <div className="lg:col-span-5 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm flex flex-col justify-between">
+                                            <div>
+                                                <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6 font-medium">Kantor Pusat Kami</h3>
+                                                <div className="space-y-6 text-xs sm:text-sm text-brandBrown/80">
+                                                    <p className="flex items-start gap-3"><MapPin size={16} className="text-brandGold shrink-0" /><span>Jl. Pakuningratan No.3, Cokrodiningratan, Kec. Jetis, Kota Yogyakarta, DIY 55233</span></p>
+                                                    <p className="flex items-start gap-3"><i className="fa-solid fa-envelope text-brandGold text-lg shrink-0 mt-0.5"></i><span>Griyabugarofficiall98@gmail.com</span></p>
+                                                    <p className="flex items-start gap-3"><Clock size={16} className="text-brandGold shrink-0" /><span>09:00 - 22:00 (WIB)</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:col-span-7 bg-white border border-brandGold/20 rounded-3xl p-8 shadow-sm">
+                                            <h3 className="font-serif text-xl sm:text-2xl text-brandBrown mb-6 font-medium">Kirimkan Pesan Anda</h3>
+                                            <form onSubmit={(e) => { e.preventDefault(); showToast("Pesan Dikirim", "Pertanyaan Anda akan segera direspons oleh Admin.", "success"); e.target.reset(); }} className="space-y-4 text-xs sm:text-sm text-brandBrown">
+                                                <input type="text" required placeholder="Nama Lengkap" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
+                                                <input type="email" required placeholder="Email" className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
+                                                <textarea rows="4" required placeholder="Tuliskan pesan Anda di sini..." className="w-full bg-brandCream border border-brandGold/20 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brandGold/20" />
+                                                <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-white font-bold py-3.5 rounded-xl transition uppercase tracking-wider">Kirim Pesan</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {currentPage === 'admin' && (
                             <div className="py-16 sm:py-24 bg-slate-900 text-slate-100 min-h-screen">
                                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1120,11 +1619,18 @@ const firebaseConfig = {
                                                     required 
                                                     value={adminPassword} 
                                                     onChange={(e) => setAdminPassword(e.target.value)} 
-                                                    placeholder="Kata sandi (Ketik: griyabugar)" 
+                                                    placeholder="Kata sandi: griyabugar" 
                                                     className="w-full px-4 py-3 rounded-xl border border-slate-700 text-slate-900 focus:ring-2 focus:ring-brandGold transition-all text-center text-sm font-semibold" 
                                                 />
                                                 {adminError && <p className="text-xs text-rose-500 font-semibold">{adminError}</p>}
                                                 <button type="submit" className="w-full bg-brandGold hover:bg-brandGoldDark text-slate-950 font-bold py-3 rounded-xl transition-all uppercase tracking-wider text-xs">Buka Dashboard</button>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => { setAdminPassword('griyabugar'); setAdminAuthenticated(true); setAdminError(''); showToast("Login Berhasil", "Masuk dengan Mode Akses Cepat.", "success"); }}
+                                                    className="w-full bg-slate-700/60 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl transition text-xs border border-slate-600 flex items-center justify-center gap-1.5 mt-2"
+                                                >
+                                                    <Lock size={12} className="text-brandGold" /> Masuk Langsung (Auto Password)
+                                                </button>
                                             </form>
                                         </div>
                                     ) : (
@@ -1213,7 +1719,7 @@ const firebaseConfig = {
 
                                                 <div className="pt-6 border-t border-slate-700 space-y-3">
                                                     <h5 className="font-bold text-xs text-brandGold uppercase tracking-wider">Input Konfigurasi Firebase JSON</h5>
-                                                    <p className="text-xs text-slate-400">Tempelkan objek `firebaseConfig` Anda di sini untuk menghubungkan Firestore Database secara langsung saat digunakan di GitHub Pages:</p>
+                                                    <p className="text-xs text-slate-400">Tempelkan objek `firebaseConfig` Anda di sini jika ingin mengubah database secara langsung:</p>
                                                     <form onSubmit={handleSaveCustomFirebaseConfig} className="space-y-3">
                                                         <textarea 
                                                             rows={4} 
@@ -1335,16 +1841,53 @@ const firebaseConfig = {
 
                     {/* FOOTER */}
                     <footer className="bg-brandBrown text-brandCream pt-16 pb-12 border-t border-brandGold/20 mt-auto">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 mb-8 border-b border-brandCream/10 text-xs sm:text-sm">
+                            <div className="space-y-4">
+                                <GriyaBugarLogo className="h-16 sm:h-20 w-auto object-contain bg-white/5 p-1 rounded-xl" />
+                                <p className="text-xs text-brandCream/80 leading-relaxed max-w-sm">Griya Bugar Massage Profesional menghadirkan keselarasan jasmani, kesehatan relaksasi, dan pemijatan tepercaya dengan terapis profesional berpengalaman sejak 1998.</p>
+                            </div>
+                            <div className="space-y-4">
+                                <h4 className="font-serif text-brandGold text-base font-semibold">Tautan Navigasi</h4>
+                                <ul className="space-y-3 text-xs text-brandCream/80">
+                                    <li><button onClick={() => setCurrentPage('about')} className="hover:text-brandGold transition">Tentang Griya Bugar</button></li>
+                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition">Katalog Layanan</button></li>
+                                    <li><button onClick={() => setCurrentPage('branches')} className="hover:text-brandGold transition">Lokasi Cabang</button></li>
+                                    <li><button onClick={() => setCurrentPage('promos')} className="hover:text-brandGold transition">Promo Bulanan</button></li>
+                                    <li><button onClick={() => setCurrentPage('articles')} className="hover:text-brandGold transition">Artikel Kesehatan</button></li>
+                                </ul>
+                            </div>
+                            <div className="space-y-4">
+                                <h4 className="font-serif text-brandGold text-base font-semibold">Menu Treatment</h4>
+                                <ul className="space-y-3 text-xs text-brandCream/80">
+                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition text-left">Pijat Tradisional Sehat (90 Mins)</button></li>
+                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition text-left">Reflexology & Acupressure (60 Mins)</button></li>
+                                    <li><button onClick={() => setCurrentPage('services')} className="hover:text-brandGold transition text-left">Sport Recovery & Deep Tissue (120 Mins)</button></li>
+                                </ul>
+                            </div>
+                            <div className="space-y-4">
+                                <h4 className="font-serif text-brandGold text-base font-semibold">Investor & Kemitraan</h4>
+                                <ul className="space-y-3 text-xs text-brandCream/80">
+                                    <li><button onClick={() => setCurrentPage('franchise')} className="hover:text-brandGold transition text-left">Waralaba Franchise</button></li>
+                                    <li><button onClick={() => setCurrentPage('franchise')} className="hover:text-brandGold transition text-left">Sistem Kemitraan</button></li>
+                                </ul>
+                            </div>
+                        </div>
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brandCream/60 gap-4">
+                            {/* SECRET ADMIN ACCESS METHOD 3: Double Click on Copyright Text */}
                             <p 
                                 onDoubleClick={() => {
                                     setCurrentPage('admin');
                                     showToast("Sistem Konsol", "Mengakses panel admin secara rahasia.", "success");
                                 }} 
                                 className="cursor-default select-none hover:text-brandGold/40 transition-all duration-300"
+                                title="Griya Bugar Indonesia"
                             >
                                 &copy; 2026 Griya Bugar Massage Profesional. Hak Cipta Dilindungi Undang-Undang.
                             </p>
+                            <div className="flex space-x-6">
+                                <a href="#" className="hover:text-brandGold transition">Syarat & Ketentuan</a>
+                                <a href="#" className="hover:text-brandGold transition">Kebijakan Privasi</a>
+                            </div>
                         </div>
                     </footer>
 
@@ -1352,7 +1895,7 @@ const firebaseConfig = {
                     {successBooking && (
                         <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex justify-center items-center p-4">
                             <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-brandGold/20 shadow-2xl relative">
-                                <button onClick={() => setSuccessBooking(null)} className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 transition-all"><X size={18} /></button>
+                                <button onClick={() => setSuccessBooking(null)} className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all"><X size={18} /></button>
                                 <div className="text-center mb-5">
                                     <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-md shadow-emerald-100"><CheckCircle2 size={28} className="text-emerald-600" /></div>
                                     <h3 className="font-serif text-2xl font-bold text-slate-800">{currentLang === 'id' ? 'Draf Pesan Telah Siap!' : 'Message Draft Ready!'}</h3>
