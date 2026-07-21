@@ -5,34 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Griya Bugar - Pijat Sehat Keluarga & Refleksologi</title>
   
-  <!-- Tailwind CSS (Styling) -->
+  <!-- 1. Tailwind CSS (Styling) -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- React & Babel (Aplikasi React Tanpa Install) -->
+  <!-- 2. React & ReactDOM (Global CDN) -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- 3. Babel Standalone (JSX Compiler) -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- 4. Firebase Compat SDKs (Global - Bebas Error Import) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-stone-50 text-stone-800 font-sans">
 
+  <!-- Container Utama Tempat React Digambar -->
   <div id="root"></div>
 
-  <!-- Script Aplikasi React + Firebase Real-time -->
-  <script type="babel" data-type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      addDoc, 
-      onSnapshot, 
-      doc, 
-      setDoc 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  <!-- SCRIPT APLIKASI REACT -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
 
     // =========================================================
-    // 1. ISI DENGAN KONFIGURASI FIREBASE ANDA SENDIRI
-    // (Dapatkan gratis dari https://console.firebase.google.com)
+    // KONFIGURASI FIREBASE ANDA
+    // (Jika belum diisi, aplikasi tetap jalan dalam mode Demo)
     // =========================================================
     const firebaseConfig = {
       apiKey: "PASTE_API_KEY_FIREBASE_ANDA",
@@ -43,15 +42,28 @@
       appId: "PASTE_APP_ID"
     };
 
-    // Inisialisasi Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    // Inisialisasi Firebase dengan Penanganan Error (Anti Blank Screen)
+    let db = null;
+    let auth = null;
+    let isFirebaseReady = false;
 
-    const { useState, useEffect } = React;
+    try {
+      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE_")) {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        auth = firebase.auth();
+        isFirebaseReady = true;
+      }
+    } catch (e) {
+      console.warn("Firebase belum terkonfigurasi. Menggunakan data demo lokal.", e);
+    }
 
     function App() {
-      const [services, setServices] = useState([]);
+      const [services, setServices] = useState([
+        { id: '1', nama: 'Massage Tradisional Jawa', durasi: '60 Menit', harga: 120000, deskripsi: 'Pijat urut tradisional merelaksasi otot kaku.' },
+        { id: '2', nama: 'Refleksologi Kaki Kerajaan', durasi: '45 Menit', harga: 80000, deskripsi: 'Penekanan titik syaraf kaki mengurangi kelelahan.' },
+        { id: '3', nama: 'Shiatsu Healing Massage', durasi: '90 Menit', harga: 180000, deskripsi: 'Terapi pemijatan tanpa minyak gaya Jepang.' }
+      ]);
       const [bookings, setBookings] = useState([]);
       const [announcement, setAnnouncement] = useState('');
       
@@ -69,42 +81,35 @@
         setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 4000);
       };
 
-      // Login Anonim & Listener Real-time
+      // Listener Real-time
       useEffect(() => {
-        signInAnonymously(auth).catch(err => console.error("Firebase Auth Error:", err));
+        if (!isFirebaseReady || !db) return;
+
+        // Login Anonim
+        auth.signInAnonymously().catch(err => console.log("Auth demo active"));
 
         // Listener Real-time Layanan
-        const unsubServices = onSnapshot(collection(db, "services"), (snapshot) => {
+        const unsubServices = db.collection("services").onSnapshot((snapshot) => {
           const list = [];
           snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-          
-          if (list.length === 0) {
-            // Default jika database masih kosong
-            setServices([
-              { id: '1', nama: 'Massage Tradisional Jawa', durasi: '60 Menit', harga: 120000, deskripsi: 'Pijat urut tradisional merelaksasi otot kaku.' },
-              { id: '2', nama: 'Refleksologi Kaki Kerajaan', durasi: '45 Menit', harga: 80000, deskripsi: 'Penekanan titik syaraf kaki mengurangi kelelahan.' },
-              { id: '3', nama: 'Shiatsu Healing Massage', durasi: '90 Menit', harga: 180000, deskripsi: 'Terapi pemijatan tanpa minyak gaya Jepang.' }
-            ]);
-          } else {
-            setServices(list);
-          }
-        });
+          if (list.length > 0) setServices(list);
+        }, err => console.log(err));
 
         // Listener Real-time Antrean
-        const unsubBookings = onSnapshot(collection(db, "bookings"), (snapshot) => {
+        const unsubBookings = db.collection("bookings").onSnapshot((snapshot) => {
           const list = [];
           snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
           setBookings(list);
-        });
+        }, err => console.log(err));
 
         // Listener Real-time Pengumuman
-        const unsubAnn = onSnapshot(collection(db, "announcements"), (snapshot) => {
+        const unsubAnn = db.collection("announcements").onSnapshot((snapshot) => {
           snapshot.forEach(doc => {
             if (doc.id === 'broadcast_utama') {
               setAnnouncement(doc.data().teks || '');
             }
           });
-        });
+        }, err => console.log(err));
 
         return () => {
           unsubServices();
@@ -113,7 +118,7 @@
         };
       }, []);
 
-      // Kirim Reservasi Baru ke Cloud Database
+      // Kirim Reservasi Baru
       const handleSubmitBooking = async (e) => {
         e.preventDefault();
         if (!nama || !layananPilihan || !jam || !nomorWA) {
@@ -121,25 +126,30 @@
           return;
         }
 
-        try {
-          await addDoc(collection(db, "bookings"), {
-            namaPelanggan: nama,
-            layanan: layananPilihan,
-            jam: jam,
-            nomorWA: nomorWA,
-            status: 'Antre',
-            createdAt: Date.now()
-          });
-
-          showToast(`Terima kasih ${nama}, reservasi Anda berhasil terkirim ke Dashboard Admin!`);
-          setNama('');
-          setJam('');
-          setNomorWA('');
-          setLayananPilihan('');
-        } catch (err) {
-          console.error(err);
-          showToast("Gagal mengirim reservasi.", "error");
+        if (isFirebaseReady && db) {
+          try {
+            await db.collection("bookings").add({
+              namaPelanggan: nama,
+              layanan: layananPilihan,
+              jam: jam,
+              nomorWA: nomorWA,
+              status: 'Antre',
+              createdAt: Date.now()
+            });
+            showToast(`Terima kasih ${nama}, reservasi Anda berhasil terkirim!`);
+          } catch (err) {
+            showToast("Gagal menyimpan ke cloud.", "error");
+          }
+        } else {
+          // Simulasi Lokal jika Firebase Belum Diisi API Key-nya
+          setBookings(prev => [{ id: Date.now(), namaPelanggan: nama, layanan: layananPilihan, jam, status: 'Antre' }, ...prev]);
+          showToast(`[Mode Demo] Reservasi atas nama ${nama} berhasil ditambahkan!`);
         }
+
+        setNama('');
+        setJam('');
+        setNomorWA('');
+        setLayananPilihan('');
       };
 
       const formatRupiah = (angka) => {
@@ -184,7 +194,7 @@
           {/* TOAST NOTIFIKASI */}
           {toast.show && (
             <div className={`fixed top-16 right-4 z-50 p-4 rounded-xl shadow-xl border ${
-              toast.type === 'error' ? 'bg-red-50 text-red-800' : 'bg-emerald-50 text-emerald-900'
+              toast.type === 'error' ? 'bg-red-50 text-red-800 border-red-200' : 'bg-emerald-50 text-emerald-900 border-emerald-200'
             }`}>
               <span className="text-sm font-semibold">{toast.message}</span>
             </div>
@@ -311,7 +321,9 @@
       );
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    // Render ke HTML DOM
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
   </script>
 </body>
 </html>
