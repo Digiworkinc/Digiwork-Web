@@ -4,8 +4,10 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  const isGitHubPages = process.env.GITHUB_ACTIONS === 'true';
+
   return {
-    base: '/',
+    base: isGitHubPages ? '/Digiwork-Web/' : '/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
