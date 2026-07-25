@@ -34,7 +34,8 @@ import {
   generateWeeklyReport, 
   getDailyVisits, 
   getDailySales, 
-  getWeeklyReports 
+  getWeeklyReports,
+  resetDataToDefault 
 } from '../../utils/storage';
 
 interface AdminDashboardProps {
@@ -132,6 +133,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setTimeout(() => setReportSentSuccess(false), 4000);
   };
 
+  const handleResetData = () => {
+    if (confirm('Yakin ingin menghapus semua data pesanan, statistik, dan laporan dari aplikasi?')) {
+      resetDataToDefault();
+      setRecentReports([]);
+      setReportSentSuccess(false);
+      onRefreshData();
+    }
+  };
+
   // Calculate totals
   const totalOmzet = orders.reduce((sum, o) => sum + (o.paymentStatus === 'PAID' ? o.totalAmount : 0), 0);
   const totalOrdersCount = orders.length;
@@ -208,6 +218,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Refresh Data</span>
+          </button>
+
+          <button
+            onClick={handleResetData}
+            className="px-3.5 py-2 rounded-none bg-rose-950/60 border border-rose-800/50 text-rose-300 hover:bg-rose-900 text-xs font-bold flex items-center gap-1.5"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Reset Data</span>
           </button>
 
           <button

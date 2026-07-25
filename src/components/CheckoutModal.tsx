@@ -58,7 +58,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTimeout(() => setCopiedBank(false), 2000);
   };
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerName || !customerPhone || !shippingAddress) {
       alert('Mohon lengkapi Nama, No. WhatsApp, dan Alamat Pengiriman!');
@@ -67,26 +67,31 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
     setIsSubmitting(true);
 
-    const createdOrder = createOrder({
-      customerName,
-      customerPhone,
-      customerEmail: customerEmail || 'pelanggan@gmail.com',
-      shippingAddress,
-      items: [orderItem],
-      totalAmount: orderItem.totalPrice,
-      paymentMethod,
-      paymentStatus: qrisPaid ? 'PAID' : 'PENDING',
-      orderStatus: qrisPaid ? 'CONFIRMED' : 'PENDING',
-    });
+    try {
+      const createdOrder = await createOrder({
+        customerName,
+        customerPhone,
+        customerEmail: customerEmail || 'pelanggan@gmail.com',
+        shippingAddress,
+        items: [orderItem],
+        totalAmount: orderItem.totalPrice,
+        paymentMethod,
+        paymentStatus: qrisPaid ? 'PAID' : 'PENDING',
+        orderStatus: qrisPaid ? 'CONFIRMED' : 'PENDING',
+      });
 
-    setIsSubmitting(false);
+      // Open WhatsApp automatically
+      const waText = generateWAMessage(createdOrder, 'NEW_ORDER');
+      const waUrl = createWALink('6287878224307', waText);
+      window.open(waUrl, '_blank');
 
-    // Open WhatsApp automatically
-    const waText = generateWAMessage(createdOrder, 'NEW_ORDER');
-    const waUrl = createWALink('6287878224307', waText);
-    window.open(waUrl, '_blank');
-
-    onOrderSuccess(createdOrder);
+      onOrderSuccess(createdOrder);
+    } catch (error) {
+      console.error('Failed to submit order:', error);
+      alert('Gagal membuat pesanan. Silakan coba lagi.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

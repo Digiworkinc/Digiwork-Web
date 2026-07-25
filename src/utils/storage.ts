@@ -1,5 +1,9 @@
 import { Product, Order, DailyVisit, DailySale, WeeklyEmailReport, VisitorInfo } from '../types';
 import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_DAILY_VISITS, INITIAL_DAILY_SALES, INITIAL_WEEKLY_REPORTS } from '../data/initialData';
+import { db, isFirebaseConfigured } from '../lib/firebase';
+import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from 'firebase/firestore';
+
+const API_BASE_URL = 'http://localhost:8080/api'; // URL backend kita
 
 const KEYS = {
   PRODUCTS: 'ea_products_v1',
@@ -10,6 +14,7 @@ const KEYS = {
   VISITOR_INFO: 'ea_visitor_info_v1',
 };
 
+/*
 // Helper for safe JSON parse
 function getStorage<T>(key: string, fallback: T): T {
   try {
@@ -28,88 +33,188 @@ function setStorage<T>(key: string, value: T): void {
     console.error(`Error writing ${key} to localStorage:`, err);
   }
 }
+*/
 
 // Product Storage
-export function getProducts(): Product[] {
-  const products = getStorage<Product[] | null>(KEYS.PRODUCTS, null);
-  return Array.isArray(products) && products.length > 0 ? products : INITIAL_PRODUCTS;
-}
-
-export function saveProducts(products: Product[]): void {
-  setStorage(KEYS.PRODUCTS, products);
-}
-
-export function saveProduct(product: Product): Product[] {
-  const products = getProducts();
-  const index = products.findIndex((p) => p.id === product.id);
-  let updated: Product[];
-  if (index >= 0) {
-    updated = [...products];
-    updated[index] = product;
-  } else {
-    updated = [product, ...products];
+export async function getProducts(): Promise<Product[]> {
+  if (db && isFirebaseConfigured) {
+    try {
+      const snapshot = await getDocs(query(collection(db, 'products'), orderBy('name')));
+      return snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() } as Product));
+    } catch (error) {
+      console.error('Failed to fetch products from Firestore:', error);
+    }
   }
-  saveProducts(updated);
-  return updated;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/products`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const products = await response.json();
+    return products;
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    return INITIAL_PRODUCTS;
+  }
 }
 
-export function deleteProduct(productId: string): Product[] {
-  const products = getProducts().filter((p) => p.id !== productId);
-  saveProducts(products);
-  return products;
+// Fungsi ini tidak lagi relevan karena setiap produk disimpan satu per satu
+// export function saveProducts(products: Product[]): void {
+//   // setStorage(KEYS.PRODUCTS, products);
+// }
+
+export async function saveProduct(product: Product): Promise<Product> {
+  if (db && isFirebaseConfigured) {
+    try {
+      const docRef = await addDoc(collection(db, 'products'), product);
+      return { ...product, id: docRef.id };
+    } catch (error) {
+      console.error('Error saving product to Firestore:', error);
+      throw error;
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to save product');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error saving product:', error);
+    throw error;
+  }
+}
+
+export async function deleteProduct(productId: string): Promise<void> {
+  if (db && isFirebaseConfigured) {
+    try {
+      await deleteDoc(doc(db, 'products', productId));
+      return;
+    } catch (error) {
+      console.error('Error deleting product from Firestore:', error);
+      throw error;
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete product');
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    throw error;
+  }
 }
 
 // Order Storage
-export function getOrders(): Order[] {
-  const orders = getStorage<Order[] | null>(KEYS.ORDERS, null);
-  return Array.isArray(orders) ? orders : INITIAL_ORDERS;
-}
-
-export function saveOrders(orders: Order[]): void {
-  setStorage(KEYS.ORDERS, orders);
-}
-
-export function createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'waNotificationSent' | 'waLogs'>): Order {
-  const orders = getOrders();
-  const randomNum = Math.floor(10000 + Math.random() * 90000);
-  const newOrder: Order = {
-    ...orderData,
-    id: `EA-${randomNum}`,
-    createdAt: new Date().toISOString(),
-    waNotificationSent: false,
-    waLogs: [],
-  };
-
-  const updatedOrders = [newOrder, ...orders];
-  saveOrders(updatedOrders);
-
-  // Update sales analytics for today
-  recordSale(newOrder.totalAmount);
-
-  return newOrder;
-}
-
-export function updateOrderStatus(orderId: string, status: Order['orderStatus'], adminNotes?: string): Order[] {
-  const orders = getOrders();
-  const updated = orders.map((ord) => {
-    if (ord.id === orderId) {
-      const isPaid = status === 'CONFIRMED' || status === 'IN_PRODUCTION' || status === 'SHIPPED' || status === 'COMPLETED';
-      return {
-        ...ord,
-        orderStatus: status,
-        paymentStatus: isPaid ? ('PAID' as const) : ord.paymentStatus,
-        adminNotes: adminNotes !== undefined ? adminNotes : ord.adminNotes,
-      };
+export async function getOrders(): Promise<Order[]> {
+  if (db && isFirebaseConfigured) {
+    try {
+      const snapshot = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')));
+      return snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() } as Order));
+    } catch (error) {
+      console.error('Failed to fetch orders from Firestore:', error);
     }
-    return ord;
-  });
-  saveOrders(updated);
-  return updated;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/orders`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok for getting orders');
+    }
+    const orders = await response.json();
+    return orders;
+  } catch (error) {
+    console.error('Failed to fetch orders:', error);
+    return INITIAL_ORDERS;
+  }
+}
+
+export async function createOrder(orderData: Omit<Order, 'id' | 'createdAt' | 'waNotificationSent' | 'waLogs'>): Promise<Order> {
+  if (db && isFirebaseConfigured) {
+    try {
+      const payload = {
+        ...orderData,
+        createdAt: new Date().toISOString(),
+        waNotificationSent: false,
+        waLogs: [],
+      };
+      const docRef = await addDoc(collection(db, 'orders'), payload);
+      const newOrder = { id: docRef.id, ...payload } as Order;
+      recordSale(newOrder.totalAmount);
+      return newOrder;
+    } catch (error) {
+      console.error('Error creating order in Firestore:', error);
+      throw error;
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to create order');
+    }
+    const newOrder = await response.json();
+    recordSale(newOrder.totalAmount);
+    return newOrder;
+  } catch (error) {
+    console.error('Error creating order:', error);
+    throw error;
+  }
+}
+
+export async function updateOrderStatus(orderId: string, status: Order['orderStatus'], adminNotes?: string): Promise<Order> {
+  if (db && isFirebaseConfigured) {
+    try {
+      const orderRef = doc(db, 'orders', orderId);
+      await updateDoc(orderRef, { orderStatus: status, adminNotes });
+      return { id: orderId, orderStatus: status, adminNotes } as Order;
+    } catch (error) {
+      console.error('Error updating order status in Firestore:', error);
+      throw error;
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status, adminNotes }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update order status');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    throw error;
+  }
 }
 
 // Visitor & Traffic Counter
 export function trackDailyVisit(): VisitorInfo {
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Fungsi-fungsi analytics (visitor, sales, reports) masih menggunakan localStorage
+  // dan belum dimigrasikan karena memerlukan arsitektur yang lebih kompleks.
+  /*const todayStr = new Date().toISOString().split('T')[0];
   const visitsList = getStorage<DailyVisit[]>(KEYS.DAILY_VISITS, INITIAL_DAILY_VISITS);
 
   let todayEntry = visitsList.find((v) => v.date === todayStr);
@@ -143,26 +248,31 @@ export function trackDailyVisit(): VisitorInfo {
     totalAllTimeVisits: totalAllTime,
   };
   setStorage(KEYS.VISITOR_INFO, visitorInfo);
-  return visitorInfo;
+  return visitorInfo;*/
+  // NOTE: Fungsi ini sangat bergantung pada localStorage dan sulit dimigrasikan
+  // ke backend tanpa sistem otentikasi/session yang kompleks.
+  // Untuk sementara, kita kembalikan data statis.
+  return getVisitorInfo();
 }
 
 export function getVisitorInfo(): VisitorInfo {
-  return getStorage<VisitorInfo>(KEYS.VISITOR_INFO, {
+  const info = JSON.parse(localStorage.getItem(KEYS.VISITOR_INFO) || 'null');
+  return info || {
     totalVisitorsToday: 365,
     activeOnlineUsers: 6,
     totalAllTimeVisits: 14850,
-  });
+  };
 }
 
 export function getDailyVisits(): DailyVisit[] {
-  const visits = getStorage<DailyVisit[] | null>(KEYS.DAILY_VISITS, null);
+  const visits = JSON.parse(localStorage.getItem(KEYS.DAILY_VISITS) || 'null');
   return Array.isArray(visits) && visits.length > 0 ? visits : INITIAL_DAILY_VISITS;
 }
 
 // Daily Sales Analytics
 export function recordSale(amount: number): void {
   const todayStr = new Date().toISOString().split('T')[0];
-  const salesList = getStorage<DailySale[]>(KEYS.DAILY_SALES, INITIAL_DAILY_SALES);
+  const salesList = JSON.parse(localStorage.getItem(KEYS.DAILY_SALES) || 'null') || INITIAL_DAILY_SALES;
 
   const index = salesList.findIndex((s) => s.date === todayStr);
   let updatedList: DailySale[];
@@ -177,17 +287,22 @@ export function recordSale(amount: number): void {
   } else {
     updatedList = [...salesList, { date: todayStr, revenue: amount, ordersCount: 1 }];
   }
-  setStorage(KEYS.DAILY_SALES, updatedList);
+  // Fungsi setStorage sudah dikomentari, gunakan localStorage.setItem langsung
+  try {
+    localStorage.setItem(KEYS.DAILY_SALES, JSON.stringify(updatedList));
+  } catch (err) {
+    console.error(`Error writing ${KEYS.DAILY_SALES} to localStorage:`, err);
+  }
 }
 
 export function getDailySales(): DailySale[] {
-  const sales = getStorage<DailySale[] | null>(KEYS.DAILY_SALES, null);
+  const sales = JSON.parse(localStorage.getItem(KEYS.DAILY_SALES) || 'null');
   return Array.isArray(sales) && sales.length > 0 ? sales : INITIAL_DAILY_SALES;
 }
 
 // Weekly Email Reports
 export function getWeeklyReports(): WeeklyEmailReport[] {
-  const reports = getStorage<WeeklyEmailReport[] | null>(KEYS.WEEKLY_REPORTS, null);
+  const reports = JSON.parse(localStorage.getItem(KEYS.WEEKLY_REPORTS) || 'null');
   return Array.isArray(reports) && reports.length > 0 ? reports : INITIAL_WEEKLY_REPORTS;
 }
 
@@ -225,7 +340,12 @@ export function generateWeeklyReport(recipientEmail: string = 'digiwork.inc@gmai
   };
 
   const updatedReports = [newReport, ...reports];
-  setStorage(KEYS.WEEKLY_REPORTS, updatedReports);
+  // Fungsi setStorage sudah dikomentari, gunakan localStorage.setItem langsung
+  try {
+    localStorage.setItem(KEYS.WEEKLY_REPORTS, JSON.stringify(updatedReports));
+  } catch (err) {
+    console.error(`Error writing ${KEYS.WEEKLY_REPORTS} to localStorage:`, err);
+  }
   return newReport;
 }
 
