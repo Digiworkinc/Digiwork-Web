@@ -31,7 +31,8 @@ function setStorage<T>(key: string, value: T): void {
 
 // Product Storage
 export function getProducts(): Product[] {
-  return getStorage<Product[]>(KEYS.PRODUCTS, INITIAL_PRODUCTS);
+  const products = getStorage<Product[] | null>(KEYS.PRODUCTS, null);
+  return Array.isArray(products) && products.length > 0 ? products : INITIAL_PRODUCTS;
 }
 
 export function saveProducts(products: Product[]): void {
@@ -60,7 +61,8 @@ export function deleteProduct(productId: string): Product[] {
 
 // Order Storage
 export function getOrders(): Order[] {
-  return getStorage<Order[]>(KEYS.ORDERS, INITIAL_ORDERS);
+  const orders = getStorage<Order[] | null>(KEYS.ORDERS, null);
+  return Array.isArray(orders) ? orders : INITIAL_ORDERS;
 }
 
 export function saveOrders(orders: Order[]): void {
@@ -153,7 +155,8 @@ export function getVisitorInfo(): VisitorInfo {
 }
 
 export function getDailyVisits(): DailyVisit[] {
-  return getStorage<DailyVisit[]>(KEYS.DAILY_VISITS, INITIAL_DAILY_VISITS);
+  const visits = getStorage<DailyVisit[] | null>(KEYS.DAILY_VISITS, null);
+  return Array.isArray(visits) && visits.length > 0 ? visits : INITIAL_DAILY_VISITS;
 }
 
 // Daily Sales Analytics
@@ -178,12 +181,14 @@ export function recordSale(amount: number): void {
 }
 
 export function getDailySales(): DailySale[] {
-  return getStorage<DailySale[]>(KEYS.DAILY_SALES, INITIAL_DAILY_SALES);
+  const sales = getStorage<DailySale[] | null>(KEYS.DAILY_SALES, null);
+  return Array.isArray(sales) && sales.length > 0 ? sales : INITIAL_DAILY_SALES;
 }
 
 // Weekly Email Reports
 export function getWeeklyReports(): WeeklyEmailReport[] {
-  return getStorage<WeeklyEmailReport[]>(KEYS.WEEKLY_REPORTS, INITIAL_WEEKLY_REPORTS);
+  const reports = getStorage<WeeklyEmailReport[] | null>(KEYS.WEEKLY_REPORTS, null);
+  return Array.isArray(reports) && reports.length > 0 ? reports : INITIAL_WEEKLY_REPORTS;
 }
 
 export function generateWeeklyReport(recipientEmail: string = 'digiwork.inc@gmail.com'): WeeklyEmailReport {
