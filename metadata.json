@@ -1,0 +1,6 @@
+{
+  "name": "Digiwork - Custom Merchandise & Design",
+  "description": "Website Jasa Pembuatan Merchandise Custom (Kaos DTF, Sticker, Brosur, Packaging, Desain Grafis) dengan Pemesanan Online, QRIS/Digital Payment, WhatsApp Notification, Admin Dashboard Real-time, Analytics & Laporan Email.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
