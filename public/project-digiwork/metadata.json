@@ -1,6 +1,0 @@
-{
-  "name": "Digiwork Inc.",
-  "description": "Futuristic Digital Studio & Portfolio Showcase for Digiwork Inc.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
