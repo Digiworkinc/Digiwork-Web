@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiwork Inc. | Creative & Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 50%, #020617 100%); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+    </style>
+</head>
+<body class="text-slate-100 font-sans antialiased">
+
+    <nav class="fixed w-full z-50 px-6 py-4 flex items-center justify-between glass">
+        <div class="text-xl font-bold tracking-tight text-white">Digiwork<span class="text-primary">.</span></div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <a href="https://digiwork.web.id" class="hover:text-primary transition">Home</a>
+            <a href="#galeri" class="hover:text-primary transition">Projects</a>
+            <a href="#kontak" class="hover:text-primary transition">Contact</a>
+        </div>
+        <a href="#kontak" class="bg-primary hover:bg-secondary px-5 py-2 rounded-full text-sm font-semibold transition shadow-lg shadow-primary/20">Let's Talk</a>
+    </nav>
+
+    <header class="pt-32 pb-20 text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+            Creative Digital Studio
+        </h1>
+        <p class="max-w-2xl mx-auto text-slate-400 text-lg mb-10">
+            Membangun masa depan digital dengan inovasi, estetika, dan fungsionalitas. Solusi kreatif untuk bisnis Anda.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="#galeri" class="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:scale-105 transition">Explore Gallery</a>
+        </div>
+    </header>
+
+    <section id="galeri" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Our Projects</h2>
+            <div id="projectGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Project cards will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak" class="py-20 px-4 text-center">
+        <div class="max-w-3xl mx-auto glass p-12 rounded-3xl glow">
+            <h2 class="text-4xl font-bold mb-6">Start Your Project</h2>
+            <p class="text-slate-400 mb-8">Hubungi kami untuk konsultasi gratis mengenai kebutuhan web Anda.</p>
+            <a href="https://wa.me/6287878224307" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-xl">
+                <i class="fa-brands fa-whatsapp text-2xl"></i> 0878-7822-4307
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-10 border-t border-white/10 text-center text-slate-500 text-sm">
+        <p>&copy; 2026 Digiwork Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const projects = [
+            { name: "AVAI-ORIOS", slug: "avai-orios" },
+            { name: "Advertising", slug: "advertising" },
+            { name: "DutaLawas", slug: "dutalawas" },
+            { name: "Galery", slug: "galery" },
+            { name: "KepoMasaDepan", slug: "kepomasadepan" },
+            { name: "KeuanganPribadi", slug: "keuanganpribadi" },
+            { name: "Menu", slug: "menu" },
+            { name: "Order", slug: "order" },
+            { name: "Pelacak Kesehatan", slug: "pelacakkesehatan" },
+            { name: "Penawaran", slug: "penawaran" },
+            { name: "Personal Trainer", slug: "personal_trainer" },
+            { name: "Pioner", slug: "pioner" },
+            { name: "Promosi", slug: "promosi" },
+            { name: "Toko Komputer", slug: "tokokomputer" },
+            { name: "Traveling", slug: "traveling" },
+            { name: "WA Broadcaster", slug: "wa_broadcaster" },
+            { name: "Air Mineral", slug: "airmineral" },
+            { name: "Autowork", slug: "autowork" },
+            { name: "Ayam Chicken", slug: "ayamchicken" },
+            { name: "Bali Agent", slug: "baliagent" },
+            { name: "Caleb Hover", slug: "calebhover" },
+            { name: "Career Kickstart", slug: "careerkickstart" },
+            { name: "CV Caleb Hover", slug: "cvcalebhover" },
+            { name: "Daniel Tarigan", slug: "danieltarigan" },
+            { name: "Ebook Generator", slug: "ebookgen" },
+            { name: "Griya Bugar", slug: "griya_bugar" },
+            { name: "Hikaru 2", slug: "hikaru2" },
+            { name: "Invoice Sambal", slug: "invoice_sambal" },
+            { name: "Jasa Titip Jogja", slug: "jasatitipjogja" },
+            { name: "Kereta Kopi", slug: "keretakopi" },
+            { name: "Kinibalu Resort", slug: "kinibaluresort" },
+            { name: "LP Generator", slug: "lpgenerator" },
+            { name: "Mebel Order", slug: "mebelorder" },
+            { name: "Nyoman Motorbike", slug: "nyomanmotorbike" },
+            { name: "Omaha Asri", slug: "omahasri" },
+            { name: "Order Web Jogja", slug: "orderwebjogja" },
+            { name: "Panoramic", slug: "panoramic" },
+            { name: "Penginapan", slug: "penginapan" },
+            { name: "Portofolio", slug: "portofolio" },
+            { name: "Rock Griya Jogja", slug: "rockgriyajogja" },
+            { name: "Rockhill", slug: "rockhill" },
+            { name: "Rumah Susu", slug: "rumah_susu" },
+            { name: "Sambal Nampol", slug: "sambal_nampol" },
+            { name: "Sistem Sambal", slug: "sambalsistem" },
+            { name: "STT Kingdom", slug: "sttkingdom" },
+            { name: "The Arch", slug: "thearch" },
+            { name: "Toko Roti", slug: "tokoroti" }
+        ];
+
+        const grid = document.getElementById('projectGrid');
+        projects.forEach(p => {
+            grid.innerHTML += `
+                <a href="https://digiwork.web.id/${p.slug}" class="glass p-6 rounded-2xl hover:border-primary transition duration-300 group">
+                    <div class="text-primary mb-4 text-3xl"><i class="fa-solid fa-code"></i></div>
+                    <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition">${p.name}</h3>
+                    <p class="text-xs text-slate-500">digiwork.web.id/${p.slug}</p>
+                </a>
+            `;
+        });
+    </script>
+</body>
+</html>
