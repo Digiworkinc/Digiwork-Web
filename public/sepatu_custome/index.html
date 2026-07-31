@@ -1,0 +1,687 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronRight, 
+  ChevronLeft,
+  Sparkles, 
+  Check, 
+  ShoppingBag, 
+  Heart, 
+  Ruler, 
+  Layers, 
+  Palette, 
+  Gem,
+  Settings,
+  ListOrdered,
+  LogOut,
+  Image as ImageIcon,
+  Printer,
+  User
+} from 'lucide-react';
+
+// --- DATA AWAL (INITIAL STATE) ---
+// Data ini sekarang akan disimpan di dalam State React agar bisa diedit oleh Admin
+const INITIAL_CONFIG = {
+  model: [
+    { id: 'stiletto_10', name: 'Signature Stiletto (10cm)', desc: 'Hak ramping tinggi, memberikan siluet kaki jenjang yang memesona.', price: 1250000, image: 'https://images.unsplash.com/photo-1543163521-1bf539c53dd2?q=80&w=1000&auto=format&fit=crop' },
+    { id: 'stiletto_7', name: 'Mid Stiletto (7cm)', desc: 'Keseimbangan sempurna antara keanggunan dan kenyamanan.', price: 1150000, image: 'https://images.unsplash.com/photo-1574634534894-89d7576c8259?q=80&w=1000&auto=format&fit=crop' },
+    { id: 'kitten_4', name: 'Kitten Heel (4cm)', desc: 'Hak rendah yang chic, ideal untuk mobilitas tinggi sepanjang hari.', price: 950000, image: 'https://images.unsplash.com/photo-1562183241-b937e95585b6?q=80&w=1000&auto=format&fit=crop' },
+    { id: 'block_7', name: 'Block Heel (7cm)', desc: 'Hak tebal yang stabil, menopang dengan aman tanpa mengorbankan gaya.', price: 1150000, image: 'https://images.unsplash.com/photo-1596702672530-588364cb1168?q=80&w=1000&auto=format&fit=crop' },
+  ],
+  material: [
+    { id: 'satin', name: 'Silk Satin', desc: 'Kilau mewah untuk acara malam', price: 250000 },
+    { id: 'suede', name: 'Velvet Suede', desc: 'Tekstur matte yang lembut & elegan', price: 150000 },
+    { id: 'leather', name: 'Vegan Nappa Leather', desc: 'Klasik, mudah dibersihkan & tahan lama', price: 200000 },
+    { id: 'lace', name: 'French Lace', desc: 'Detail brokat transparan yang romantis', price: 350000 },
+  ],
+  color: [
+    { id: 'champagne', name: 'Champagne Nude', hex: '#EEDCB8' },
+    { id: 'blush', name: 'Blush Pink', hex: '#E8C5C5' },
+    { id: 'midnight', name: 'Midnight Black', hex: '#1C1C1C' },
+    { id: 'ruby', name: 'Ruby Red', hex: '#8A1923' },
+    { id: 'pearl', name: 'Pearl White', hex: '#F5F5F0' },
+  ],
+  accessories: [
+    { id: 'none', name: 'Minimalist (Tanpa Aksesoris)', desc: 'Tampilan bersih dan klasik', price: 0 },
+    { id: 'crystal', name: 'Swarovski Crystal Buckle', desc: 'Bros kristal mewah di bagian depan', price: 450000 },
+    { id: 'ankle_strap', name: 'Pearl Ankle Strap', desc: 'Tali pergelangan kaki berhias mutiara', price: 300000 },
+    { id: 'engraving', name: 'Gold Sole Engraving', desc: 'Ukir inisial nama Anda di sol sepatu', price: 150000 },
+  ]
+};
+
+const STEPS = [
+  { id: 'model', title: 'Siluet & Hak', icon: <Ruler className="w-5 h-5" /> },
+  { id: 'material', title: 'Material', icon: <Layers className="w-5 h-5" /> },
+  { id: 'color', title: 'Warna', icon: <Palette className="w-5 h-5" /> },
+  { id: 'accessories', title: 'Sentuhan Akhir', icon: <Gem className="w-5 h-5" /> },
+];
+
+export default function App() {
+  const [view, setView] = useState('customer'); // 'customer' | 'admin'
+  const [configData, setConfigData] = useState(INITIAL_CONFIG);
+  const [orders, setOrders] = useState([]); // Menyimpan data pesanan
+
+  // Render view berdasarkan state 'view'
+  if (view === 'admin') {
+    return (
+      <AdminDashboard 
+        config={configData} 
+        setConfig={setConfigData} 
+        orders={orders} 
+        setOrders={setOrders}
+        onExit={() => setView('customer')} 
+      />
+    );
+  }
+
+  return (
+    <CustomerApp 
+      config={configData} 
+      onPlaceOrder={(newOrder) => setOrders([newOrder, ...orders])} 
+      onAdminClick={() => setView('admin')} 
+    />
+  );
+}
+
+function CustomerApp({ config, onPlaceOrder, onAdminClick }) {
+  const [step, setStep] = useState(0);
+  const [selections, setSelections] = useState({
+    model: null,
+    material: null,
+    color: null,
+    accessories: null
+  });
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [isCheckout, setIsCheckout] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [customerForm, setCustomerForm] = useState({ name: '', phone: '', address: '' });
+  const [currentOrderReceipt, setCurrentOrderReceipt] = useState(null);
+
+  // Perhitungan Harga Real-time
+  useEffect(() => {
+    let currentTotal = 0;
+    if (selections.model) currentTotal += config.model.find(i => i.id === selections.model)?.price || 0;
+    if (selections.material) currentTotal += config.material.find(i => i.id === selections.material)?.price || 0;
+    if (selections.accessories) currentTotal += config.accessories.find(i => i.id === selections.accessories)?.price || 0;
+    setTotalPrice(currentTotal);
+  }, [selections, config]);
+
+  const activeCategory = STEPS[step].id;
+  const isCurrentStepValid = selections[activeCategory] !== null;
+
+  const handleNext = () => {
+    if (isCurrentStepValid && step < STEPS.length - 1) {
+      setStep(step + 1);
+    } else if (step === STEPS.length - 1) {
+      setIsCheckout(true);
+    }
+  };
+
+  const handleBack = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
+  const submitOrder = (e) => {
+    e.preventDefault();
+    const newOrder = {
+      id: `ORD-${Math.floor(Math.random() * 100000)}`,
+      date: new Date().toLocaleDateString('id-ID'),
+      customer: customerForm,
+      selections: { ...selections },
+      totalPrice: totalPrice,
+      status: 'Pending'
+    };
+    onPlaceOrder(newOrder);
+    setCurrentOrderReceipt(newOrder);
+    setIsCheckout(false);
+    setIsSuccess(true);
+  };
+
+  // Mendapatkan gambar display berdasarkan model yang dipilih, atau gambar default
+  const displayImage = selections.model 
+    ? config.model.find(i => i.id === selections.model)?.image 
+    : 'https://images.unsplash.com/photo-1543163521-1bf539c53dd2?q=80&w=1000&auto=format&fit=crop';
+
+  if (isSuccess && currentOrderReceipt) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6 font-sans">
+        <div className="max-w-2xl w-full bg-white p-10 rounded-[2rem] shadow-2xl border border-gray-100 relative overflow-hidden">
+          {/* Aksen visual struk */}
+          <div className="absolute top-0 left-0 w-full h-3 bg-pink-400"></div>
+          
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check className="w-10 h-10 text-green-500" />
+            </div>
+            <h2 className="text-3xl font-serif font-bold text-gray-900">Pesanan Berhasil</h2>
+            <p className="text-gray-500 mt-2">Terima kasih, {currentOrderReceipt.customer.name}. Laporan pesanan Anda ada di bawah.</p>
+          </div>
+          
+          {/* Laporan Pembeli / Invoice */}
+          <div className="bg-gray-50 p-6 rounded-2xl text-left border border-gray-200 mb-8" id="invoice-area">
+            <div className="flex justify-between items-end border-b border-gray-200 pb-4 mb-4">
+              <div>
+                <h3 className="text-xl font-serif font-bold text-gray-900">L'Atelier Femme</h3>
+                <p className="text-sm text-gray-500">Invoice: {currentOrderReceipt.id}</p>
+              </div>
+              <div className="text-right text-sm text-gray-500">
+                <p>Tanggal: {currentOrderReceipt.date}</p>
+                <p className="font-medium text-pink-600 mt-1">Status: {currentOrderReceipt.status}</p>
+              </div>
+            </div>
+            
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Pelanggan</span>
+                <span className="font-medium text-gray-900">{currentOrderReceipt.customer.name} ({currentOrderReceipt.customer.phone})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Alamat</span>
+                <span className="font-medium text-gray-900 max-w-[50%] text-right">{currentOrderReceipt.customer.address}</span>
+              </div>
+              
+              <div className="pt-4 mt-4 border-t border-dashed border-gray-300 space-y-2">
+                <p className="font-semibold text-gray-900 mb-2">Rincian Sepatu Custom:</p>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Model</span>
+                  <span className="font-medium text-gray-900">{config.model.find(i => i.id === currentOrderReceipt.selections.model)?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Material</span>
+                  <span className="font-medium text-gray-900">{config.material.find(i => i.id === currentOrderReceipt.selections.material)?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Warna</span>
+                  <span className="font-medium text-gray-900">{config.color.find(i => i.id === currentOrderReceipt.selections.color)?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Aksesoris</span>
+                  <span className="font-medium text-gray-900">{config.accessories.find(i => i.id === currentOrderReceipt.selections.accessories)?.name}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-4 border-t border-gray-200 mt-4 text-xl font-bold">
+                <span className="text-gray-900 font-serif">Total Pembayaran</span>
+                <span className="text-pink-700 font-serif">Rp {currentOrderReceipt.totalPrice.toLocaleString('id-ID')}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex gap-4">
+            <button 
+              onClick={() => window.print()} 
+              className="flex-1 bg-gray-900 text-white py-3 rounded-full font-medium hover:bg-black transition flex justify-center items-center gap-2"
+            >
+              <Printer className="w-5 h-5" /> Cetak / PDF
+            </button>
+            <button 
+              onClick={() => { setIsSuccess(false); setStep(0); setSelections({model: null, material: null, color: null, accessories: null}); }}
+              className="flex-1 border border-pink-200 text-pink-600 py-3 rounded-full font-medium hover:bg-pink-50 transition"
+            >
+              Kembali ke Beranda
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isCheckout) {
+    return (
+      <div className="min-h-screen bg-[#FDFBFB] flex items-center justify-center p-6 font-sans">
+        <div className="max-w-2xl w-full bg-white p-8 md:p-10 rounded-[2rem] shadow-xl border border-pink-50">
+          <button onClick={() => setIsCheckout(false)} className="mb-6 flex items-center gap-2 text-gray-500 hover:text-gray-900 transition text-sm">
+            <ChevronLeft className="w-4 h-4" /> Kembali Edit
+          </button>
+          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-6">Informasi Pengiriman</h2>
+          
+          <form onSubmit={submitOrder} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+              <input 
+                required type="text" 
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent transition" 
+                value={customerForm.name} onChange={e => setCustomerForm({...customerForm, name: e.target.value})}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
+              <input 
+                required type="tel" 
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent transition" 
+                value={customerForm.phone} onChange={e => setCustomerForm({...customerForm, phone: e.target.value})}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+              <textarea 
+                required rows="3" 
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent transition"
+                value={customerForm.address} onChange={e => setCustomerForm({...customerForm, address: e.target.value})}
+              ></textarea>
+            </div>
+
+            <div className="bg-pink-50/50 p-5 rounded-xl border border-pink-100 flex justify-between items-center mt-6">
+              <span className="font-serif font-bold text-gray-900">Total Tagihan</span>
+              <span className="font-serif text-2xl text-pink-700 font-bold">Rp {totalPrice.toLocaleString('id-ID')}</span>
+            </div>
+
+            <button type="submit" className="w-full bg-gray-900 text-white py-4 rounded-full font-medium hover:bg-pink-900 transition flex items-center justify-center gap-2 mt-4 text-lg">
+              Selesaikan Pesanan <ChevronRight className="w-5 h-5" />
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#FDFBFB] text-gray-800 font-sans">
+      
+      {/* Top Navigation */}
+      <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-pink-50 px-6 py-4 flex justify-between items-center shadow-sm">
+        <h1 className="text-2xl font-serif font-bold text-gray-900 tracking-wide flex items-center gap-2">
+          L'Atelier <span className="text-pink-400 font-light italic">Femme</span>
+        </h1>
+        <div className="flex items-center gap-4 text-sm font-medium text-gray-500">
+          <button onClick={onAdminClick} className="hidden sm:flex items-center gap-2 hover:text-pink-600 transition">
+            <Settings className="w-4 h-4" /> Admin Panel
+          </button>
+          <button className="bg-pink-50 p-2 rounded-full text-pink-600 hover:bg-pink-100 transition relative">
+            <ShoppingBag className="w-5 h-5" />
+            {totalPrice > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full border-2 border-white"></span>}
+          </button>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-6 py-8 md:py-12 grid lg:grid-cols-12 gap-12 items-start">
+        
+        {/* Kolom Kiri: Wizard Steps */}
+        <div className="lg:col-span-7 space-y-10">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-serif text-gray-900 mb-3">Personalisasi Heels Anda</h2>
+            <p className="text-gray-500 mb-8 text-sm md:text-base">Pilih spesifikasi yang paling sesuai. Harga dan pratinjau akan menyesuaikan pilihan Anda.</p>
+            
+            {/* Progress Bar */}
+            <div className="relative flex justify-between items-center mb-8">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full z-0"></div>
+              <div 
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-pink-300 rounded-full z-0 transition-all duration-500"
+                style={{ width: `${(step / (STEPS.length - 1)) * 100}%` }}
+              ></div>
+              
+              {STEPS.map((s, idx) => (
+                <div key={s.id} className="relative z-10 flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${step > idx ? 'bg-pink-400 text-white' : step === idx ? 'bg-white border-2 border-pink-400 text-pink-600 shadow-md' : 'bg-gray-100 border border-gray-300 text-gray-400'}`}>
+                    {step > idx ? <Check className="w-5 h-5" /> : <span className="font-semibold text-sm">{idx + 1}</span>}
+                  </div>
+                  <span className={`absolute -bottom-6 text-xs whitespace-nowrap ${step === idx ? 'text-pink-600 font-bold' : 'text-gray-400 font-medium'} hidden sm:block`}>
+                    {s.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Opsi Kategori Saat Ini */}
+          <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-pink-50">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
+              <div className="bg-pink-50 p-3 rounded-2xl text-pink-500">
+                {STEPS[step].icon}
+              </div>
+              <div>
+                <h3 className="text-2xl font-serif text-gray-900">Pilih {STEPS[step].title}</h3>
+                <p className="text-gray-400 text-sm">Langkah {step + 1} dari {STEPS.length}</p>
+              </div>
+            </div>
+
+            <div className={activeCategory === 'color' ? 'grid grid-cols-2 sm:grid-cols-3 gap-4' : 'grid gap-4'}>
+              {config[activeCategory].map((option) => {
+                const isSelected = selections[activeCategory] === option.id;
+                const isColorCat = activeCategory === 'color';
+
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => setSelections({ ...selections, [activeCategory]: option.id })}
+                    className={`relative text-left flex ${isColorCat ? 'flex-col items-center p-4 text-center' : 'items-center p-5'} rounded-2xl border-2 transition-all duration-200 group ${isSelected ? 'border-pink-300 bg-pink-50/50 shadow-sm' : 'border-gray-100 hover:border-pink-100 hover:bg-gray-50'}`}
+                  >
+                    {isColorCat ? (
+                      <div className="mb-3 p-1 bg-white rounded-full shadow-sm">
+                         <div className="w-12 h-12 rounded-full border border-gray-200" style={{ backgroundColor: option.hex }} />
+                      </div>
+                    ) : null}
+
+                    <div className={isColorCat ? 'w-full' : 'flex-1 pr-4'}>
+                      <div className="font-semibold text-gray-900 mb-1">{option.name}</div>
+                      {option.desc && !isColorCat && (
+                        <div className="text-sm text-gray-500 leading-relaxed">{option.desc}</div>
+                      )}
+                      {option.price > 0 && !isColorCat && (
+                        <div className="text-xs font-medium text-pink-600 mt-2 bg-pink-100/50 inline-block px-2 py-1 rounded-md">
+                          + Rp {option.price.toLocaleString('id-ID')}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {!isColorCat && (
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? 'bg-pink-500 border-pink-500 text-white' : 'border-gray-300 text-transparent'}`}>
+                        <Check className="w-4 h-4" />
+                      </div>
+                    )}
+
+                    {isColorCat && isSelected && (
+                       <div className="absolute top-4 right-4 text-pink-500">
+                          <Check className="w-5 h-5 drop-shadow-md" />
+                       </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            {step > 0 && (
+              <button 
+                onClick={handleBack} 
+                className="px-6 py-4 rounded-full border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 hover:text-gray-900 transition flex items-center gap-2"
+              >
+                <ChevronLeft className="w-5 h-5" /> Kembali
+              </button>
+            )}
+            
+            <button 
+              onClick={handleNext}
+              disabled={!isCurrentStepValid}
+              className={`flex-1 py-4 rounded-full font-medium transition flex items-center justify-center gap-2 text-lg shadow-lg ${isCurrentStepValid ? 'bg-gray-900 text-white hover:bg-pink-900 shadow-gray-900/20' : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'}`}
+            >
+              {step === STEPS.length - 1 ? 'Checkout Sekarang' : 'Lanjut'} 
+              {step !== STEPS.length - 1 && <ChevronRight className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Kolom Kanan: Preview & Ringkasan */}
+        <div className="lg:col-span-5 lg:sticky lg:top-24 mt-8 lg:mt-0">
+          <div className="bg-white rounded-[2.5rem] p-6 md:p-8 shadow-[0_20px_50px_rgb(0,0,0,0.08)] border border-pink-50/50 overflow-hidden relative">
+            
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h3 className="font-serif text-xl font-semibold text-gray-900">Preview Visual</h3>
+                <p className="text-sm text-gray-400 mt-1">Estimasi & Rincian</p>
+              </div>
+              <button className="text-gray-300 hover:text-pink-500 transition">
+                <Heart className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Gambar Statis namun bisa diubah oleh admin via data URL */}
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden mb-6 bg-gray-100 flex items-center justify-center group shadow-inner">
+              <img 
+                src={displayImage} 
+                alt="Sepatu Custom"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+
+            {/* Breakdown Rincian */}
+            <div className="space-y-3 mb-8 bg-gray-50/80 p-5 rounded-2xl border border-gray-100">
+              <div className="flex justify-between items-center text-sm border-b border-gray-200/60 pb-2">
+                <span className="text-gray-500">Model Hak</span>
+                <span className="font-medium text-gray-900 text-right">
+                  {selections.model ? config.model.find(i=>i.id===selections.model).name : '-'}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm border-b border-gray-200/60 pb-2 pt-1">
+                <span className="text-gray-500">Material</span>
+                <span className="font-medium text-gray-900 text-right">
+                  {selections.material ? config.material.find(i=>i.id===selections.material).name : '-'}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm border-b border-gray-200/60 pb-2 pt-1">
+                <span className="text-gray-500">Warna</span>
+                <span className="font-medium text-gray-900 flex items-center gap-2 justify-end">
+                  {selections.color && (
+                    <span className="w-3.5 h-3.5 rounded-full border border-gray-300 shadow-sm" style={{ backgroundColor: config.color.find(i=>i.id===selections.color)?.hex }}></span>
+                  )}
+                  {selections.color ? config.color.find(i=>i.id===selections.color).name : '-'}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-sm pt-1">
+                <span className="text-gray-500">Aksesoris</span>
+                <span className="font-medium text-gray-900 text-right">
+                  {selections.accessories ? config.accessories.find(i=>i.id===selections.accessories).name : '-'}
+                </span>
+              </div>
+            </div>
+
+            {/* Total Price */}
+            <div className="bg-gray-50 rounded-2xl p-6 border border-pink-50">
+              <p className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-1">Total Estimasi</p>
+              <p className="text-3xl font-serif text-pink-900 font-semibold mb-4">
+                Rp {totalPrice.toLocaleString('id-ID')}
+              </p>
+              <div className="text-xs text-gray-400 space-y-2">
+                <p className="flex items-center gap-2"><Sparkles className="w-3.5 h-3.5 text-pink-400" /> Handmade in Atelier</p>
+                <p className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-green-500" /> Free Shipping (S&K Berlaku)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AdminDashboard({ config, setConfig, orders, setOrders, onExit }) {
+  const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'products'
+  const [activeCategory, setActiveCategory] = useState('model');
+
+  // Helper untuk update config
+  const updateConfigItem = (category, index, field, value) => {
+    const newConfig = { ...config };
+    if (field === 'price') value = parseInt(value) || 0;
+    newConfig[category][index][field] = value;
+    setConfig(newConfig);
+  };
+
+  const updateOrderStatus = (index, newStatus) => {
+    const newOrders = [...orders];
+    newOrders[index].status = newStatus;
+    setOrders(newOrders);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex font-sans">
+      {/* Sidebar */}
+      <aside className="w-64 bg-gray-900 text-white flex flex-col">
+        <div className="p-6 border-b border-gray-800">
+          <h2 className="text-xl font-serif font-bold text-white tracking-wide">
+            Admin <span className="text-pink-400 italic">Panel</span>
+          </h2>
+          <p className="text-xs text-gray-400 mt-1">L'Atelier Femme</p>
+        </div>
+        <nav className="flex-1 p-4 space-y-2">
+          <button 
+            onClick={() => setActiveTab('orders')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition ${activeTab === 'orders' ? 'bg-pink-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
+          >
+            <ListOrdered className="w-5 h-5" /> Laporan Pesanan
+          </button>
+          <button 
+            onClick={() => setActiveTab('products')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition ${activeTab === 'products' ? 'bg-pink-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
+          >
+            <Settings className="w-5 h-5" /> Kelola Produk & Harga
+          </button>
+        </nav>
+        <div className="p-4 border-t border-gray-800">
+          <button onClick={onExit} className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-800 rounded-xl text-gray-300 hover:bg-gray-700 transition">
+            <LogOut className="w-4 h-4" /> Keluar ke Web
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        
+        {/* --- TAB: ORDERS (Laporan Pesanan ke Penjual) --- */}
+        {activeTab === 'orders' && (
+          <div>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-gray-900">Laporan Pesanan</h1>
+              <p className="text-gray-500">Data pesanan dari pembeli masuk ke sini.</p>
+            </div>
+            
+            {orders.length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
+                <ListOrdered className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900">Belum Ada Pesanan</h3>
+                <p className="text-gray-500">Pesanan baru akan muncul di sini.</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <table className="w-full text-left text-sm text-gray-600">
+                  <thead className="bg-gray-50 border-b border-gray-200 text-gray-900">
+                    <tr>
+                      <th className="p-4 font-semibold">ID Pesanan</th>
+                      <th className="p-4 font-semibold">Pembeli</th>
+                      <th className="p-4 font-semibold">Rincian Custom</th>
+                      <th className="p-4 font-semibold">Total</th>
+                      <th className="p-4 font-semibold">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order, idx) => (
+                      <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="p-4 font-medium text-gray-900">{order.id}<br/><span className="text-xs text-gray-400">{order.date}</span></td>
+                        <td className="p-4">
+                          <div className="font-medium text-gray-900">{order.customer.name}</div>
+                          <div className="text-xs text-gray-500">{order.customer.phone}</div>
+                        </td>
+                        <td className="p-4 text-xs space-y-1">
+                          <p><b>Model:</b> {config.model.find(i=>i.id===order.selections.model)?.name}</p>
+                          <p><b>Mat:</b> {config.material.find(i=>i.id===order.selections.material)?.name}</p>
+                          <p><b>Wrn:</b> {config.color.find(i=>i.id===order.selections.color)?.name}</p>
+                        </td>
+                        <td className="p-4 font-semibold text-pink-700">Rp {order.totalPrice.toLocaleString('id-ID')}</td>
+                        <td className="p-4">
+                          <select 
+                            value={order.status}
+                            onChange={(e) => updateOrderStatus(idx, e.target.value)}
+                            className="bg-gray-100 border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-pink-300 px-3 py-1.5"
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Produksi">Produksi</option>
+                            <option value="Dikirim">Dikirim</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* --- TAB: PRODUCTS (Kelola Harga & Gambar) --- */}
+        {activeTab === 'products' && (
+          <div>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-gray-900">Kelola Produk & Harga</h1>
+              <p className="text-gray-500">Ubah nama, deskripsi, harga, dan gambar pratinjau produk.</p>
+            </div>
+
+            {/* Sub-tabs untuk Kategori */}
+            <div className="flex gap-2 mb-6 border-b border-gray-200 pb-2 overflow-x-auto">
+              {['model', 'material', 'color', 'accessories'].map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-2 text-sm font-medium rounded-t-lg transition border-b-2 ${activeCategory === cat ? 'border-pink-600 text-pink-600' : 'border-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50'}`}
+                >
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            {/* Form Editor Item */}
+            <div className="grid gap-4">
+              {config[activeCategory].map((item, idx) => (
+                <div key={item.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center">
+                  
+                  {/* Tampilkan Preview Gambar Kecil khusus untuk Model */}
+                  {activeCategory === 'model' && (
+                    <div className="w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0 border border-gray-200 flex items-center justify-center">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <ImageIcon className="w-8 h-8 text-gray-300" />
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">Nama {activeCategory}</label>
+                      <input 
+                        type="text" 
+                        value={item.name} 
+                        onChange={(e) => updateConfigItem(activeCategory, idx, 'name', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-300 outline-none"
+                      />
+                    </div>
+                    
+                    {/* Harga (Kecuali Warna) */}
+                    {activeCategory !== 'color' && (
+                      <div>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Harga Tambahan (Rp)</label>
+                        <input 
+                          type="number" 
+                          value={item.price} 
+                          onChange={(e) => updateConfigItem(activeCategory, idx, 'price', e.target.value)}
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-300 outline-none"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* URL Gambar (Hanya untuk Model) */}
+                    {activeCategory === 'model' && (
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-medium text-gray-500 mb-1">URL Gambar Pratinjau (Statis)</label>
+                        <input 
+                          type="text" 
+                          value={item.image || ''} 
+                          onChange={(e) => updateConfigItem(activeCategory, idx, 'image', e.target.value)}
+                          placeholder="https://contoh.com/gambar-sepatu.jpg"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-300 outline-none"
+                        />
+                      </div>
+                    )}
+
+                    {/* Deskripsi (Hanya untuk opsi yang punya deskripsi) */}
+                    {item.desc !== undefined && (
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Deskripsi Singkat</label>
+                        <input 
+                          type="text" 
+                          value={item.desc} 
+                          onChange={(e) => updateConfigItem(activeCategory, idx, 'desc', e.target.value)}
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-300 outline-none text-gray-600"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
