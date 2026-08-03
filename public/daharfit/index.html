@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DaharFit Catering - Your Smart Daily Nutrition</title>
-    <!-- Tailwind CSS -->
+    
+    <!-- Inline SVG Favicon (Solves favicon.ico 404 error) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥗</text></svg>">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Inter & Plus Jakarta Sans) -->
+    
+    <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -42,17 +48,24 @@
         .custom-shadow {
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased pb-16 md:pb-0">
 
-    <!-- Top Announcement Bar -->
+    <!-- Promo Announcement Bar -->
     <div class="bg-gradient-to-r from-brand-green to-emerald-700 text-white text-xs md:text-sm py-2 px-4 text-center font-medium shadow-inner">
         <span class="inline-block animate-pulse mr-1">🎁</span> 
         <strong>PROMO SPESIAL:</strong> Gratis Ongkir All Area + Bonus Konsultasi Gizi Langsung!
     </div>
 
-    <!-- Header / Navigation -->
+    <!-- Header Navigation -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -69,7 +82,7 @@
                     </div>
                 </a>
 
-                <!-- Desktop Nav Links -->
+                <!-- Nav Links -->
                 <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm text-slate-600">
                     <a href="#keunggulan" class="hover:text-brand-orange transition-colors">Keunggulan</a>
                     <a href="#program" class="hover:text-brand-orange transition-colors">Program Diet</a>
@@ -79,25 +92,23 @@
                     <a href="#faq" class="hover:text-brand-orange transition-colors">FAQ</a>
                 </nav>
 
-                <!-- CTA Header Button -->
+                <!-- CTA Button -->
                 <div class="flex items-center gap-3">
-                    <a href="#order-modal" onclick="openOrderModal()" class="hidden sm:inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orangeDark text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-brand-orange/25 transition-all hover:-translate-y-0.5">
+                    <button onclick="openOrderModal()" class="hidden sm:inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orangeDark text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-brand-orange/25 transition-all hover:-translate-y-0.5">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                         <span>Pesan Sekarang</span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="relative overflow-hidden pt-8 pb-16 md:py-20 bg-gradient-to-b from-emerald-50/50 via-white to-slate-50">
-        <!-- Background Decorative Elements -->
         <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute top-1/2 -right-24 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- City Selection Pill Selector -->
+            <!-- City Selection Switcher -->
             <div class="flex flex-wrap justify-center items-center gap-2 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80 max-w-md mx-auto">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Pilih Lokasi:</span>
                 <button onclick="setCity('jogja')" id="city-btn-jogja" class="city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all bg-brand-green text-white shadow-md">
@@ -112,7 +123,6 @@
             </div>
 
             <div class="grid lg:grid-cols-12 gap-12 items-center">
-                <!-- Hero Left Content -->
                 <div class="lg:col-span-7 text-center lg:text-left">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 text-brand-orange text-xs font-bold mb-4 border border-orange-200">
                         <i class="fa-solid fa-leaf"></i>
@@ -127,7 +137,6 @@
                         Program catering sehat terpercaya dengan takaran nutrisi yang pas. Diolah tanpa MSG dan pengawet oleh koki profesional, didampingi ahli gizi untuk mendukung kesehatan harian Anda.
                     </p>
 
-                    <!-- CTAs -->
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <button onclick="openOrderModal()" class="inline-flex justify-center items-center gap-3 bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white px-8 py-4 rounded-2xl font-bold text-base shadow-xl shadow-brand-orange/30 transition-all hover:scale-[1.02] active:scale-95">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -171,13 +180,11 @@
                     </div>
                 </div>
 
-                <!-- Hero Right Interactive Card Showcase -->
+                <!-- Hero Card Box -->
                 <div class="lg:col-span-5">
                     <div class="relative mx-auto max-w-md">
-                        <!-- Decorative Glow -->
                         <div class="absolute inset-0 bg-gradient-to-tr from-brand-orange to-brand-green rounded-3xl blur-2xl opacity-20 transform rotate-3 scale-105"></div>
                         
-                        <!-- Main Promo Card Box -->
                         <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100">
                             <div class="flex justify-between items-start mb-6">
                                 <div>
@@ -189,7 +196,6 @@
                                 </div>
                             </div>
 
-                            <!-- Pricing Badge inside Hero Card -->
                             <div class="bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl p-5 text-white mb-6 shadow-md shadow-orange-500/20">
                                 <div class="text-xs font-semibold uppercase tracking-wider text-orange-100">Paket Mulai Dari</div>
                                 <div class="flex items-baseline gap-2 mt-1">
@@ -203,7 +209,6 @@
                                 </div>
                             </div>
 
-                            <!-- Macro Breakdown List -->
                             <div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl text-xs sm:text-sm">
                                 <div class="flex justify-between items-center py-1 border-b border-slate-200/60">
                                     <span class="text-slate-500 font-medium"><i class="fa-solid fa-fire text-amber-500 mr-2"></i>Kalori</span>
@@ -234,7 +239,6 @@
         </div>
     </section>
 
-    <!-- Key Benefits Section -->
     <section id="keunggulan" class="py-16 bg-white border-y border-slate-200/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
@@ -247,7 +251,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Benefit 1 -->
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
                     <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
                         💎
@@ -258,7 +261,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 2 -->
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
                     <div class="w-14 h-14 bg-emerald-100 text-brand-green rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
                         👨‍🍳
@@ -269,7 +271,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 3 -->
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
                     <div class="w-14 h-14 bg-blue-100 text-brand-blue rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
                         🧪
@@ -280,7 +281,6 @@
                     </p>
                 </div>
 
-                <!-- Benefit 4 -->
                 <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
                     <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
                         🛡️
@@ -294,7 +294,6 @@
         </div>
     </section>
 
-    <!-- Program Options Section -->
     <section id="program" class="py-16 sm:py-24 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -384,7 +383,6 @@
                             <div class="text-[11px] text-brand-blue font-semibold mt-1">Paket Siang-Malam: @Rp 44.000</div>
                         </div>
 
-                        <!-- Condition Tags -->
                         <div class="mb-6">
                             <span class="text-[11px] font-bold text-slate-400 block mb-2 uppercase">Cocok Untuk Kondisi:</span>
                             <div class="flex flex-wrap gap-1.5">
@@ -476,7 +474,6 @@
         </div>
     </section>
 
-    <!-- Interactive Nutri-Calculator Section -->
     <section id="kalkulator" class="py-16 bg-white border-y border-slate-200/60">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 rounded-3xl p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden">
@@ -491,7 +488,6 @@
                         </p>
                     </div>
 
-                    <!-- Calculator Form -->
                     <div class="lg:col-span-7 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
                         <form id="calcForm" onsubmit="calculateCalories(event)" class="space-y-4 text-xs sm:text-sm">
                             <div class="grid grid-cols-2 gap-3">
@@ -524,16 +520,15 @@
                                 <select id="calcGoal" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
                                     <option value="weightLoss">Turun Berat Badan / Defisit Kalori</option>
                                     <option value="muscleGain">Tambah Massa Otot / Surplus Kalori</option>
-                                    <option value="health">Kondisi Medis Medikal / Pemulihan (Sickness)</option>
+                                    <option value="health">Kondisi Medis / Pemulihan (Sickness)</option>
                                 </select>
                             </div>
 
                             <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/20">
-                                hitung Kalori Saya
+                                Hitung Kalori Saya
                             </button>
                         </form>
 
-                        <!-- Results Box -->
                         <div id="calcResult" class="hidden mt-6 p-4 rounded-xl bg-emerald-950/90 border border-emerald-500/30 text-center animate-fadeIn">
                             <div class="text-xs text-emerald-300 font-semibold uppercase">Estimasi Kebutuhan Harian:</div>
                             <div class="text-3xl font-extrabold text-white mt-1"><span id="resCal">0</span> <span class="text-sm font-normal">kkal/hari</span></div>
@@ -546,7 +541,6 @@
         </div>
     </section>
 
-    <!-- Sample Menu Section -->
     <section id="contoh-menu" class="py-16 sm:py-24 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
@@ -558,7 +552,6 @@
                     Menu berganti setiap hari agar Anda tidak merasa bosan menjalani pola makan sehat.
                 </p>
 
-                <!-- Filter Tabs -->
                 <div class="flex flex-wrap justify-center gap-2 mt-8">
                     <button onclick="filterMenu('all')" class="menu-filter-btn active-filter text-xs font-bold px-4 py-2 rounded-xl border bg-brand-green text-white border-brand-green transition-all">
                         Semua Menu
@@ -575,12 +568,11 @@
                 </div>
             </div>
 
-            <!-- Menu Cards Grid -->
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Menu Card 1 -->
                 <div class="menu-item healthy bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl transition-all">
                     <div class="h-48 bg-slate-200 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Grilled Chicken Breast with Sambal Matah" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Ayam Panggang Sambal Matah" class="w-full h-full object-cover">
                         <span class="absolute top-3 left-3 bg-brand-orange text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Healthy Plan</span>
                     </div>
                     <div class="p-5">
@@ -628,7 +620,6 @@
         </div>
     </section>
 
-    <!-- Pricing Table Section per City -->
     <section id="daftar-harga" class="py-16 sm:py-24 bg-white border-t border-slate-200/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
@@ -641,7 +632,6 @@
                 </p>
             </div>
 
-            <!-- Price Table Component -->
             <div class="bg-slate-50 rounded-3xl p-4 sm:p-8 border border-slate-200/80 shadow-xl overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[650px]">
                     <thead>
@@ -653,7 +643,7 @@
                         </tr>
                     </thead>
                     <tbody id="pricing-table-body" class="divide-y divide-slate-200 text-slate-800">
-                        <!-- Dynamic Rows injected via JS -->
+                        <!-- Dynamic Rows injected via JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -668,7 +658,6 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
     <section id="faq" class="py-16 bg-slate-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -677,7 +666,6 @@
             </div>
 
             <div class="space-y-4">
-                <!-- FAQ 1 -->
                 <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
                     <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
                         <span>Jam berapa makanan akan dikirim setiap harinya?</span>
@@ -688,7 +676,6 @@
                     </p>
                 </div>
 
-                <!-- FAQ 2 -->
                 <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
                     <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
                         <span>Apakah saya bisa berkonsultasi jika punya pantangan alergi?</span>
@@ -699,7 +686,6 @@
                     </p>
                 </div>
 
-                <!-- FAQ 3 -->
                 <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
                     <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
                         <span>Bagaimana jika saya harus pergi ke luar kota saat berlangganan?</span>
@@ -713,7 +699,7 @@
         </div>
     </section>
 
-    <!-- Branch Contacts Section -->
+    <!-- Branch CS Contacts Section -->
     <section class="py-16 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">Cabang & Kontak Customer Service</h2>
@@ -762,7 +748,7 @@
         </div>
     </footer>
 
-    <!-- Floating Mobile Bottom CTA Bar -->
+    <!-- Mobile Floating Bottom CTA Bar -->
     <div class="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 md:hidden shadow-2xl flex items-center justify-between gap-3">
         <div>
             <div class="text-[10px] text-slate-500 font-semibold uppercase">Mulai Sehat Hari Ini</div>
@@ -774,10 +760,9 @@
         </button>
     </div>
 
-    <!-- Interactive Order Modal -->
+    <!-- Order Form Modal -->
     <div id="orderModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl animate-fadeIn max-h-[90vh] overflow-y-auto">
-            <!-- Close button -->
             <button onclick="closeOrderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl font-bold">
                 ✕
             </button>
@@ -840,19 +825,15 @@
         </div>
     </div>
 
-    <!-- JavaScript Data & Interactivity Logic -->
     <script>
-        // State
         let currentCity = 'jogja';
 
-        // City Contacts
         const contacts = {
             jogja: { number: '6285177152148', label: 'Jogja' },
             semarang: { number: '6285111570209', label: 'Semarang' },
             surabaya: { number: '6285168170003', label: 'Surabaya' }
         };
 
-        // City Pricing Data
         const pricingData = {
             jogja: [
                 { program: 'Healthy Plan Diet', trial: 'Rp 41.000', plan: 'Paket 36x Kirim (@Rp 38.000)', total: 'Rp 1.368.000' },
@@ -871,11 +852,9 @@
             ]
         };
 
-        // City Switcher Function
         function setCity(city) {
             currentCity = city;
             
-            // Update Tab Styles
             document.querySelectorAll('.city-tab').forEach(btn => {
                 btn.className = 'city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all text-slate-600 hover:bg-slate-100';
             });
@@ -884,15 +863,12 @@
                 activeBtn.className = 'city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all bg-brand-green text-white shadow-md';
             }
 
-            // Sync with modal select
             const orderCitySelect = document.getElementById('orderCity');
             if (orderCitySelect) orderCitySelect.value = city;
 
-            // Update Label
             const cityLabels = { jogja: 'Jogja & Semarang', semarang: 'Jogja & Semarang', surabaya: 'Surabaya' };
             document.getElementById('price-city-label').innerText = cityLabels[city];
 
-            // Render Price Table
             renderPriceTable();
         }
 
@@ -914,7 +890,6 @@
             `).join('');
         }
 
-        // Calorie Calculator
         function calculateCalories(e) {
             e.preventDefault();
             const age = parseFloat(document.getElementById('calcAge').value);
@@ -923,11 +898,9 @@
             const gender = document.getElementById('calcGender').value;
             const goal = document.getElementById('calcGoal').value;
 
-            // Mifflin-St Jeor Formula BMR
             let bmr = (10 * weight) + (6.25 * height) - (5 * age);
             bmr = gender === 'male' ? bmr + 5 : bmr - 161;
 
-            // TDEE estimate (Moderate activity factor 1.375)
             let tdee = bmr * 1.375;
 
             let recommendedCal = Math.round(tdee);
@@ -949,7 +922,6 @@
             document.getElementById('calcResult').classList.remove('hidden');
         }
 
-        // Menu Filter
         function filterMenu(category) {
             const items = document.querySelectorAll('.menu-item');
             items.forEach(item => {
@@ -961,7 +933,6 @@
             });
         }
 
-        // FAQ Toggle
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const icon = element.querySelector('i');
@@ -974,7 +945,6 @@
             }
         }
 
-        // Modal Controls
         function openOrderModal() {
             document.getElementById('orderModal').classList.remove('hidden');
         }
@@ -988,7 +958,6 @@
             openOrderModal();
         }
 
-        // WhatsApp Direct Order Handler
         function sendWhatsAppOrder(e) {
             e.preventDefault();
             const name = document.getElementById('orderName').value;
@@ -1015,7 +984,6 @@
             closeOrderModal();
         }
 
-        // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             renderPriceTable();
         });
