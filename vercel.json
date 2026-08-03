@@ -1,0 +1,9 @@
+{
+     "cleanUrls": true,
+     "rewrites": [
+       {
+         "source": "/((?!daharfit).*)",
+         "destination": "/index.html"
+       }
+     ]
+   }
