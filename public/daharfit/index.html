@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaharFit Catering - Your Smart Daily Nutrition</title>
+    
+    <!-- Inline SVG Favicon (Mencegah error favicon.ico 404) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥗</text></svg>">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF7A00',
+                            orangeDark: '#E06B00',
+                            green: '#2E7D32',
+                            greenLight: '#E8F5E9',
+                            blue: '#0288D1',
+                            red: '#D32F2F',
+                            dark: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-16 md:pb-0">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-brand-green to-emerald-700 text-white text-xs md:text-sm py-2 px-4 text-center font-medium shadow-inner">
+        <span class="inline-block animate-pulse mr-1">🎁</span> 
+        <strong>PROMO SPESIAL:</strong> Gratis Ongkir All Area + Bonus Konsultasi Gizi Langsung!
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-orange to-amber-400 flex items-center justify-center text-white shadow-md shadow-brand-orange/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-utensils text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 leading-none">
+                            Dahar<span class="text-brand-orange">Fit</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-wider font-bold text-brand-green">Catering • Smart Nutrition</span>
+                    </div>
+                </a>
+
+                <!-- Nav Links -->
+                <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm text-slate-600">
+                    <a href="#keunggulan" class="hover:text-brand-orange transition-colors">Keunggulan</a>
+                    <a href="#program" class="hover:text-brand-orange transition-colors">Program Diet</a>
+                    <a href="#kalkulator" class="hover:text-brand-orange transition-colors">Kalkulator Nutrisi</a>
+                    <a href="#contoh-menu" class="hover:text-brand-orange transition-colors">Contoh Menu</a>
+                    <a href="#daftar-harga" class="hover:text-brand-orange transition-colors">Daftar Harga</a>
+                    <a href="#faq" class="hover:text-brand-orange transition-colors">FAQ</a>
+                </nav>
+
+                <!-- Header CTA Button -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openOrderModal()" class="hidden sm:inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orangeDark text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-brand-orange/25 transition-all hover:-translate-y-0.5">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Pesan Sekarang</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden pt-8 pb-16 md:py-20 bg-gradient-to-b from-emerald-50/50 via-white to-slate-50">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 -right-24 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- City Selection Switcher -->
+            <div class="flex flex-wrap justify-center items-center gap-2 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80 max-w-md mx-auto">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Pilih Lokasi:</span>
+                <button onclick="setCity('jogja')" id="city-btn-jogja" class="city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all bg-brand-green text-white shadow-md">
+                    📍 Jogja
+                </button>
+                <button onclick="setCity('semarang')" id="city-btn-semarang" class="city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all text-slate-600 hover:bg-slate-100">
+                    📍 Semarang
+                </button>
+                <button onclick="setCity('surabaya')" id="city-btn-surabaya" class="city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all text-slate-600 hover:bg-slate-100">
+                    📍 Surabaya
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <!-- Hero Left Text Content -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 text-brand-orange text-xs font-bold mb-4 border border-orange-200">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>Nutrisi Terukur & Higienis Setiap Hari</span>
+                    </div>
+                    
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6">
+                        Pola Makan Sehat, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-500">Praktis & Seimbang</span> Untuk Anda.
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Program catering sehat terpercaya dengan takaran nutrisi yang pas. Diolah tanpa MSG dan pengawet oleh koki profesional, didampingi ahli gizi untuk mendukung kesehatan harian Anda.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button onclick="openOrderModal()" class="inline-flex justify-center items-center gap-3 bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orangeDark hover:to-orange-600 text-white px-8 py-4 rounded-2xl font-bold text-base shadow-xl shadow-brand-orange/30 transition-all hover:scale-[1.02] active:scale-95">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Pesan Paket Sekarang</span>
+                        </button>
+                        <a href="#kalkulator" class="inline-flex justify-center items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-4 rounded-2xl font-semibold text-base shadow-sm transition-all">
+                            <i class="fa-solid fa-calculator text-brand-green"></i>
+                            <span>Cek Kebutuhan Gizi</span>
+                        </a>
+                    </div>
+
+                    <!-- Highlight Badges -->
+                    <div class="mt-10 pt-8 border-t border-slate-200/80 grid grid-cols-2 sm:grid-cols-3 gap-4 text-left">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-brand-green flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-truck-fast text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">Gratis Ongkir</h4>
+                                <p class="text-[11px] text-slate-500">Seluruh area layanan</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 text-brand-blue flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-user-doctor text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">Konsultasi Gizi</h4>
+                                <p class="text-[11px] text-slate-500">Bonus pendampingan</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 col-span-2 sm:col-span-1">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-ban-smoke text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">Tanpa MSG & Pengawet</h4>
+                                <p class="text-[11px] text-slate-500">100% Bahan Alami</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Card Box -->
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-md">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-orange to-brand-green rounded-3xl blur-2xl opacity-20 transform rotate-3 scale-105"></div>
+                        
+                        <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <span class="inline-block text-[11px] font-extrabold uppercase tracking-wider text-brand-orange bg-orange-50 px-3 py-1 rounded-full border border-orange-100 mb-1">Paling Populer</span>
+                                    <h3 class="text-2xl font-extrabold text-slate-900">Healthy Plan Diet</h3>
+                                </div>
+                                <div class="w-12 h-12 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center text-xl font-bold">
+                                    🥗
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl p-5 text-white mb-6 shadow-md shadow-orange-500/20">
+                                <div class="text-xs font-semibold uppercase tracking-wider text-orange-100">Paket Mulai Dari</div>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <span class="text-lg font-bold">Rp</span>
+                                    <span class="text-4xl font-extrabold tracking-tight">31.000</span>
+                                    <span class="text-xs text-orange-100 font-medium">/porsi</span>
+                                </div>
+                                <div class="mt-2 text-xs text-orange-100 flex items-center gap-2">
+                                    <span class="line-through opacity-75">Rp 42.000</span>
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold">Hemat 26%</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl text-xs sm:text-sm">
+                                <div class="flex justify-between items-center py-1 border-b border-slate-200/60">
+                                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-fire text-amber-500 mr-2"></i>Kalori</span>
+                                    <span class="font-bold text-slate-800">450 - 550 kkal</span>
+                                </div>
+                                <div class="flex justify-between items-center py-1 border-b border-slate-200/60">
+                                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-dumbbell text-blue-500 mr-2"></i>Protein</span>
+                                    <span class="font-bold text-slate-800">30 - 45 gram</span>
+                                </div>
+                                <div class="flex justify-between items-center py-1 border-b border-slate-200/60">
+                                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-wheat-awn text-emerald-500 mr-2"></i>Karbohidrat</span>
+                                    <span class="font-bold text-slate-800">Kompleks</span>
+                                </div>
+                                <div class="flex justify-between items-center py-1">
+                                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-shield-heart text-red-500 mr-2"></i>Fitur Gizi</span>
+                                    <span class="font-bold text-slate-800">Tinggi Serat & Lemak Sehat</span>
+                                </div>
+                            </div>
+
+                            <button onclick="selectProgramAndOrder('Healthy Plan Diet')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-sm transition-all flex items-center justify-center gap-2">
+                                <span>Pesan Paket Ini</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Benefits Section -->
+    <section id="keunggulan" class="py-16 bg-white border-y border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Mengapa Ribuan Pelanggan Memilih <span class="text-brand-green">DaharFit?</span>
+                </h2>
+                <p class="text-slate-600 mt-3 text-sm sm:text-base">
+                    Kami tidak hanya sekadar catering biasa, tapi mitra setia pola hidup sehat Anda sehari-hari.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                        💎
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Bahan Berkualitas</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Diolah hanya dari bahan pangan segar pilihan, daging tanpa lemak berlebih, serta sayuran organik bebas peptisida.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-100 text-brand-green rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                        👨‍🍳
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Dimasak Setiap Hari</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Bukan makanan beku atau dihangatkan ulang. Setiap porsi dimasak segar pada hari pengiriman untuk menjaga cita rasa terbaik.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-blue-100 text-brand-blue rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                        🧪
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Tanpa MSG & Pengawet</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Menggunakan kaldu alami dan bumbu rempah nusantara asli. Aman dikonsumsi jangka panjang tanpa dampak negatif.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                        🛡️
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Food Grade & Higienis</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Kemasan box sekat terpisah berstandar Food Grade, bebas BPA, serta proses memasak higienis sesuai standar keamanan pangan.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Cards Section -->
+    <section id="program" class="py-16 sm:py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-orange text-xs font-extrabold uppercase tracking-widest bg-orange-100 px-3 py-1 rounded-full">Program Pilihan</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+                    Pilih Program Diet Sesuai Kebutuhan Anda
+                </h2>
+                <p class="text-slate-600 mt-3 text-sm sm:text-base">
+                    Seluruh program dirancang presisi dengan kalori dan makronutrisi terukur untuk hasil optimal.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 items-stretch">
+                <!-- Program 1: Healthy Plan Diet -->
+                <div class="bg-white rounded-3xl border-2 border-brand-orange/30 shadow-xl flex flex-col justify-between overflow-hidden relative group hover:border-brand-orange transition-all">
+                    <div class="bg-brand-orange text-white text-xs font-bold text-center py-1.5 uppercase tracking-wider">
+                        Program Terfavorit • Penurunan BB & Sehat
+                    </div>
+                    <div class="p-6 sm:p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-extrabold text-slate-900">Healthy Plan Diet</h3>
+                            <span class="text-2xl">🌱</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                            Program catering sehat harian untuk membantu menurunkan berat badan secara konsisten tanpa menyiksa.
+                        </p>
+
+                        <div class="mb-6 p-4 rounded-2xl bg-orange-50/60 border border-orange-100">
+                            <div class="text-xs font-bold text-brand-orange uppercase">Paket Mulai Dari</div>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-base font-bold text-slate-800">Rp</span>
+                                <span class="text-3xl font-extrabold text-slate-900">31.000</span>
+                                <span class="text-xs text-slate-500 font-medium">/porsi</span>
+                            </div>
+                            <div class="text-[11px] text-slate-400 mt-1 line-through">Rp 42.000 /porsi</div>
+                        </div>
+
+                        <div class="space-y-3 text-xs sm:text-sm border-t border-slate-100 pt-6">
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-500">🔥 Energi / Kalori</span>
+                                <span class="font-bold text-slate-800">450 - 550 kkal</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">💪 Asupan Protein</span>
+                                <span class="font-bold text-slate-800">30 - 45 gram</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">🌾 Karbohidrat</span>
+                                <span class="font-bold text-slate-800">Kompleks Organik</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">🥗 Serat & Lemak</span>
+                                <span class="font-bold text-slate-800">Tinggi Serat Sehat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-50 border-t border-slate-100">
+                        <button onclick="selectProgramAndOrder('Healthy Plan Diet')" class="w-full bg-brand-orange hover:bg-brand-orangeDark text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-brand-orange/20 flex items-center justify-center gap-2">
+                            <span>Pesan Healthy Plan</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Program 2: Sickness Diet -->
+                <div class="bg-white rounded-3xl border-2 border-brand-blue/30 shadow-xl flex flex-col justify-between overflow-hidden relative group hover:border-brand-blue transition-all">
+                    <div class="bg-brand-blue text-white text-xs font-bold text-center py-1.5 uppercase tracking-wider">
+                        Diet Khusus Medis & Pemulihan
+                    </div>
+                    <div class="p-6 sm:p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-extrabold text-slate-900">Sickness Diet</h3>
+                            <span class="text-2xl">🩺</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                            Program diet khusus nutrisi terkontrol untuk membantu memulihkan kesehatan & kondisi medis tertentu.
+                        </p>
+
+                        <div class="mb-6 p-4 rounded-2xl bg-sky-50/60 border border-sky-100">
+                            <div class="text-xs font-bold text-brand-blue uppercase">Paket Mulai Dari</div>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-base font-bold text-slate-800">Rp</span>
+                                <span class="text-3xl font-extrabold text-slate-900">45.000</span>
+                                <span class="text-xs text-slate-500 font-medium">/porsi</span>
+                            </div>
+                            <div class="text-[11px] text-brand-blue font-semibold mt-1">Paket Siang-Malam: @Rp 44.000</div>
+                        </div>
+
+                        <div class="mb-6">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-2 uppercase">Cocok Untuk Kondisi:</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-sky-100 text-brand-blue text-[11px] font-bold px-2.5 py-1 rounded-lg">🩸 Kolesterol</span>
+                                <span class="bg-sky-100 text-brand-blue text-[11px] font-bold px-2.5 py-1 rounded-lg">🍬 Diabetes</span>
+                                <span class="bg-sky-100 text-brand-blue text-[11px] font-bold px-2.5 py-1 rounded-lg">❤️ Hipertensi</span>
+                                <span class="bg-sky-100 text-brand-blue text-[11px] font-bold px-2.5 py-1 rounded-lg">🦴 Asam Urat</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs sm:text-sm border-t border-slate-100 pt-6">
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-500">🔥 Energi / Kalori</span>
+                                <span class="font-bold text-slate-800">500 - 600 kkal</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">💪 Protein Terkontrol</span>
+                                <span class="font-bold text-slate-800">25 - 35 gram</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">🥑 Lemak Sehat</span>
+                                <span class="font-bold text-slate-800">10 - 15 gram</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-50 border-t border-slate-100">
+                        <button onclick="selectProgramAndOrder('Sickness Diet')" class="w-full bg-brand-blue hover:bg-sky-700 text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2">
+                            <span>Pesan Sickness Diet</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Program 3: Muscle Gain Diet -->
+                <div class="bg-white rounded-3xl border-2 border-brand-red/30 shadow-xl flex flex-col justify-between overflow-hidden relative group hover:border-brand-red transition-all">
+                    <div class="bg-brand-red text-white text-xs font-bold text-center py-1.5 uppercase tracking-wider">
+                        Program Tinggi Protein & Massa Otot
+                    </div>
+                    <div class="p-6 sm:p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-extrabold text-slate-900">Muscle Gain Diet</h3>
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                            Program diet untuk membantu meningkatkan massa otot dengan asupan tinggi protein dan kalori harian terkontrol.
+                        </p>
+
+                        <div class="mb-6 p-4 rounded-2xl bg-rose-50/60 border border-rose-100">
+                            <div class="text-xs font-bold text-brand-red uppercase">Paket Mulai Dari</div>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-base font-bold text-slate-800">Rp</span>
+                                <span class="text-3xl font-extrabold text-slate-900">51.000</span>
+                                <span class="text-xs text-slate-500 font-medium">/porsi</span>
+                            </div>
+                            <div class="text-[11px] text-brand-red font-semibold mt-1">
+                                Siang-Malam: @Rp 49.000 <span class="line-through text-slate-400 font-normal">Rp 62.000</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs sm:text-sm border-t border-slate-100 pt-6">
+                            <div class="flex justify-between py-1">
+                                <span class="text-slate-500">🔥 Energi / Kalori</span>
+                                <span class="font-bold text-slate-800">750 - 800 kkal</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">💪 Extra Protein</span>
+                                <span class="font-bold text-slate-800">55 - 60 gram</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">🌾 Karbohidrat</span>
+                                <span class="font-bold text-slate-800">Kompleks Tinggi</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-t border-slate-100">
+                                <span class="text-slate-500">🥑 Nutrisi Tambahan</span>
+                                <span class="font-bold text-slate-800">Lemak Sehat & Serat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-50 border-t border-slate-100">
+                        <button onclick="selectProgramAndOrder('Muscle Gain Diet')" class="w-full bg-brand-red hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-brand-red/20 flex items-center justify-center gap-2">
+                            <span>Pesan Muscle Gain</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section id="kalkulator" class="py-16 bg-white border-y border-slate-200/60">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 rounded-3xl p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 text-center lg:text-left">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full">Fitur Pintar</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-3">
+                            Kalkulator Kebutuhan Kalori & Program
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-3 leading-relaxed">
+                            Masukkan data fisik Anda untuk mengestimasi kalori harian dan mengetahui paket DaharFit yang paling ideal.
+                        </p>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
+                        <form id="calcForm" onsubmit="calculateCalories(event)" class="space-y-4 text-xs sm:text-sm">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-200">Jenis Kelamin</label>
+                                    <select id="calcGender" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
+                                        <option value="male">Laki-laki</option>
+                                        <option value="female">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-200">Usia (Tahun)</label>
+                                    <input type="number" id="calcAge" required min="12" max="90" placeholder="25" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-200">Berat Badan (kg)</label>
+                                    <input type="number" id="calcWeight" required min="30" max="200" placeholder="65" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold mb-1 text-slate-200">Tinggi Badan (cm)</label>
+                                    <input type="number" id="calcHeight" required min="120" max="220" placeholder="170" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold mb-1 text-slate-200">Target Utama Anda</label>
+                                <select id="calcGoal" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-emerald-400">
+                                    <option value="weightLoss">Turun Berat Badan / Defisit Kalori</option>
+                                    <option value="muscleGain">Tambah Massa Otot / Surplus Kalori</option>
+                                    <option value="health">Kondisi Medis / Pemulihan (Sickness)</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/20">
+                                Hitung Kalori Saya
+                            </button>
+                        </form>
+
+                        <div id="calcResult" class="hidden mt-6 p-4 rounded-xl bg-emerald-950/90 border border-emerald-500/30 text-center animate-fadeIn">
+                            <div class="text-xs text-emerald-300 font-semibold uppercase">Estimasi Kebutuhan Harian:</div>
+                            <div class="text-3xl font-extrabold text-white mt-1"><span id="resCal">0</span> <span class="text-sm font-normal">kkal/hari</span></div>
+                            <div class="text-xs text-slate-300 mt-2">Rekomendasi Program DaharFit:</div>
+                            <div id="resProgram" class="text-base font-extrabold text-brand-orange mt-0.5">Healthy Plan Diet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sample Menu Showcase -->
+    <section id="contoh-menu" class="py-16 sm:py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-brand-green text-xs font-extrabold uppercase tracking-widest bg-emerald-100 px-3 py-1 rounded-full">Menu Lezat & Sehat</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+                    Intip Variasi Menu Harian DaharFit
+                </h2>
+                <p class="text-slate-600 mt-3 text-sm sm:text-base">
+                    Menu berganti setiap hari agar Anda tidak merasa bosan menjalani pola makan sehat.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-2 mt-8">
+                    <button onclick="filterMenu('all')" class="menu-filter-btn active-filter text-xs font-bold px-4 py-2 rounded-xl border bg-brand-green text-white border-brand-green transition-all">
+                        Semua Menu
+                    </button>
+                    <button onclick="filterMenu('healthy')" class="menu-filter-btn text-xs font-bold px-4 py-2 rounded-xl border bg-white text-slate-700 border-slate-200 hover:bg-slate-100 transition-all">
+                        Healthy Plan
+                    </button>
+                    <button onclick="filterMenu('sickness')" class="menu-filter-btn text-xs font-bold px-4 py-2 rounded-xl border bg-white text-slate-700 border-slate-200 hover:bg-slate-100 transition-all">
+                        Sickness Diet
+                    </button>
+                    <button onclick="filterMenu('muscle')" class="menu-filter-btn text-xs font-bold px-4 py-2 rounded-xl border bg-white text-slate-700 border-slate-200 hover:bg-slate-100 transition-all">
+                        Muscle Gain
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Menu Card 1 -->
+                <div class="menu-item healthy bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl transition-all">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Ayam Panggang Sambal Matah" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brand-orange text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Healthy Plan</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Ayam Panggang Sambal Matah & Nasi Merah</h4>
+                        <p class="text-xs text-slate-500 mb-4">Dada ayam tanpa kulit, renyahnya tumis buncis wortel, dan nasi merah organik.</p>
+                        <div class="flex justify-between items-center text-xs font-semibold bg-slate-50 p-2.5 rounded-xl text-slate-700">
+                            <span>🔥 480 kkal</span>
+                            <span>💪 38g Protein</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-item sickness bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl transition-all">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Steamed Tilapia Lemon Garlic" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brand-blue text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Sickness Diet</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Steamed Fish Lemon Garlic & Sweet Potato</h4>
+                        <p class="text-xs text-slate-500 mb-4">Ikan kukus rendah garam dengan perasan lemon, kentang manis, dan brokoli kukus.</p>
+                        <div class="flex justify-between items-center text-xs font-semibold bg-slate-50 p-2.5 rounded-xl text-slate-700">
+                            <span>🔥 510 kkal</span>
+                            <span>🩺 Rendah Garam</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-item muscle bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-xl transition-all">
+                    <div class="h-48 bg-slate-200 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Beef Saikoro Teriyaki Bowl" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-full">Muscle Gain</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Beef Saikoro Teriyaki & Quinoa Bowl</h4>
+                        <p class="text-xs text-slate-500 mb-4">Daging sapi lean potongan saikoro, saus teriyaki homemade rendah gula & karbo quinoa.</p>
+                        <div class="flex justify-between items-center text-xs font-semibold bg-slate-50 p-2.5 rounded-xl text-slate-700">
+                            <span>🔥 780 kkal</span>
+                            <span>💪 58g Protein</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Table Section -->
+    <section id="daftar-harga" class="py-16 sm:py-24 bg-white border-t border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-brand-orange text-xs font-extrabold uppercase tracking-widest bg-orange-100 px-3 py-1 rounded-full">Transparan & Hemat</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+                    Daftar Harga Program DaharFit
+                </h2>
+                <p class="text-slate-600 mt-3 text-sm sm:text-base">
+                    Harga berlaku untuk wilayah pengiriman <strong id="price-city-label" class="text-brand-green">Jogja & Semarang</strong>.
+                </p>
+            </div>
+
+            <div class="bg-slate-50 rounded-3xl p-4 sm:p-8 border border-slate-200/80 shadow-xl overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[650px]">
+                    <thead>
+                        <tr class="bg-slate-900 text-white rounded-xl">
+                            <th class="p-4 rounded-l-xl">Program Diet</th>
+                            <th class="p-4">1x Kirim</th>
+                            <th class="p-4">Opsi Paket Langganan</th>
+                            <th class="p-4 rounded-r-xl text-right">Total Paket</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pricing-table-body" class="divide-y divide-slate-200 text-slate-800">
+                        <!-- Dynamic Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-xs text-slate-500 mb-4">* Seluruh harga sudah termasuk pengiriman (Gratis Ongkir) dan bonus pendampingan ahli gizi.</p>
+                <button onclick="openOrderModal()" class="inline-flex items-center gap-2 bg-brand-green hover:bg-emerald-800 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-brand-green/20 transition-all">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Pesan Paket Pilihan Anda</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Pertanyaan Sering Diajukan (FAQ)</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-2">Segala hal yang ingin Anda ketahui tentang layanan catering sehat kami.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+                        <span>Jam berapa makanan akan dikirim setiap harinya?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-3 hidden leading-relaxed">
+                        Pengiriman catering dilakukan 2 kali sehari (Makan Siang: 10.00 - 12.00 WIB & Makan Malam: 16.00 - 18.00 WIB) sesuai jadwal paket yang Anda pilih.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+                        <span>Apakah saya bisa berkonsultasi jika punya pantangan alergi?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-3 hidden leading-relaxed">
+                        Tentu saja! Anda mendapatkan bonus konsultasi gizi gratis. Tim kami akan mencatat alergi atau pantangan bahan makanan Anda agar menu disesuaikan.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+                        <span>Bagaimana jika saya harus pergi ke luar kota saat berlangganan?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-3 hidden leading-relaxed">
+                        Pengiriman dapat di-pause/ditunda sementara minimal konfirmasi H-1 sebelum jam 18.00 WIB. Sisa kuota paket Anda tidak akan hangus.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Branch CS Contacts Section -->
+    <section class="py-16 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">Cabang & Kontak Customer Service</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mb-10">Hubungi nomor resmi kami sesuai domisili tempat tinggal Anda.</p>
+
+            <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-brand-green transition-all">
+                    <div class="text-3xl mb-2">📍</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg">Jogja</h3>
+                    <p class="text-xs text-slate-500 mt-1">0851-7715-2148</p>
+                    <a href="https://wa.me/6285177152148" target="_blank" class="mt-4 inline-flex items-center gap-2 bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl">
+                        <i class="fa-brands fa-whatsapp"></i> Chat CS Jogja
+                    </a>
+                </div>
+
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-brand-green transition-all">
+                    <div class="text-3xl mb-2">📍</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg">Semarang</h3>
+                    <p class="text-xs text-slate-500 mt-1">0851-1157-0209</p>
+                    <a href="https://wa.me/6285111570209" target="_blank" class="mt-4 inline-flex items-center gap-2 bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl">
+                        <i class="fa-brands fa-whatsapp"></i> Chat CS Semarang
+                    </a>
+                </div>
+
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-brand-green transition-all">
+                    <div class="text-3xl mb-2">📍</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg">Surabaya</h3>
+                    <p class="text-xs text-slate-500 mt-1">0851-6817-0003</p>
+                    <a href="https://wa.me/6285168170003" target="_blank" class="mt-4 inline-flex items-center gap-2 bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl">
+                        <i class="fa-brands fa-whatsapp"></i> Chat CS Surabaya
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 text-xs border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+            <div class="text-lg font-extrabold text-white">Dahar<span class="text-brand-orange">Fit</span> Catering</div>
+            <p class="max-w-md mx-auto text-slate-500">Program catering sehat harian dengan nutrisi seimbang untuk mendukung gaya hidup sehat Anda setiap hari.</p>
+            <div class="flex justify-center items-center gap-4 text-slate-300 pt-2">
+                <a href="https://instagram.com/daharfit" target="_blank" class="hover:text-brand-orange"><i class="fa-brands fa-instagram text-lg"></i> @daharfit</a>
+            </div>
+            <p class="text-slate-600 pt-4">&copy; 2026 DaharFit Catering. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Floating Bottom CTA Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 md:hidden shadow-2xl flex items-center justify-between gap-3">
+        <div>
+            <div class="text-[10px] text-slate-500 font-semibold uppercase">Mulai Sehat Hari Ini</div>
+            <div class="text-xs font-extrabold text-slate-900">Mulai Rp 31.000/porsi</div>
+        </div>
+        <button onclick="openOrderModal()" class="bg-brand-orange text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-lg shadow-brand-orange/30 flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Pesan Sekarang</span>
+        </button>
+    </div>
+
+    <!-- Order Form Modal -->
+    <div id="orderModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl animate-fadeIn max-h-[90vh] overflow-y-auto">
+            <button onclick="closeOrderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl font-bold">
+                ✕
+            </button>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-extrabold text-slate-900">Form Pemesanan DaharFit</h3>
+                <p class="text-xs text-slate-500 mt-1">Lengkapi data berikut untuk terhubung langsung via WhatsApp Customer Service.</p>
+            </div>
+
+            <form onsubmit="sendWhatsAppOrder(event)" class="space-y-4 text-xs sm:text-sm">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="orderName" required placeholder="Contoh: Budi Santoso" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Kota Cabang</label>
+                        <select id="orderCity" onchange="syncCityFromOrderModal(this.value)" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green">
+                            <option value="jogja">Jogja</option>
+                            <option value="semarang">Semarang</option>
+                            <option value="surabaya">Surabaya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Pilih Program</label>
+                        <select id="orderProgram" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green">
+                            <option value="Healthy Plan Diet">Healthy Plan Diet</option>
+                            <option value="Sickness Diet">Sickness Diet</option>
+                            <option value="Muscle Gain Diet">Muscle Gain Diet</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Opsi Paket Pengiriman</label>
+                    <select id="orderPackage" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green">
+                        <option value="1x Kirim (Trial)">1x Kirim (Trial)</option>
+                        <option value="Paket Langganan 12x Kirim">Paket Langganan 12x Kirim</option>
+                        <option value="Paket Langganan 36x Kirim">Paket Langganan 36x Kirim</option>
+                        <option value="Paket Siang Malam (Harian)">Paket Siang Malam (Harian)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Alamat Pengiriman</label>
+                    <textarea id="orderAddress" required rows="2" placeholder="Jalan, No. Rumah, Kecamatan, Kota" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Catatan Alergi / Pantangan (Opsional)</label>
+                    <input type="text" id="orderNotes" placeholder="Contoh: Tidak pakai udang / Pantang santan" class="w-full border border-slate-300 rounded-xl p-3 focus:outline-none focus:border-brand-green">
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 text-sm mt-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Kirim Pesanan Ke WhatsApp</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Embedded Scripts -->
+    <script>
+        let currentCity = 'jogja';
+
+        const contacts = {
+            jogja: { number: '6285177152148', label: 'Jogja' },
+            semarang: { number: '6285111570209', label: 'Semarang' },
+            surabaya: { number: '6285168170003', label: 'Surabaya' }
+        };
+
+        const pricingData = {
+            jogja: [
+                { program: 'Healthy Plan Diet', trial: 'Rp 41.000', plan: 'Paket 36x Kirim (@Rp 38.000)', total: 'Rp 1.368.000' },
+                { program: 'Muscle Gain Diet', trial: 'Rp 51.000', plan: 'Paket 12x Kirim (@Rp 49.000)', total: 'Rp 588.000' },
+                { program: 'Sickness Diet', trial: 'Rp 45.000', plan: 'Paket 12x Kirim (@Rp 44.000)', total: 'Rp 528.000' }
+            ],
+            semarang: [
+                { program: 'Healthy Plan Diet', trial: 'Rp 41.000', plan: 'Paket 36x Kirim (@Rp 38.000)', total: 'Rp 1.368.000' },
+                { program: 'Muscle Gain Diet', trial: 'Rp 51.000', plan: 'Paket 12x Kirim (@Rp 49.000)', total: 'Rp 588.000' },
+                { program: 'Sickness Diet', trial: 'Rp 45.000', plan: 'Paket 12x Kirim (@Rp 44.000)', total: 'Rp 528.000' }
+            ],
+            surabaya: [
+                { program: 'Healthy Plan Diet', trial: 'Rp 44.000', plan: 'Paket 36x Kirim (@Rp 41.000)', total: 'Rp 1.476.000' },
+                { program: 'Muscle Gain Diet', trial: 'Rp 54.000', plan: 'Paket 12x Kirim (@Rp 52.000)', total: 'Rp 624.000' },
+                { program: 'Sickness Diet', trial: 'Rp 48.000', plan: 'Paket 12x Kirim (@Rp 47.000)', total: 'Rp 564.000' }
+            ]
+        };
+
+        function setCity(city) {
+            currentCity = city;
+            
+            document.querySelectorAll('.city-tab').forEach(btn => {
+                btn.className = 'city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all text-slate-600 hover:bg-slate-100';
+            });
+            const activeBtn = document.getElementById(`city-btn-${city}`);
+            if (activeBtn) {
+                activeBtn.className = 'city-tab text-xs font-bold px-4 py-2 rounded-xl transition-all bg-brand-green text-white shadow-md';
+            }
+
+            const orderCitySelect = document.getElementById('orderCity');
+            if (orderCitySelect) orderCitySelect.value = city;
+
+            const cityLabels = { jogja: 'Jogja & Semarang', semarang: 'Jogja & Semarang', surabaya: 'Surabaya' };
+            document.getElementById('price-city-label').innerText = cityLabels[city];
+
+            renderPriceTable();
+        }
+
+        function syncCityFromOrderModal(city) {
+            setCity(city);
+        }
+
+        function renderPriceTable() {
+            const tableBody = document.getElementById('pricing-table-body');
+            const data = pricingData[currentCity] || pricingData.jogja;
+
+            tableBody.innerHTML = data.map(item => `
+                <tr class="hover:bg-slate-100/80 transition-colors">
+                    <td class="p-4 font-bold text-slate-900">${item.program}</td>
+                    <td class="p-4 text-slate-600">${item.trial}</td>
+                    <td class="p-4 text-slate-600">${item.plan}</td>
+                    <td class="p-4 text-right font-extrabold text-brand-orange">${item.total}</td>
+                </tr>
+            `).join('');
+        }
+
+        function calculateCalories(e) {
+            e.preventDefault();
+            const age = parseFloat(document.getElementById('calcAge').value);
+            const weight = parseFloat(document.getElementById('calcWeight').value);
+            const height = parseFloat(document.getElementById('calcHeight').value);
+            const gender = document.getElementById('calcGender').value;
+            const goal = document.getElementById('calcGoal').value;
+
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr = gender === 'male' ? bmr + 5 : bmr - 161;
+
+            let tdee = bmr * 1.375;
+
+            let recommendedCal = Math.round(tdee);
+            let progText = "Healthy Plan Diet";
+
+            if (goal === 'weightLoss') {
+                recommendedCal = Math.round(tdee - 450);
+                progText = "Healthy Plan Diet (Defisit Kalori)";
+            } else if (goal === 'muscleGain') {
+                recommendedCal = Math.round(tdee + 350);
+                progText = "Muscle Gain Diet (Tinggi Protein)";
+            } else if (goal === 'health') {
+                recommendedCal = Math.round(tdee);
+                progText = "Sickness Diet (Nutrisi Medis Terkontrol)";
+            }
+
+            document.getElementById('resCal').innerText = recommendedCal.toLocaleString('id-ID');
+            document.getElementById('resProgram').innerText = progText;
+            document.getElementById('calcResult').classList.remove('hidden');
+        }
+
+        function filterMenu(category) {
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function openOrderModal() {
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.add('hidden');
+        }
+
+        function selectProgramAndOrder(programName) {
+            document.getElementById('orderProgram').value = programName;
+            openOrderModal();
+        }
+
+        function sendWhatsAppOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('orderName').value;
+            const cityKey = document.getElementById('orderCity').value;
+            const program = document.getElementById('orderProgram').value;
+            const packageOpt = document.getElementById('orderPackage').value;
+            const address = document.getElementById('orderAddress').value;
+            const notes = document.getElementById('orderNotes').value || '-';
+
+            const csInfo = contacts[cityKey] || contacts.jogja;
+
+            const text = `Halo DaharFit Catering Cabang *${csInfo.label}*, saya mau pesan catering sehat:\n\n` +
+                         `👤 *Nama:* ${name}\n` +
+                         `🥗 *Program:* ${program}\n` +
+                         `📦 *Paket:* ${packageOpt}\n` +
+                         `📍 *Alamat:* ${address}\n` +
+                         `📝 *Catatan Alergi:* ${notes}\n\n` +
+                         `Mohon info total & rekening pembayarannya ya. Terima kasih!`;
+
+            const encodedText = encodeURIComponent(text);
+            const waUrl = `https://wa.me/${csInfo.number}?text=${encodedText}`;
+
+            window.open(waUrl, '_blank');
+            closeOrderModal();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPriceTable();
+        });
+    </script>
+</body>
+</html>
